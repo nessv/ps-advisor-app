@@ -1,4 +1,4 @@
-package com.fundacionparaguaya.advisorapp;
+package org.fundacionparaguaya.advisorapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

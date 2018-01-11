@@ -1,4 +1,4 @@
-package com.fundacionparaguaya.advisorapp;
+package org.fundacionparaguaya.advisorapp;
 
 import org.junit.Test;
 

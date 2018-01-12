@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.advisorapp.dashboard;
+package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;

@@ -4,12 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
 
 /**
- * Created by benjaminhylak on 1/11/18.
+ * Main side tab for dashboard
  */
 
-public class TabView extends LinearLayoutCompat
+public class DashboardTabView extends LinearLayoutCompat
 {
-    public TabView(Context context)
+    public DashboardTabView(Context context)
     {
         super(context);
     }

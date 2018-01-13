@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 
 import org.fundacionparaguaya.advisorapp.models.Family;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,16 @@ public class AllFamiliesViewModel extends ViewModel {
     }
 
     private void loadfamilies(){
-        
+        ArrayList<Family> dummyList = new ArrayList<>();
+        String[] familyNames = {"Elokda", "Hylak", "Tacescu", "Converse"};
+
+        for(String name: familyNames){
+            Family f = new Family();
+            f.getmName();
+            dummyList.add(f);
+
+        }
+
     }
 
 }

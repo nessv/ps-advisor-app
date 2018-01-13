@@ -62,4 +62,12 @@ public class Family
     {
         return mPriorities.size();
     }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
 }

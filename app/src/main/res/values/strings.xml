@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Advisor App</string>
+
+
+    <!-- =========== Families View =========== -->
+    <string name="family_imagePlaceholder">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
 </resources>

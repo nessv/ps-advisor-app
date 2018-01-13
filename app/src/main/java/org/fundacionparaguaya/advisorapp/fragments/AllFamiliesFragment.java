@@ -7,4 +7,5 @@ import android.app.Fragment;
  */
 
 public class AllFamiliesFragment extends Fragment {
+
 }

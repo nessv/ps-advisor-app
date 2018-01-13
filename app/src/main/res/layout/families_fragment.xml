@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="924dp"
+    android:layout_height="680dp"
+    android:orientation="vertical"
+    android:layout_marginLeft="100dp"
+    android:layout_marginTop="68dp"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="608dp"
+        android:background="@color/colorAccent"></View>
+    <View android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="292dp"
+        android:background="@color/colorPrimary"></View>
+    <TextView
+        android:id="@+id/all_families_label"
+        android:layout_width="159dp"
+        android:layout_height="33dp"
+        android:text="All Families"
+        android:textSize="24dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="29dp"
+        />
+    <android.support.v7.widget.RecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount ='3'
+        android:id="@+id/all_families_view"
+        android:layout_width="761dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="29dp"
+        tools:listitem="@android:layout/simple_list_item_checked"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+</android.support.v7.widget.LinearLayoutCompat>

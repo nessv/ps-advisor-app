@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    android:layout_width="227dp"
+    android:layout_height="249dp"
+    card_view:cardCornerRadius="10dp"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="135dp" />
+    <TextView
+        android:id="@+id/family_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Elokda"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:id="@+id/next_visit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Next Visit:"
+        android:layout_marginTop="180dp"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:id="@+id/last_visit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Last Visit:"
+        android:layout_marginTop="211dp"
+        android:layout_marginLeft="15dp"
+        />
+    
+
+</android.support.v7.widget.CardView>

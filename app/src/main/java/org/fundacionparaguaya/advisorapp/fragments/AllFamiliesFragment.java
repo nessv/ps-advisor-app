@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyAdapter;
@@ -35,21 +36,29 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         AllFamiliesViewModel viewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(AllFamiliesViewModel.class);
         LiveData<List<Family>> families = viewModel.getFamily();
 
+        mFamilyAdapter = new FamilyAdapter(families.getValue());
+
+        mFamilyAdapter.addFamilySelectedHandler(new FamilyAdapter.FamilySelectedHandler() {
+            @Override
+            public void onFamilySelected(FamilyAdapter.FamilySelectedEvent e) {
+                String FamilyName = e.getSelectedFamily().getmName();
+                Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.families_fragment, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
-
-
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -63,7 +72,7 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
             @Override
             public void onChanged(@Nullable List<Family> families) {
                 if(families != null ){
-                    mFamilyAdapter.setmFamilyList(families);
+                    mFamilyAdapter.setFamilyList(families);
                 }
 
             }

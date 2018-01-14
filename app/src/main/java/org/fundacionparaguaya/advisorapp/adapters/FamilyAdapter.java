@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
@@ -8,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +26,27 @@ import java.util.Objects;
 public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyViewHolder> {
 
     List<? extends Family> mFamilyList;
+    ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
 
+    public FamilyAdapter(List<Family> families){
+        this.mFamilyList = families;
+        mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
+
+    }
+
+    public void addFamilySelectedHandler(FamilySelectedHandler h){
+        mFamilySelectedHandlers.add(h);
+    }
+
+    public void removeFamilySelectedHandler(FamilySelectedHandler h){
+        mFamilySelectedHandlers.remove(h);
+    }
+
+    private void notifyFamilySelectedHandlers(FamilySelectedEvent e){
+        for(FamilySelectedHandler handler: mFamilySelectedHandlers){
+            handler.onFamilySelected(e);
+        }
+    }
 
     @Override
     public FamilyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,14 +56,17 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
 
     @Override
     public void onBindViewHolder(FamilyViewHolder holder, int position) {
-        holder.familyName.setText(families.get(position).getmName());
-    }
 
+        final Family family = mFamilyList.get(position);
 
-    List<Family> families;
+        holder.familyName.setText(family.getmName());
 
-    public FamilyAdapter(List<Family> families){
-        this.families = families;
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notifyFamilySelectedHandlers(new FamilySelectedEvent(family));
+            }
+        });
     }
 
     @Override
@@ -73,7 +99,7 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
 
     }
 
-    public void setmFamilyList(final List<? extends Family> families){
+    public void setFamilyList(final List<? extends Family> families){
         if(mFamilyList == null){
             mFamilyList = families;
             notifyItemRangeInserted(0, families.size());
@@ -109,5 +135,23 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
         }
     }
 
+    public class FamilySelectedEvent {
+
+        private FamilySelectedHandler mFamilySelectedHandler;
+
+        Family mFamilySelected;
+
+        FamilySelectedEvent(Family f){
+            mFamilySelected = f;
+        }
+
+        public Family getSelectedFamily(){
+            return mFamilySelected;
+        }
+    }
+
+    public interface FamilySelectedHandler{
+        void onFamilySelected(FamilySelectedEvent e);
+    }
 
 }

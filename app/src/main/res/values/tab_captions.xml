@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="family_tab">Familia</string>
+    <string name="map_tab">Mapa</string>
+    <string name="archive_tab">Archivo</string>
+    <string name="settings_tab">Ajustes</string>
+</resources>

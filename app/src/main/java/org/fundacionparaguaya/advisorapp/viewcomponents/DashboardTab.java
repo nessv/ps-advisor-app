@@ -2,9 +2,10 @@ package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.R;
@@ -13,17 +14,29 @@ import org.fundacionparaguaya.advisorapp.R;
  * Created by alex on 1/13/2018.
  */
 
-public class DashboardTab extends LinearLayoutCompat {
+public class DashboardTab extends LinearLayout {
 
-    ImageView image_icon;
-    TextView textView_caption;
+    private ImageView image_icon;
+    private TextView textView_caption;
 
-    public DashboardTab(Context context, AttributeSet attributeSet){
-        super(context, attributeSet);
-        TypedArray a = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.DashboardTab,0, 0);
+    public DashboardTab(Context context, AttributeSet attr){
+        super(context, attr);
 
-        setImage(a.getResourceId(R.styleable.DashboardTab_ImageID, 0)); //TODO: change default values
-        setText(a.getResourceId(R.styleable.DashboardTab_TextID, 0));
+        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater.inflate(R.layout.dashboardtab, this);
+
+        image_icon = (ImageView) findViewById(R.id.imageView_icon);
+        textView_caption = (TextView) findViewById(R.id.textView_caption);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(attr, R.styleable.DashboardTab,0, 0);
+
+        try {
+            image_icon.setImageResource(a.getResourceId(R.styleable.DashboardTab_ImageID, R.drawable.dashtab_friendsicon));
+            textView_caption.setText(a.getResourceId(R.styleable.DashboardTab_TextID, R.string.family_tab));
+        } finally {
+            a.recycle();
+        }
+
     }
 
     public void setImage(int id) {

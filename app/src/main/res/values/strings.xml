@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Advisor App</string>
+    <string name="fpicon_desc">FP Icon</string>
+    <string name="bugbutton_desc">Bug Button</string>
 </resources>

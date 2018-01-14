@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Mone Elokda on 1/13/2018.
  */
 
-public class AllFamiliesFragment extends Fragment {
+public class AllFamiliesFragment extends Fragment implements View.OnClickListener {
 
     private FamilyAdapter mFamilyAdapter;
 
@@ -39,6 +39,8 @@ public class AllFamiliesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AllFamiliesViewModel viewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(AllFamiliesViewModel.class);
         LiveData<List<Family>> families = viewModel.getFamily();
+
+
     }
 
     @Override
@@ -46,6 +48,7 @@ public class AllFamiliesFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.families_fragment, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
+
 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -65,6 +68,11 @@ public class AllFamiliesFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
 

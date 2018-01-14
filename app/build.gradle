@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "org.fundacionparaguaya.advisorapp"
@@ -11,10 +11,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        lintOptions {
-            abortOnError false
-        }
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -40,7 +36,11 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'android.arch.lifecycle:extensions:1.0.0'
 
+    // JUnit
     testImplementation 'junit:junit:4.12'
+
+    // Mockito
+    testImplementation "org.mockito:mockito-core:2.7.6"
 
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:1.0.0"
@@ -51,8 +51,8 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
 
     // Dagger2
-    implementation 'com.google.dagger:dagger-android:2.11'
-    implementation 'com.google.dagger:dagger-android-support:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    implementation 'com.google.dagger:dagger-android:2.14'
+    implementation 'com.google.dagger:dagger-android-support:2.14'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.14'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.14'
 }

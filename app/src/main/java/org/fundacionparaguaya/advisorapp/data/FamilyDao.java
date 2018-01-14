@@ -23,14 +23,14 @@ public interface FamilyDao {
     LiveData<List<Family>> queryFamilies();
 
     @Query("SELECT * FROM families WHERE id = :id")
-    LiveData<Family> queryFamily(Long id);
+    LiveData<Family> queryFamily(long id);
 
     @Insert(onConflict = REPLACE)
-    Long insertFamily(Family family);
+    long insertFamily(Family family);
 
     @Update
-    void updateFamily(Family family);
+    int updateFamily(Family family);
 
     @Delete
-    void deleteFamily(Family family);
+    int deleteFamily(Family family);
 }

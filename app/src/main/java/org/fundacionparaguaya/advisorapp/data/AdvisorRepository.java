@@ -23,12 +23,15 @@ public class AdvisorRepository {
         return familyDao.queryFamilies();
     }
 
-    public LiveData<Family> getFamily(Long id) {
+    public LiveData<Family> getFamily(long id) {
         return familyDao.queryFamily(id);
     }
 
     public void saveFamily(Family family) {
-        familyDao.updateFamily(family);
+        int rowCount = familyDao.updateFamily(family);
+        if (rowCount == 0) {
+            familyDao.insertFamily(family);
+        }
     }
 
     public void deleteFamily(Family family) {

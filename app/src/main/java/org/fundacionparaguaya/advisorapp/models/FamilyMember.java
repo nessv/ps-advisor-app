@@ -6,7 +6,5 @@ package org.fundacionparaguaya.advisorapp.models;
 public class FamilyMember {
     private String firstName;
     private String lastName;
-    private Location location;
 
-    
 }

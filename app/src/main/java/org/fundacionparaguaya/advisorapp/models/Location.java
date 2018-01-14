@@ -5,6 +5,8 @@ package org.fundacionparaguaya.advisorapp.models;
  */
 
 public class Location {
+    public static final Location UNKNOWN = new Location(0, 0, null, null);
+
     private double longitude;
     private double latitude;
     private Country country;

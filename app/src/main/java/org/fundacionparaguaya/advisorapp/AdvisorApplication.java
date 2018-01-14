@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;
+import org.fundacionparaguaya.advisorapp.dependencyinjection.DaggerApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DatabaseModule;
 
 /**
@@ -20,7 +21,7 @@ public class AdvisorApplication extends Application {
         applicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
-                .roomModule(new DatabaseModule(this))
+                .databaseModule(new DatabaseModule(this))
                 .build();
     }
 

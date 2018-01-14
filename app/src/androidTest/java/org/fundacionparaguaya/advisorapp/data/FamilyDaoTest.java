@@ -38,7 +38,7 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToInsertAFamily() {
-        Family family = new Family(1L, "Smith", "AB123");
+        Family family = new Family(1L, "Smith");
 
         familyDao.insertFamily(family);
 
@@ -50,8 +50,8 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToInsertFamilies() {
-        Family family1 = new Family(1L, "Smith", "AB123");
-        Family family2 = new Family(2L, "Gogan", "AB124");
+        Family family1 = new Family(1L, "Smith");
+        Family family2 = new Family(2L, "Gogan");
 
         familyDao.insertFamily(family1);
         familyDao.insertFamily(family2);
@@ -63,8 +63,8 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToQueryFamilyById() {
-        Family family1 = new Family(1L, "Smith", "AB123");
-        Family family2 = new Family(2L, "Gogan", "AB124");
+        Family family1 = new Family(1L, "Smith");
+        Family family2 = new Family(2L, "Gogan");
         familyDao.insertFamily(family1);
         familyDao.insertFamily(family2);
 
@@ -75,7 +75,7 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToUpdateAFamily() {
-        Family family = new Family(1L, "Smith", "AB123");
+        Family family = new Family(1L, "Smith");
         familyDao.insertFamily(family);
 
         family.setName("Smithy");
@@ -90,7 +90,7 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToDeleteAFamily() {
-        Family family = new Family(1L, "Smith", "AB123");
+        Family family = new Family(1L, "Smith");
         familyDao.insertFamily(family);
 
         familyDao.deleteFamily(family);

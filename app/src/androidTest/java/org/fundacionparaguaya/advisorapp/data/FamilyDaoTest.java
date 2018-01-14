@@ -21,13 +21,13 @@ import static org.fundacionparaguaya.advisorapp.data.LiveDataTestUtil.waitForVal
  */
 @RunWith(AndroidJUnit4.class)
 public class FamilyDaoTest {
-    private AdvisorDatabase db;
+    private LocalDatabase db;
     private FamilyDao familyDao;
 
 
     @Before
     public void init() {
-        db = Room.inMemoryDatabaseBuilder(getTargetContext(), AdvisorDatabase.class).build();
+        db = Room.inMemoryDatabaseBuilder(getTargetContext(), LocalDatabase.class).build();
         familyDao = db.familyDao();
     }
 

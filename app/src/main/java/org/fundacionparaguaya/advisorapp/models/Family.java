@@ -1,39 +1,37 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
- * A family is the entity that is being helped by the advisor. The family has snapshots of their situation
- * added when they take a survey. In the future, they will also have notes.
+ * A family is the entity that is being helped by the advisor.
  */
+
 @Entity(tableName = "families")
 public class Family
 {
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private int id;
     private String name;
-    @Ignore
+    private String address;
+    @Embedded
     private Location location;
-    @Ignore
-    private Collection<FamilyMember> members;
 
-    public Family(long id, String name) {
-        this(id, name, Location.UNKNOWN);
+    @Ignore
+    public Family(int id, String name) {
+        this(id, name, "", Location.UNKNOWN);
     }
 
-    public Family(long id, String name, Location location) {
+    public Family(int id, String name, String address, Location location) {
         this.id = id;
         this.name = name;
+        this.address = address;
         this.location = location;
-        this.members = new ArrayList<>();
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -45,20 +43,12 @@ public class Family
         this.name = name;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public Location getLocation() {
         return location;
-    }
-
-    public Collection<FamilyMember> getMembers() {
-        return members;
-    }
-
-    public void addMember(FamilyMember member) {
-        this.members.add(member);
-    }
-
-    public void removeMember(FamilyMember member) {
-        this.members.remove(member);
     }
 
     @Override
@@ -73,15 +63,15 @@ public class Family
             return false;
         if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
             return false;
-        return getMembers() != null ? getMembers().equals(family.getMembers()) : family.getMembers() == null;
+        return getAddress() != null ? getAddress().equals(family.getAddress()) : family.getAddress() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (getId() ^ (getId() >>> 32));
+        int result = getId();
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
-        result = 31 * result + (getMembers() != null ? getMembers().hashCode() : 0);
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         return result;
     }
 }

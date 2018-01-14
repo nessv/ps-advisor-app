@@ -1,5 +1,7 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import android.arch.persistence.room.Embedded;
+
 /**
  * A geographical location.
  */
@@ -9,8 +11,10 @@ public class Location {
 
     private double longitude;
     private double latitude;
-    private Country country;
+    @Embedded(prefix = "city_")
     private City city;
+    @Embedded(prefix = "country_")
+    private Country country;
 
     public Location(double longitude, double latitude, Country country, City city) {
         this.longitude = longitude;

@@ -3,8 +3,9 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import org.fundacionparaguaya.advisorapp.data.AdvisorDatabase;
-import org.fundacionparaguaya.advisorapp.data.AdvisorRepository;
+import org.fundacionparaguaya.advisorapp.data.LocalDatabase;
+import org.fundacionparaguaya.advisorapp.data.FamilyMemberDao;
+import org.fundacionparaguaya.advisorapp.rapositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.data.FamilyDao;
 
 import javax.inject.Singleton;
@@ -18,25 +19,32 @@ import dagger.Provides;
 
 @Module
 public class DatabaseModule {
-    private final AdvisorDatabase database;
+    private final LocalDatabase database;
 
     public DatabaseModule(Application application) {
         this.database = Room.databaseBuilder(
                 application,
-                AdvisorDatabase.class,
+                LocalDatabase.class,
                 "Advisor.db"
         ).build();
     }
 
     @Provides
     @Singleton
-    AdvisorRepository provideAdvisorRepository(FamilyDao familyDao) {
-        return new AdvisorRepository(familyDao);
+    FamilyRepository provideAdvisorRepository(
+            FamilyDao familyDao, FamilyMemberDao familyMemberDao) {
+        return new FamilyRepository(familyDao, familyMemberDao);
     }
 
     @Provides
     @Singleton
-    FamilyDao provideFamilyDao(AdvisorDatabase database) {
+    FamilyDao provideFamilyDao(LocalDatabase database) {
         return database.familyDao();
+    }
+
+    @Provides
+    @Singleton
+    FamilyMemberDao provideFamilyMemberDao(LocalDatabase database) {
+        return database.familyMemberDao();
     }
 }

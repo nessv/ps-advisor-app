@@ -23,7 +23,7 @@ public interface FamilyDao {
     LiveData<List<Family>> queryFamilies();
 
     @Query("SELECT * FROM families WHERE id = :id")
-    LiveData<Family> queryFamily(long id);
+    LiveData<Family> queryFamily(int id);
 
     @Insert(onConflict = REPLACE)
     long insertFamily(Family family);

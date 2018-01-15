@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.advisorapp.data;
+package org.fundacionparaguaya.advisorapp.data.local;
 
 
 import android.arch.lifecycle.LiveData;

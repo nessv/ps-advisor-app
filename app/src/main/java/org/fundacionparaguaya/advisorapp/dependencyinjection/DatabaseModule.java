@@ -3,10 +3,9 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import org.fundacionparaguaya.advisorapp.data.LocalDatabase;
-import org.fundacionparaguaya.advisorapp.data.FamilyMemberDao;
+import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
+import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.rapositories.FamilyRepository;
-import org.fundacionparaguaya.advisorapp.data.FamilyDao;
 
 import javax.inject.Singleton;
 
@@ -31,20 +30,13 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    FamilyRepository provideAdvisorRepository(
-            FamilyDao familyDao, FamilyMemberDao familyMemberDao) {
-        return new FamilyRepository(familyDao, familyMemberDao);
+    FamilyRepository provideAdvisorRepository(FamilyDao familyDao) {
+        return new FamilyRepository(familyDao);
     }
 
     @Provides
     @Singleton
     FamilyDao provideFamilyDao(LocalDatabase database) {
         return database.familyDao();
-    }
-
-    @Provides
-    @Singleton
-    FamilyMemberDao provideFamilyMemberDao(LocalDatabase database) {
-        return database.familyMemberDao();
     }
 }

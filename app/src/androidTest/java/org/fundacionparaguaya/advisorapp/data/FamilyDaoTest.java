@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
+import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.junit.After;
 import org.junit.Before;

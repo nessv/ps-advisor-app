@@ -2,10 +2,8 @@ package org.fundacionparaguaya.advisorapp.rapositories;
 
 import android.arch.lifecycle.LiveData;
 
-import org.fundacionparaguaya.advisorapp.data.FamilyDao;
-import org.fundacionparaguaya.advisorapp.data.FamilyMemberDao;
+import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 
 import java.util.List;
 
@@ -16,12 +14,10 @@ import javax.inject.Inject;
  */
 public class FamilyRepository {
     private final FamilyDao familyDao;
-    private final FamilyMemberDao memberDao;
 
     @Inject
-    public FamilyRepository(FamilyDao familyDao, FamilyMemberDao memberDao) {
+    public FamilyRepository(FamilyDao familyDao) {
         this.familyDao = familyDao;
-        this.memberDao = memberDao;
     }
 
     //region Family
@@ -46,23 +42,23 @@ public class FamilyRepository {
     //endregion
 
     //region Family Member
-    public LiveData<List<FamilyMember>> getMembersOfFamily(Family family) {
-        return memberDao.queryFamilyMembers(family.getId());
-    }
-
-    public LiveData<FamilyMember> getFamilyMember(int id) {
-        return memberDao.queryFamilyMember(id);
-    }
-
-    public void saveFamilyMember(FamilyMember member) {
-        int rowCount = memberDao.updateFamilyMember(member);
-        if (rowCount == 0) { // didn't already exist
-            memberDao.insertFamilyMember(member);
-        }
-    }
-
-    public void deleteFamilyMember(FamilyMember member) {
-        memberDao.deleteFamilyMember(member);
-    }
+//    public LiveData<List<FamilyMember>> getMembersOfFamily(Family family) {
+//        return memberDao.queryFamilyMembers(family.getId());
+//    }
+//
+//    public LiveData<FamilyMember> getFamilyMember(int id) {
+//        return memberDao.queryFamilyMember(id);
+//    }
+//
+//    public void saveFamilyMember(FamilyMember member) {
+//        int rowCount = memberDao.updateFamilyMember(member);
+//        if (rowCount == 0) { // didn't already exist
+//            memberDao.insertFamilyMember(member);
+//        }
+//    }
+//
+//    public void deleteFamilyMember(FamilyMember member) {
+//        memberDao.deleteFamilyMember(member);
+//    }
     //endregion
 }

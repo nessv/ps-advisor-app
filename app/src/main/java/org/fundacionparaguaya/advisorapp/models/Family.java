@@ -1,65 +1,88 @@
 package org.fundacionparaguaya.advisorapp.models;
 
-import android.arch.lifecycle.MutableLiveData;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 /**
- * A family is the entity that is being helped by the advisor. The family has snapshots of their situation
- * added when they take a survey. In the future, they will also have notes.
+ * A family is the entity that is being helped by the advisor.
  */
 
+@Entity(tableName = "families")
 public class Family
 {
-    public static int MAX_PRIORITIES = 5;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String address;
 
-    private String mName;
-    private String mUid;
-    private URL mImageUrl;
-    private MutableLiveData<Snapshot> mLatestSnapshot; //should be observable with live data?
+    @Embedded
+    private Location location;
 
-    private String mPhoneNumber;
+    @Embedded(prefix = "family_member_")
+    private FamilyMember member;
 
-    private List<Indicator> mPriorities;
-    private List<Snapshot> mSnapshots;
+    @Ignore
+    public Family(int id, FamilyMember member) {
+        this(id, member, "", Location.UNKNOWN);
+    }
 
-    public Family()
-    {
-        mPriorities = new ArrayList<Indicator>();
+    public Family(int id, FamilyMember member, String address, Location location) {
+        this.id = id;
+        this.member = member;
+        this.address = address;
+        this.location = location;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public FamilyMember getMember() {
+        return member;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     /**
+     * Returns the last name of this family. The last name is determined by the last name of the
+     * family member who has been registered.
      *
-     * @param i Priority to add (Indicator)
-     * @return  True if successfully added, False if family already has MAX_PRIORITIES
+     * @return family name
      */
-    public Boolean addPriority(Indicator i)
+    public String getName()
     {
-        if(getPrioritiesCount()<5)
-        {
-            mPriorities.add(i);
-            return true;
-        }
-        else
-        {
+        return this.member.getLastName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Family family = (Family) o;
+
+        if (getId() != family.getId()) return false;
+        else if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
             return false;
-        }
+        else if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+            return false;
+
+        return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
     }
 
-    /**
-     * Removes an indicator from the family's priorities
-     *
-     * @return true if priority was successfully removed, false otherwise
-     */
-    public Boolean removePriority(Indicator i)
-    {
-        return mPriorities.remove(i);
-    }
-
-    public int getPrioritiesCount()
-    {
-        return mPriorities.size();
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
+        result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
+        result = 31 * result + (getMember() != null ? getMember().hashCode() : 0);
+        return result;
     }
 }

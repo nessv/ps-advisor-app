@@ -15,8 +15,10 @@ public class Family
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String address;
+
     @Embedded
     private Location location;
+
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
 
@@ -48,6 +50,17 @@ public class Family
         return location;
     }
 
+    /**
+     * Returns the last name of this family. The last name is determined by the last name of the
+     * family member who has been registered.
+     *
+     * @return family name
+     */
+    public String getName()
+    {
+        return this.member.getLastName();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,10 +69,11 @@ public class Family
         Family family = (Family) o;
 
         if (getId() != family.getId()) return false;
-        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
+        else if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
             return false;
-        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+        else if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
             return false;
+
         return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
     }
 

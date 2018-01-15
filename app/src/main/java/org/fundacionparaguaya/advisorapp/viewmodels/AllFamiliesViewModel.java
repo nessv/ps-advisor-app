@@ -22,7 +22,7 @@ public class AllFamiliesViewModel extends ViewModel {
         return families;
     }
 
-    private void loadfamilies(){
+    private ArrayList<Family> loadfamilies(){
         ArrayList<Family> dummyList = new ArrayList<>();
         String[] familyNames = {"Elokda", "Hylak", "Tacescu", "Converse"};
 
@@ -32,6 +32,8 @@ public class AllFamiliesViewModel extends ViewModel {
             dummyList.add(f);
 
         }
+
+        return dummyList;
 
     }
 

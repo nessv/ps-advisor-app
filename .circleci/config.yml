@@ -1,4 +1,11 @@
 version: 2
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+        - develop
 jobs:
   build:
     working_directory: ~/code

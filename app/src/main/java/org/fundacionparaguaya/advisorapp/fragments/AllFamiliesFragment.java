@@ -46,7 +46,7 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
         mFamilyAdapter.addFamilySelectedHandler(new FamilyAdapter.FamilySelectedHandler() {
             @Override
             public void onFamilySelected(FamilyAdapter.FamilySelectedEvent e) {
-                String FamilyName = e.getSelectedFamily().getmName();
+                String FamilyName = e.getSelectedFamily().getName();
                 Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
             }
         });

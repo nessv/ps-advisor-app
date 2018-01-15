@@ -59,7 +59,7 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
 
         final Family family = mFamilyList.get(position);
 
-        holder.familyName.setText(family.getmName());
+        holder.familyName.setText(family.getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +127,7 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
                     Family newFamily = families.get(newItemPosition);
                     Family oldFamily = mFamilyList.get(oldItemPosition);
                     return newFamily == oldFamily
-                            && Objects.equals(newFamily.getmName(), oldFamily.getmName());
+                            && Objects.equals(newFamily.getName(), oldFamily.getName());
                 }
             });
             mFamilyList = families;

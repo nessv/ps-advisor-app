@@ -27,9 +27,8 @@ public class AllFamiliesViewModel extends ViewModel {
         String[] familyNames = {"Elokda", "Hylak", "Tacescu", "Converse"};
 
         for(String name: familyNames){
-            Family f = new Family();
-            f.getmName();
-            dummyList.add(f);
+           // Family f = new Family();
+         //   dummyList.add(f);
 
         }
 

@@ -15,6 +15,7 @@
         android:id="@+id/textView_caption"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:textStyle="bold"/>
 
 </LinearLayout>

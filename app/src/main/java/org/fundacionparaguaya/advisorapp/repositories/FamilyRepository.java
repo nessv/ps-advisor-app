@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.sync.FamilySynchronizeTask;
+import org.fundacionparaguaya.advisorapp.data.remote.FamilySynchronizeTask;
 
 import java.util.List;
 
@@ -45,6 +45,11 @@ public class FamilyRepository {
         familyDao.deleteFamily(family);
     }
 
+    /**
+     * A task which will pull families from the remote database and synchronize them with the
+     * local database.
+     * @return A new async task to be executed.
+     */
     public AsyncTask<Void, Void, Boolean> sync() {
         return new FamilySynchronizeTask(familyDao, familyService);
     }

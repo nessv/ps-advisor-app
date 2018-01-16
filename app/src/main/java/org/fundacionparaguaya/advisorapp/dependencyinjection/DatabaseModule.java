@@ -17,7 +17,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * The module responsible for creating and satisfying dependencies relating to the local.
+ * The module responsible for creating and satisfying dependencies relating to the local and remote
+ * databases.
  */
 
 @Module

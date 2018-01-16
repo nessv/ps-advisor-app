@@ -1,10 +1,9 @@
-package org.fundacionparaguaya.advisorapp.sync;
+package org.fundacionparaguaya.advisorapp.data.remote;
 
 import android.os.AsyncTask;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
-import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
-import org.fundacionparaguaya.advisorapp.data.remote.ir.FamilyIr;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.FamilyIr;
 import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.io.IOException;
@@ -14,7 +13,8 @@ import java.util.List;
 import retrofit2.Response;
 
 /**
- * A task for synchronizing tasks.
+ * A task for synchronizing families from the remote database to the local one. This will
+ * grab families from the remote database and insert them into the local one, asynchronously.
  */
 
 public class FamilySynchronizeTask extends AsyncTask<Void, Void, Boolean> {

@@ -1,11 +1,11 @@
-package org.fundacionparaguaya.advisorapp.data.remote.ir;
+package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 
 /**
- * The representation of a family member from the remote database.
+ * The intermediate representation of a family member from the remote database.
  */
 
 public class FamilyMemberIr {

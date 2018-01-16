@@ -1,6 +1,6 @@
 package org.fundacionparaguaya.advisorapp.data.remote;
 
-import org.fundacionparaguaya.advisorapp.data.remote.ir.FamilyIr;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.FamilyIr;
 
 import java.util.List;
 

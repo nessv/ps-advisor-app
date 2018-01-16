@@ -2,65 +2,78 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dashboardtabview"
-    android:layout_width="wrap_content"
+    android:layout_width="100dp"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="center"
     android:orientation="vertical"
     android:background="@color/tabViewBackground">
     <!--TODO Add border to linear layout-->
 
     <ImageView
         android:id="@+id/fp_logo"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/fpicon_desc"
+        android:layout_gravity="center"
         android:padding="2dp"
         android:src="@drawable/dashtabview_fplogo" />
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/family_tab"
+        android:layout_weight="1"
         custom:ImageID="@drawable/dashtab_friendsicon"
         custom:TextID="@string/family_tab"
         custom:Default="true"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/map_tab"
+        android:layout_weight="1"
         custom:ImageID="@drawable/dashtab_mapicon"
         custom:TextID="@string/map_tab"
         custom:Default="false"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/archive_tab"
+        android:layout_weight="1"
         custom:ImageID="@drawable/dashtab_archiveicon"
         custom:TextID="@string/archive_tab"
         custom:Default="false"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/settings_tab"
+        android:layout_weight="1"
         custom:ImageID="@drawable/dashtab_settingsicon"
         custom:TextID="@string/settings_tab"
         custom:Default="false"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
 
     <ImageButton
         android:id="@+id/bug_button"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center"
         android:contentDescription="@string/bugbutton_desc"
         android:src="@drawable/dashtabview_bugicon"/>
 

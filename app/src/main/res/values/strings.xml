@@ -5,7 +5,7 @@
 
     <!--Tab Captions (currently in spanish)-->
     <string name="family_tab">Families</string>
-    <string name="map_tab">Maps</string>
+    <string name="map_tab">Map</string>
     <string name="archive_tab">Archive</string>
     <string name="settings_tab">Settings</string>
 </resources>

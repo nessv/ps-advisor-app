@@ -5,6 +5,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,8 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.Toast;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyAdapter;
@@ -53,7 +56,6 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
         });
 
 
-
     }
 
 
@@ -63,6 +65,11 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.families_fragment, container, false);
 
         ImageButton addFamilyButton = (ImageButton) view.findViewById(R.id.add_families_button);
+
+        Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/master/docs/static/logo.png");
+        SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.family_image);
+        draweeView.setImageURI(uri);
+
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
 
@@ -89,7 +96,7 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
 
         @Override
         public void onClick(View view) {
-            
+
         }
     };
 

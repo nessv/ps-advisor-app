@@ -18,9 +18,9 @@ import javax.inject.Inject;
  */
 
 public class AllFamiliesViewModel extends ViewModel {
+
     private MutableLiveData<List<Family>> families;
-
-
+    private MutableLiveData<ArrayList<Family>> mCurrentFamilies;
 
     public LiveData<List<Family>> getFamily(){
         if(families == null){
@@ -29,6 +29,10 @@ public class AllFamiliesViewModel extends ViewModel {
         return families;
     }
 
+    private AllFamiliesViewModel(){
+        ArrayList<Family> dummyList = new ArrayList<>();
+        mCurrentFamilies.setValue(dummyList);
+    }
 
 
     private ArrayList<Family> loadfamilies(){

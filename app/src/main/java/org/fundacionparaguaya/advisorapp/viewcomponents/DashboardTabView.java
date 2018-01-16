@@ -45,6 +45,8 @@ public class DashboardTabView extends LinearLayout {
         mapTab.setOnClickListener(clickListener);
         archiveTab.setOnClickListener(clickListener);
         settingsTab.setOnClickListener(clickListener);
+
+        bugButton.setOnClickListener(clickListener);
     }
 
     final OnClickListener clickListener = new OnClickListener() {
@@ -74,6 +76,9 @@ public class DashboardTabView extends LinearLayout {
                     mapTab.setSelected(false);
                     archiveTab.setSelected(false);
                     settingsTab.setSelected(true);
+                    break;
+                case R.id.bug_button:
+                    //TODO add bug button functionality
                     break;
                 default:
 

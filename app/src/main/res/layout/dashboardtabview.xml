@@ -5,7 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/tabViewBackground">
+    <!--TODO Add border to linear layout-->
 
     <ImageView
         android:id="@+id/fp_logo"
@@ -19,6 +21,7 @@
         android:id="@+id/family_tab"
         custom:ImageID="@drawable/dashtab_friendsicon"
         custom:TextID="@string/family_tab"
+        custom:Default="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -28,6 +31,7 @@
         android:id="@+id/map_tab"
         custom:ImageID="@drawable/dashtab_mapicon"
         custom:TextID="@string/map_tab"
+        custom:Default="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -37,6 +41,7 @@
         android:id="@+id/archive_tab"
         custom:ImageID="@drawable/dashtab_archiveicon"
         custom:TextID="@string/archive_tab"
+        custom:Default="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -46,6 +51,7 @@
         android:id="@+id/settings_tab"
         custom:ImageID="@drawable/dashtab_settingsicon"
         custom:TextID="@string/settings_tab"
+        custom:Default="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -55,6 +61,7 @@
         android:id="@+id/bug_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/bugbutton_desc" />
+        android:contentDescription="@string/bugbutton_desc"
+        android:src="@drawable/dashtabview_bugicon"/>
 
 </LinearLayout>

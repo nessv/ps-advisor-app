@@ -6,7 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.FamilyMember;
-import org.fundacionparaguaya.advisorapp.rapositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class FamilyRepositoryTest {
     @Before
     public void setUp() {
         member = new FamilyMember("Joe", "Smith", "");
-        family = new Family(1, member);
+        family = new Family(1, "Smith", member);
 
     }
 
@@ -93,55 +93,4 @@ public class FamilyRepositoryTest {
         verify(familyDao, atLeastOnce()).deleteFamily(family);
     }
     //endregion
-
-//    //region Family Members
-//    @Test
-//    public void ShouldBeAbleToGetFamilyMembers() {
-//        LiveData<List<FamilyMember>> members = new MutableLiveData<>();
-//        when(memberDao.queryFamilyMembers(1)).thenReturn(members);
-//
-//        assertEquals(members, repo.getMembersOfFamily(family));
-//
-//        verify(memberDao, atLeastOnce()).queryFamilyMembers(1);
-//    }
-//
-//    @Test
-//    public void ShouldBeAbleToGetFamilyMember() {
-//        LiveData<FamilyMember> member = new MutableLiveData<>();
-//        when(memberDao.queryFamilyMember(1)).thenReturn(member);
-//
-//        assertEquals(member, repo.getFamilyMember(1));
-//
-//        verify(memberDao, atLeastOnce()).queryFamilyMember(1);
-//    }
-//
-//    @Test
-//    public void ShouldBeAbleToCreateFamilyMember() {
-//
-//        when(memberDao.updateFamilyMember(member)).thenReturn(0);
-//        repo.saveFamilyMember(member);
-//
-//        verify(memberDao, times(1)).insertFamilyMember(member);
-//    }
-//
-//
-//
-//    @Test
-//    public void ShouldBeAbleToUpdateFamilyMember() {
-//
-//        when(memberDao.updateFamilyMember(member)).thenReturn(1);
-//        repo.saveFamilyMember(member);
-//
-//        verify(memberDao, atLeastOnce()).updateFamilyMember(member);
-//        verify(memberDao, never()).insertFamilyMember(any(FamilyMember.class));
-//    }
-//
-//    @Test
-//    public void ShouldBeAbleToDeleteFamilyMember() {
-//
-//        repo.deleteFamilyMember(member);
-//
-//        verify(memberDao, atLeastOnce()).deleteFamilyMember(member);
-//    }
-//    //endregion
 }

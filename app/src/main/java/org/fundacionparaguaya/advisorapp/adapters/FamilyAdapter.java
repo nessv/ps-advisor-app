@@ -104,6 +104,9 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
             mFamilyList = families;
             notifyItemRangeInserted(0, families.size());
         } else {
+            /*DiffUtil class updates the list with the least number of update operations by comparing the old list
+            * and the new list and calculating the differences between them and hence calculate the updates
+            * needed in the RecyclerView*/
             final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
@@ -135,6 +138,9 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
         }
     }
 
+    /*FamilySelectedEventClass defines the event of selecting a family on the list of all families
+    * tha includes a function that returns the selected family*/
+
     public class FamilySelectedEvent {
 
         private FamilySelectedHandler mFamilySelectedHandler;
@@ -149,6 +155,9 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
             return mFamilySelected;
         }
     }
+
+    /*An event listener that will be called when the FamilySelectedEvent is triggered when one
+    * family on the AllFamilies list is selected*/
 
     public interface FamilySelectedHandler{
         void onFamilySelected(FamilySelectedEvent e);

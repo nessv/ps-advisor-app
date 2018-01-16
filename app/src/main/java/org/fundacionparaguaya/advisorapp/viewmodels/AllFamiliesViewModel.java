@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.FamilyMember;
-import org.fundacionparaguaya.advisorapp.rapositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 
 import java.util.ArrayList;
 import java.util.List;

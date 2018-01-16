@@ -92,13 +92,6 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
         });
     }
 
-    ImageButton.OnClickListener buttonListener = new ImageButton.OnClickListener(){
-
-        @Override
-        public void onClick(View view) {
-
-        }
-    };
 
     @Override
     public void onClick(View view) {

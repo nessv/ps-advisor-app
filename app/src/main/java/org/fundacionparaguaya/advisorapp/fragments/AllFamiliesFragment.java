@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HeaderViewListAdapter;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
             }
         });
 
+
+
     }
 
 
@@ -58,6 +61,9 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.families_fragment, container, false);
+
+        ImageButton addFamilyButton = (ImageButton) view.findViewById(R.id.add_families_button);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -78,6 +84,14 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
             }
         });
     }
+
+    ImageButton.OnClickListener buttonListener = new ImageButton.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+            
+        }
+    };
 
     @Override
     public void onClick(View view) {

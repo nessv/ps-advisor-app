@@ -10,16 +10,13 @@ import android.arch.persistence.room.PrimaryKey;
  */
 
 @Entity(tableName = "families")
-public class Family
-{
+public class Family {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private String address;
-
     @Embedded
     private Location location;
-
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
 

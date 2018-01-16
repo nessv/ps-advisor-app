@@ -16,8 +16,10 @@ public class Family
     private int id;
     private String name;
     private String address;
+
     @Embedded
     private Location location;
+
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
 

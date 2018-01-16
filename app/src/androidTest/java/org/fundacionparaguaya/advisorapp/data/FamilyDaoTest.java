@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,8 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToInsertAFamily() {
-        Family family = new Family(1L, "Smith");
+        FamilyMember member = new FamilyMember("Joe", "Smith", "");
+        Family family = new Family(1, "Smith", member);
 
         familyDao.insertFamily(family);
 
@@ -52,8 +54,10 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToInsertFamilies() {
-        Family family1 = new Family(1L, "Smith");
-        Family family2 = new Family(2L, "Gogan");
+        FamilyMember member1 = new FamilyMember("Joe", "Smith", "");
+        Family family1 = new Family(1, "Smith", member1);
+        FamilyMember member2 = new FamilyMember("Bob", "Gogan", "");
+        Family family2 = new Family(2, "Gogan", member2);
 
         familyDao.insertFamily(family1);
         familyDao.insertFamily(family2);
@@ -65,19 +69,22 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToQueryFamilyById() {
-        Family family1 = new Family(1L, "Smith");
-        Family family2 = new Family(2L, "Gogan");
+        FamilyMember member1 = new FamilyMember("Joe", "Smith", "");
+        Family family1 = new Family(1, "Smith", member1);
+        FamilyMember member2 = new FamilyMember("Bob", "Gogan", "");
+        Family family2 = new Family(2, "Gogan", member2);
         familyDao.insertFamily(family1);
         familyDao.insertFamily(family2);
 
-        LiveData<Family> result = familyDao.queryFamily(2L);
+        LiveData<Family> result = familyDao.queryFamily(2);
         Family value = waitForValue(result);
         assertEquals(value, family2);
     }
 
     @Test
     public void ShouldBeAbleToUpdateAFamily() {
-        Family family = new Family(1L, "Smith");
+        FamilyMember member = new FamilyMember("Joe", "Smith", "");
+        Family family = new Family(1, "Smith", member);
         familyDao.insertFamily(family);
 
         family.setName("Smithy");
@@ -92,7 +99,8 @@ public class FamilyDaoTest {
 
     @Test
     public void ShouldBeAbleToDeleteAFamily() {
-        Family family = new Family(1L, "Smith");
+        FamilyMember member = new FamilyMember("Joe", "Smith", "");
+        Family family = new Family(1, "Smith", member);
         familyDao.insertFamily(family);
 
         familyDao.deleteFamily(family);

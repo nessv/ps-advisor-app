@@ -14,6 +14,7 @@ public class Family
 {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private String name;
     private String address;
     @Embedded
     private Location location;
@@ -21,12 +22,13 @@ public class Family
     private FamilyMember member;
 
     @Ignore
-    public Family(int id, FamilyMember member) {
-        this(id, member, "", Location.UNKNOWN);
+    public Family(int id, String name, FamilyMember member) {
+        this(id, name, member, "", Location.UNKNOWN);
     }
 
-    public Family(int id, FamilyMember member, String address, Location location) {
+    public Family(int id, String name, FamilyMember member, String address, Location location) {
         this.id = id;
+        this.name = name;
         this.member = member;
         this.address = address;
         this.location = location;
@@ -34,6 +36,14 @@ public class Family
 
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public FamilyMember getMember() {
@@ -56,6 +66,8 @@ public class Family
         Family family = (Family) o;
 
         if (getId() != family.getId()) return false;
+        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null)
+            return false;
         if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
             return false;
         if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
@@ -66,6 +78,7 @@ public class Family
     @Override
     public int hashCode() {
         int result = getId();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
         result = 31 * result + (getMember() != null ? getMember().hashCode() : 0);

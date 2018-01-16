@@ -4,8 +4,8 @@
     <string name="bugbutton_desc">Bug Button</string>
 
     <!--Tab Captions (currently in spanish)-->
-    <string name="family_tab">Familia</string>
-    <string name="map_tab">Mapa</string>
-    <string name="archive_tab">Archivo</string>
-    <string name="settings_tab">Ajustes</string>
+    <string name="family_tab">Families</string>
+    <string name="map_tab">Maps</string>
+    <string name="archive_tab">Archive</string>
+    <string name="settings_tab">Settings</string>
 </resources>

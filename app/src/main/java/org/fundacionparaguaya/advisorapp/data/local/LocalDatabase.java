@@ -12,5 +12,4 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 public abstract class LocalDatabase extends RoomDatabase {
 
     public abstract FamilyDao familyDao();
-//    public abstract SurveyDao familyMemberDao();
 }

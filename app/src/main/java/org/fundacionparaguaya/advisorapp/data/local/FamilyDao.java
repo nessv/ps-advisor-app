@@ -28,6 +28,9 @@ public interface FamilyDao {
     @Insert(onConflict = REPLACE)
     long insertFamily(Family family);
 
+    @Insert(onConflict = REPLACE)
+    void insertFamilies(Family ... families);
+
     @Update
     int updateFamily(Family family);
 

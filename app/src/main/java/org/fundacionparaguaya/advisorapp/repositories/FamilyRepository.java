@@ -1,9 +1,12 @@
-package org.fundacionparaguaya.advisorapp.rapositories;
+package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.os.AsyncTask;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
+import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.sync.FamilySynchronizeTask;
 
 import java.util.List;
 
@@ -14,10 +17,12 @@ import javax.inject.Inject;
  */
 public class FamilyRepository {
     private final FamilyDao familyDao;
+    private final FamilyService familyService;
 
     @Inject
-    public FamilyRepository(FamilyDao familyDao) {
+    public FamilyRepository(FamilyDao familyDao, FamilyService familyService) {
         this.familyDao = familyDao;
+        this.familyService = familyService;
     }
 
     //region Family
@@ -39,26 +44,9 @@ public class FamilyRepository {
     public void deleteFamily(Family family) {
         familyDao.deleteFamily(family);
     }
-    //endregion
 
-    //region Family Member
-//    public LiveData<List<FamilyMember>> getMembersOfFamily(Family family) {
-//        return memberDao.queryFamilyMembers(family.getId());
-//    }
-//
-//    public LiveData<FamilyMember> getFamilyMember(int id) {
-//        return memberDao.queryFamilyMember(id);
-//    }
-//
-//    public void saveFamilyMember(FamilyMember member) {
-//        int rowCount = memberDao.updateFamilyMember(member);
-//        if (rowCount == 0) { // didn't already exist
-//            memberDao.insertFamilyMember(member);
-//        }
-//    }
-//
-//    public void deleteFamilyMember(FamilyMember member) {
-//        memberDao.deleteFamilyMember(member);
-//    }
+    public AsyncTask<Void, Void, Boolean> sync() {
+        return new FamilySynchronizeTask(familyDao, familyService);
+    }
     //endregion
 }

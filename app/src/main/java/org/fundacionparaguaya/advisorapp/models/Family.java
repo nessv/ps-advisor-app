@@ -10,25 +10,24 @@ import android.arch.persistence.room.PrimaryKey;
  */
 
 @Entity(tableName = "families")
-public class Family
-{
+public class Family {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private String name;
     private String address;
-
     @Embedded
     private Location location;
-
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
 
     @Ignore
-    public Family(int id, FamilyMember member) {
-        this(id, member, "", Location.UNKNOWN);
+    public Family(int id, String name, FamilyMember member) {
+        this(id, name, member, "", Location.UNKNOWN);
     }
 
-    public Family(int id, FamilyMember member, String address, Location location) {
+    public Family(int id, String name, FamilyMember member, String address, Location location) {
         this.id = id;
+        this.name = name;
         this.member = member;
         this.address = address;
         this.location = location;
@@ -36,6 +35,14 @@ public class Family
 
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public FamilyMember getMember() {
@@ -50,17 +57,6 @@ public class Family
         return location;
     }
 
-    /**
-     * Returns the last name of this family. The last name is determined by the last name of the
-     * family member who has been registered.
-     *
-     * @return family name
-     */
-    public String getName()
-    {
-        return this.member.getLastName();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,17 +65,19 @@ public class Family
         Family family = (Family) o;
 
         if (getId() != family.getId()) return false;
-        else if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
+        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null)
             return false;
-        else if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
             return false;
-
+        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+            return false;
         return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
         result = 31 * result + (getMember() != null ? getMember().hashCode() : 0);

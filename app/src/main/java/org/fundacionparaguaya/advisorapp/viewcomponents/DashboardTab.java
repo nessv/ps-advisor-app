@@ -41,10 +41,10 @@ public class DashboardTab extends LinearLayout {
         //Find custom xml attributes and apply them
         TypedArray a = context.getTheme().obtainStyledAttributes(attr, R.styleable.DashboardTab,0, 0);
         try {
-            image_icon.setImageResource(a.getResourceId(R.styleable.DashboardTab_ImageID, R.drawable.dashtab_friendsicon)); //set image to icon
-            textView_caption.setText(a.getResourceId(R.styleable.DashboardTab_TextID, R.string.family_tab));                //set caption text
+            image_icon.setImageResource(a.getResourceId(R.styleable.DashboardTab_imageID, R.drawable.dashtab_friendsicon)); //set image to icon
+            textView_caption.setText(a.getResourceId(R.styleable.DashboardTab_textID, R.string.family_tab));                //set caption text
             linearLayout.setBackgroundResource(R.color.tabNotSelected);                                                     //set default background
-            setSelected(a.getBoolean(R.styleable.DashboardTab_Default, false));                                     //set default selected
+            setSelected(a.getBoolean(R.styleable.DashboardTab_defaultBool, false));                                     //set default selected
         } finally {
             a.recycle();
         }

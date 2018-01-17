@@ -12,6 +12,12 @@ public abstract class StackedFrag extends Fragment
 {
     private static final String TAG = "StackedFrag";
 
+    /**
+     * Gets parent fragment (of type TabbedFrag) and then calls navigation function. Current
+     * fragment gets placed in a stack.
+     *
+     * @param fragment fragment to navigate to
+     */
     public void navigateTo(StackedFrag fragment)
     {
         if (getParentFragment() != null)
@@ -20,8 +26,7 @@ public abstract class StackedFrag extends Fragment
             {
                 ((TabbedFrag) getParentFragment()).navigateNext(fragment);
             }
-
-            Log.e(TAG, "PARENT OF STACKED FRAG MUST BE TABBED FRAG");
+            else Log.e(TAG, "PARENT OF STACKED FRAG MUST BE TABBED FRAG");
         }
         else
         {
@@ -34,7 +39,7 @@ public abstract class StackedFrag extends Fragment
     {
         super.onAttach(context);
 
-        if(getParentFragment() instanceof TabbedFrag)
+        if(!(getParentFragment() instanceof TabbedFrag))
         {
             throw new ClassCastException("The parent of a TabbedFrag must be a StackedFrag");
         }

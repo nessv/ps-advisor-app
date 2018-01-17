@@ -25,6 +25,8 @@ public abstract class TabbedFrag extends Fragment
 
     View mContentView;
 
+    protected int mContainerId;
+
     boolean mWasBackNavRequired;
 
     public TabbedFrag()
@@ -47,13 +49,15 @@ public abstract class TabbedFrag extends Fragment
                 notifyBackNavRequiredChange(isBackNavRequired());
             }
         });
+
+        mContainerId = View.generateViewId();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mContentView = new LinearLayout(getActivity());
-        mContentView.setId(R.id.stackedfrag_container);
+        mContentView.setId(mContainerId);
 
         return mContentView;
     }
@@ -86,7 +90,7 @@ public abstract class TabbedFrag extends Fragment
         //frag.addNavEventHandler(this);
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.stackedfrag_container, frag);
+        ft.replace(mContainerId, frag);
 
         return ft;
     }

@@ -26,62 +26,28 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
 	@Override
     public void onBackPressed()
     {
-        switch (tabBarView.getSelected())
+        getFragForType(tabBarView.getSelected()).onNavigateBack();
+    }
+
+    private TabbedFrag getFragForType(DashboardTab.TabType type) {
+        switch (type)
         {
             case FAMILY:
-            {
-                mFamiliesFrag.onNavigateBack();
-                break;
-            }
-
+                return mFamiliesFrag;
             case MAP:
-            {
-                mMapFrag.onNavigateBack();
-                break;
-            }
-
+                return mMapFrag;
             case ARCHIVE:
-            {
-                mArchiveFrag.onNavigateBack();
-                break;
-            }
-
+                return mArchiveFrag;
             case SETTINGS:
-            {
-                mSettingsFrag.onNavigateBack();
-                break;
-            }
+                return mSettingsFrag;
         }
+
+        return null;
     }
 
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        switch (event.getSelectedTab())
-        {
-            case FAMILY:
-            {
-                switchToFrag(mFamiliesFrag, event.getSelectedTab());
-                break;
-            }
-
-            case MAP:
-            {
-                switchToFrag(mMapFrag, event.getSelectedTab());
-                break;
-            }
-
-            case ARCHIVE:
-            {
-                switchToFrag(mArchiveFrag, event.getSelectedTab());
-                break;
-            }
-
-            case SETTINGS:
-            {
-                switchToFrag(mSettingsFrag, event.getSelectedTab());
-                break;
-            }
-        }
+        switchToFrag(getFragForType(event.getSelectedTab()), event.getSelectedTab());
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };

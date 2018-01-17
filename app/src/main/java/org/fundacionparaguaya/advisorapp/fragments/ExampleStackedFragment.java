@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,14 +34,6 @@ public class ExampleStackedFragment extends StackedFrag
         {
             mDisplayText = getArguments().getString(BUNDLE_ID_TEXT_TO_DISPLAY);
         }
-
-        //navigate to a new fragment and increment the label when the button is clicked
-        mButton.setOnClickListener((clickEvent) -> {
-            if(getParentFragment()!=null){
-                navigateTo(ExampleStackedFragment.build(getParentFragment().getChildFragmentManager()
-                        .getBackStackEntryCount() + 2));
-            }
-        });
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +47,20 @@ public class ExampleStackedFragment extends StackedFrag
         mButton = (Button)rootView.findViewById(R.id.button);
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        //navigate to a new fragment and increment the label when the button is clicked
+        mButton.setOnClickListener((clickEvent) -> {
+            if(getParentFragment()!=null){
+                navigateTo(ExampleStackedFragment.build(getParentFragment().getChildFragmentManager()
+                        .getBackStackEntryCount() + 2));
+            }
+        });
     }
 
     /**

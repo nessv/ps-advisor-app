@@ -49,9 +49,7 @@ private DashboardTabBarView tabBarView;
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         });
 
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        ft.add(R.id.content, mTabbedFrag).commit();
+        ft.add(R.id.dash_content, mTabbedFrag).commit();
     }
 }

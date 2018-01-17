@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesFragment;
+import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
 import javax.inject.Singleton;
 
@@ -19,4 +20,5 @@ public interface ApplicationComponent {
     Application application();
 
     void inject(AllFamiliesFragment allFamiliesFragment);
+    void inject(LoginFragment loginFragment);
 }

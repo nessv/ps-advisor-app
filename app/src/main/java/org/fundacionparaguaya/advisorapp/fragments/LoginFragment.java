@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,15 +30,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by Mone Elokda on 1/13/2018.
+ * The fragment for the login page.
  */
 
-public class AllFamiliesFragment extends StackedFrag implements View.OnClickListener {
+public class LoginFragment extends StackedFrag implements View.OnClickListener {
     private FamilyAdapter mFamilyAdapter;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-    AllFamiliesViewModel mAllFamiliesViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

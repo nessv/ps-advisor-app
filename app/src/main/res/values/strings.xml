@@ -3,8 +3,13 @@
     <string name="fpicon_desc">FP Icon</string>
     <string name="bugbutton_desc">Bug Button</string>
     <string name="backbutton_desc">Back Button</string>
+<<<<<<< HEAD
 
     <!--Tab Captions -->
+=======
+  
+                 DashTab-Tab Captions -->
+>>>>>>> feature/fragment_communication
     <string name="family_tab">Families</string>
     <string name="map_tab">Map</string>
     <string name="archive_tab">Archive</string>

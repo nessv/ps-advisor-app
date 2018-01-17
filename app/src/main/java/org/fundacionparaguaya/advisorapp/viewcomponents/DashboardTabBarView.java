@@ -1,12 +1,13 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
+import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab.TabType;
 import org.fundacionparaguaya.advisorapp.R;
 
 import java.util.ArrayList;
@@ -23,12 +24,6 @@ public class DashboardTabBarView extends LinearLayout {
     private DashboardTab mSettingsTab;
     private ImageButton mBugButton;
 
-    public enum DashTab {
-        FAMILY,
-        MAP,
-        ARCHIVE,
-        SETTINGS
-    }
 
     private DashboardTab mCurrentlySelected;
 
@@ -46,31 +41,70 @@ public class DashboardTabBarView extends LinearLayout {
         mSettingsTab = (DashboardTab) findViewById(R.id.settings_tab);
         mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
-
         mFamilyTab.setOnClickListener(clickListener);
+        mFamilyTab.setTabType(TabType.FAMILY);
+
         mMapTab.setOnClickListener(clickListener);
+        mMapTab.setTabType(TabType.MAP);
+
         mArchiveTab.setOnClickListener(clickListener);
+        mArchiveTab.setTabType(TabType.ARCHIVE);
+
         mSettingsTab.setOnClickListener(clickListener);
+        mSettingsTab.setTabType(TabType.SETTINGS);
 
         mBugButton.setOnClickListener(clickListener);
+
+        selectTab(TabType.FAMILY);
     }
 
-    protected void selectTab(DashboardTab tab)
+    public void selectTab(TabType type)
     {
-        if(mCurrentlySelected!=null)
+        if(mCurrentlySelected==null || mCurrentlySelected.getTabType() != type)
         {
-            mCurrentlySelected.setSelected(false);
+            DashboardTab lastSelected = mCurrentlySelected;
+
+            switch (type)
+            {
+                case FAMILY:
+                    mCurrentlySelected = mFamilyTab;
+                    break;
+
+                case MAP:
+                    mCurrentlySelected = mMapTab;
+                    break;
+
+                case ARCHIVE:
+                    mCurrentlySelected = mArchiveTab;
+                    break;
+
+                case SETTINGS:
+                    mCurrentlySelected = mSettingsTab;
+                    break;
+            }
+
+            mCurrentlySelected.setSelected(true);
+
+            //if there used to be a tab selected, reset that one to not selected and notify of selection event.
+            if(lastSelected != null) {
+
+                notifyHandlers(type);
+                lastSelected.setSelected(false);
+            }
         }
 
-        tab.setSelected(true);
-        mCurrentlySelected=tab;
+    }
+
+    public TabType getSelected()
+    {
+        return mCurrentlySelected.getTabType();
     }
 
     public void addTabSelectedHandle(TabSelectedHandler handler){
         tabSelectedHandlers.add(handler);
     }
 
-    private void notifyHandlers(DashTab tab){
+    private void notifyHandlers(TabType tab){
         for(int counter=0; counter < tabSelectedHandlers.size(); counter++){
             tabSelectedHandlers.get(counter).onTabSelection(new TabSelectedEvent(tab));
         }
@@ -81,24 +115,20 @@ public class DashboardTabBarView extends LinearLayout {
         public void onClick(final View v) {
             switch (v.getId()){
                 case R.id.family_tab:
-                    selectTab(mFamilyTab);
+                    selectTab(TabType.FAMILY);
 
-                    notifyHandlers(DashTab.FAMILY);
                     break;
                 case R.id.map_tab:
-                    selectTab(mMapTab);
+                    selectTab(TabType.MAP);
 
-                    notifyHandlers(DashTab.MAP);
                     break;
                 case R.id.archive_tab:
-                    selectTab(mArchiveTab);
+                    selectTab(TabType.ARCHIVE);
 
-                    notifyHandlers(DashTab.ARCHIVE);
                     break;
                 case R.id.settings_tab:
-                    selectTab(mSettingsTab);
+                    selectTab(TabType.SETTINGS);
 
-                    notifyHandlers(DashTab.SETTINGS);
                     break;
                 case R.id.bug_button:
                     break;
@@ -111,11 +141,11 @@ public class DashboardTabBarView extends LinearLayout {
     }
 
     public class TabSelectedEvent {
-        private DashTab selectedTab;
-        TabSelectedEvent(DashTab selectedTab){
+        private TabType selectedTab;
+        TabSelectedEvent(TabType selectedTab){
             this.selectedTab = selectedTab;
         }
-        public DashTab getSelectedTab() {
+        public TabType getSelectedTab() {
             return selectedTab;
         }
     }

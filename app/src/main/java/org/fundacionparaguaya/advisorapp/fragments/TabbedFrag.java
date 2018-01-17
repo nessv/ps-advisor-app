@@ -30,7 +30,7 @@ public abstract class TabbedFrag extends Fragment
     View mContentView;
 
     //view id the fragment will be placed in
-    protected int mContainerId;
+    private int mContainerId;
 
     //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
@@ -60,7 +60,9 @@ public abstract class TabbedFrag extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mContainerId = View.generateViewId(); //creates an id for findViewById
+        //mContainerId = View.generateViewId(); //creates an id for findViewById
+
+        mContainerId = 12312312;
 
         mContentView = new LinearLayout(getActivity());
         mContentView.setId(mContainerId);

@@ -1,9 +1,8 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
 
 /**
  * This is a fragment that is managed by a tabbed fragment... and can be stacked
@@ -11,49 +10,33 @@ import java.util.List;
 
 public abstract class StackedFrag extends Fragment
 {
-    List<NavigationEventHandler> mNavigationEventHandlers;
-
     private static final String TAG = "StackedFrag";
 
-    public StackedFrag()
+    public void navigateTo(StackedFrag fragment)
     {
-        mNavigationEventHandlers = new ArrayList<>();
-    }
-
-    static class NavigationEvent
-    {
-        StackedFrag mNextFrag;
-
-        NavigationEvent(StackedFrag nextFrag)
+        if (getParentFragment() != null)
         {
-            mNextFrag = nextFrag;
+            if (getParentFragment() instanceof TabbedFrag)
+            {
+                ((TabbedFrag) getParentFragment()).navigateNext(fragment);
+            }
+
+            Log.e(TAG, "PARENT OF STACKED FRAG MUST BE TABBED FRAG");
+        }
+        else
+        {
+            Log.e(TAG, "Navigate called on StackFrag, but no parent found");
         }
     }
 
-    /**
-     * Add a handler for this fragment's navigation events
-     */
-    public void addNavEventHandler(NavigationEventHandler h)
+    @Override
+    public void onAttach(Context context)
     {
-        this.mNavigationEventHandlers.add(h);
-    }
+        super.onAttach(context);
 
-    interface NavigationEventHandler
-    {
-        void onNavigation(NavigationEvent e);
-    }
-
-
-    /**
-     *
-     * @param e NavigationEvent
-     */
-    protected void notifyNavigtionHandlers(NavigationEvent e)
-    {
-        for(NavigationEventHandler h: mNavigationEventHandlers)
+        if(getParentFragment() instanceof TabbedFrag)
         {
-            h.onNavigation(e);
+            throw new ClassCastException("The parent of a TabbedFrag must be a StackedFrag");
         }
     }
-
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * This is a fragment that lives inside of a tab
  */
 
-public abstract class TabbedFrag extends Fragment implements StackedFrag.NavigationEventHandler
+public abstract class TabbedFrag extends Fragment
 {
     ArrayList<BackNavRequiredChangeHandler> mRequiresBackNavHandlers;
 
@@ -37,25 +37,16 @@ public abstract class TabbedFrag extends Fragment implements StackedFrag.Navigat
     {
         super.onCreate(savedInstanceState);
 
-        if(getFragmentManager()!=null)
+        getChildFragmentManager().addOnBackStackChangedListener(() ->
         {
-            getFragmentManager().addOnBackStackChangedListener(() ->
+            //if there was a change in our state
+            if(mWasBackNavRequired!=isBackNavRequired())
             {
-                //if there was a change in our state
-                if(mWasBackNavRequired!=isBackNavRequired())
-                {
-                    mWasBackNavRequired = isBackNavRequired();
-                    if (isBackNavRequired())
-                    {
-                        notifyBackNavRequired();
-                    }
-                    else
-                    {
-                        notifyBackNavNotRequired();
-                    }
-                }
-            });
-        }
+                mWasBackNavRequired = isBackNavRequired();
+
+                notifyBackNavRequiredChange(isBackNavRequired());
+            }
+        });
     }
 
     @Override
@@ -81,14 +72,9 @@ public abstract class TabbedFrag extends Fragment implements StackedFrag.Navigat
      *
      * @param frag Fragment to navigate to
      */
-    protected void navigateNext(StackedFrag frag)
+    public void navigateNext(StackedFrag frag)
     {
-        makeFragmentTransaction(frag).addToBackStack("test").commit();
-    }
-
-    public void onNavigation(StackedFrag.NavigationEvent e)
-    {
-        navigateNext(e.mNextFrag);
+        makeFragmentTransaction(frag).addToBackStack(null).commit();
     }
 
     /**
@@ -97,9 +83,9 @@ public abstract class TabbedFrag extends Fragment implements StackedFrag.Navigat
      */
     private FragmentTransaction makeFragmentTransaction(StackedFrag frag)
     {
-        frag.addNavEventHandler(this);
+        //frag.addNavEventHandler(this);
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.replace(R.id.stackedfrag_container, frag);
 
         return ft;
@@ -110,10 +96,7 @@ public abstract class TabbedFrag extends Fragment implements StackedFrag.Navigat
      */
     public void onNavigateBack()
     {
-        if(getFragmentManager()!=null)
-        {
-            getFragmentManager().popBackStack();
-        }
+        getChildFragmentManager().popBackStack();
     }
 
     public void addBackNavRequiredHandler(BackNavRequiredChangeHandler handler)
@@ -127,24 +110,15 @@ public abstract class TabbedFrag extends Fragment implements StackedFrag.Navigat
     }
 
     /**
-     * Notifies listeners to hide the back navigation button
+     * Notifies listeners to hide or show the back navigation button
+     *
+     * @param required Whether or not to show back nav
      */
-    protected void notifyBackNavNotRequired()
+    protected void notifyBackNavRequiredChange(boolean required)
     {
         for(BackNavRequiredChangeHandler handler: mRequiresBackNavHandlers)
         {
-            handler.handleBackNavChange(new BackNavRequiredChangeEvent(false));
-        }
-    }
-
-    /**
-     * Notifies listeners that we need back navigation
-     */
-    protected void notifyBackNavRequired()
-    {
-        for(BackNavRequiredChangeHandler handler: mRequiresBackNavHandlers)
-        {
-            handler.handleBackNavChange(new BackNavRequiredChangeEvent(true));
+            handler.handleBackNavChange(new BackNavRequiredChangeEvent(required));
         }
     }
 
@@ -154,10 +128,8 @@ public abstract class TabbedFrag extends Fragment implements StackedFrag.Navigat
      */
     public boolean isBackNavRequired()
     {
-        getFragmentManager().getBackStackEntryCount();
-
-        Log.d(TAG, "Back Stack Entry Count: " + getFragmentManager().getBackStackEntryCount());
-        return getFragmentManager().getBackStackEntryCount() > 0;
+        Log.d(TAG, "Back Stack Entry Count: " + getChildFragmentManager().getBackStackEntryCount());
+        return getChildFragmentManager().getBackStackEntryCount() > 0;
     }
 
     public class BackNavRequiredChangeEvent

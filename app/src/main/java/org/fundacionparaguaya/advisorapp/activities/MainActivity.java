@@ -12,6 +12,14 @@ import org.fundacionparaguaya.advisorapp.fragments.TestTabbedFragment;
 
 public class MainActivity extends AppCompatActivity
 {
+    TabbedFrag mTabbedFrag;
+
+    @Override
+    public void onBackPressed()
+    {
+        mTabbedFrag.onNavigateBack();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -20,9 +28,9 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        TabbedFrag frag = new TestTabbedFragment();
+        mTabbedFrag = new TestTabbedFragment();
 
-        frag.addBackNavRequiredHandler((event) -> {
+        mTabbedFrag.addBackNavRequiredHandler((event) -> {
             String text;
 
             if(event.isRequired()) text ="Is Required";
@@ -31,6 +39,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         });
 
-        ft.add(R.id.content, frag).commit();
+        ft.add(R.id.content, mTabbedFrag).commit();
     }
 }

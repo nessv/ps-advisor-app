@@ -53,8 +53,10 @@ public class TestStackedFragment extends StackedFrag
         super.onStart();
 
         mButton.setOnClickListener((clickEvent) -> {
-            NavigationEvent navigationEvent = new NavigationEvent(TestStackedFragment.build());
-            notifyNavigtionHandlers(navigationEvent);
+           // NavigationEvent navigationEvent = new NavigationEvent(TestStackedFragment.build());
+            //notifyNavigtionHandlers(navigationEvent);
+
+            navigateTo(TestStackedFragment.build());
         });
     }
 

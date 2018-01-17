@@ -13,4 +13,10 @@ public class DashActivity extends Activity
     TabbedFrag mMapFrag;
     TabbedFrag mArchiveFrag;
     TabbedFrag mSettingsFrag;
+
+    @Override
+    public void onBackPressed()
+    {
+
+    }
 }

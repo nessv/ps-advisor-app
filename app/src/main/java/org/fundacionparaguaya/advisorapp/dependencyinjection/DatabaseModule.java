@@ -8,6 +8,7 @@ import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import javax.inject.Singleton;
 
@@ -43,6 +44,18 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
+    LocalDatabase provideLocalDatabase() {
+        return this.local;
+    }
+
+    @Provides
+    @Singleton
+    RemoteDatabase provideRemoteDatabase() {
+        return this.remote;
+    }
+
+    @Provides
+    @Singleton
     FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService) {
         return new FamilyRepository(familyDao, familyService);
     }
@@ -57,5 +70,11 @@ public class DatabaseModule {
     @Singleton
     FamilyService provideFamilyService(RemoteDatabase remote) {
         return remote.familyService();
+    }
+
+    @Provides
+    @Singleton
+    InjectionViewModelFactory provideInjectionViewModelFactory(FamilyRepository familyRepository) {
+        return new InjectionViewModelFactory(familyRepository);
     }
 }

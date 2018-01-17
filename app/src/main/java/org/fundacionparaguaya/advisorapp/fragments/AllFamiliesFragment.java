@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.app.Fragment;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -8,42 +7,53 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.FamilyAdapter;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
-
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by Mone Elokda on 1/13/2018.
  */
 
 public class AllFamiliesFragment extends Fragment implements View.OnClickListener {
-
     private FamilyAdapter mFamilyAdapter;
+
+    @Inject
+    InjectionViewModelFactory mViewModelFactory;
+    AllFamiliesViewModel mAllFamiliesViewModel;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AllFamiliesViewModel viewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(AllFamiliesViewModel.class);
-        LiveData<List<Family>> families = viewModel.getFamily();
+
+        ((AdvisorApplication) getActivity().getApplication())
+                .getApplicationComponent()
+                .inject(this);
+
+        mAllFamiliesViewModel = ViewModelProviders
+                .of((FragmentActivity) getActivity(), mViewModelFactory)
+                .get(AllFamiliesViewModel.class);
+        LiveData<List<Family>> families = mAllFamiliesViewModel.getFamilies();
 
         mFamilyAdapter = new FamilyAdapter(families.getValue());
 
@@ -54,10 +64,7 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -68,8 +75,7 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
 
         Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/master/docs/static/logo.png");
         SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.family_image);
-        draweeView.setImageURI(uri);
-
+        //draweeView.setImageURI(uri);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
 
@@ -81,17 +87,15 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
     }
 
     private void subscribeUi(AllFamiliesViewModel viewModel){
-        viewModel.getFamily().observe((LifecycleOwner) this, new Observer<List<Family>>() {
+        viewModel.getFamilies().observe((LifecycleOwner) this, new Observer<List<Family>>() {
             @Override
             public void onChanged(@Nullable List<Family> families) {
-                if(families != null ){
-                    mFamilyAdapter.setFamilyList(families);
-                }
-
+            if(families != null ){
+                mFamilyAdapter.setFamilyList(families);
+            }
             }
         });
     }
-
 
     @Override
     public void onClick(View view) {

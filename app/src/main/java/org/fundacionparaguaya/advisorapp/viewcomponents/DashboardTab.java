@@ -13,7 +13,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 
 /**
- * Created by alex on 1/13/2018.
+ * Custom Tab for the DashboardTabBarView
  */
 
 public class DashboardTab extends LinearLayout {

@@ -42,8 +42,7 @@ public class AllFamiliesViewModel extends ViewModel {
         for(String name: familyNames){
 
             /*Family f = new Family()
-            dummyList.add(f);
-*/
+            dummyList.add(f);*/
         }
 
         return dummyList;

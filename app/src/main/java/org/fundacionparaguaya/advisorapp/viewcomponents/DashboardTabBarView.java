@@ -16,8 +16,7 @@ import org.fundacionparaguaya.advisorapp.R;
  */
 
 
-
-public class DashboardTabView extends LinearLayout {
+public class DashboardTabBarView extends LinearLayout {
     LinearLayout dashboardTabView;
     ImageView fpLogo;
     DashboardTab familyTab;
@@ -26,8 +25,15 @@ public class DashboardTabView extends LinearLayout {
     DashboardTab settingsTab;
     ImageButton bugButton;
 
+    public enum Tabs{
+        family_tab,
+        map_tab,
+        archive_tab,
+        setting_tab
+    }
 
-    public DashboardTabView(Context context, AttributeSet attributeSet) {
+
+    public DashboardTabBarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -48,6 +54,21 @@ public class DashboardTabView extends LinearLayout {
 
         bugButton.setOnClickListener(clickListener);
     }
+
+    public interface TabSelectedHandler {
+
+    }
+
+//    public class TabSelectedEvent {
+//
+//        public TabSelectedEvent(Tabs tabs){
+//            this.tabs = tabs;
+//        }
+//
+//        public Tabs getSelectedTab(){
+//            return tabs;
+//        }
+//    }
 
     final OnClickListener clickListener = new OnClickListener() {
         @Override

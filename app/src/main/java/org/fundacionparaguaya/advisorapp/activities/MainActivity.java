@@ -2,14 +2,13 @@ package org.fundacionparaguaya.advisorapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesFragment;
 import org.fundacionparaguaya.advisorapp.fragments.ExampleTabbedFragment;
+import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
         /**
          * Create fragment for each tab
          */
-        mFamiliesFrag = new ExampleTabbedFragment();
+        mFamiliesFrag = new FamilyTabbedFragment();
         mMapFrag = new ExampleTabbedFragment();
         mArchiveFrag = new ExampleTabbedFragment();
         mSettingsFrag = new ExampleTabbedFragment();
@@ -126,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         });
 
-
         getSupportFragmentManager().beginTransaction().attach(mFamiliesFrag).commit();
         getSupportFragmentManager().beginTransaction().attach(mMapFrag).commit();
 
@@ -138,29 +136,8 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
         //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //ft.add(R.id.dash_content, mFamiliesFrag).commit();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         Intent login = new Intent(this, LoginActivity.class);
-        startActivity(login));
-
-        tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
-        tabBarView.addTabSelectedHandle(handler);
-
-        FragmentManager manager = getSupportFragmentManager();
-
-        AllFamiliesFragment allFamiliesFragment =
-                (AllFamiliesFragment) manager.findFragmentByTag(ALL_FAMILIES_FRAG);
-
-        if (allFamiliesFragment == null)
-            allFamiliesFragment = new AllFamiliesFragment();
-
-        if (findViewById(R.id.fragment_container) != null) {
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            manager.beginTransaction()
-                    .add(R.id.fragment_container, allFamiliesFragment).commit();
-        }
+        startActivity(login);
     }
 
     @Override

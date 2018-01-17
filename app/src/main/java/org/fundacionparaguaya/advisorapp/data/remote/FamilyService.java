@@ -19,9 +19,10 @@ public interface FamilyService {
 
     @POST("oauth/token?grant_type=password")
     Call<LoginIr> login(
+            @Header("Authorization") String authorization,
             @Query("username") String username,
             @Query("password") String password);
 
     @GET("api/v1/families")
-    Call<List<FamilyIr>> getFamilies(@Header("Authentication") String authentication);
+    Call<List<FamilyIr>> getFamilies(@Header("Authorization") String authorization);
 }

@@ -17,13 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity
-            android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login" />
-=======
+        <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.DashActivity"/>
->>>>>>> feature/fragment_communication
     </application>
 
 </manifest>

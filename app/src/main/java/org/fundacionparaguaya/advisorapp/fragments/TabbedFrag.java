@@ -1,15 +1,14 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import org.fundacionparaguaya.advisorapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,8 @@ public abstract class TabbedFrag extends Fragment
 
     //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
+
+    StackedFrag top;
 
     public TabbedFrag()
     {
@@ -84,6 +85,7 @@ public abstract class TabbedFrag extends Fragment
      * @param frag Fragment to navigate to
      */
     public void navigateNext(StackedFrag frag) {
+        top = frag;
         makeFragmentTransaction(frag).addToBackStack(null).commit();
     }
 

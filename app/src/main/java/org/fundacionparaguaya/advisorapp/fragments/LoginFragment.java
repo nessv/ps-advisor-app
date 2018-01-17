@@ -1,31 +1,25 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
-
-import com.facebook.drawee.view.SimpleDraweeView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.FamilyAdapter;
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-
-import java.util.List;
+import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
 import javax.inject.Inject;
 
@@ -33,70 +27,104 @@ import javax.inject.Inject;
  * The fragment for the login page.
  */
 
-public class LoginFragment extends StackedFrag implements View.OnClickListener {
-    private FamilyAdapter mFamilyAdapter;
+public class LoginFragment extends Fragment {
+    private EditText mEmailView;
+    private EditText mPasswordView;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
+    LoginViewModel mLoginViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
-        mAllFamiliesViewModel = ViewModelProviders
+        mLoginViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
-                .get(AllFamiliesViewModel.class);
-        LiveData<List<Family>> families = mAllFamiliesViewModel.getFamilies();
-
-        mFamilyAdapter = new FamilyAdapter(families.getValue());
-
-        mFamilyAdapter.addFamilySelectedHandler(new FamilyAdapter.FamilySelectedHandler() {
-            @Override
-            public void onFamilySelected(FamilyAdapter.FamilySelectedEvent e) {
-                String FamilyName = e.getSelectedFamily().getName();
-                Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
-            }
-        });
+                .get(LoginViewModel.class);
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.families_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        ImageButton addFamilyButton = (ImageButton) view.findViewById(R.id.add_families_button);
+        mEmailView = (EditText) view.findViewById(R.id.email);
 
-        Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/master/docs/static/logo.png");
-        SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.family_image);
-        //draweeView.setImageURI(uri);
+        mPasswordView = (EditText) view.findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        Button mEmailSignInButton = (Button) view.findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
 
         return view;
     }
 
-    private void subscribeUi(AllFamiliesViewModel viewModel){
-        viewModel.getFamilies().observe((LifecycleOwner) this, new Observer<List<Family>>() {
-            @Override
-            public void onChanged(@Nullable List<Family> families) {
-            if(families != null ){
-                mFamilyAdapter.setFamilyList(families);
-            }
-            }
-        });
-    }
 
-    @Override
-    public void onClick(View view) {
+    /**
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
+    private void attemptLogin() {
+        // Reset errors.
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
 
+        // Store values at the time of the login attempt.
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            boolean result = mLoginViewModel.login(email, password);
+            if (result) {
+                getActivity().finish();
+            } else {
+                mPasswordView.setError(getString(R.string.error_incorrect_credentials));
+            }
+        }
     }
 }
 

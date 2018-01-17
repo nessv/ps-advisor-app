@@ -28,7 +28,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         try {
             Response<LoginIr> response = familyService
-                    .login(user.getUsername(), user.getPassword()).execute();
+                    .login("Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=", user.getUsername(), user.getPassword()).execute();
 
             if (!response.isSuccessful()) {
                 return false;

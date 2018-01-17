@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 /**
@@ -10,21 +11,26 @@ import android.view.View;
  *
  */
 
-public class ExampleTabbedFragment extends TabbedFrag
+public class FamilyTabbedFragment extends TabbedFrag
 {
-    ExampleStackedFragment mFrag1;
+    AllFamiliesFragment mFrag1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        mFrag1 = ExampleStackedFragment.build(1);
+        FragmentManager manager = getFragmentManager();
+        mFrag1 = (AllFamiliesFragment) manager.findFragmentByTag("ALL_FAM");
+
+        if (mFrag1 == null)
+            mFrag1 = new AllFamiliesFragment();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         this.setInitialFragment(mFrag1);
     }
 }

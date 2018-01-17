@@ -36,7 +36,7 @@ public class DatabaseModule {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://povertystoplightiqp.org/api/v1/")
+                .baseUrl("http://povertystoplightiqp.org:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         this.remote = new RemoteDatabase(retrofit);

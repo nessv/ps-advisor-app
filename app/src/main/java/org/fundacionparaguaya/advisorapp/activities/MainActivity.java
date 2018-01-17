@@ -22,11 +22,17 @@ private DashboardTabBarView tabBarView;
         mTabbedFrag.onNavigateBack();
     }
 
-    private DashboardTabBarView.TabSelectedHandler handler = new DashboardTabBarView.TabSelectedHandler() {
-        @Override
-        public void onTabSelection(DashboardTabBarView.TabSelectedEvent event) {
-            Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
+    private DashboardTabBarView.TabSelectedHandler handler = (event) ->
+    {
+        switch (event.getSelectedTab())
+        {
+            case FAMILY:
+            {
+
+            }
         }
+
+        Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
 
 @Override

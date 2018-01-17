@@ -13,7 +13,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 
 /**
- * Custom Tab for the DashboardTabBarView
+ * Custom DashTab for the DashboardTabBarView
  */
 
 public class DashboardTab extends LinearLayout {
@@ -44,7 +44,6 @@ public class DashboardTab extends LinearLayout {
             mImageIcon.setImageResource(a.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
             mTextViewCaption.setText(a.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.family_tab));                //set caption text
             mTabLayout.setBackgroundResource(R.color.tabNotSelected);                                                     //set default background
-            setSelected(a.getBoolean(R.styleable.DashboardTab_defaultBool, false));                                     //set default selected
         } finally {
             a.recycle();
         }
@@ -53,12 +52,12 @@ public class DashboardTab extends LinearLayout {
 
     public void setSelected(boolean isSelected){
         if (isSelected) {
-            mTabLayout.setBackgroundResource(R.color.tabSelected);//Change Tab Background
+            mTabLayout.setBackgroundResource(R.color.tabSelected);//Change DashTab Background
             mImageIcon.setColorFilter(new PorterDuffColorFilter(context.getColor(R.color.iconSelected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
 
             mTextViewCaption.setTextColor(context.getColor(R.color.captionSelected));//Change Text Color
         } else {
-            mTabLayout.setBackgroundResource(R.color.tabNotSelected);//Change Tab Background
+            mTabLayout.setBackgroundResource(R.color.tabNotSelected);//Change DashTab Background
             mImageIcon.setColorFilter(R.color.iconNotSelected);//Change Icon Color
             mTextViewCaption.setTextColor(getResources().getColor(R.color.captionNotSelected));//Change Text Color
         }

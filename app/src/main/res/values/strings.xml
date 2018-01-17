@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">Advisor App</string>
+
+    <!-- =========== Families View =========== -->
     <string name="fpicon_desc">FP Icon</string>
     <string name="bugbutton_desc">Bug Button</string>
     <string name="backbutton_desc">Back Button</string>
-    <!--Tab Captions (currently in spanish)-->
+  
+                 <!--Tab Captions -->
     <string name="family_tab">Families</string>
     <string name="map_tab">Map</string>
     <string name="archive_tab">Archive</string>
     <string name="settings_tab">Settings</string>
+
+    <!-- =========== Families View =========== -->
+    <string name="family_imagePlaceholder">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
 </resources>

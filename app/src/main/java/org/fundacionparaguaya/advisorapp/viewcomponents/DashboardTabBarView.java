@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
 
@@ -19,19 +18,19 @@ import java.util.ArrayList;
 
 
 public class DashboardTabBarView extends LinearLayout {
-    LinearLayout dashboardTabView;
-    ImageView fpLogo;
-    DashboardTab familyTab;
-    DashboardTab mapTab;
-    DashboardTab archiveTab;
-    DashboardTab settingsTab;
-    ImageButton bugButton;
+    private LinearLayout mDashboardTabView;
+    private ImageView mFPLogo;
+    private DashboardTab mFamilyTab;
+    private DashboardTab mMapTab;
+    private DashboardTab mArchiveTab;
+    private DashboardTab mSettingsTab;
+    private ImageButton mBugButton;
 
     public enum Tab{
-        family_tab,
-        map_tab,
-        archive_tab,
-        setting_tab
+        FAMILY,
+        MAP,
+        ARCHIVE,
+        SETTINGS
     }
 
     private ArrayList <TabSelectedHandler> tabSelectedHandlers = new ArrayList();
@@ -43,20 +42,20 @@ public class DashboardTabBarView extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.dashboardtabview, this);
 
-        dashboardTabView = (LinearLayout) findViewById(R.id.dashboardtabview);
-        fpLogo = (ImageView) findViewById(R.id.fp_logo);
-        familyTab = (DashboardTab) findViewById(R.id.family_tab);
-        mapTab = (DashboardTab) findViewById(R.id.map_tab);
-        archiveTab = (DashboardTab) findViewById(R.id.archive_tab);
-        settingsTab = (DashboardTab) findViewById(R.id.settings_tab);
-        bugButton = (ImageButton) findViewById(R.id.bug_button);
+        mDashboardTabView = (LinearLayout) findViewById(R.id.dashboardtabview);
+        mFPLogo = (ImageView) findViewById(R.id.fp_logo);
+        mFamilyTab = (DashboardTab) findViewById(R.id.family_tab);
+        mMapTab = (DashboardTab) findViewById(R.id.map_tab);
+        mArchiveTab = (DashboardTab) findViewById(R.id.archive_tab);
+        mSettingsTab = (DashboardTab) findViewById(R.id.settings_tab);
+        mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
-        familyTab.setOnClickListener(clickListener);
-        mapTab.setOnClickListener(clickListener);
-        archiveTab.setOnClickListener(clickListener);
-        settingsTab.setOnClickListener(clickListener);
+        mFamilyTab.setOnClickListener(clickListener);
+        mMapTab.setOnClickListener(clickListener);
+        mArchiveTab.setOnClickListener(clickListener);
+        mSettingsTab.setOnClickListener(clickListener);
 
-        bugButton.setOnClickListener(clickListener);
+        mBugButton.setOnClickListener(clickListener);
     }
 
     public interface TabSelectedHandler {
@@ -88,32 +87,32 @@ public class DashboardTabBarView extends LinearLayout {
         public void onClick(final View v) {
             switch (v.getId()){
                 case R.id.family_tab:
-                    familyTab.setSelected(true);
-                    mapTab.setSelected(false);
-                    archiveTab.setSelected(false);
-                    settingsTab.setSelected(false);
-                    notifyHandlers(Tab.family_tab);
+                    mFamilyTab.setSelected(true);
+                    mMapTab.setSelected(false);
+                    mArchiveTab.setSelected(false);
+                    mSettingsTab.setSelected(false);
+                    notifyHandlers(Tab.FAMILY);
                     break;
                 case R.id.map_tab:
-                    familyTab.setSelected(false);
-                    mapTab.setSelected(true);
-                    archiveTab.setSelected(false);
-                    settingsTab.setSelected(false);
-                    notifyHandlers(Tab.map_tab);
+                    mFamilyTab.setSelected(false);
+                    mMapTab.setSelected(true);
+                    mArchiveTab.setSelected(false);
+                    mSettingsTab.setSelected(false);
+                    notifyHandlers(Tab.MAP);
                     break;
                 case R.id.archive_tab:
-                    familyTab.setSelected(false);
-                    mapTab.setSelected(false);
-                    archiveTab.setSelected(true);
-                    settingsTab.setSelected(false);
-                    notifyHandlers(Tab.archive_tab);
+                    mFamilyTab.setSelected(false);
+                    mMapTab.setSelected(false);
+                    mArchiveTab.setSelected(true);
+                    mSettingsTab.setSelected(false);
+                    notifyHandlers(Tab.ARCHIVE);
                     break;
                 case R.id.settings_tab:
-                    familyTab.setSelected(false);
-                    mapTab.setSelected(false);
-                    archiveTab.setSelected(false);
-                    settingsTab.setSelected(true);
-                    notifyHandlers(Tab.setting_tab);
+                    mFamilyTab.setSelected(false);
+                    mMapTab.setSelected(false);
+                    mArchiveTab.setSelected(false);
+                    mSettingsTab.setSelected(true);
+                    notifyHandlers(Tab.SETTINGS);
                     break;
                 case R.id.bug_button:
                     break;

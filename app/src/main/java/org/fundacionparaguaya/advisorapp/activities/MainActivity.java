@@ -1,14 +1,13 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
-import org.fundacionparaguaya.advisorapp.fragments.TestTabbedFragment;
+import org.fundacionparaguaya.advisorapp.fragments.ExampleTabbedFragment;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        mTabbedFrag = new TestTabbedFragment();
+        mTabbedFrag = new ExampleTabbedFragment();
 
         mTabbedFrag.addBackNavRequiredHandler((event) -> {
             String text;

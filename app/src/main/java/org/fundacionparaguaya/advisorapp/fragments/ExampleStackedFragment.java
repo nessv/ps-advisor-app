@@ -7,14 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.R;
 
 /**
- * Created by benhylak on 1/16/18.
+ * An Example of the StackedFrag class
+ *
+ * The only important thing in this entire class is the navigateTo(StackedFrag) function called in onCreate()
  */
 
-public class TestStackedFragment extends StackedFrag
+public class ExampleStackedFragment extends StackedFrag
 {
     public static String BUNDLE_ID_TEXT_TO_DISPLAY = "TEXT_TO_DISPLAY";
 
@@ -32,14 +33,22 @@ public class TestStackedFragment extends StackedFrag
         {
             mDisplayText = getArguments().getString(BUNDLE_ID_TEXT_TO_DISPLAY);
         }
+
+        //navigate to a new fragment and increment the label when the button is clicked
+        mButton.setOnClickListener((clickEvent) -> {
+            if(getParentFragment()!=null){
+                navigateTo(ExampleStackedFragment.build(getParentFragment().getChildFragmentManager()
+                        .getBackStackEntryCount() + 2));
+            }
+        });
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_test, container, false);
-        mTextView = (TextView) rootView.findViewById(R.id.textView);
 
+        mTextView = (TextView) rootView.findViewById(R.id.textView);
         mTextView.setText(mDisplayText);
 
         mButton = (Button)rootView.findViewById(R.id.button);
@@ -47,24 +56,17 @@ public class TestStackedFragment extends StackedFrag
         return rootView;
     }
 
-    @Override
-    public void onStart()
+    /**
+     * Constructs this fragment with necessary arguments.
+     *
+     * @param fragmentNumber number to display after "Fragment " in textView
+     * @return A constructed ExampleStackedFragment
+     */
+    public static ExampleStackedFragment build(int fragmentNumber)
     {
-        super.onStart();
-
-        mButton.setOnClickListener((clickEvent) -> {
-           // NavigationEvent navigationEvent = new NavigationEvent(TestStackedFragment.build());
-            //notifyNavigtionHandlers(navigationEvent);
-
-            navigateTo(TestStackedFragment.build());
-        });
-    }
-
-    public static StackedFrag build()
-    {
-        TestStackedFragment fragment = new TestStackedFragment();
+        ExampleStackedFragment fragment = new ExampleStackedFragment();
         Bundle args = new Bundle();
-        args.putString(TestStackedFragment.BUNDLE_ID_TEXT_TO_DISPLAY, "Fragment 2");
+        args.putString(ExampleStackedFragment.BUNDLE_ID_TEXT_TO_DISPLAY, "Fragment " + fragmentNumber);
         fragment.setArguments(args);
 
         return fragment;

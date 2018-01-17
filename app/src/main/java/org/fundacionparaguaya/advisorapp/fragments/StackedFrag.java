@@ -5,7 +5,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 /**
- * This is a fragment that is managed by a tabbed fragment... and can be stacked
+ * A StackedFrag is a fragment that is nested in a TabbedFrag. When it needs to navigate, it is able to communicate
+ * with the parent fragment.
  */
 
 public abstract class StackedFrag extends Fragment

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import org.fundacionparaguaya.advisorapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a fragment that lives inside of a tab
@@ -19,14 +20,19 @@ import java.util.ArrayList;
 
 public abstract class TabbedFrag extends Fragment
 {
-    ArrayList<BackNavRequiredChangeHandler> mRequiresBackNavHandlers;
-
+    //for logging
     private static final String TAG = "TabbedFrag";
+
+    //listeners to be notified when we need to have back navigation controls displayed (when we have more than
+    //1 fragment in the back stack
+    List<BackNavRequiredChangeHandler> mRequiresBackNavHandlers;
 
     View mContentView;
 
+    //view id the fragment will be placed in
     protected int mContainerId;
 
+    //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
 
     public TabbedFrag()
@@ -35,13 +41,13 @@ public abstract class TabbedFrag extends Fragment
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         getChildFragmentManager().addOnBackStackChangedListener(() ->
         {
-            //if there was a change in our state
+            //if there was a change in whether or not we need back nav, notify our listeners
             if(mWasBackNavRequired!=isBackNavRequired())
             {
                 mWasBackNavRequired = isBackNavRequired();
@@ -49,12 +55,12 @@ public abstract class TabbedFrag extends Fragment
                 notifyBackNavRequiredChange(isBackNavRequired());
             }
         });
-
-        mContainerId = View.generateViewId();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        mContainerId = View.generateViewId(); //creates an id for findViewById
 
         mContentView = new LinearLayout(getActivity());
         mContentView.setId(mContainerId);
@@ -66,8 +72,7 @@ public abstract class TabbedFrag extends Fragment
      * Sets the initial stacked frag for this tabbed frag
      * @param frag Fragment to set
      */
-    public void setInitialFragment(StackedFrag frag)
-    {
+    public void setInitialFragment(StackedFrag frag) {
        makeFragmentTransaction(frag).commit();
     }
 
@@ -76,8 +81,7 @@ public abstract class TabbedFrag extends Fragment
      *
      * @param frag Fragment to navigate to
      */
-    public void navigateNext(StackedFrag frag)
-    {
+    public void navigateNext(StackedFrag frag) {
         makeFragmentTransaction(frag).addToBackStack(null).commit();
     }
 
@@ -85,9 +89,7 @@ public abstract class TabbedFrag extends Fragment
      * Muscle behind setInitialFragment and navigateNext
      * @param frag
      */
-    private FragmentTransaction makeFragmentTransaction(StackedFrag frag)
-    {
-        //frag.addNavEventHandler(this);
+    private FragmentTransaction makeFragmentTransaction(StackedFrag frag) {
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.replace(mContainerId, frag);
@@ -98,18 +100,19 @@ public abstract class TabbedFrag extends Fragment
     /**
      * Navigate backwards in the stack
      */
-    public void onNavigateBack()
-    {
+    public void onNavigateBack() {
         getChildFragmentManager().popBackStack();
     }
 
-    public void addBackNavRequiredHandler(BackNavRequiredChangeHandler handler)
-    {
+    /**
+     * Adds a handler for changes in whether this fragment needs back navigation controls
+     * @param handler Handler to Add
+     */
+    public void addBackNavRequiredHandler(BackNavRequiredChangeHandler handler) {
         this.mRequiresBackNavHandlers.add(handler);
     }
 
-    public void removeBackNavRequiredHandler(BackNavRequiredChangeHandler handler)
-    {
+    public void removeBackNavRequiredHandler(BackNavRequiredChangeHandler handler) {
         this.mRequiresBackNavHandlers.remove(handler);
     }
 

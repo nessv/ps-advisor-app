@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.FamilyIr;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.Login;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -20,16 +21,19 @@ import retrofit2.Response;
 public class FamilySynchronizeTask extends AsyncTask<Void, Void, Boolean> {
     private FamilyDao familyDao;
     private FamilyService familyService;
+    private Login login;
 
-    public FamilySynchronizeTask(FamilyDao familyDao, FamilyService familyService) {
+    public FamilySynchronizeTask(FamilyDao familyDao, FamilyService familyService, Login login) {
         this.familyDao = familyDao;
         this.familyService = familyService;
+        this.login = login;
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-            Response<List<FamilyIr>> response = familyService.getFamilies().execute();
+            Response<List<FamilyIr>> response =
+                    familyService.getFamilies(login.getAuthenticationString()).execute();
 
             if (!response.isSuccessful()) {
                 return false;

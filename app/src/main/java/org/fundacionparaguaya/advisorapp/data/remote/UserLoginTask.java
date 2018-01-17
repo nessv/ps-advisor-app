@@ -15,34 +15,34 @@ import retrofit2.Response;
  * a Login
  */
 
-public class UserLoginTask extends AsyncTask<User, Void, Login> {
+public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
     private FamilyService familyService;
+    private User user;
 
-    public UserLoginTask(FamilyService familyService) {
+    public UserLoginTask(FamilyService familyService, User user) {
         this.familyService = familyService;
+        this.user = user;
     }
 
     @Override
-    protected Login doInBackground(User... users) {
-        Login login;
+    protected Boolean doInBackground(Void... voids) {
         try {
-            User user = users[0];
             Response<LoginIr> response = familyService
                     .login(user.getUsername(), user.getPassword()).execute();
 
             if (!response.isSuccessful()) {
-                return null;
+                return false;
             }
 
             if (response.body() == null) {
-                return null;
+                return false;
             }
 
-            login = response.body().login();
+            Login login = response.body().login();
             user.setLogin(login);
         } catch (IOException e) {
-            return null;
+            return false;
         }
-        return login;
+        return true;
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -21,6 +22,6 @@ public interface FamilyService {
             @Query("username") String username,
             @Query("password") String password);
 
-    @GET("families")
-    Call<List<FamilyIr>> getFamilies();
+    @GET("api/v1/families")
+    Call<List<FamilyIr>> getFamilies(@Header("Authentication") String authentication);
 }

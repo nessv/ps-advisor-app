@@ -14,4 +14,20 @@ public class Login {
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
     }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public String getAuthenticationString() {
+        return tokenType + " " + accessToken;
+    }
+
+    public int getExpiresIn() {
+        return expiresIn;
+    }
 }

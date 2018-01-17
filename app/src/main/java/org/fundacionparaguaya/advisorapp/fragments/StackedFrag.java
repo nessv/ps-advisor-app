@@ -1,14 +1,26 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.support.v4.app.Fragment;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by benhylak on 1/14/18.
+ * This is a fragment that is managed by a tabbed fragment... and can be stacked
  */
 
-public abstract class StackedFrag
+public abstract class StackedFrag extends Fragment
 {
-    class NavigationEvent
+    List<NavigationEventHandler> mNavigationEventHandlers;
+
+    private static final String TAG = "StackedFrag";
+
+    public StackedFrag()
+    {
+        mNavigationEventHandlers = new ArrayList<>();
+    }
+
+    static class NavigationEvent
     {
         StackedFrag mNextFrag;
 
@@ -18,22 +30,25 @@ public abstract class StackedFrag
         }
     }
 
-    interface NavigationEventHandler
+    /**
+     * Add a handler for this fragment's navigation events
+     */
+    public void addNavEventHandler(NavigationEventHandler h)
     {
-        public void onNavigation(NavigationEvent e);
+        this.mNavigationEventHandlers.add(h);
     }
 
-    List<NavigationEventHandler> mNavigationEventHandlers;
+    interface NavigationEventHandler
+    {
+        void onNavigation(NavigationEvent e);
+    }
 
-    /**Constructs fragment, sets args**/
-    /**Should provide alternate definitions for each fragment**/
-    public abstract void build();
 
     /**
      *
      * @param e NavigationEvent
      */
-    protected void notifyNavigtion(NavigationEvent e)
+    protected void notifyNavigtionHandlers(NavigationEvent e)
     {
         for(NavigationEventHandler h: mNavigationEventHandlers)
         {

@@ -12,9 +12,10 @@
 
     <!-- =========== Families View =========== -->
     <string name="family_imagePlaceholder">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
-    <string name="title_activity_login">Sign in</string>
+
 
     <!-- Login Activity -->
+    <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>

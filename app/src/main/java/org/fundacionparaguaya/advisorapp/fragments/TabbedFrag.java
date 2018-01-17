@@ -8,7 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import org.fundacionparaguaya.advisorapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,6 @@ public abstract class TabbedFrag extends Fragment
 
     //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
-
-    StackedFrag top;
 
     public TabbedFrag()
     {
@@ -61,14 +60,10 @@ public abstract class TabbedFrag extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        //mContainerId = View.generateViewId(); //creates an id for findViewById
+        View view = inflater.inflate(R.layout.fragment_tabbed, container, false);
 
-        mContainerId = 12312312;
-
-        mContentView = new LinearLayout(getActivity());
-        mContentView.setId(mContainerId);
-
-        return mContentView;
+        mContainerId = R.id.fragment_container;
+        return view;
     }
 
     /**
@@ -85,7 +80,6 @@ public abstract class TabbedFrag extends Fragment
      * @param frag Fragment to navigate to
      */
     public void navigateNext(StackedFrag frag) {
-        top = frag;
         makeFragmentTransaction(frag).addToBackStack(null).commit();
     }
 

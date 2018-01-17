@@ -38,7 +38,6 @@ public class AllFamiliesFragment extends Fragment implements View.OnClickListene
 
     private FamilyAdapter mFamilyAdapter;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

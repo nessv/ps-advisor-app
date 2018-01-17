@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DashboardTab">
+        <attr name="tabImage" format="reference"/>
+        <attr name="tabCaption" format="reference"/>
+        <attr name="defaultBool" format="boolean"/>
+    </declare-styleable>
+
+</resources>

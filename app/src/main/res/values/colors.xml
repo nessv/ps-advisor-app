@@ -3,4 +3,19 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Dashboard Tab Colors-->
+    <color name="tabSelected">#49A34B</color>
+    <color name="captionSelected">#FFFFFF</color>
+    <color name="iconSelected">#FFFFFE</color>
+    <color name="tabNotSelected">@android:color/transparent</color>
+    <color name="captionNotSelected">#A1A1A1</color>
+    <color name="iconNotSelected">#A1A1A1</color>
+    <color name="tabViewBackground">#FDFDFD</color>
+    <color name="tabViewBorder">#E0E0E0</color>
+
+    <!--Dashboard TopBar Colors-->
+    <color name="topbarBackground">#FDFDFD</color>
+    <color name="topbarbackbuttonLight">#FFFFFF</color>
+    <color name="topbarbackbuttonDark">#313131</color>
 </resources>

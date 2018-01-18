@@ -38,7 +38,7 @@ public class AllFamiliesViewModel extends ViewModel {
 
     public void sync()
     {
-        mFamilyRepository.sync();
+        mFamilyRepository.sync().execute();
     }
 }
 

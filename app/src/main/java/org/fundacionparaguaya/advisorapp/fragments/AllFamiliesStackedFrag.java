@@ -80,11 +80,8 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         button.setOnClickListener((event) ->
         {
             mAllFamiliesViewModel.sync();
-
-            mAllFamiliesViewModel.getFamilies().observe(this, (value) -> {
-                List<Family> returnValue = value;
-                int i =2;
-            });
+            mAllFamiliesViewModel.getFamilies().observe(this,
+                    (familiesList) -> mFamilyAdapter.setFamilyList(familiesList));
 
             Toast.makeText(getContext(), "Click", Toast.LENGTH_SHORT).show();
         });

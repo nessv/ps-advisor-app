@@ -13,7 +13,7 @@ import android.view.View;
 
 public class FamilyTabbedFragment extends TabbedFrag
 {
-    AllFamiliesFragment mFrag1;
+    AllFamiliesStackedFrag mFrag1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -21,10 +21,10 @@ public class FamilyTabbedFragment extends TabbedFrag
         super.onCreate(savedInstanceState);
 
         FragmentManager manager = getFragmentManager();
-        mFrag1 = (AllFamiliesFragment) manager.findFragmentByTag("ALL_FAM");
+        mFrag1 = (AllFamiliesStackedFrag) manager.findFragmentByTag("ALL_FAM");
 
         if (mFrag1 == null)
-            mFrag1 = new AllFamiliesFragment();
+            mFrag1 = new AllFamiliesStackedFrag();
     }
 
     @Override

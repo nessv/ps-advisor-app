@@ -35,6 +35,11 @@ public class AllFamiliesViewModel extends ViewModel {
             return false;
         }
     }
+
+    public void sync()
+    {
+        mFamilyRepository.sync();
+    }
 }
 
 

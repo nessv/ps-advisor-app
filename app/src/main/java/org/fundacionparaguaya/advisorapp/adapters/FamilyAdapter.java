@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Family;
 
@@ -61,6 +63,10 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
 
         holder.familyName.setText(family.getName());
 
+        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+
+        holder.imageView.setImageURI(uri);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,25 +85,6 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class FamilyViewHolder extends RecyclerView.ViewHolder{
-        CardView familyCard;
-        static TextView familyName;
-       /* static TextView nextVisitLabel;
-        static TextView nextVisitDate;
-        static TextView lastVisitLabel;
-        static TextView lastVisitDate;*/
-
-        FamilyViewHolder(View itemView){
-            super(itemView);
-            familyCard = (CardView) itemView.findViewById(R.id.card_view);
-            /*familyName = (TextView) itemView.findViewById(R.id.family_name);
-            nextVisitLabel = (TextView) itemView.findViewById(R.id.next_visit);
-            nextVisitDate = (TextView) itemView.findViewById(R.id.next_visit_time);
-            lastVisitLabel = (TextView) itemView.findViewById(R.id.last_visit);
-            lastVisitDate = (TextView) itemView.findViewById(R.id.last_visit_time);*/
-        }
-
-    }
 
     public void setFamilyList(final List<? extends Family> families){
         if(mFamilyList == null){
@@ -136,6 +123,31 @@ public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyView
             mFamilyList = families;
             result.dispatchUpdatesTo(this);
         }
+    }
+
+
+    public static class FamilyViewHolder extends RecyclerView.ViewHolder{
+        CardView familyCard;
+        TextView familyName;
+        SimpleDraweeView imageView;
+
+       /* static TextView nextVisitLabel;
+        static TextView nextVisitDate;
+        static TextView lastVisitLabel;
+        static TextView lastVisitDate;*/
+
+        FamilyViewHolder(View itemView){
+            super(itemView);
+            familyCard = (CardView) itemView.findViewById(R.id.card_view);
+            familyName = (TextView) itemView.findViewById(R.id.family_name);
+            imageView = (SimpleDraweeView)itemView.findViewById(R.id.family_image);
+
+//            nextVisitLabel = (TextView) itemView.findViewById(R.id.next_visit);
+//            nextVisitDate = (TextView) itemView.findViewById(R.id.next_visit_time);
+//            lastVisitLabel = (TextView) itemView.findViewById(R.id.last_visit);
+//            lastVisitDate = (TextView) itemView.findViewById(R.id.last_visit_time);
+        }
+
     }
 
     /*FamilySelectedEventClass defines the event of selecting a family on the list of all families

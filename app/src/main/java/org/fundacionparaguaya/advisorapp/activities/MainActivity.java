@@ -99,9 +99,6 @@ public class MainActivity extends AppCompatActivity implements TabbedFrag.BackNa
 
         switchToFrag(mFamiliesFrag, DashboardTab.TabType.FAMILY);
 
-        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        //ft.add(R.id.dash_content, mFamiliesFrag).commit();
-
         Intent login = new Intent(this, LoginActivity.class);
         startActivity(login);
     }

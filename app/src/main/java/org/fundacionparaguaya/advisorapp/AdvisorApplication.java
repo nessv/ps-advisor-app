@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DaggerApplicationComponent;
@@ -23,6 +24,8 @@ public class AdvisorApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .databaseModule(new DatabaseModule(this))
                 .build();
+
+        Fresco.initialize(this);
     }
 
     public ApplicationComponent getApplicationComponent() {

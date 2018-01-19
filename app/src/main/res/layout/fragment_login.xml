@@ -23,12 +23,12 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -36,8 +36,9 @@
             <ImageView
                 android:layout_width="102dp"
                 android:layout_height="102dp"
-                android:src="@drawable/dashtabview_fplogo"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="100dp"
+                android:contentDescription="fp logo"
+                android:src="@drawable/dashtabview_fplogo" />
 
             <TextView
                 android:id="@+id/login_incorrect_credentials"
@@ -48,7 +49,6 @@
                 android:textSize="18sp"
                 android:textColor="@color/login_incorrectcredentials"
                 android:textStyle="normal"
-                android:fontFamily="@font/opensans_semibold"
                 android:visibility="invisible"/>
 
             <EditText
@@ -111,5 +111,13 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/login_help"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@drawable/app_helpicon"
+        android:layout_gravity="end"
+        android:tint="@color/login_helpbutton"/>
 
 </LinearLayout>

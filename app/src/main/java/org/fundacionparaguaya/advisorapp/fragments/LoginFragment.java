@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -32,6 +33,7 @@ public class LoginFragment extends Fragment {
     private EditText mPasswordView;
     private TextView mIncorrectCredentialsView;
     private TextView mPasswordReset;
+    private ImageView mHelpButton;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -62,8 +64,10 @@ public class LoginFragment extends Fragment {
         mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
 
         mEmailView = (EditText) view.findViewById(R.id.login_email);
-
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
+
+        mHelpButton = (ImageView) view.findViewById(R.id.login_help);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -102,6 +106,15 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view){
                 //TODO: Implement password reset
+            }
+        });
+
+        mHelpButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //TODO: Implement Help button
+                //using this as a temporary login method
+                //getActivity().finish();
             }
         });
 

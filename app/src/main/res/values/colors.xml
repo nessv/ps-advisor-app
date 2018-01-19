@@ -27,5 +27,6 @@
     <color name="login_passwordreset">#757478</color>
     <color name="login_button">@color/fp_green</color>
     <color name="login_buttontext">#FDFDFD</color>
+    <color name="login_helpbutton">#757478</color>
 
 </resources>

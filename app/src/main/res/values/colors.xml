@@ -17,4 +17,5 @@
     <!--Dashboard TopBar Colors-->
     <color name="topbarBackground">#FDFDFD</color>
     <color name="topbarBackButton">#313131</color>
+    <color name="topbarSyncButton">#A1A1A1</color>
 </resources>

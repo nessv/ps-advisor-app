@@ -27,8 +27,6 @@ public abstract class TabbedFrag extends Fragment
     //1 fragment in the back stack
     List<BackNavRequiredChangeHandler> mRequiresBackNavHandlers;
 
-    View mContentView;
-
     //view id the fragment will be placed in
     private int mContainerId;
 

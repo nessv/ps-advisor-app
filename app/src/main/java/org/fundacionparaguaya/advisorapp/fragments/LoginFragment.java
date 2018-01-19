@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
@@ -80,27 +82,15 @@ public class LoginFragment extends Fragment {
         });
 
         Button mEmailSignInButton = (Button) view.findViewById(R.id.login_loginbutton);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+
+        mEmailSignInButton.setOnClickListener((event) -> attemptLogin());
 
         //hide incorrect login textview on touch
-        mEmailView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                mIncorrectCredentialsView.setVisibility(View.INVISIBLE);
-            }
-        });
+        View.OnClickListener hideIncorrectCredentials =
+                (event) -> mIncorrectCredentialsView.setVisibility(View.INVISIBLE);
 
-        mPasswordView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                mIncorrectCredentialsView.setVisibility(View.INVISIBLE);
-            }
-        });
+        mEmailView.setOnClickListener(hideIncorrectCredentials);
+        mPasswordView.setOnClickListener(hideIncorrectCredentials);
 
         mPasswordReset.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -120,7 +110,6 @@ public class LoginFragment extends Fragment {
 
         return view;
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -159,7 +148,12 @@ public class LoginFragment extends Fragment {
             focusView.requestFocus();
         } else {
             boolean result = mLoginViewModel.login(email, password);
-            if (result) {
+
+            if(getActivity() == null)
+            {
+                Log.e("LoginFragment", "Login fragment needs an activity, but none found.");
+            }
+            else if (result) {
                 getActivity().finish();
             } else {
                 mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);

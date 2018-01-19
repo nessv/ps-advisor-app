@@ -29,6 +29,6 @@ public class FamilyIr {
     }
 
     public Family family() {
-        return new Family(id, name, member.familyMember(), null, null);
+        return new Family(id, name, null, null, null);
     }
 }

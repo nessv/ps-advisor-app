@@ -30,6 +30,8 @@ import javax.inject.Inject;
 public class LoginFragment extends Fragment {
     private EditText mEmailView;
     private EditText mPasswordView;
+    private TextView mIncorrectCredentialsView;
+    private TextView mPasswordReset;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -56,6 +58,9 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
+        mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
+
         mEmailView = (EditText) view.findViewById(R.id.login_email);
 
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
@@ -70,11 +75,33 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        Button mEmailSignInButton = (Button) view.findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) view.findViewById(R.id.login_loginbutton);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        //hide incorrect login textview on touch
+        mEmailView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mIncorrectCredentialsView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        mPasswordView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mIncorrectCredentialsView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        mPasswordReset.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //TODO: Implement password reset
             }
         });
 
@@ -122,7 +149,8 @@ public class LoginFragment extends Fragment {
             if (result) {
                 getActivity().finish();
             } else {
-                mPasswordView.setError(getString(R.string.login_incorrectcredentials));
+                mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
+                mIncorrectCredentialsView.setVisibility(View.VISIBLE);
             }
         }
     }

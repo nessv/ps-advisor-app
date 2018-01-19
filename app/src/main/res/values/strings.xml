@@ -18,9 +18,10 @@
     <string name="activity_login">Sign in</string>
     <string name="login_emailprompt">Email Address</string>
     <string name="login_passwordprompt">Password</string>
-    <string name="login_action_signin">Sign in</string>
-    <string name="login_incorrectcredentials">Invalid credentials</string>
+    <string name="login_action_signin">Login</string>
+    <string name="login_incorrectcredentials">Hmm, that email or password didn\'t work. Please try again!</string>
     <string name="login_fieldrequired">This field is required</string>
+    <string name="login_resetpassword"><u>Forgot you password?</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -3,7 +3,10 @@
     android:shape="rectangle"
     android:padding="10dp">
     <solid
-        android:color="@color/login_textfield"/>
+        android:color="@color/login_button"/>
     <corners
-        android:radius="24dp"/>
+        android:radius="48dp"/>
+
+
+
 </shape>

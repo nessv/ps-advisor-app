@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!--Login Page Colors-->
+    <color name="login_background">#F7F7F7</color>
+    <color name="login_textfield">#FDFDFD</color>
+
     <!--DashboDashTab Tab Colors-->
     <color name="tabSelected">#49A34B</color>
     <color name="captionSelected">#FFFFFF</color>

@@ -56,9 +56,9 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        mEmailView = (EditText) view.findViewById(R.id.email);
+        mEmailView = (EditText) view.findViewById(R.id.login_email);
 
-        mPasswordView = (EditText) view.findViewById(R.id.password);
+        mPasswordView = (EditText) view.findViewById(R.id.login_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -101,14 +101,14 @@ public class LoginFragment extends Fragment {
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
+            mPasswordView.setError(getString(R.string.login_fieldrequired));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError(getString(R.string.login_fieldrequired));
             focusView = mEmailView;
             cancel = true;
         }
@@ -122,7 +122,7 @@ public class LoginFragment extends Fragment {
             if (result) {
                 getActivity().finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_credentials));
+                mPasswordView.setError(getString(R.string.login_incorrectcredentials));
             }
         }
     }

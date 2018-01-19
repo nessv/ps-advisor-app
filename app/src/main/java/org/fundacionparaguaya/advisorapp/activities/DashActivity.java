@@ -95,6 +95,10 @@ public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNa
 
         switchToFrag(mFamiliesFrag, DashboardTab.TabType.FAMILY);
 
+        //TODO: right now, hitting "back" will circumvent the login screen.
+        // also, this should be called before everything in this function, and check if already authenticated.
+        //maybe we could have a separate main activity that accomplishes this all
+
         Intent login = new Intent(this, LoginActivity.class);
         startActivity(login);
     }

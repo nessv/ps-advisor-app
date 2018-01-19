@@ -10,6 +10,11 @@
     <string name="archive_tab">Archive</string>
     <string name="settings_tab">Settings</string>
 
+    <!--Top Bar Strings-->
+    <string name="topbar_backbutton">Back</string>
+    <string name="topbar_synclabel">Sync Now</string>
+    <string name="topbar_lastsync">Last Sync: 3h ago</string>
+
     <!-- =========== Families View =========== -->
     <string name="family_imagePlaceholder">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
 </resources>

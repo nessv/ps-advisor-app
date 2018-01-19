@@ -164,6 +164,7 @@ public class LoginFragment extends Fragment {
             } else {
                 mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
                 mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+                mPasswordView.setText(""); //erase the password field if incorrect
             }
         }
     }

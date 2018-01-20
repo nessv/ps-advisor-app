@@ -3,12 +3,11 @@ package org.fundacionparaguaya.advisorapp.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -39,16 +38,50 @@ public class Snapshot {
     private int familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
-    @Ignore
-    private HashMap<Indicator, IndicatorOption> indicatorResponses;
-    @Ignore
-    private HashMap<EconomicQuestion, String> economicResponses;
-    @Ignore
+    private Map<SurveyQuestion, String> personalResponses;
+    private Map<SurveyQuestion, String> economicResponses;
+    private Map<IndicatorQuestion, String> indicatorResponses;
     private Date date;
 
-    public Snapshot(int id, int familyId, int surveyId) {
+    public Snapshot(int id, int familyId, int surveyId,
+                    Map<SurveyQuestion, String> personalResponses,
+                    Map<SurveyQuestion, String> economicResponses,
+                    Map<IndicatorQuestion, String> indicatorResponses,
+                    Date date) {
         this.id = id;
         this.familyId = familyId;
         this.surveyId = surveyId;
+        this.personalResponses = personalResponses;
+        this.economicResponses = economicResponses;
+        this.indicatorResponses = indicatorResponses;
+        this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getFamilyId() {
+        return familyId;
+    }
+
+    public int getSurveyId() {
+        return surveyId;
+    }
+
+    public Map<SurveyQuestion, String> getPersonalResponses() {
+        return personalResponses;
+    }
+
+    public Map<SurveyQuestion, String> getEconomicResponses() {
+        return economicResponses;
+    }
+
+    public Map<IndicatorQuestion, String> getIndicatorResponses() {
+        return indicatorResponses;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

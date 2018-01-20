@@ -1,31 +1,37 @@
 package org.fundacionparaguaya.advisorapp.models;
 
-import java.net.URL;
+import com.google.gson.annotations.SerializedName;
 
 /**
  *  An indicator option is a definition for one of the three levels an indicator can have. It's level is determined
  *  by the parent indicator
  */
 
-public class IndicatorOption
-{
-    enum Level {Red, Yellow, Green, None}
+public class IndicatorOption {
+    public enum Level {Red, Yellow, Green, None}
 
-    private URL mImageUrl;
-    private String mDescription;
+    @SerializedName("description")
+    private String description;
+    @SerializedName("image_url")
+    private String imageUrl;
+    @SerializedName("level")
+    private Level level;
 
-    public boolean equals(IndicatorOption obj)
-    {
-        return (obj.mImageUrl.equals(mImageUrl) && obj.mDescription.equals(mDescription));
+    public IndicatorOption(String description, String imageUrl, Level level) {
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.level = level;
     }
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        if(obj instanceof IndicatorOption)
-        {
-            return this.equals((IndicatorOption)obj);
-        }
-        else return super.equals(obj);
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 }

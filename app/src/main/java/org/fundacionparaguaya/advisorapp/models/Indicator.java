@@ -7,47 +7,26 @@ import java.util.List;
  * survey, they will choose one of those levels.
  */
 
-public class Indicator
-{
+public class Indicator {
     private String name;
     private String dimension;
+    private List<IndicatorOption> options;
 
-    private IndicatorOption redLevel;
-    private IndicatorOption yellowLevel;
-    private IndicatorOption greenLevel;
-
-    public void setRedLevel(IndicatorOption redLevel)
-    {
-        this.redLevel = redLevel;
+    public Indicator(String name, String dimension, List<IndicatorOption> options) {
+        this.name = name;
+        this.dimension = dimension;
+        this.options = options;
     }
 
-    public void setYellowLevel(IndicatorOption yellowLevel)
-    {
-        this.yellowLevel = yellowLevel;
+    public String getName() {
+        return name;
     }
 
-    public void setGreenLevel(IndicatorOption greenLevel)
-    {
-        this.greenLevel = greenLevel;
+    public String getDimension() {
+        return dimension;
     }
 
-    public IndicatorOption.Level getLevelForOption(IndicatorOption option)
-    {
-        if(redLevel.equals(option))
-        {
-            return IndicatorOption.Level.Red;
-        }
-        else if(yellowLevel.equals(option))
-        {
-            return IndicatorOption.Level.Yellow;
-        }
-        else if(greenLevel.equals(option))
-        {
-            return IndicatorOption.Level.Green;
-        }
-        else
-        {
-            return IndicatorOption.Level.None;
-        }
+    public List<IndicatorOption> getOptions() {
+        return options;
     }
 }

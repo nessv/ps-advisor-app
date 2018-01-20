@@ -20,25 +20,25 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/dashboardtopbar"
-        android:layout_width="0dp"
+            android:id="@+id/dashboardtopbar"
+            android:layout_width="0dp"
 
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
 
-        android:layout_marginStart="8dp"
-        android:background="@color/topbarBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dashboardTabView"
-        app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginStart="8dp"
+            android:background="@color/topbarBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dashboardTabView"
+            app:layout_constraintTop_toTopOf="parent" android:baselineAligned="false">
 
         <LinearLayout
             android:id="@+id/dashboardtopbar_backbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="68dp"
             android:gravity="start"
             android:layout_weight="1">
-            <ImageButton
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -103,6 +103,7 @@
 
             <ImageView
                 android:id="@+id/topbar_user_image"
+                android:contentDescription="@string/contentDescription_profile_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

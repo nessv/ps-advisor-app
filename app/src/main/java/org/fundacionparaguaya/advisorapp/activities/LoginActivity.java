@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.EXAMPLEFragment;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
 /**
@@ -31,6 +32,13 @@ public class LoginActivity extends AppCompatActivity {
             loginFragment = new LoginFragment();
 
         addFragmentToActivity(manager, loginFragment, R.id.login_root, "LOGIN");
+
+        EXAMPLEFragment exampleFragment = (EXAMPLEFragment) manager.findFragmentByTag("EXAMPLE");
+
+        if (exampleFragment == null)
+            exampleFragment = new EXAMPLEFragment();
+
+        addFragmentToActivity(manager, exampleFragment, R.id.login_root, "EXAMPLE");
     }
 
     private void addFragmentToActivity(FragmentManager manager,

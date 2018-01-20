@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4127f5e0687f08545cf2bf6c5e04083d",
+    "identityHash": "92a311aa55273c1fbf2625582980e572",
     "entities": [
       {
         "tableName": "families",
@@ -183,6 +183,14 @@
               "family_id"
             ],
             "createSql": "CREATE  INDEX `index_snapshots_family_id` ON `${TABLE_NAME}` (`family_id`)"
+          },
+          {
+            "name": "index_snapshots_survey_id",
+            "unique": false,
+            "columnNames": [
+              "survey_id"
+            ],
+            "createSql": "CREATE  INDEX `index_snapshots_survey_id` ON `${TABLE_NAME}` (`survey_id`)"
           }
         ],
         "foreignKeys": [
@@ -213,7 +221,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4127f5e0687f08545cf2bf6c5e04083d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"92a311aa55273c1fbf2625582980e572\")"
     ]
   }
 }

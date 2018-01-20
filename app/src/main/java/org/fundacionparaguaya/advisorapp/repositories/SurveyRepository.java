@@ -33,4 +33,8 @@ public class SurveyRepository {
         return surveyDao.querySurvey(id);
     }
     //endregion
+
+    //region Snapshot
+
+    //endregion
 }

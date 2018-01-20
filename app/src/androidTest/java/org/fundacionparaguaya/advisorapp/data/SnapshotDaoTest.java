@@ -4,14 +4,17 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
+import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.junit.After;
 import org.junit.Before;
@@ -19,9 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertEquals;
@@ -39,12 +40,14 @@ public class SnapshotDaoTest {
     private LocalDatabase db;
     private SurveyDao surveyDao;
     private SnapshotDao snapshotDao;
+    private FamilyDao familyDao;
 
     @Before
     public void init() {
         db = Room.inMemoryDatabaseBuilder(getTargetContext(), LocalDatabase.class).build();
         surveyDao = db.surveyDao();
         snapshotDao = db.snapshotDao();
+        familyDao = db.familyDao();
     }
 
     @After
@@ -75,11 +78,19 @@ public class SnapshotDaoTest {
 
         surveyDao.insertSurvey(survey);
 
-        Map<IndicatorQuestion, String> responses = new HashMap<>();
+        Family family = new Family(1, "Smith", null);
+        familyDao.insertFamily(family);
 
-        LiveData<List<Survey>> result = surveyDao.querySurveys();
-        List<Survey> value = waitForValue(result);
+        Snapshot snapshot = new Snapshot(family, survey);
+        snapshot.response(survey.getPersonalQuestions().get(0), "Joe");
+        snapshot.response(survey.getEconomicQuestions().get(0), survey.getEconomicQuestions().get(0).getOptions().get(0));
+        snapshot.response(survey.getIndicatorQuestions().get(0), survey.getIndicatorQuestions().get(0).getOptions().get(1));
+
+        snapshotDao.insertSnapshot(snapshot);
+
+        LiveData<List<Snapshot>> result = snapshotDao.querySnapshotsForFamily(family.getId());
+        List<Snapshot> value = waitForValue(result);
         assertEquals(1, value.size());
-        assertEquals(survey, value.get(0));
+        assertEquals(snapshot, value.get(0));
     }
 }

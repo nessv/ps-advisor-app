@@ -17,9 +17,9 @@
 
     <!--Dashboard TopBar Colors-->
     <color name="topbarBackground">#FDFDFD</color>
-    <color name="topbarbackbuttonLight">#FFFFFF</color>
-    <color name="topbarbackbuttonDark">#313131</color>
-
+    <color name="topbarBackButton">#313131</color>
+    <color name="topbarSyncButton">#A1A1A1</color>
+  
     <!--Login Page Colors-->
     <color name="login_background">#F7F7F7</color>
     <color name="login_textfield">#FDFDFD</color>
@@ -28,5 +28,4 @@
     <color name="login_button">@color/fp_green</color>
     <color name="login_buttontext">#FDFDFD</color>
     <color name="login_helpbutton">#757478</color>
-
 </resources>

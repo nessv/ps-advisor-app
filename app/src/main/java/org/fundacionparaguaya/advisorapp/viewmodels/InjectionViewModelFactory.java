@@ -27,6 +27,8 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
             return (T) new AllFamiliesViewModel(familyRepository);
         else if (modelClass.isAssignableFrom(LoginViewModel.class))
             return (T) new LoginViewModel(familyRepository);
+        else if (modelClass.isAssignableFrom(EXAMPLEViewModel.class))
+            return (T) new EXAMPLEViewModel(familyRepository, surveyRepository);
         else
             throw new IllegalArgumentException("The view model was not found!");
     }

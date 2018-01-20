@@ -27,10 +27,7 @@ public class AllFamiliesViewModel extends ViewModel {
     public boolean syncFamilies() {
         try {
             return mFamilyRepository.sync().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return false;
         }

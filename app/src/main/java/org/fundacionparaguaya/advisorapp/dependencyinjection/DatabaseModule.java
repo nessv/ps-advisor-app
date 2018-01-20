@@ -5,9 +5,11 @@ import android.arch.persistence.room.Room;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
+import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import javax.inject.Singleton;
@@ -62,6 +64,12 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
+    SurveyRepository provideSurveyRepository(SurveyDao surveyDao) {
+        return new SurveyRepository(surveyDao);
+    }
+
+    @Provides
+    @Singleton
     FamilyDao provideFamilyDao(LocalDatabase local) {
         return local.familyDao();
     }
@@ -70,6 +78,12 @@ public class DatabaseModule {
     @Singleton
     FamilyService provideFamilyService(RemoteDatabase remote) {
         return remote.familyService();
+    }
+
+    @Provides
+    @Singleton
+    SurveyDao provideSurveyDao(LocalDatabase local) {
+        return local.surveyDao();
     }
 
     @Provides

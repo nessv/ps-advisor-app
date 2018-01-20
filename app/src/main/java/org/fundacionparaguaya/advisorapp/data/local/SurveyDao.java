@@ -6,7 +6,6 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public interface SurveyDao {
     LiveData<List<Survey>> querySurveys();
 
     @Query("SELECT * FROM surveys WHERE id = :id")
-    LiveData<Family> querySurvey(int id);
+    LiveData<Survey> querySurvey(int id);
 
     @Insert(onConflict = REPLACE)
     long insertSurvey(Survey survey);

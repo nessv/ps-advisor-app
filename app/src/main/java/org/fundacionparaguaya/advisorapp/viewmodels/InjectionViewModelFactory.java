@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
 /**
  * A custom view model factory which will inject view models with the correct dependencies.
@@ -12,9 +13,11 @@ import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 
 public class InjectionViewModelFactory implements ViewModelProvider.Factory {
     private final FamilyRepository familyRepository;
+    private final SurveyRepository surveyRepository;
 
-    public InjectionViewModelFactory(FamilyRepository familyRepository) {
+    public InjectionViewModelFactory(FamilyRepository familyRepository, SurveyRepository surveyRepository) {
         this.familyRepository = familyRepository;
+        this.surveyRepository = surveyRepository;
     }
 
     @NonNull

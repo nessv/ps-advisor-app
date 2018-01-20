@@ -88,7 +88,7 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    InjectionViewModelFactory provideInjectionViewModelFactory(FamilyRepository familyRepository) {
-        return new InjectionViewModelFactory(familyRepository);
+    InjectionViewModelFactory provideInjectionViewModelFactory(FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+        return new InjectionViewModelFactory(familyRepository, surveyRepository);
     }
 }

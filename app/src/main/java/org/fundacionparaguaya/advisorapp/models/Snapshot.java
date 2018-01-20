@@ -5,8 +5,10 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 
-import java.util.Date;
+import org.fundacionparaguaya.advisorapp.data.local.Converters;
+
 import java.util.Map;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -19,7 +21,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
  */
 
 @Entity(tableName = "snapshots",
-        indices = @Index("family_id") ,
+        indices = {@Index("family_id"), @Index("survey_id")},
         foreignKeys = {
             @ForeignKey(entity = Family.class,
                     parentColumns = "id",
@@ -31,6 +33,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                     childColumns = "survey_id",
                     onUpdate = CASCADE,
                     onDelete = CASCADE)})
+@TypeConverters(Converters.class)
 public class Snapshot {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -38,23 +41,20 @@ public class Snapshot {
     private int familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
-    private Map<SurveyQuestion, String> personalResponses;
-    private Map<SurveyQuestion, String> economicResponses;
-    private Map<IndicatorQuestion, String> indicatorResponses;
-    private Date date;
+    private Map<PersonalQuestion, String> personalResponses;
+    private Map<EconomicQuestion, String> economicResponses;
+    private Map<IndicatorQuestion, IndicatorOption> indicatorResponses;
 
     public Snapshot(int id, int familyId, int surveyId,
-                    Map<SurveyQuestion, String> personalResponses,
-                    Map<SurveyQuestion, String> economicResponses,
-                    Map<IndicatorQuestion, String> indicatorResponses,
-                    Date date) {
+                    Map<PersonalQuestion, String> personalResponses,
+                    Map<EconomicQuestion, String> economicResponses,
+                    Map<IndicatorQuestion, IndicatorOption> indicatorResponses) {
         this.id = id;
         this.familyId = familyId;
         this.surveyId = surveyId;
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
-        this.date = date;
     }
 
     public int getId() {
@@ -69,19 +69,15 @@ public class Snapshot {
         return surveyId;
     }
 
-    public Map<SurveyQuestion, String> getPersonalResponses() {
+    public Map<PersonalQuestion, String> getPersonalResponses() {
         return personalResponses;
     }
 
-    public Map<SurveyQuestion, String> getEconomicResponses() {
+    public Map<EconomicQuestion, String> getEconomicResponses() {
         return economicResponses;
     }
 
-    public Map<IndicatorQuestion, String> getIndicatorResponses() {
+    public Map<IndicatorQuestion, IndicatorOption> getIndicatorResponses() {
         return indicatorResponses;
-    }
-
-    public Date getDate() {
-        return date;
     }
 }

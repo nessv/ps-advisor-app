@@ -24,4 +24,23 @@ public class SurveyQuestion {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SurveyQuestion that = (SurveyQuestion) o;
+
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        return result;
+    }
 }

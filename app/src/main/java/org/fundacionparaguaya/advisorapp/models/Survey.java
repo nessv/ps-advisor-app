@@ -21,19 +21,22 @@ import java.util.List;
 public class Survey {
     @PrimaryKey
     private int id;
-    @Ignore
-    private List<SurveyQuestion> personalQuestions;
-    @Ignore
-    private List<SurveyQuestion> economicQuestions;
+    @ColumnInfo(name="personal_questions")
+    private List<PersonalQuestion> personalQuestions;
+    @ColumnInfo(name="economic_questions")
+    private List<EconomicQuestion> economicQuestions;
     @ColumnInfo(name="indicator_questions")
     private List<IndicatorQuestion> indicatorQuestions;
 
-    public Survey(int id, List<IndicatorQuestion> indicatorQuestions) {
-        this(id, new ArrayList<>(), new ArrayList<>(), indicatorQuestions);
+    @Ignore
+    public Survey(int id) {
+        this(id, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
-    @Ignore
-    public Survey(int id, List<SurveyQuestion> personalQuestions, List<SurveyQuestion> economicQuestions, List<IndicatorQuestion> indicatorQuestions) {
+    public Survey(int id,
+                  List<PersonalQuestion> personalQuestions,
+                  List<EconomicQuestion> economicQuestions,
+                  List<IndicatorQuestion> indicatorQuestions) {
         this.id = id;
         this.personalQuestions = personalQuestions;
         this.economicQuestions = economicQuestions;
@@ -44,11 +47,11 @@ public class Survey {
         return id;
     }
 
-    public List<SurveyQuestion> getPersonalQuestions() {
+    public List<PersonalQuestion> getPersonalQuestions() {
         return personalQuestions;
     }
 
-    public List<SurveyQuestion> getEconomicQuestions() {
+    public List<EconomicQuestion> getEconomicQuestions() {
         return economicQuestions;
     }
 

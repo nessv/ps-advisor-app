@@ -6,9 +6,11 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
+import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.junit.After;
 import org.junit.Before;
@@ -48,13 +50,24 @@ public class SurveyDaoTest {
 
     @Test
     public void ShouldBeAbleToInsertASurvey() {
-        List<IndicatorQuestion> questions = new ArrayList<>();
-        List<IndicatorOption> options = new ArrayList<>();
-        options.add(new IndicatorOption("Has a stove.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-3.jpg", Green));
-        options.add(new IndicatorOption("Has no stove.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-2.jpg", Yellow));
-        options.add(new IndicatorOption("Has no kitchen.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-1.jpg", Red));
-        Indicator indicator = new Indicator("properKitchen", "Home", options);
-        Survey survey = new Survey(1, questions);
+        List<IndicatorQuestion> indicatorQuestions = new ArrayList<>();
+        List<IndicatorOption> indicatorOptions = new ArrayList<>();
+        indicatorOptions.add(new IndicatorOption("Has a stove.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-3.jpg", Green));
+        indicatorOptions.add(new IndicatorOption("Has no stove.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-2.jpg", Yellow));
+        indicatorOptions.add(new IndicatorOption("Has no kitchen.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-1.jpg", Red));
+        Indicator indicator = new Indicator("properKitchen", "Home", indicatorOptions);
+        indicatorQuestions.add(new IndicatorQuestion(indicator));
+
+        List<EconomicQuestion> economicQuestions = new ArrayList<>();
+        List<String> economicOptions = new ArrayList<>();
+        economicOptions.add("Employed");
+        economicOptions.add("Not Employed");
+        economicQuestions.add(new EconomicQuestion("employmentStatus", "Employment status.", economicOptions));
+
+        List<PersonalQuestion> personalQuestions = new ArrayList<>();
+        personalQuestions.add(new PersonalQuestion("firstName", "First name."));
+
+        Survey survey = new Survey(1,personalQuestions, economicQuestions, indicatorQuestions);
 
         surveyDao.insertSurvey(survey);
 

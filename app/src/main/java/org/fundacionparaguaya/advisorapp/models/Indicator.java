@@ -29,4 +29,26 @@ public class Indicator {
     public List<IndicatorOption> getOptions() {
         return options;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Indicator indicator = (Indicator) o;
+
+        if (getName() != null ? !getName().equals(indicator.getName()) : indicator.getName() != null)
+            return false;
+        if (getDimension() != null ? !getDimension().equals(indicator.getDimension()) : indicator.getDimension() != null)
+            return false;
+        return getOptions() != null ? getOptions().equals(indicator.getOptions()) : indicator.getOptions() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getDimension() != null ? getDimension().hashCode() : 0);
+        result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
+        return result;
+    }
 }

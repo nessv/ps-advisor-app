@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "31c13a0a0354d30032634308e064600e",
+    "identityHash": "1ac69f622cb561a901e0abb5062c181c",
     "entities": [
       {
         "tableName": "families",
@@ -92,13 +92,25 @@
       },
       {
         "tableName": "surveys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `indicator_questions` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "personalQuestions",
+            "columnName": "personal_questions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "economicQuestions",
+            "columnName": "economic_questions",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "indicatorQuestions",
@@ -119,7 +131,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"31c13a0a0354d30032634308e064600e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1ac69f622cb561a901e0abb5062c181c\")"
     ]
   }
 }

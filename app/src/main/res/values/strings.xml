@@ -3,8 +3,8 @@
     <string name="fpicon_desc">FP Icon</string>
     <string name="bugbutton_desc">Bug Button</string>
     <string name="backbutton_desc">Back Button</string>
-  
-                 <!--Tab Captions -->
+
+    <!--Tab Captions -->
     <string name="family_tab">Families</string>
     <string name="map_tab">Map</string>
     <string name="archive_tab">Archive</string>
@@ -17,4 +17,17 @@
 
     <!-- =========== Families View =========== -->
     <string name="family_imagePlaceholder">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
+
+
+    <!-- Login Activity -->
+    <string name="activity_login">Sign in</string>
+    <string name="login_emailprompt">Email Address</string>
+    <string name="login_passwordprompt">Password</string>
+    <string name="login_action_signin">Login</string>
+    <string name="login_incorrectcredentials">Hmm, that email or password didn\'t work. Please try again!</string>
+    <string name="login_fieldrequired">This field is required</string>
+    <string name="login_resetpassword"><u>Forgot your password?</u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -5,8 +5,10 @@ import android.os.AsyncTask;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
-import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilySynchronizeTask;
+import org.fundacionparaguaya.advisorapp.data.remote.UserLoginTask;
+import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.User;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import javax.inject.Inject;
 public class FamilyRepository {
     private final FamilyDao familyDao;
     private final FamilyService familyService;
+
+    private User user;
 
     @Inject
     public FamilyRepository(FamilyDao familyDao, FamilyService familyService) {
@@ -45,13 +49,17 @@ public class FamilyRepository {
         familyDao.deleteFamily(family);
     }
 
+    public AsyncTask<Void, Void, Boolean> login(String username, String password) {
+        user = new User(username, password, true);
+        return new UserLoginTask(familyService, user);
+    }
     /**
      * A task which will pull families from the remote database and synchronize them with the
      * local database.
      * @return A new async task to be executed.
      */
     public AsyncTask<Void, Void, Boolean> sync() {
-        return new FamilySynchronizeTask(familyDao, familyService);
+        return new FamilySynchronizeTask(familyDao, familyService, user.getLogin());
     }
     //endregion
 }

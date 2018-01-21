@@ -17,7 +17,7 @@ import org.fundacionparaguaya.advisorapp.R;
  * Each survey page will have 3 instances of this
  */
 
-public class SurveyCard extends CardView{
+public class IndicatorCard extends CardView{
 
     private Context context;
 
@@ -30,24 +30,24 @@ public class SurveyCard extends CardView{
         RED, YELLOW, GREEN
     }
 
-    public SurveyCard(Context context, AttributeSet attr) {
-        super(context, attr);
+    public IndicatorCard(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.survey_card, this);
+        inflater.inflate(R.layout.indicator_card, this);
 
         mSurveyCardSelected = (CardView) findViewById(R.id.survey_card_selected);
         mSurveyCard = (CardView) findViewById(R.id.survey_card_background);
         mImage = (ImageView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
 
-        TypedArray attrs = context.getTheme().obtainStyledAttributes(attr, R.styleable.SurveyCard, 0, 0);
+        TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
 
         try{
-            setColor(attrs.getResourceId(R.styleable.SurveyCard_color, R.color.survey_card_green));
-            setText(attrs.getResourceId(R.styleable.SurveyCard_text, NO_ID));
-            setImage(attrs.getResourceId(R.styleable.SurveyCard_image, NO_ID));
+            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.indicator_card_green));
+            setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, NO_ID));
+            setImage(attrs.getResourceId(R.styleable.IndicatorCard_indicator_image, NO_ID));
         } finally {
             attrs.recycle();
         }
@@ -56,7 +56,7 @@ public class SurveyCard extends CardView{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-            mSurveyCardSelected.setBackgroundColor(context.getColor(R.color.survey_card_background));
+            mSurveyCardSelected.setBackgroundColor(context.getColor(R.color.indicator_card_background));
         } else {
             mSurveyCardSelected.setBackground(context.getDrawable(R.drawable.survey_card_background));
         }
@@ -65,13 +65,13 @@ public class SurveyCard extends CardView{
     public void setColor(CardColor color){
         switch(color) {
             case RED:
-                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.survey_card_red));
+                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.indicator_card_red));
                 break;
             case YELLOW:
-                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.survey_card_yellow));
+                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.indicator_card_yellow));
                 break;
             case GREEN:
-                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.survey_card_green));
+                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.indicator_card_green));
                 break;
         }
     }

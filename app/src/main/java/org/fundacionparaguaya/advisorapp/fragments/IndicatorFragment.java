@@ -11,9 +11,9 @@ import org.fundacionparaguaya.advisorapp.R;
  *
  */
 
-public class SurveyQuestionFragment extends android.app.Fragment {
+public class IndicatorFragment extends android.app.Fragment {
 
-    public SurveyQuestionFragment(){
+    public IndicatorFragment(){
 
     }
 

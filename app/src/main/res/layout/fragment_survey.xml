@@ -6,31 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.SurveyCard
+    <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
         android:id="@+id/surveycard_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        custom:color="@color/survey_card_green"
+        custom:color="@color/indicator_card_green"
         android:layout_margin="36dp">
 
-    </org.fundacionparaguaya.advisorapp.viewcomponents.SurveyCard>
+    </org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard>
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.SurveyCard
+    <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
         android:id="@+id/surveycard_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        custom:color="@color/survey_card_yellow"
+        custom:color="@color/indicator_card_yellow"
         android:layout_margin="2dp">
 
-    </org.fundacionparaguaya.advisorapp.viewcomponents.SurveyCard>
+    </org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard>
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.SurveyCard
+    <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
         android:id="@+id/surveycard_red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        custom:color="@color/survey_card_red"
+        custom:color="@color/indicator_card_red"
         android:layout_margin="36dp">
 
-    </org.fundacionparaguaya.advisorapp.viewcomponents.SurveyCard>
+    </org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard>
 
 </LinearLayout>

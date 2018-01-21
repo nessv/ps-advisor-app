@@ -1,8 +1,6 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,28 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Family;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by Mone Elokda on 1/13/2018.
+ * Adapter for displaying a grid of family cards, with their picture, name, next visit and last visit.
  */
 
-public class FamilyAdapter extends RecyclerView.Adapter<FamilyAdapter.FamilyViewHolder> {
+public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.FamilyViewHolder> {
 
-    List<? extends Family> mFamilyList;
-    ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
+    private List<? extends Family> mFamilyList;
+    private ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
 
-    public FamilyAdapter(List<Family> families){
-        this.mFamilyList = families;
+    public FamiliesAdapter(){
         mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
 
     }

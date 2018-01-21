@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,18 +15,17 @@ import java.util.ArrayList;
  * Main side tab for dashboard
  */
 
+public class DashboardTabBarView extends LinearLayout implements View.OnClickListener {
 
-public class DashboardTabBarView extends LinearLayout {
     private DashboardTab mFamilyTab;
     private DashboardTab mMapTab;
     private DashboardTab mArchiveTab;
     private DashboardTab mSettingsTab;
     private ImageButton mBugButton;
 
-
     private DashboardTab mCurrentlySelected;
 
-    private ArrayList <TabSelectedHandler> tabSelectedHandlers = new ArrayList();
+    private ArrayList <TabSelectedHandler> tabSelectedHandlers = new ArrayList<>();
 
     public DashboardTabBarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -41,19 +39,12 @@ public class DashboardTabBarView extends LinearLayout {
         mSettingsTab = (DashboardTab) findViewById(R.id.settings_tab);
         mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
-        mFamilyTab.setOnClickListener(clickListener);
-        mFamilyTab.setTabType(TabType.FAMILY);
+        mFamilyTab.initTab(TabType.FAMILY, this);
+        mMapTab.initTab(TabType.MAP, this);
+        mArchiveTab.initTab(TabType.ARCHIVE, this);
+        mSettingsTab.initTab(TabType.SETTINGS, this);
 
-        mMapTab.setOnClickListener(clickListener);
-        mMapTab.setTabType(TabType.MAP);
-
-        mArchiveTab.setOnClickListener(clickListener);
-        mArchiveTab.setTabType(TabType.ARCHIVE);
-
-        mSettingsTab.setOnClickListener(clickListener);
-        mSettingsTab.setTabType(TabType.SETTINGS);
-
-        mBugButton.setOnClickListener(clickListener);
+       //mBugButton.setOnClickListener(tabSelectedListener);
 
         selectTab(TabType.FAMILY);
     }
@@ -95,47 +86,57 @@ public class DashboardTabBarView extends LinearLayout {
 
     }
 
+    /**
+     *
+     * @return the currently selected tab
+     */
     public TabType getSelected()
     {
         return mCurrentlySelected.getTabType();
     }
 
-    public void addTabSelectedHandle(TabSelectedHandler handler){
+    public void addTabSelectedHandler(TabSelectedHandler handler){
         tabSelectedHandlers.add(handler);
     }
 
+    /**
+     * Notify listeners that we have selected a tab
+     *
+     * @param tab The type of tab that was selected
+     */
     private void notifyHandlers(TabType tab){
         for(int counter=0; counter < tabSelectedHandlers.size(); counter++){
             tabSelectedHandlers.get(counter).onTabSelection(new TabSelectedEvent(tab));
         }
     }
 
-    final OnClickListener clickListener = new OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            switch (v.getId()){
-                case R.id.family_tab:
-                    selectTab(TabType.FAMILY);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.family_tab:
+                selectTab(TabType.FAMILY);
 
-                    break;
-                case R.id.map_tab:
-                    selectTab(TabType.MAP);
+                break;
+            case R.id.map_tab:
+                selectTab(TabType.MAP);
 
-                    break;
-                case R.id.archive_tab:
-                    selectTab(TabType.ARCHIVE);
+                break;
+            case R.id.archive_tab:
+                selectTab(TabType.ARCHIVE);
 
-                    break;
-                case R.id.settings_tab:
-                    selectTab(TabType.SETTINGS);
+                break;
+            case R.id.settings_tab:
+                selectTab(TabType.SETTINGS);
 
-                    break;
-                case R.id.bug_button:
-                    break;
-            }
+                break;
+            case R.id.bug_button:
+                break;
         }
-    };
+    }
 
+    /**
+     * A listener for tab selection events in this component
+     */
     public interface TabSelectedHandler {
         void onTabSelection(TabSelectedEvent event);
     }

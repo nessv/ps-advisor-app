@@ -15,10 +15,6 @@ import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

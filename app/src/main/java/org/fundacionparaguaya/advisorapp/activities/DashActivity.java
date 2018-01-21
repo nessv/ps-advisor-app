@@ -2,8 +2,6 @@ package org.fundacionparaguaya.advisorapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
@@ -52,24 +50,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
 
-  /*  protected void switchToFrag(TabbedFrag frag, DashboardTab.TabType type)
-    {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        if(mLastFrag!=null) {
-            ft.detach(mLastFrag);
-        }
-
-        ft.attach(frag).replace(R.id.dash_content, frag).commit();
-
-        mLastFrag = frag;
-    }*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setFragmentContainer(R.id.dash_content);
 
 	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
         tabBarView.addTabSelectedHandler(handler);
@@ -82,7 +69,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mArchiveFrag = new ExampleTabbedFragment();
         mSettingsFrag = new ExampleTabbedFragment();
 
-        initTabs(mFamiliesFrag, mMapFrag);
+        initFrags(mFamiliesFrag, mMapFrag);
 
         switchToFrag(mFamiliesFrag);
 

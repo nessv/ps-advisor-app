@@ -71,7 +71,7 @@ public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNa
         setContentView(R.layout.activity_main);
 
 	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
-        tabBarView.addTabSelectedHandle(handler);
+        tabBarView.addTabSelectedHandler(handler);
 
         /**
          * Create fragment for each tab

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c153b027bc719a48e66b8d4bca6dfef9",
+    "identityHash": "92a311aa55273c1fbf2625582980e572",
     "entities": [
       {
         "tableName": "families",
@@ -89,11 +89,139 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "surveys",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "personalQuestions",
+            "columnName": "personal_questions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "economicQuestions",
+            "columnName": "economic_questions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "indicatorQuestions",
+            "columnName": "indicator_questions",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "snapshots",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `family_id` INTEGER NOT NULL, `survey_id` INTEGER NOT NULL, `personalResponses` TEXT, `economicResponses` TEXT, `indicatorResponses` TEXT, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "familyId",
+            "columnName": "family_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "surveyId",
+            "columnName": "survey_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "personalResponses",
+            "columnName": "personalResponses",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "economicResponses",
+            "columnName": "economicResponses",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "indicatorResponses",
+            "columnName": "indicatorResponses",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_snapshots_family_id",
+            "unique": false,
+            "columnNames": [
+              "family_id"
+            ],
+            "createSql": "CREATE  INDEX `index_snapshots_family_id` ON `${TABLE_NAME}` (`family_id`)"
+          },
+          {
+            "name": "index_snapshots_survey_id",
+            "unique": false,
+            "columnNames": [
+              "survey_id"
+            ],
+            "createSql": "CREATE  INDEX `index_snapshots_survey_id` ON `${TABLE_NAME}` (`survey_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "families",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "family_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "surveys",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "survey_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c153b027bc719a48e66b8d4bca6dfef9\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"92a311aa55273c1fbf2625582980e572\")"
     ]
   }
 }

@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,9 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
@@ -148,13 +152,14 @@ public class LoginFragment extends Fragment {
             focusView.requestFocus();
         } else {
             boolean result = mLoginViewModel.login(email, password);
+            Context context = getActivity();
 
-            if(getActivity() == null)
-            {
+            if (context == null) {
                 Log.e("LoginFragment", "Login fragment needs an activity, but none found.");
-            }
-            else if (result) {
-                getActivity().finish();
+            } else if (result) {
+                Intent dashboard = new Intent(context, DashActivity.class);
+                Toast.makeText(context, R.string.login_success, Toast.LENGTH_SHORT).show();
+                context.startActivity(dashboard);
             } else {
                 mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
                 mIncorrectCredentialsView.setVisibility(View.VISIBLE);

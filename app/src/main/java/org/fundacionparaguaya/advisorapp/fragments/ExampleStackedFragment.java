@@ -48,6 +48,7 @@ public class ExampleStackedFragment extends StackedFrag
         return rootView;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();

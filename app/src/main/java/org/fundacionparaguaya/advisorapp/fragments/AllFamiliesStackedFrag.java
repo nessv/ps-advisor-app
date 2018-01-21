@@ -57,7 +57,7 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
         mFamiliesAdapter = new FamiliesAdapter();
 
-        //subscribe to all call backs from the view modle
+        //subscribe to all call backs from the view model
         subscribeToViewModel(mAllFamiliesViewModel);
 
         mFamiliesAdapter.addFamilySelectedHandler(new FamiliesAdapter.FamilySelectedHandler() {
@@ -103,6 +103,10 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         View view = inflater.inflate(R.layout.families_fragment, container, false);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
+
+        //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
+        recyclerView.setFocusable(false);
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

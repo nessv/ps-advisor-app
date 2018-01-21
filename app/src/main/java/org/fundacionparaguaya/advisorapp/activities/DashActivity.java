@@ -47,12 +47,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        switchToFrag(getFragForType(event.getSelectedTab()), event.getSelectedTab());
+        switchToFrag(getFragForType(event.getSelectedTab()));
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
 
-    protected void switchToFrag(TabbedFrag frag, DashboardTab.TabType type)
+  /*  protected void switchToFrag(TabbedFrag frag, DashboardTab.TabType type)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -63,7 +63,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         ft.attach(frag).replace(R.id.dash_content, frag).commit();
 
         mLastFrag = frag;
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,7 +84,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         initTabs(mFamiliesFrag, mMapFrag);
 
-        switchToFrag(mFamiliesFrag, DashboardTab.TabType.FAMILY);
+        switchToFrag(mFamiliesFrag);
 
         //TODO: right now, hitting "back" will circumvent the login screen.
         // also, this should be called before everything in this function, and check if already authenticated.

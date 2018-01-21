@@ -43,7 +43,6 @@ public class ExampleStackedFragment extends StackedFrag
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mTextView.setText(mDisplayText);
-
         mButton = (Button)rootView.findViewById(R.id.button);
 
         return rootView;

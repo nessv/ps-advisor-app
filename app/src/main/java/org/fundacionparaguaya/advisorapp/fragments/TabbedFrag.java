@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigateCallbackInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  * This is a fragment that lives inside of a tab
  */
 
-public abstract class TabbedFrag extends Fragment
+public abstract class TabbedFrag extends Fragment implements NavigateCallbackInterface
 {
     //for logging
     private static final String TAG = "TabbedFrag";

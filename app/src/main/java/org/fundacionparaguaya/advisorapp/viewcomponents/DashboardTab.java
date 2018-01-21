@@ -62,16 +62,47 @@ public class DashboardTab extends LinearLayout {
 
     }
 
+    /**
+     * Inits this tab with all necessary objects
+     *
+     * @param type The type of this tab
+     * @param listener Listener for onClickEvents
+     */
+    public void initTab(TabType type, OnClickListener listener)
+    {
+        this.setOnClickListener(listener);
+        this.setTabType(type);
+    }
+
+    /**
+     * Sets the type for this tab
+     *
+     * Currently one of: Family, Map, Archive, Settings
+     *
+     * @param type Type of tab
+     */
     public void setTabType(TabType type)
     {
         mTabType = type;
     }
 
+    /**
+     * Gets the type for this tab
+     *
+     * Currently one of: Family, Map, Archive, Settings
+     *
+     * @return type of tab
+     */
     public TabType getTabType()
     {
         return mTabType;
     }
 
+    /**
+     * Sets whether or not this tab should be in a selected state
+     *
+     * @param isSelected Whether or not this tab is in a selected state
+     */
     public void setSelected(boolean isSelected){
         if (isSelected) {
             mTabLayout.setBackgroundResource(R.color.tabSelected);//Change DashTabType Background
@@ -83,14 +114,6 @@ public class DashboardTab extends LinearLayout {
             mImageIcon.setColorFilter(R.color.iconNotSelected);//Change Icon Color
             mTextViewCaption.setTextColor(getResources().getColor(R.color.captionNotSelected));//Change Text Color
         }
-    }
-
-    public void setImage(int id) {
-        mImageIcon.setImageResource(id);
-    }
-
-    public void setText_string(String caption){
-        mTextViewCaption.setText(caption);
     }
 
     public void setText(int id){

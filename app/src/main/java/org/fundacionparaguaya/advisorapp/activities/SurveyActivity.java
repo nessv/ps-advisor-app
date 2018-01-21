@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.app.Fragment;
 import android.arch.lifecycle.LiveData;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SurveyFragmentCallbackInterface;
@@ -11,8 +13,16 @@ import org.fundacionparaguaya.advisorapp.models.Snapshot;
  * the family to select indicators
  */
 
-public class SurveyActivity implements SurveyFragmentCallbackInterface
+public class SurveyActivity extends AbstractFragSwitcherActivity implements SurveyFragmentCallbackInterface
 {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+
+    }
+
     @Override
     public void onFinish(Snapshot snap)
     {

@@ -10,10 +10,10 @@ import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 
 /**
- * Created by benhylak on 1/21/18.
+ * Created by benhylak on 1/21/18.f
  */
 
-public class AbstractFragSwitcherActivity extends AppCompatActivity
+public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
 {
     Fragment mLastFrag;
 
@@ -29,7 +29,6 @@ public class AbstractFragSwitcherActivity extends AppCompatActivity
 
         mLastFrag = frag;
     }
-
 
     /**
      * This looks confusing, but it is necessary to attach and detach all of the fragments so their placed into

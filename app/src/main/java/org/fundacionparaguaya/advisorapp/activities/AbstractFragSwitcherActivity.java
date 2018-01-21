@@ -17,6 +17,14 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
 {
     Fragment mLastFrag;
 
+    //must be set by extending activity
+    private int mFragmentContainer;
+
+    protected void setFragmentContainer(int resourceId)
+    {
+        mFragmentContainer = resourceId;
+    }
+
     protected void switchToFrag(Fragment frag)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -25,18 +33,29 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
             ft.detach(mLastFrag);
         }
 
-        ft.attach(frag).replace(R.id.dash_content, frag).commit();
+        ft.attach(frag).replace(mFragmentContainer, frag).commit();
 
         mLastFrag = frag;
+    }
+
+    /** Replaces the current fragment without saving the old fragment's state*/
+    protected void removeThenSwitchFrag(Fragment frag)
+    {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(mLastFrag).commit();
+
+        mLastFrag=null;
+
+        switchToFrag(frag);
     }
 
     /**
      * This looks confusing, but it is necessary to attach and detach all of the fragments so their placed into
      * Fragment manager. Otherwise, switching between can be messy.
      *
-     * @param fragments Frags to add to support fragment manager
+     * @param fragments Frags to add to fragment manager
      */
-    public void initTabs(Fragment ... fragments)
+    public void initFrags(Fragment ... fragments)
     {
         for(Fragment frag: fragments)
         {
@@ -44,5 +63,4 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().detach(frag).commit();
         }
     }
-
 }

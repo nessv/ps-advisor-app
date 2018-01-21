@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.activities.LoginActivity;
+import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
@@ -64,6 +67,10 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
             @Override
             public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
                 String FamilyName = e.getSelectedFamily().getName();
+
+                Intent survey = new Intent(getActivity(), SurveyActivity.class);
+                startActivity(survey);
+
                 Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
             }
         });

@@ -66,8 +66,11 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         mFamilyAdapter.addFamilySelectedHandler(new FamilyAdapter.FamilySelectedHandler() {
             @Override
             public void onFamilySelected(FamilyAdapter.FamilySelectedEvent e) {
-                String FamilyName = e.getSelectedFamily().getName();
-                Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
+                //String FamilyName = e.getSelectedFamily().getName();
+                //Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
+
+                Bundle args = getArguments();
+                int s = args.getInt("SELECTED_FAMILY");
             }
         });
     }

@@ -36,8 +36,11 @@ public class LoginFragment extends Fragment {
     private TextView mPasswordReset;
     private ImageView mHelpButton;
 
+
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
+
     LoginViewModel mLoginViewModel;
 
     @Override

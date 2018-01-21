@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:padding="12dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="459dp"
+        android:layout_height="369dp"
+        android:padding="16dp"
+        android:id="@+id/name_card">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:id="@+id/family_image_2"
+            android:layout_height="250dp"
+            fresco:placeholderImage="@color/colorAccent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="260dp"
+            android:id="@+id/family_view_name"
+            android:textSize="36sp"
+            android:paddingLeft="10dp"
+            android:text="Gonzalez-Rodriguez"
+            android:textColor="#313131"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone_number"
+            android:paddingLeft="10dp"
+            android:textSize="20sp"
+            android:layout_marginTop="310dp"
+            android:text="Phone number"
+            android:textColor="#757478"/>
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp">
+        <android.support.v7.widget.CardView
+            android:id="@+id/home_card"
+            android:layout_width="212dp"
+            android:layout_height="270dp"
+            android:layout_marginTop="21dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/home_label"
+                android:textSize="22sp"
+                android:text="Home"
+                android:paddingLeft="10dp"
+                android:textColor="#313131"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:id="@+id/location_label"
+                android:textSize="18sp"
+                android:text="Location"
+                android:paddingLeft="10dp"
+                android:textColor="#757478"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="75dp"
+                android:id="@+id/location_content"
+                android:textSize="18sp"
+                android:text="Address goes here"
+                android:paddingLeft="10dp"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="140dp"
+                android:id="@+id/description_label"
+                android:textSize="18sp"
+                android:text="Descriptiom"
+                android:paddingLeft="10dp"
+                android:textColor="#757478"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="170dp"
+                android:id="@+id/description_content"
+                android:textSize="18sp"
+                android:text="Description goes here"
+                android:paddingLeft="10dp"
+                android:textColor="#333333"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="212dp"
+            android:layout_height="270dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="36dp"
+            android:layout_toRightOf="@+id/home_card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/priorities_label"
+                android:text="Priorities"
+                android:paddingLeft="10dp"
+                android:textSize="22sp"
+                android:textColor="#313131"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:paddingLeft="10dp"
+                android:id="@+id/first_priority"
+                android:text="First Priority"
+                android:textSize="18sp"
+                android:textColor="#757478"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="85dp"
+                android:paddingLeft="10dp"
+                android:textSize="18sp"
+                android:text="Second Priority"
+                android:id="@+id/second_priority"
+                android:textColor="#757478"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="125dp"
+                android:paddingLeft="10dp"
+                android:text="Third Priority"
+                android:textSize="18sp"
+                android:textColor="#757478"
+                android:id="@+id/third_priority"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="165dp"
+                android:paddingLeft="10dp"
+                android:text="Fourth Priority"
+                android:textSize="18sp"
+                android:textColor="#757478"
+                android:id="@+id/fourth_priority"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="205dp"
+                android:paddingLeft="10dp"
+                android:text="Fifth Priority"
+                android:textSize="18sp"
+                android:textColor="#757478"
+                android:id="@+id/fifth_priority"/>
+
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>

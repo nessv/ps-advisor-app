@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigateCallbackInterface;
 
 /**
  * A StackedFrag is a fragment that is nested in a TabbedFrag. When it needs to navigate, it is able to communicate
@@ -13,6 +14,8 @@ public abstract class StackedFrag extends Fragment
 {
     private static final String TAG = "StackedFrag";
 
+    private NavigateCallbackInterface mNavigateCallback;
+
     /**
      * Gets parent fragment (of type TabbedFrag) and then calls navigation function. Current
      * fragment gets placed in a stack.
@@ -21,18 +24,7 @@ public abstract class StackedFrag extends Fragment
      */
     public void navigateTo(StackedFrag fragment)
     {
-        if (getParentFragment() != null)
-        {
-            if (getParentFragment() instanceof TabbedFrag)
-            {
-                ((TabbedFrag) getParentFragment()).navigateNext(fragment);
-            }
-            else Log.e(TAG, "PARENT OF STACKED FRAG MUST BE TABBED FRAG");
-        }
-        else
-        {
-            Log.e(TAG, "Navigate called on StackFrag, but no parent found");
-        }
+        mNavigateCallback.navigateNext(fragment);
     }
 
     @Override
@@ -40,9 +32,22 @@ public abstract class StackedFrag extends Fragment
     {
         super.onAttach(context);
 
-        if(!(getParentFragment() instanceof TabbedFrag))
+        try
         {
-            throw new ClassCastException("The parent of a TabbedFrag must be a StackedFrag");
+            //if this is a nested fragment
+            if(getParentFragment() != null)
+            {
+                mNavigateCallback = (NavigateCallbackInterface) getParentFragment();
+            }
+            else
+            {
+                //nested inside of an activity
+                mNavigateCallback = (NavigateCallbackInterface) context;
+            }
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException("Parent activity or fragment must implement OnArticleSelectedListener");
         }
     }
 }

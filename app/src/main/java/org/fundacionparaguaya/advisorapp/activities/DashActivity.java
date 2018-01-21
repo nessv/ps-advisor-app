@@ -10,10 +10,11 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.ExampleTabbedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
-public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNavRequiredChangeHandler
+public class DashActivity extends AppCompatActivity implements DisplayBackNavListener
 {
     DashboardTabBarView tabBarView;
     TabbedFrag mFamiliesFrag;
@@ -82,15 +83,6 @@ public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNa
         mArchiveFrag = new ExampleTabbedFragment();
         mSettingsFrag = new ExampleTabbedFragment();
 
-        mFamiliesFrag.addBackNavRequiredHandler((event) -> {
-            String text;
-
-            if(event.isRequired()) text ="Is Required";
-            else text = "Not required";
-
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-        });
-
         initTabs(mFamiliesFrag, mMapFrag);
 
         switchToFrag(mFamiliesFrag, DashboardTab.TabType.FAMILY);
@@ -120,7 +112,14 @@ public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNa
     }
 
     @Override
-    public void handleBackNavChange(TabbedFrag.BackNavRequiredChangeEvent e) {
-        //switch (tabBarVie)
+    public void onShowBackNav()
+    {
+        Toast.makeText(getApplicationContext(), "Show Back Nav", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onHideBackNav()
+    {
+        Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
 }

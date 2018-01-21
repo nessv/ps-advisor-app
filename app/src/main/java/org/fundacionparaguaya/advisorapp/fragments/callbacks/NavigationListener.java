@@ -6,7 +6,7 @@ import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
  * Call back for fragments that want their parent fragment/activity to navigate
  */
 
-public interface NavigateCallbackInterface
+public interface NavigationListener
 {
-    void navigateNext(StackedFrag frag);
+    void onNavigateNext(StackedFrag frag);
 }

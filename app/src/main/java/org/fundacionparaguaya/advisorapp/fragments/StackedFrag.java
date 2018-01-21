@@ -2,8 +2,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigateCallbackInterface;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
 
 /**
  * A StackedFrag is a fragment that is nested in a TabbedFrag. When it needs to navigate, it is able to communicate
@@ -12,9 +11,7 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigateCallbackInt
 
 public abstract class StackedFrag extends Fragment
 {
-    private static final String TAG = "StackedFrag";
-
-    private NavigateCallbackInterface mNavigateCallback;
+    private NavigationListener mNavigateCallback;
 
     /**
      * Gets parent fragment (of type TabbedFrag) and then calls navigation function. Current
@@ -24,7 +21,7 @@ public abstract class StackedFrag extends Fragment
      */
     public void navigateTo(StackedFrag fragment)
     {
-        mNavigateCallback.navigateNext(fragment);
+        mNavigateCallback.onNavigateNext(fragment);
     }
 
     @Override
@@ -37,12 +34,12 @@ public abstract class StackedFrag extends Fragment
             //if this is a nested fragment
             if(getParentFragment() != null)
             {
-                mNavigateCallback = (NavigateCallbackInterface) getParentFragment();
+                mNavigateCallback = (NavigationListener) getParentFragment();
             }
             else
             {
-                //nested inside of an activity
-                mNavigateCallback = (NavigateCallbackInterface) context;
+                //just nested inside of an activity
+                mNavigateCallback = (NavigationListener) context;
             }
         }
         catch (ClassCastException e)

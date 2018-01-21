@@ -14,15 +14,14 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListe
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
-public class DashActivity extends AppCompatActivity implements DisplayBackNavListener
+public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
     DashboardTabBarView tabBarView;
+
     TabbedFrag mFamiliesFrag;
     TabbedFrag mMapFrag;
     TabbedFrag mArchiveFrag;
     TabbedFrag mSettingsFrag;
-
-    TabbedFrag mLastFrag;
 
 	@Override
     public void onBackPressed()
@@ -95,21 +94,7 @@ public class DashActivity extends AppCompatActivity implements DisplayBackNavLis
         startActivity(login);
     }
 
-    /**
-     * This looks confusing, but it is necessary to attach and detach all of the tabs so their placed into
-     * Fragment manager. Otherwise, the tab system won't work correctly.
-     *
-     *
-     * @param tabs Tabs to add to support fragment manager
-     */
-    public void initTabs(TabbedFrag ... tabs)
-    {
-        for(TabbedFrag tab: tabs)
-        {
-            getSupportFragmentManager().beginTransaction().attach(tab).commit();
-            getSupportFragmentManager().beginTransaction().detach(tab).commit();
-        }
-    }
+
 
     @Override
     public void onShowBackNav()

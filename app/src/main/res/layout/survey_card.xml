@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/survey_card_selected"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/survey_card_background">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/survey_card_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:background="@drawable/survey_card"
+        android:backgroundTint="@color/survey_card_green">
+
+        <ImageView
+            android:id="@+id/survey_card_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="17dp"
+            android:background="@drawable/survey_card"/>
+
+        <TextView
+            android:id="@+id/survey_card_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="17dp"
+            android:background="@drawable/survey_card"/>
+
+        </android.support.v7.widget.CardView>
+
+</android.support.v7.widget.CardView>

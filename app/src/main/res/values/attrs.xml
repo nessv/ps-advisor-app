@@ -5,4 +5,9 @@
         <attr name="tabCaption" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="SurveyCard">
+        <attr name="image" format="string"/>
+        <attr name="text" format="string"/>
+        <attr name="color" format="integer"/>
+    </declare-styleable>
 </resources>

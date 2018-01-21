@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;

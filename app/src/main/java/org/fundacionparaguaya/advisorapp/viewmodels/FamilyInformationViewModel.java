@@ -21,7 +21,7 @@ public class FamilyInformationViewModel extends ViewModel {
 
     public LiveData<Family> getFamily(int id){ return mFamilyRepository.getFamily(id); }
 
-    public boolean syncFamily() {
+   /* public boolean syncFamily() {
         try {
             return mFamilyRepository.sync().execute().get();
         } catch (InterruptedException e) {
@@ -33,7 +33,7 @@ public class FamilyInformationViewModel extends ViewModel {
         }
     }
 
-    public void sync() { mFamilyRepository.sync().execute(); }
+    public void sync() { mFamilyRepository.sync().execute(); }*/
 
 
 }

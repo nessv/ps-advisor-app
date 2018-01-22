@@ -3,7 +3,7 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
-import org.fundacionparaguaya.advisorapp.fragments.FamilyInformationFrag;
+import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
 import javax.inject.Singleton;
@@ -22,5 +22,5 @@ public interface ApplicationComponent {
 
     void inject(AllFamiliesStackedFrag allFamiliesFragment);
     void inject(LoginFragment loginFragment);
-    void inject(FamilyInformationFrag familyInformationFrag);
+    void inject(FamilyDetailFrag familyDetailFrag);
 }

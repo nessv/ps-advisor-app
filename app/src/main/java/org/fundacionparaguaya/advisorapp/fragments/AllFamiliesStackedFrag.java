@@ -37,6 +37,8 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
     private FamiliesAdapter mFamiliesAdapter;
 
+    static String selected = "SELECTED_FAMILY";
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
     AllFamiliesViewModel mAllFamiliesViewModel;
@@ -66,9 +68,14 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
             public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
                 //String FamilyName = e.getSelectedFamily().getName();
                 //Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
+                int id = e.getSelectedFamily().getId();
 
-                Bundle args = getArguments();
-                int s = args.getInt("SELECTED_FAMILY");
+                Bundle args = new Bundle();
+                args.putInt(selected, id );
+                FamilyDetailFrag f = new FamilyDetailFrag();
+                f.setArguments(args);
+
+                navigateTo(f);
             }
 
         });

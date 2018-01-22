@@ -2,11 +2,10 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.app.Fragment;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -19,11 +18,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,16 +27,13 @@ import javax.inject.Inject;
  * Created by Mone Elokda on 1/20/2018.
  */
 
-public class FamilyInformationFrag extends Fragment {
+public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
     private TextView mFamilyName;
     private TextView mAddress;
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
 
-    Family mfamily;
-
-    static String selected = "SELECTED_FAMILY";
-
+    int mFamilyId;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -57,18 +50,13 @@ public class FamilyInformationFrag extends Fragment {
         mFamilyInformationViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
-        LiveData<Family> family = mFamilyInformationViewModel.getFamily(getId());
 
-        int id = getId();
+        Bundle args = getArguments();
+        mFamilyId = args.getInt("SELECTED_FAMILY");
 
-        Bundle args = new Bundle();
-        args.putInt(selected, id );
-        FamilyInformationFrag f = new FamilyInformationFrag();
-        f.setArguments(args);
+        mFamilyInformationViewModel.getFamily(mFamilyId).observe(this, this);
 
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -80,17 +68,17 @@ public class FamilyInformationFrag extends Fragment {
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
-        final Family family = mfamily;
+        return view;
 
+    }
+
+    @Override
+    public void onChanged(@Nullable Family family) {
         mFamilyName.setText(family.getName());
         mAddress.setText(family.getAddress());
         mLocation.setText((CharSequence) family.getLocation());
 
         Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
         mFamilyImage.setImageURI(uri);
-
-        return view;
-
     }
-
 }

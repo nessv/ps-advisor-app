@@ -10,6 +10,8 @@ import org.fundacionparaguaya.advisorapp.models.Indicator;
 
 public class IndicatorViewModel extends ViewModel {
 
+
+
     public IndicatorViewModel(){
 
     }

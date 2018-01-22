@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A question targeting an economic data which can be presented to a family and responded to from a
+ * A question targeting a personal data which can be presented to a family and responded to from a
  * survey.
  */
 
-public class EconomicQuestion extends SurveyQuestion {
+public class PersonalQuestion extends SurveyQuestion {
     @SerializedName("options")
     private List<String> options;
 
-    public EconomicQuestion(String name, String description) {
+    public PersonalQuestion(String name, String description) {
         this(name, description, new ArrayList<>());
     }
 
-    public EconomicQuestion(String name, String dimension, List<String> options) {
+    public PersonalQuestion(String name, String dimension, List<String> options) {
         super(name, dimension);
         this.options = options;
     }
@@ -33,7 +33,7 @@ public class EconomicQuestion extends SurveyQuestion {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        EconomicQuestion that = (EconomicQuestion) o;
+        PersonalQuestion that = (PersonalQuestion) o;
 
         return getOptions() != null ? getOptions().equals(that.getOptions()) : that.getOptions() == null;
     }

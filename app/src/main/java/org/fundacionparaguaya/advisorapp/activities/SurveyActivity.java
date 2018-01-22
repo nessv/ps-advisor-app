@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.activities;
 
 import android.app.Fragment;
 import android.arch.lifecycle.LiveData;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.R;
@@ -25,11 +26,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity implements Surv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
 
-        setFragmentContainer(R.id.survey_activity_fragment_container);
-
         introFragment = SurveyIntroFragment.build("Smith");
 
-        initFrags(introFragment);
+        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
 
         showIntro();
     }
@@ -72,14 +71,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity implements Surv
     }
 
     @Override
-    public void setHeaderFooterColor()
-    {
+    public void setHeaderFooterColor(Color headerFooterColor) {
 
     }
 
     @Override
-    public void setTitle()
-    {
+    public void setTitle(String title) {
 
     }
 

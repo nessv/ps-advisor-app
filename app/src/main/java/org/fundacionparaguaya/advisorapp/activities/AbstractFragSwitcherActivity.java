@@ -10,21 +10,41 @@ import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 
 /**
- * Created by benhylak on 1/21/18.f
+ * Extending this class makes it easier to switch between fragments within the activity's container,
+ * without losing the fragment's state
+ *
+ * @author benhylak
  */
 
 public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
 {
     Fragment mLastFrag;
 
-    //must be set by extending activity
     private int mFragmentContainer;
 
-    protected void setFragmentContainer(int resourceId)
+
+    /**
+     * Sets the container for the fragments and attaches/detatches so their state is tracked by fragment manager
+     *
+     *
+     * @param fragments Frags to add to fragment manager
+     */
+    public void initFragSwitcher(int resourceId, Fragment ... fragments)
     {
         mFragmentContainer = resourceId;
+
+        for(Fragment frag: fragments)
+        {
+            getSupportFragmentManager().beginTransaction().attach(frag).commit();
+            getSupportFragmentManager().beginTransaction().detach(frag).commit();
+        }
     }
 
+    /**
+     * Detatches the currently attached fragment and replaces it with the specific fragment
+     *
+     * @param frag Fragment to switch to
+     */
     protected void switchToFrag(Fragment frag)
     {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -47,20 +67,5 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
         mLastFrag=null;
 
         switchToFrag(frag);
-    }
-
-    /**
-     * This looks confusing, but it is necessary to attach and detach all of the fragments so their placed into
-     * Fragment manager. Otherwise, switching between can be messy.
-     *
-     * @param fragments Frags to add to fragment manager
-     */
-    public void initFrags(Fragment ... fragments)
-    {
-        for(Fragment frag: fragments)
-        {
-            getSupportFragmentManager().beginTransaction().attach(frag).commit();
-            getSupportFragmentManager().beginTransaction().detach(frag).commit();
-        }
     }
 }

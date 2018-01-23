@@ -31,7 +31,7 @@ public class BackgroundQuestionsView extends LinearLayout implements View.OnClic
         mQuestion = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);
 
-        mAnswer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_CLASS_TEXT | );
+        //mAnswer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_CLASS_TEXT | );
     }
 
     @Override

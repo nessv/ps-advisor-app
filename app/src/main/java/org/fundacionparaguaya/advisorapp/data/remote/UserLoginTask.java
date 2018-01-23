@@ -12,37 +12,50 @@ import retrofit2.Response;
 
 /**
  * A task for logging a user into the remote database. This will attempt to login, and will return
- * a Login
+ * whether the login was successful.
  */
 
 public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-    private FamilyService familyService;
-    private User user;
+    private AuthenticationManager manager;
 
-    public UserLoginTask(FamilyService familyService, User user) {
-        this.familyService = familyService;
-        this.user = user;
+    public UserLoginTask(AuthenticationManager manager) {
+        this.manager = manager;
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-            Response<LoginIr> response = familyService
-                    .login("Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=", user.getUsername(), user.getPassword()).execute();
-
-            if (!response.isSuccessful()) {
-                return false;
+            Response<LoginIr> response = null;
+            User user = manager.getUser();
+            if (user.getLogin().getRefreshToken() != null) {
+                 response = manager.getAuthService()
+                        .loginWithRefreshToken(
+                                "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=",
+                                user.getLogin().getRefreshToken()).execute();
             }
 
-            if (response.body() == null) {
+            if (!wasSuccessful(response) && user.getPassword() != null) {
+                response = manager.getAuthService()
+                        .loginWithPassword(
+                                "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=",
+                                user.getUsername(), user.getPassword()).execute();
+            }
+
+            if (!wasSuccessful(response)) {
                 return false;
             }
 
             Login login = response.body().login();
             user.setLogin(login);
+            user.setEnabled(true);
+            manager.saveRefreshToken();
         } catch (IOException e) {
             return false;
         }
         return true;
+    }
+
+    private <T> boolean wasSuccessful(Response<T> response) {
+        return response != null && response.isSuccessful() && response.body() != null;
     }
 }

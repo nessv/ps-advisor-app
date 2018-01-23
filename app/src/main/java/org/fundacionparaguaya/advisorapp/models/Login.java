@@ -8,11 +8,17 @@ public class Login {
     private String accessToken;
     private String tokenType;
     private int expiresIn;
+    private String refreshToken;
 
-    public Login(String accessToken, String tokenType, int expiresIn) {
+    public Login(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public Login(String accessToken, String tokenType, int expiresIn, String refreshToken) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
     }
 
     public String getAccessToken() {
@@ -29,5 +35,9 @@ public class Login {
 
     public int getExpiresIn() {
         return expiresIn;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
     }
 }

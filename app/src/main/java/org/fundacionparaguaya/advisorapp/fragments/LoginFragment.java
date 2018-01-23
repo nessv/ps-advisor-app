@@ -56,6 +56,7 @@ public class LoginFragment extends Fragment {
         mLoginViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
+
     }
 
     @Nullable
@@ -63,6 +64,10 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        if (attemptLoginRefreshToken()) {
+            launchMainActivity(getActivity());
+        }
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
@@ -157,15 +162,24 @@ public class LoginFragment extends Fragment {
             if (context == null) {
                 Log.e("LoginFragment", "Login fragment needs an activity, but none found.");
             } else if (result) {
-                Intent dashboard = new Intent(context, DashActivity.class);
                 Toast.makeText(context, R.string.login_success, Toast.LENGTH_SHORT).show();
-                context.startActivity(dashboard);
+                launchMainActivity(context);
             } else {
                 mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
                 mIncorrectCredentialsView.setVisibility(View.VISIBLE);
                 mPasswordView.setText(""); //erase the password field if incorrect
             }
         }
+    }
+
+    private boolean attemptLoginRefreshToken() {
+        return mLoginViewModel.login();
+    }
+
+    private void launchMainActivity(Context context) {
+        Intent dashboard = new Intent(context, DashActivity.class);
+        context.startActivity(dashboard);
+        getActivity().finish();
     }
 }
 

@@ -2,7 +2,7 @@ package org.fundacionparaguaya.advisorapp.viewmodels;
 
 import android.arch.lifecycle.ViewModel;
 
-import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 
 import java.util.concurrent.ExecutionException;
 
@@ -11,21 +11,34 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class LoginViewModel extends ViewModel {
-    private FamilyRepository mFamilyRepository;
+    private AuthenticationManager authManager;
 
-    public LoginViewModel(FamilyRepository familyRepository) {
-        this.mFamilyRepository = familyRepository;
+    public LoginViewModel(AuthenticationManager authManager) {
+        this.authManager = authManager;
     }
 
     public boolean login(String username, String password) {
+        boolean successful = false;
         try {
-            return mFamilyRepository.login(username, password).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            successful = authManager.login(username, password).execute().get();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return false;
+        return successful;
+    }
+
+    /**
+     * Attempts to login using the stored authentication token.
+     * @return Whether a stored token was successfully authenticated.
+     */
+    public boolean login() {
+        boolean successful = false;
+        try {
+            successful = authManager.login().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return successful;
     }
 }
 

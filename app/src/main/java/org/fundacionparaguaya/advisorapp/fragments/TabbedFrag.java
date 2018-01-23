@@ -1,31 +1,32 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import android.view.ViewGroup;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is a fragment that lives inside of a tab
  */
 
-public abstract class TabbedFrag extends Fragment
+public abstract class TabbedFrag extends Fragment implements NavigationListener
 {
     //for logging
     private static final String TAG = "TabbedFrag";
 
-    //listeners to be notified when we need to have back navigation controls displayed (when we have more than
-    //1 fragment in the back stack
-    List<BackNavRequiredChangeHandler> mRequiresBackNavHandlers;
+    private DisplayBackNavListener mDisplayBackNavListener;
 
     //view id the fragment will be placed in
     private int mContainerId;
@@ -35,7 +36,7 @@ public abstract class TabbedFrag extends Fragment
 
     public TabbedFrag()
     {
-        mRequiresBackNavHandlers = new ArrayList<>();
+
     }
 
     @Override
@@ -48,15 +49,23 @@ public abstract class TabbedFrag extends Fragment
             //if there was a change in whether or not we need back nav, notify our listeners
             if(mWasBackNavRequired!=isBackNavRequired())
             {
+                //update our local variable to reflect the change
                 mWasBackNavRequired = isBackNavRequired();
 
-                notifyBackNavRequiredChange(isBackNavRequired());
+                if(mWasBackNavRequired) //if required
+                {
+                    mDisplayBackNavListener.onShowBackNav();
+                }
+                else //if not required
+                {
+                    mDisplayBackNavListener.onHideBackNav();
+                }
             }
         });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_tabbed, container, false);
 
@@ -77,12 +86,12 @@ public abstract class TabbedFrag extends Fragment
      *
      * @param frag Fragment to navigate to
      */
-    public void navigateNext(StackedFrag frag) {
+    public void onNavigateNext(StackedFrag frag) {
         makeFragmentTransaction(frag).addToBackStack(null).commit();
     }
 
     /**
-     * Muscle behind setInitialFragment and navigateNext
+     * Muscle behind setInitialFragment and onNavigateNext
      * @param frag
      */
     private FragmentTransaction makeFragmentTransaction(StackedFrag frag) {
@@ -100,30 +109,6 @@ public abstract class TabbedFrag extends Fragment
         getChildFragmentManager().popBackStack();
     }
 
-    /**
-     * Adds a handler for changes in whether this fragment needs back navigation controls
-     * @param handler Handler to Add
-     */
-    public void addBackNavRequiredHandler(BackNavRequiredChangeHandler handler) {
-        this.mRequiresBackNavHandlers.add(handler);
-    }
-
-    public void removeBackNavRequiredHandler(BackNavRequiredChangeHandler handler) {
-        this.mRequiresBackNavHandlers.remove(handler);
-    }
-
-    /**
-     * Notifies listeners to hide or show the back navigation button
-     *
-     * @param required Whether or not to show back nav
-     */
-    protected void notifyBackNavRequiredChange(boolean required)
-    {
-        for(BackNavRequiredChangeHandler handler: mRequiresBackNavHandlers)
-        {
-            handler.handleBackNavChange(new BackNavRequiredChangeEvent(required));
-        }
-    }
 
     /**
      *
@@ -135,23 +120,27 @@ public abstract class TabbedFrag extends Fragment
         return getChildFragmentManager().getBackStackEntryCount() > 0;
     }
 
-    public class BackNavRequiredChangeEvent
+    @Override
+    public void onAttach(Context context)
     {
-        boolean mRequired;
+        super.onAttach(context);
 
-        BackNavRequiredChangeEvent(boolean required)
+        try
         {
-            mRequired = required;
+            //if this is a nested fragment
+            if(getParentFragment() != null)
+            {
+                mDisplayBackNavListener = (DisplayBackNavListener) getParentFragment();
+            }
+            else
+            {
+                //nested inside of an activity
+                mDisplayBackNavListener = (DisplayBackNavListener) context;
+            }
         }
-
-        public boolean isRequired()
+        catch (ClassCastException e)
         {
-            return mRequired;
+            throw new ClassCastException("Parent activity or fragment must implement ShowBackNavCallback");
         }
-    }
-
-    public interface BackNavRequiredChangeHandler
-    {
-        void handleBackNavChange(BackNavRequiredChangeEvent e);
     }
 }

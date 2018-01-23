@@ -2,7 +2,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
 
 /**
  * A StackedFrag is a fragment that is nested in a TabbedFrag. When it needs to navigate, it is able to communicate
@@ -11,7 +11,7 @@ import android.util.Log;
 
 public abstract class StackedFrag extends Fragment
 {
-    private static final String TAG = "StackedFrag";
+    private NavigationListener mNavigateCallback;
 
     /**
      * Gets parent fragment (of type TabbedFrag) and then calls navigation function. Current
@@ -21,18 +21,7 @@ public abstract class StackedFrag extends Fragment
      */
     public void navigateTo(StackedFrag fragment)
     {
-        if (getParentFragment() != null)
-        {
-            if (getParentFragment() instanceof TabbedFrag)
-            {
-                ((TabbedFrag) getParentFragment()).navigateNext(fragment);
-            }
-            else Log.e(TAG, "PARENT OF STACKED FRAG MUST BE TABBED FRAG");
-        }
-        else
-        {
-            Log.e(TAG, "Navigate called on StackFrag, but no parent found");
-        }
+        mNavigateCallback.onNavigateNext(fragment);
     }
 
     @Override
@@ -40,9 +29,22 @@ public abstract class StackedFrag extends Fragment
     {
         super.onAttach(context);
 
-        if(!(getParentFragment() instanceof TabbedFrag))
+        try
         {
-            throw new ClassCastException("The parent of a TabbedFrag must be a StackedFrag");
+            //if this is a nested fragment
+            if(getParentFragment() != null)
+            {
+                mNavigateCallback = (NavigationListener) getParentFragment();
+            }
+            else
+            {
+                //just nested inside of an activity
+                mNavigateCallback = (NavigationListener) context;
+            }
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException("Parent activity or fragment must implement NavigationListener");
         }
     }
 }

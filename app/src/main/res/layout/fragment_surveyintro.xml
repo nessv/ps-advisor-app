@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="#E5BE45">
+
+<LinearLayout android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="@style/OpenSans.Black.BigHero"
+              android:text="@string/surveyintro_newsnapshot"
+              android:gravity="center"
+
+    />
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="@style/OpenSans.Black.Heading"
+              tools:text="Garcia Family"
+              android:id="@+id/tv_surveyintro_familyname"
+              android:gravity="center"
+    />
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/surveyintro_mainvisual_all"
+            android:layout_marginTop="48dp"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:id="@+id/btn_surveyintro_submit"
+            android:text="@string/all_continue"/>
+
+</LinearLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.data.remote;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.User;
@@ -46,17 +45,11 @@ public class AuthenticationManager {
         return user.getLogin().getAuthenticationString();
     }
 
-    public AsyncTask<Void, Void, Boolean> login(String username, String password) {
-        user.setUsername(username);
-        user.setPassword(password);
-        return login();
+    public boolean hasRefreshToken() {
+        return user.getLogin().getRefreshToken() != null;
     }
 
-    public AsyncTask<Void, Void, Boolean> login() {
-        return new UserLoginTask(this);
-    }
-
-    void saveRefreshToken() {
+    public void saveRefreshToken() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(KEY_REFRESH_TOKEN, user.getLogin().getRefreshToken());
         editor.apply();

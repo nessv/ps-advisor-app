@@ -3,13 +3,13 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,21 +24,31 @@ import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
+import org.fundacionparaguaya.advisorapp.models.Login;
+import org.fundacionparaguaya.advisorapp.models.User;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
+
+import retrofit2.Response;
 
 /**
  * The fragment for the login page.
  */
 
 public class LoginFragment extends Fragment {
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private TextView mIncorrectCredentialsView;
-    private TextView mPasswordReset;
-    private ImageView mHelpButton;
+    EditText mEmailView;
+    EditText mPasswordView;
+    TextView mIncorrectCredentialsView;
+    TextView mPasswordReset;
+    ImageView mHelpButton;
+
+    AuthenticationManager mAuthManager;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -56,7 +66,11 @@ public class LoginFragment extends Fragment {
         mLoginViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
+        mAuthManager = mLoginViewModel.getAuthManager();
 
+        if (mAuthManager.hasRefreshToken()) {
+            new RefreshTokenLoginTask(this).execute();
+        }
     }
 
     @Nullable
@@ -64,12 +78,8 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        if (attemptLoginRefreshToken()) {
-            launchMainActivity(getActivity());
-        }
-
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        setRetainInstance(true);
 
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
         mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
@@ -116,7 +126,6 @@ public class LoginFragment extends Fragment {
                 //getActivity().finish();
             }
         });
-
         return view;
     }
 
@@ -156,31 +165,106 @@ public class LoginFragment extends Fragment {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            boolean result = mLoginViewModel.login(email, password);
-            Context context = getActivity();
-
-            if (context == null) {
-                Log.e("LoginFragment", "Login fragment needs an activity, but none found.");
-            } else if (result) {
-                Toast.makeText(context, R.string.login_success, Toast.LENGTH_SHORT).show();
-                launchMainActivity(context);
-            } else {
-                mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
-                mIncorrectCredentialsView.setVisibility(View.VISIBLE);
-                mPasswordView.setText(""); //erase the password field if incorrect
-            }
+            mAuthManager.getUser().setUsername(email);
+            mAuthManager.getUser().setPassword(password);
+            new PasswordLoginTask(this).execute();
         }
     }
 
-    private boolean attemptLoginRefreshToken() {
-        return mLoginViewModel.login();
-    }
-
-    private void launchMainActivity(Context context) {
+    void launchMainActivity(Context context) {
         Intent dashboard = new Intent(context, DashActivity.class);
         context.startActivity(dashboard);
         getActivity().finish();
     }
+}
+abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
+    LoginFragment mLoginFragment;
+    AuthenticationManager mAuthManager;
+
+    AbstractLoginTask(LoginFragment loginFragment) {
+        this.mLoginFragment = loginFragment;
+        this.mAuthManager = mLoginFragment.mAuthManager;
+    }
+
+    @Override
+    protected Boolean doInBackground(String... strings) {
+        try {
+            User user = mAuthManager.getUser();
+            Response<LoginIr> response = login(user);
+
+            if (!wasSuccessful(response)) {
+                return false;
+            }
+
+            Login login = response.body().login();
+            user.setLogin(login);
+            user.setEnabled(true);
+            mAuthManager.saveRefreshToken();
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
+    protected abstract Response<LoginIr> login(User user) throws IOException;
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+        super.onPostExecute(result);
+
+        if (result) {
+            Context context = mLoginFragment.getActivity();
+            Toast.makeText(context, R.string.login_success, Toast.LENGTH_SHORT).show();
+            mLoginFragment.launchMainActivity(context);
+        } else {
+            onLoginFailure();
+        }
+    }
+
+    protected abstract void onLoginFailure();
+
+    private <T> boolean wasSuccessful(Response<T> response) {
+        return response != null && response.isSuccessful() && response.body() != null;
+    }
+}
+
+class PasswordLoginTask extends AbstractLoginTask {
+
+    PasswordLoginTask(LoginFragment loginFragment) {
+        super(loginFragment);
+    }
+
+    @Override
+    protected Response<LoginIr> login(User user) throws IOException {
+        return mAuthManager.getAuthService()
+                .loginWithPassword(
+                        "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=",
+                        user.getUsername(), user.getPassword()).execute();
+    }
+
+    @Override
+    protected void onLoginFailure() {
+        mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
+        mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+        mLoginFragment.mPasswordView.setText(""); //erase the password field if incorrect
+    }
+}
+
+class RefreshTokenLoginTask extends AbstractLoginTask {
+
+    RefreshTokenLoginTask(LoginFragment loginFragment) {
+        super(loginFragment);
+    }
+    @Override
+    protected Response<LoginIr> login(User user) throws IOException {
+        return mAuthManager.getAuthService()
+                .loginWithRefreshToken(
+                        "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=",
+                        user.getLogin().getRefreshToken()).execute();
+    }
+
+    @Override
+    protected void onLoginFailure() { }
 }
 
 

@@ -26,4 +26,9 @@
     <string name="login_incorrectcredentials">Hum, Ese email o clave no funcionó. Inténtalo de nuevo</string>
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
+
+    <!-- Survey Activity -->
+    <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
+    <string name="all_continue">Continuar</string>
+
 </resources>

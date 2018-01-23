@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:padding="12dp"
+    android:background="#F7F7F7"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="260dp"
             android:id="@+id/family_view_name"
+            android:textAppearance="@style/OpenSans.Black.BigHero"
             android:textSize="36sp"
             android:paddingLeft="10dp"
             android:text="Gonzalez-Rodriguez"
@@ -183,6 +185,7 @@
             android:layout_height="wrap_content"
             android:text="Take Survey"
             android:layout_toRightOf="@id/priorities_card"
+            android:layout_marginLeft="60dp"
             android:layout_marginTop="100dp"
             android:layout_marginRight="50dp"/>
 

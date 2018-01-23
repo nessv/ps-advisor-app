@@ -58,8 +58,8 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
         Bundle args = getArguments();
         mFamilyId = args.getInt("SELECTED_FAMILY");
 
-        mFamilyInformationViewModel.getFamily(mFamilyId).observe(this, this);
-
+        mFamilyInformationViewModel.setFamily(mFamilyId).observe(this, this);
+        //TODO -- load until we have a value
     }
 
     @Override
@@ -83,7 +83,9 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
         Button surveyButton  = view.findViewById(R.id.survey_button);
 
         surveyButton.setOnClickListener((View view1) -> {
-            Intent surveyIntent = SurveyActivity.build(getContext(), view1);
+            Intent surveyIntent = SurveyActivity.build(getContext(),
+                    mFamilyInformationViewModel.getCurrentFamily().getValue());
+
             startActivity(surveyIntent);
         });
 

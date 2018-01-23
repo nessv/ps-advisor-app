@@ -44,6 +44,7 @@ import retrofit2.Response;
 public class LoginFragment extends Fragment {
     EditText mEmailView;
     EditText mPasswordView;
+    Button mSubmitButton;
     TextView mIncorrectCredentialsView;
     TextView mPasswordReset;
     ImageView mHelpButton;
@@ -67,10 +68,6 @@ public class LoginFragment extends Fragment {
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
         mAuthManager = mLoginViewModel.getAuthManager();
-
-        if (mAuthManager.hasRefreshToken()) {
-            new RefreshTokenLoginTask(this).execute();
-        }
     }
 
     @Nullable
@@ -89,20 +86,19 @@ public class LoginFragment extends Fragment {
 
         mHelpButton = (ImageView) view.findViewById(R.id.login_help);
 
+        mSubmitButton = (Button) view.findViewById(R.id.login_loginbutton);
+        mSubmitButton.setOnClickListener((event) -> attemptLogin());
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                     attemptLogin();
-                    return true;
+                    return false;
                 }
-                return false;
+                return true;
             }
         });
-
-        Button mEmailSignInButton = (Button) view.findViewById(R.id.login_loginbutton);
-
-        mEmailSignInButton.setOnClickListener((event) -> attemptLogin());
 
         //hide incorrect login textview on touch
         View.OnClickListener hideIncorrectCredentials =
@@ -126,6 +122,11 @@ public class LoginFragment extends Fragment {
                 //getActivity().finish();
             }
         });
+
+
+        if (mAuthManager.hasRefreshToken()) {
+            new RefreshTokenLoginTask(this).execute();
+        }
         return view;
     }
 
@@ -187,6 +188,15 @@ abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        mLoginFragment.mEmailView.setEnabled(false);
+        mLoginFragment.mPasswordView.setEnabled(false);
+        mLoginFragment.mSubmitButton.setEnabled(false);
+    }
+
+    @Override
     protected Boolean doInBackground(String... strings) {
         try {
             User user = mAuthManager.getUser();
@@ -211,6 +221,9 @@ abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
+        mLoginFragment.mEmailView.setEnabled(true);
+        mLoginFragment.mPasswordView.setEnabled(true);
+        mLoginFragment.mSubmitButton.setEnabled(true);
 
         if (result) {
             Context context = mLoginFragment.getActivity();

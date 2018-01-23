@@ -20,8 +20,6 @@ public class BackgroundQuestionsView extends LinearLayout implements View.OnClic
     private TextView mQuestion;
     private EditText mAnswer;
 
-
-
     public BackgroundQuestionsView(Context context) {
         super(context);
 

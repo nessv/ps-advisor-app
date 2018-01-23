@@ -19,11 +19,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.DropDownListView
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="@string/your_name"
-            android:id="@+id/answer_text_field"
+            android:id="@+id/dropdown_field"
             android:layout_marginLeft="100dp"
             android:paddingRight="300dp"
             android:textSize="48sp"
@@ -32,7 +32,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/answer_text_field"
+            android:layout_toRightOf="@+id/dropdown_field"
             android:text="Next"
             android:textSize="36sp"
             android:background="#333333"

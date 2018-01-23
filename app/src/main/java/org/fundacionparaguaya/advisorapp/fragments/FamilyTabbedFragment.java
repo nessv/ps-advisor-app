@@ -15,13 +15,15 @@ public class FamilyTabbedFragment extends TabbedFrag
 {
     AllFamiliesStackedFrag mFrag1;
 
+    static String ALL_FAMILIES_TAG = "ALL_FAM";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
         FragmentManager manager = getFragmentManager();
-        mFrag1 = (AllFamiliesStackedFrag) manager.findFragmentByTag("ALL_FAM");
+        mFrag1 = (AllFamiliesStackedFrag) manager.findFragmentByTag(ALL_FAMILIES_TAG);
 
         if (mFrag1 == null)
             mFrag1 = new AllFamiliesStackedFrag();

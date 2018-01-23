@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+>
+
+    <ImageButton android:layout_width="56dp" android:layout_height="56dp"
+                 app:layout_constraintEnd_toEndOf="parent"
+
+    />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#D6B03A"
+            android:id="@+id/survey_activity_header"
+    >
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/OpenSans.Black.BigHero"
+                android:textSize="48sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="28dp"
+                tools:text="Test Title"/>
+    </LinearLayout>
+
+    <LinearLayout
+                  android:layout_height="0dp"
+                  android:layout_width="0dp"
+                  app:layout_constraintTop_toBottomOf="@id/survey_activity_header"
+                  app:layout_constraintBottom_toTopOf="@id/survey_activity_footer"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:background="@color/colorPrimaryDark"
+                  android:orientation="vertical"
+                  android:id="@+id/survey_activity_fragment_container"
+                   />
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#D6B03A"
+            android:id="@+id/survey_activity_footer"
+    >
+        <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                tools:text="5 Questions Remaining"
+                android:layout_alignParentStart="true"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"/>
+
+        <TextView
+                android:layout_marginTop="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                tools:text="Next Up: Indicators"
+                android:layout_gravity="start"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"/>
+
+        <ProgressBar android:layout_width="match_parent"
+                     android:layout_height="12dp"
+                     style="@android:style/Widget.ProgressBar.Horizontal"
+                     android:progress="20"
+                     android:progressTint="#000000"
+                     android:progressBackgroundTint="#FFFFFF"
+                     android:layout_alignParentBottom="true"
+        />
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

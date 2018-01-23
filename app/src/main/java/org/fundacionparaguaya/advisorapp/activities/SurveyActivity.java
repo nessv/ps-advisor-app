@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.ExampleStackedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
@@ -51,7 +52,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        introFragment = SurveyIntroFragment.build("Smith");
+        /**Construct fragments here**/
+        introFragment = SurveyIntroFragment.build();
+
+        /** Add all fragments you want to switch between as parameter here**/
 
         initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
 
@@ -96,6 +100,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case BACKGROUND_QUESTIONS:
                     switchToFrag(/* Background question fragment here */ null);
                     break;
+
+              //  case INDICATORS:
 
                 /* * etc * */
             };

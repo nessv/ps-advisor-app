@@ -26,9 +26,6 @@ import javax.inject.Inject;
 
 public class SurveyIntroFragment extends AbstractSurveyFragment
 {
-    public static String FAMILY_NAME_KEY = "FAMILY_NAME";
-
-
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -41,6 +38,8 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
     {
         super.onCreate(savedInstanceState);
 
+        //Inject view model factory and load view model
+
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
@@ -50,7 +49,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
                 .get(SharedSurveyViewModel.class);
 
         //get family name from arguments
-
     }
 
     @Nullable
@@ -88,14 +86,9 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
     }
 
 
-    public static SurveyIntroFragment build(String familyName)
+    public static SurveyIntroFragment build()
     {
-        Bundle args = new Bundle();
-        args.putString(FAMILY_NAME_KEY, familyName);
-
         SurveyIntroFragment fragment = new SurveyIntroFragment();
-
-        fragment.setArguments(args);
 
         return fragment;
     }

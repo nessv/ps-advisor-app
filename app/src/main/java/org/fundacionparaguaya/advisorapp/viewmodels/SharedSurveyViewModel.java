@@ -27,7 +27,8 @@ public class SharedSurveyViewModel extends ViewModel
     MutableLiveData<Snapshot> mSnapshot;
 
     LiveData<Family> mFamily;
-    LiveData<Survey> mSurvey;
+
+    Survey mSurvey;
 
     private int mSurveyId;
     private int mFamilyId;
@@ -70,12 +71,19 @@ public class SharedSurveyViewModel extends ViewModel
      */
     public void makeSnapshot(Survey survey)
     {
-        mSnapshot.setValue(new Snapshot(mFamily.getValue(), survey));
+        mSurvey = survey;
+
+        mSnapshot.setValue(new Snapshot(mFamily.getValue(), mSurvey));
     }
 
     public LiveData<Snapshot> getSnapshot()
     {
         return mSnapshot;
+    }
+
+    public Survey getSurveyInProgress()
+    {
+        return mSurvey;
     }
 
     /**

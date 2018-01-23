@@ -25,7 +25,8 @@ public interface ApplicationComponent {
 
     void inject(LoginFragment loginFragment);
 
+    void inject(SurveyActivity surveyActivity);
+
     void inject(SurveyIntroFragment surveyIntroFragment);
 
-    void inject(SurveyActivity surveyActivity);
 }

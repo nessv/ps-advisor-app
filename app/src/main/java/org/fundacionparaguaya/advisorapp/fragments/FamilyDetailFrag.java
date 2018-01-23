@@ -80,11 +80,14 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button addButton  = view.findViewById(R.id.survey_button);
+        Button surveyButton  = view.findViewById(R.id.survey_button);
 
-        addButton.setOnClickListener(view ){
+        surveyButton.setOnClickListener((View view1) -> {
+            Intent surveyIntent = SurveyActivity.build(getContext(), view1);
+            startActivity(surveyIntent);
+        });
 
-        }
+
     }
 
     @Override

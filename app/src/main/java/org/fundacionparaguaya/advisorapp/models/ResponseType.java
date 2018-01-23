@@ -7,8 +7,5 @@ package org.fundacionparaguaya.advisorapp.models;
 public enum ResponseType {
     Integer,
     String,
-    Boolean,
-    Date,
-    Decimal,
     Indicator
 }

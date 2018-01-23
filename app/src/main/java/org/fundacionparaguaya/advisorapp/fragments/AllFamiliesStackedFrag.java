@@ -70,8 +70,6 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
             public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
 
-                //String FamilyName = e.getSelectedFamily().getName();
-                //Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
                 int id = e.getSelectedFamily().getId();
 
                 Bundle args = new Bundle();

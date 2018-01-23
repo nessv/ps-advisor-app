@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
+import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.SurveyQuestion;
 
 /**
  * Created by Mone Elokda on 1/23/2018.
@@ -17,7 +20,7 @@ import org.fundacionparaguaya.advisorapp.R;
 
 public class BackgroundQuestionsView extends LinearLayout implements View.OnClickListener{
 
-    private TextView mQuestion;
+    private TextView mQuestionTextView;
     private EditText mAnswer;
 
     public BackgroundQuestionsView(Context context) {
@@ -26,10 +29,30 @@ public class BackgroundQuestionsView extends LinearLayout implements View.OnClic
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.fragment_question_background, this);
 
-        mQuestion = (TextView) findViewById(R.id.background_question);
+        mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);
 
+        this.setInputType(InputType.TYPE_CLASS_TEXT);
         //mAnswer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_CLASS_TEXT | );
+    }
+
+    public void setQuestion(PersonalQuestion question)
+    {
+    }
+
+    public void setQuestion(EconomicQuestion question)
+    {
+
+    }
+
+    public void setInputType(int type)
+    {
+        mAnswer.setInputType(type);
+    }
+
+    public void getResponse(String response)
+    {
+
     }
 
     @Override

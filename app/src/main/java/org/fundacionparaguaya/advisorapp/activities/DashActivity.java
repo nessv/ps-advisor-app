@@ -1,26 +1,24 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.ExampleTabbedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
 import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
-public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNavRequiredChangeHandler
+public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
     DashboardTabBarView tabBarView;
+
     TabbedFrag mFamiliesFrag;
     TabbedFrag mMapFrag;
     TabbedFrag mArchiveFrag;
     TabbedFrag mSettingsFrag;
-
-    TabbedFrag mLastFrag;
 
 	@Override
     public void onBackPressed()
@@ -46,23 +44,10 @@ public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNa
 
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        switchToFrag(getFragForType(event.getSelectedTab()), event.getSelectedTab());
+        switchToFrag(getFragForType(event.getSelectedTab()));
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
-
-    protected void switchToFrag(TabbedFrag frag, DashboardTab.TabType type)
-    {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        if(mLastFrag!=null) {
-            ft.detach(mLastFrag);
-        }
-
-        ft.attach(frag).replace(R.id.dash_content, frag).commit();
-
-        mLastFrag = frag;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -81,38 +66,22 @@ public class DashActivity extends AppCompatActivity implements TabbedFrag.BackNa
         mArchiveFrag = new ExampleTabbedFragment();
         mSettingsFrag = new ExampleTabbedFragment();
 
-        mFamiliesFrag.addBackNavRequiredHandler((event) -> {
-            String text;
+        initFragSwitcher(R.id.dash_content, mFamiliesFrag, mMapFrag);
 
-            if(event.isRequired()) text ="Is Required";
-            else text = "Not required";
-
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-        });
-
-        initTabs(mFamiliesFrag, mMapFrag);
-
-        switchToFrag(mFamiliesFrag, DashboardTab.TabType.FAMILY);
+        switchToFrag(mFamiliesFrag);
     }
 
-    /**
-     * This looks confusing, but it is necessary to attach and detach all of the tabs so their placed into
-     * Fragment manager. Otherwise, the tab system won't work correctly.
-     *
-     *
-     * @param tabs Tabs to add to support fragment manager
-     */
-    public void initTabs(TabbedFrag ... tabs)
+
+
+    @Override
+    public void onShowBackNav()
     {
-        for(TabbedFrag tab: tabs)
-        {
-            getSupportFragmentManager().beginTransaction().attach(tab).commit();
-            getSupportFragmentManager().beginTransaction().detach(tab).commit();
-        }
+        Toast.makeText(getApplicationContext(), "Show Back Nav", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void handleBackNavChange(TabbedFrag.BackNavRequiredChangeEvent e) {
-        //switch (tabBarVie)
+    public void onHideBackNav()
+    {
+        Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
 }

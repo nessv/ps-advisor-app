@@ -16,7 +16,7 @@ public class IndicatorQuestion extends SurveyQuestion {
     private List<IndicatorOption> options;
 
     public IndicatorQuestion(Indicator indicator) {
-        super(indicator.getName(), indicator.getDimension());
+        super(indicator.getName(), indicator.getDimension(), ResponseType.Indicator);
         this.indicator = indicator;
         this.options = indicator.getOptions();
     }

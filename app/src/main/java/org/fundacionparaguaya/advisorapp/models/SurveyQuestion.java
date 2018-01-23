@@ -11,10 +11,13 @@ public class SurveyQuestion {
     private String name;
     @ColumnInfo(name="description")
     private String description;
+    @ColumnInfo(name="type")
+    private ResponseType type;
 
-    public SurveyQuestion(String name, String description) {
+    public SurveyQuestion(String name, String description, ResponseType type) {
         this.name = name;
         this.description = description;
+        this.type = type;
     }
 
     public String getName() {

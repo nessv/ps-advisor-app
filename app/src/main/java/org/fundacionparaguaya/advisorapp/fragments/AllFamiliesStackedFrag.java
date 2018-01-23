@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.activities.LoginActivity;
+import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
@@ -57,14 +60,14 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
         mFamiliesAdapter = new FamiliesAdapter();
 
-        //subscribe to all call backs from the view modle
+        //subscribe to all call backs from the view model
         subscribeToViewModel(mAllFamiliesViewModel);
 
         mFamiliesAdapter.addFamilySelectedHandler(new FamiliesAdapter.FamilySelectedHandler() {
             @Override
             public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
-                String FamilyName = e.getSelectedFamily().getName();
-                Toast.makeText(getContext(),FamilyName + "Family Selected", Toast.LENGTH_LONG).show();
+                Intent surveyIntent = SurveyActivity.build(getContext(), e.getSelectedFamily());
+                startActivity(surveyIntent);
             }
         });
     }
@@ -103,6 +106,10 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         View view = inflater.inflate(R.layout.families_fragment, container, false);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.all_families_view);
+
+        //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
+        recyclerView.setFocusable(false);
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

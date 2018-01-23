@@ -25,13 +25,12 @@ public interface ApplicationComponent {
     void inject(AllFamiliesStackedFrag allFamiliesFragment);
 
     void inject(LoginFragment loginFragment);
-<<<<<<< HEAD
+
     void inject(FamilyDetailFrag familyDetailFrag);
-=======
 
     void inject(SurveyActivity surveyActivity);
 
     void inject(SurveyIntroFragment surveyIntroFragment);
 
->>>>>>> fd28913e5dc15c0c8bee514dc7fd3be361a9d5e2
+
 }

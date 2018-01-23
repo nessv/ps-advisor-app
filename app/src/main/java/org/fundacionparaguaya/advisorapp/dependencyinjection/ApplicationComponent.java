@@ -31,5 +31,5 @@ public interface ApplicationComponent {
     void inject(SurveyActivity surveyActivity);
 
     void inject(SurveyIntroFragment surveyIntroFragment);
-    
+
 }

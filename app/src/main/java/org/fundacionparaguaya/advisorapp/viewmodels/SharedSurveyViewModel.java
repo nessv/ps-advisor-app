@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.viewmodels;
 
 import android.arch.lifecycle.*;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
@@ -127,44 +128,42 @@ public class SharedSurveyViewModel extends ViewModel
 
     public @Nullable IndicatorOption getResponseForIndicator(IndicatorQuestion question)
     {
-        if(hasExistingSnapshot()) {
-            return mSnapshot.getValue().getIndicatorResponses().get(question);
-        }
-
-        return null;
+        return getSnapshotValue().getIndicatorResponses().get(question);
     }
 
     public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response)
     {
-        if(hasExistingSnapshot())
-        {
-            mSnapshot.getValue().response(indicator, response);
-        }
+        getSnapshotValue().response(indicator, response);
     }
 
     public void addBackgroundResponse(SurveyQuestion question, String response)
     {
-        if(hasExistingSnapshot())
+        if(question instanceof PersonalQuestion)
         {
-            if(question instanceof PersonalQuestion)
-            {
-                mSnapshot.getValue().response((PersonalQuestion) question, response);
-            }
-            else if(question instanceof EconomicQuestion)
-            {
-                mSnapshot.getValue().response((EconomicQuestion) question, response);
-            }
+            getSnapshotValue().response((PersonalQuestion) question, response);
+        }
+        else if(question instanceof EconomicQuestion)
+        {
+            getSnapshotValue().response((EconomicQuestion) question, response);
         }
     }
 
-    private boolean hasExistingSnapshot()
-    {
-        if(mSnapshot == null)
+    /**
+     * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
+     * an illegal state exception
+     *
+     * @return Snapshot in process
+     * @throws IllegalStateException
+     */
+        private @NonNull Snapshot getSnapshotValue()
         {
-            throw new IllegalStateException(NO_SNAPSHOT_EXCEPTION_MESSAGE);
-        }
+            Snapshot value = mSnapshot.getValue();
 
-        else return true;
+            if(value == null)
+            {
+                throw new IllegalStateException(NO_SNAPSHOT_EXCEPTION_MESSAGE);
+            }
+            else return value;
     }
 
 

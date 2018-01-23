@@ -14,12 +14,12 @@ public class EconomicQuestion extends SurveyQuestion {
     @SerializedName("options")
     private List<String> options;
 
-    public EconomicQuestion(String name, String description) {
-        this(name, description, new ArrayList<>());
+    public EconomicQuestion(String name, String description, ResponseType type) {
+        this(name, description, type, new ArrayList<>());
     }
 
-    public EconomicQuestion(String name, String dimension, List<String> options) {
-        super(name, dimension);
+    public EconomicQuestion(String name, String dimension, ResponseType type, List<String> options) {
+        super(name, dimension, type);
         this.options = options;
     }
 

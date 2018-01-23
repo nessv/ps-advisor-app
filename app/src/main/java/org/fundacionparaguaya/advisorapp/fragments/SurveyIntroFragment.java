@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Survey;
@@ -53,11 +55,18 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_surveyintro, container, false);
 
         view.findViewById(R.id.btn_surveyintro_submit).setOnClickListener((event)->onSubmit());
+
+        TextView familyNameTv = view.findViewById(R.id.tv_surveyintro_familyname);
+
+        mSurveyViewModel.getCurrentFamily().observe(this, (family ->
+                familyNameTv.setText(family.getName() + " Family")));
+
         return view;
     }
 
@@ -68,7 +77,12 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
             Survey survey = surveys.get(0);
 
             mSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
-            mSurveyViewModel.getSurveyState().setValue(SurveyState.BACKGROUND_QUESTIONS);
+
+            /**when snapshot is made**/
+            mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
+                mSurveyViewModel.getSurveyState().setValue(SurveyState.BACKGROUND_QUESTIONS);
+            }));
+
             //create snapshot with family and
         });
     }

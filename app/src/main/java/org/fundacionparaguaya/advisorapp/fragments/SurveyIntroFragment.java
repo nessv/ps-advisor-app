@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,26 +9,43 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.SurveyFragmentCallbackInterface;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
+
+import javax.inject.Inject;
 
 /**
  * Intro page on a new survey
  */
 
-public class SurveyIntroFragment extends Fragment
+public class SurveyIntroFragment extends AbstractSurveyFragment
 {
     public static String FAMILY_NAME_KEY = "FAMILY_NAME";
 
-    SurveyFragmentCallbackInterface mSurveyCallback;
+
+    @Inject
+    InjectionViewModelFactory mViewModelFactory;
+
+    SharedSurveyViewModel mSurveyViewModel;
+
     //need the family name
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        ((AdvisorApplication) getActivity().getApplication())
+                .getApplicationComponent()
+                .inject(this);
+
+        mSurveyViewModel = ViewModelProviders
+                .of(getActivity(), mViewModelFactory)
+                .get(SharedSurveyViewModel.class);
 
         //get family name from arguments
 
@@ -39,27 +57,20 @@ public class SurveyIntroFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_surveyintro, container, false);
 
-        //get text view
-
-        //set family name
-
+        view.findViewById(R.id.btn_surveyintro_submit).setOnClickListener((event)->onSubmit());
         return view;
     }
 
-    void onSubmit()
-    {
-        mSurveyCallback.onFinish(null);
-    }
+    void onSubmit(){
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+        mSurveyViewModel.getSurveys().observe(this, (surveys) ->
+        {
+            Survey survey = surveys.get(0);
 
-        try {
-            mSurveyCallback = (SurveyFragmentCallbackInterface)context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Parent activity must OnArticleSelectedListener");
-        }
+            mSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
+            mSurveyViewModel.getSurveyState().setValue(SurveyState.BACKGROUND_QUESTIONS);
+            //create snapshot with family and
+        });
     }
 
 

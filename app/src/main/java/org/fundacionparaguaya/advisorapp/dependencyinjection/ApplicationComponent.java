@@ -2,12 +2,14 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
 
+import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 
 /**
  * The main application component.
@@ -20,5 +22,10 @@ public interface ApplicationComponent {
     Application application();
 
     void inject(AllFamiliesStackedFrag allFamiliesFragment);
+
     void inject(LoginFragment loginFragment);
+
+    void inject(SurveyIntroFragment surveyIntroFragment);
+
+    void inject(SurveyActivity surveyActivity);
 }

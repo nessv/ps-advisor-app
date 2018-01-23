@@ -56,8 +56,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setFragmentContainer(R.id.dash_content);
-
 	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
         tabBarView.addTabSelectedHandler(handler);
 

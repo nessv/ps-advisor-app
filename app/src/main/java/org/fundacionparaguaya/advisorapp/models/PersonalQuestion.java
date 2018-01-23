@@ -18,8 +18,8 @@ public class PersonalQuestion extends SurveyQuestion {
         this(name, description, new ArrayList<>());
     }
 
-    public PersonalQuestion(String name, String dimension, List<String> options) {
-        super(name, dimension);
+    public PersonalQuestion(String name, String description, List<String> options) {
+        super(name, description);
         this.options = options;
     }
 

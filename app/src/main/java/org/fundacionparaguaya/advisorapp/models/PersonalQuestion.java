@@ -19,7 +19,7 @@ public class PersonalQuestion extends SurveyQuestion {
     }
   
     public PersonalQuestion(String name, String description, ResponseType type, List<String> options) {
-        super(name, dimension, type);
+        super(name, description, type);
         this.options = options;
     }
 

@@ -1,14 +1,15 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
-
 import android.os.AsyncTask;
+
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.models.User;
 
@@ -52,12 +53,12 @@ public class SurveyRepository {
 
             List<EconomicQuestion> economicQuestions = new ArrayList<>();
             List<String> economicOptions = new ArrayList<>();
-            economicOptions.add("Employed");
+            economicOptions.add("");
             economicOptions.add("Not Employed");
-            economicQuestions.add(new EconomicQuestion("employmentStatus", "Employment status.", economicOptions));
+            economicQuestions.add(new EconomicQuestion("employmentStatus", "Employment status.", ResponseType.String, economicOptions));
 
             List<PersonalQuestion> personalQuestions = new ArrayList<>();
-            personalQuestions.add(new PersonalQuestion("firstName", "First name."));
+            personalQuestions.add(new PersonalQuestion("income", "Income.", ResponseType.Integer));
 
             surveyDao.insertSurvey(new Survey(1,personalQuestions, economicQuestions, indicatorQuestions));
         });

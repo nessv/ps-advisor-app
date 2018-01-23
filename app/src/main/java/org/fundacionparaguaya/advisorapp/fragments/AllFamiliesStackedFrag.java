@@ -69,12 +69,10 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
             public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
 
                 int id = e.getSelectedFamily().getId();
-
                 FamilyDetailFrag f = FamilyDetailFrag.build(id);
 
                 navigateTo(f);
             }
-
         });
     }
 
@@ -89,7 +87,6 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         viewModel.getFamilies().observe(this, (familiesList) -> {
             mFamiliesAdapter.setFamilyList(familiesList);
         });
-
         //additional callbacks should go here
     }
 

@@ -27,9 +27,6 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import javax.inject.Inject;
 
-/**
- * Created by Mone Elokda on 1/20/2018.
- */
 
 public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
 
@@ -70,18 +67,17 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
                              ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.family_fragment, container, false);
 
-        mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
-        mAddress = (TextView) view.findViewById(R.id.location_content);
-        mLocation = (TextView) view.findViewById(R.id.description_content);
-        mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
-
         return view;
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
+        mAddress = (TextView) view.findViewById(R.id.location_content);
+        mLocation = (TextView) view.findViewById(R.id.description_content);
+        mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
         Button surveyButton  = view.findViewById(R.id.survey_button);
 
@@ -91,8 +87,6 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
 
             startActivity(surveyIntent);
         });
-
-
     }
 
     @Override

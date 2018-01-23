@@ -40,8 +40,6 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
     private FamiliesAdapter mFamiliesAdapter;
 
-    static String selected = "SELECTED_FAMILY";
-
     @Inject
     InjectionViewModelFactory mViewModelFactory;
     AllFamiliesViewModel mAllFamiliesViewModel;
@@ -72,13 +70,9 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
                 int id = e.getSelectedFamily().getId();
 
-                Bundle args = new Bundle();
-                args.putInt(selected, id );
-                FamilyDetailFrag f = new FamilyDetailFrag();
-                f.setArguments(args);
+                FamilyDetailFrag f = FamilyDetailFrag.build(id);
 
                 navigateTo(f);
-
             }
 
         });

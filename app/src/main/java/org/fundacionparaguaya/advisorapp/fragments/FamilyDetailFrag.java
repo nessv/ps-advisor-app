@@ -32,6 +32,9 @@ import javax.inject.Inject;
  */
 
 public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
+
+    private static String SELECTED_FAMILY_KEY = "SELECTED_FAMILY";
+
     private TextView mFamilyName;
     private TextView mAddress;
     private TextView mLocation;
@@ -56,7 +59,7 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
                 .get(FamilyInformationViewModel.class);
 
         Bundle args = getArguments();
-        mFamilyId = args.getInt("SELECTED_FAMILY");
+        mFamilyId = args.getInt(SELECTED_FAMILY_KEY);
 
         mFamilyInformationViewModel.setFamily(mFamilyId).observe(this, this);
         //TODO -- load until we have a value
@@ -100,5 +103,15 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
 
         Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
         mFamilyImage.setImageURI(uri);
+    }
+
+    public static FamilyDetailFrag build(int familyId)
+    {
+        Bundle args = new Bundle();
+        args.putInt(SELECTED_FAMILY_KEY, familyId);
+        FamilyDetailFrag f = new FamilyDetailFrag();
+        f.setArguments(args);
+
+        return f;
     }
 }

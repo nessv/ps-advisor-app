@@ -13,7 +13,9 @@
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Back</string>
     <string name="topbar_synclabel">Sync Now</string>
-    <string name="topbar_lastsync">Last Sync: 3h ago</string>
+    <string name="topbar_synclabel_syncing">Syncing…</string>
+    <string name="topbar_lastsync_prefix">Last Sync:\u0020</string>
+    <string name="topbar_lastsync_never">never</string>
 
     <!-- =========== Families View =========== -->
     <string name="family_imagePlaceholder" translatable="false">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>

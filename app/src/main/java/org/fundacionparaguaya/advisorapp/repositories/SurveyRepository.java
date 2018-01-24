@@ -22,6 +22,8 @@ import retrofit2.Response;
  */
 
 public class SurveyRepository {
+    private static final String TAG = "SurveyRepository";
+
     private final SurveyDao surveyDao;
     private final SurveyService surveyService;
     private final AuthenticationManager authManager;
@@ -67,7 +69,7 @@ public class SurveyRepository {
             }
             surveyDao.insertSurveys(surveys.toArray(new Survey[surveys.size()]));
         } catch (IOException e) {
-            Log.e("Synchronization", "sync: Could not sync the survey repository!", e);
+            Log.e(TAG, "sync: Could not sync the survey repository!", e);
             return false;
         }
         return true;

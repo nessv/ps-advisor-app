@@ -36,6 +36,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    // Time-Ago helper
+    implementation 'com.github.marlonlom:timeago:3.0.1'
+
     implementation 'com.facebook.fresco:fresco:1.7.1'
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'

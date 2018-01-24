@@ -21,6 +21,8 @@ import retrofit2.Response;
  * The utility for the storage of families and their members.
  */
 public class FamilyRepository {
+    private static final String TAG = "FamilyRepository";
+
     private final FamilyDao familyDao;
     private final FamilyService familyService;
     private final AuthenticationManager authManager;
@@ -77,7 +79,7 @@ public class FamilyRepository {
             }
             familyDao.insertFamilies(families.toArray(new Family[families.size()]));
         } catch (IOException e) {
-            Log.e("Synchronization", "sync: Could not sync the family repository!", e);
+            Log.e(TAG, "sync: Could not sync the family repository!", e);
             return false;
         }
         return true;

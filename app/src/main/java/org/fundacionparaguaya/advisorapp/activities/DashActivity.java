@@ -1,42 +1,38 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.ExampleTabbedFragment;
-import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
-import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
     DashboardTabBarView tabBarView;
 
-    TabbedFrag mFamiliesFrag;
-    TabbedFrag mMapFrag;
-    TabbedFrag mArchiveFrag;
-    TabbedFrag mSettingsFrag;
-
 	@Override
     public void onBackPressed()
     {
-        getFragForType(tabBarView.getSelected()).onNavigateBack();
+        ((TabbedFrag)getFragment(getClassForType(tabBarView.getSelected()))).onNavigateBack();
     }
 
-    private TabbedFrag getFragForType(DashboardTab.TabType type) {
+    private Class getClassForType(DashboardTab.TabType type) {
         switch (type)
         {
             case FAMILY:
-                return mFamiliesFrag;
+                return FamilyTabbedFragment.class;
             case MAP:
-                return mMapFrag;
+                return ExampleTabbedFragment.class;
             case ARCHIVE:
-                return mArchiveFrag;
+                return ExampleTabbedFragment.class;
             case SETTINGS:
-                return mSettingsFrag;
+                return ExampleTabbedFragment.class;
         }
 
         return null;
@@ -44,10 +40,24 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        switchToFrag(getFragForType(event.getSelectedTab()));
+        if(!hasFragForClass(getClassForType(event.getSelectedTab()))) {
+            constructFragment(getClassForType(event.getSelectedTab()));
+        }
+
+        switchToFrag(getClassForType(event.getSelectedTab()));
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
+
+	private void constructFragment(Class fragClass)
+    {
+        try{
+            addFragment((Fragment) fragClass.getConstructor().newInstance());
+        }
+        catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,16 +68,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
         tabBarView.addTabSelectedHandler(handler);
 
-        /**
-         * Create fragment for each tab
-         */
-        mFamiliesFrag = new FamilyTabbedFragment();
-        mMapFrag = new ExampleTabbedFragment();
-        mArchiveFrag = new ExampleTabbedFragment();
-        mSettingsFrag = new ExampleTabbedFragment();
+        setFragmentContainer(R.id.dash_content);
 
-        initFragSwitcher(R.id.dash_content, mFamiliesFrag, mMapFrag);
-        switchToFrag(mFamiliesFrag);
+        if(!hasFragForClass(FamilyTabbedFragment.class)) {
+            constructFragment(FamilyTabbedFragment.class);
+        }
+
+        switchToFrag(FamilyTabbedFragment.class);
     }
 
 

@@ -28,10 +28,18 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     SurveyIntroFragment mIntroFragment;
     BackgroundQuestionsFrag mQuestionsFragment;
 
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
     SharedSurveyViewModel mSurveyViewModel;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean("init", true);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -51,9 +59,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mIntroFragment = SurveyIntroFragment.build();
         mQuestionsFragment = new BackgroundQuestionsFrag();
 
+
+        setFragmentContainer(R.id.survey_activity_fragment_container);
         /** Add all fragments you want to switch between as parameter here**/
 
-        initFragSwitcher(R.id.survey_activity_fragment_container, mIntroFragment, mQuestionsFragment);
         initViewModel();
     }
 
@@ -89,11 +98,29 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             switch (surveyState)
             {
                 case INTRO:
-                    switchToFrag(mIntroFragment);
+
+                    if(!hasFragForClass(SurveyIntroFragment.class))
+                    {
+                        addFragment(mIntroFragment);
+                    }
+
+                    getSupportFragmentManager().executePendingTransactions();
+
+                    switchToFrag(SurveyIntroFragment.class);
+
                     break;
 
                 case BACKGROUND_QUESTIONS:
-                    switchToFrag(mQuestionsFragment);
+
+                    if(!hasFragForClass(BackgroundQuestionsFrag.class))
+                    {
+                        addFragment(mQuestionsFragment);
+                    }
+
+                    getSupportFragmentManager().executePendingTransactions();
+
+                    switchToFrag(BackgroundQuestionsFrag.class);
+
                     break;
 
               //  case INDICATORS:

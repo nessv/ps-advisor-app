@@ -15,7 +15,9 @@ public class FamilyTabbedFragment extends TabbedFrag
 {
     AllFamiliesStackedFrag mFrag1;
 
-    static String ALL_FAMILIES_TAG = "ALL_FAM";
+    static String HAS_BEEN_INIT_KEY = "HAS_BEEN_INITIALIZED";
+    //static String FAMILY_DETAIL_TAG = "FAMILY_DETAIL";
+
     boolean mHasBeenInitialized = false;
 
     @Override
@@ -23,23 +25,33 @@ public class FamilyTabbedFragment extends TabbedFrag
     {
         super.onCreate(savedInstanceState);
 
-        FragmentManager manager = getFragmentManager();
-        mFrag1 = (AllFamiliesStackedFrag) manager.findFragmentByTag(ALL_FAMILIES_TAG);
+       // FragmentManager manager = getFragmentManager();
 
-        if (mFrag1 == null)
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(getChildFragmentManager().getFragments().size()==0)
         {
             mFrag1 = new AllFamiliesStackedFrag();
+            this.setInitialFragment(mFrag1);
+            mHasBeenInitialized = true;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(HAS_BEEN_INIT_KEY, mHasBeenInitialized);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!mHasBeenInitialized)
-        {
-            this.setInitialFragment(mFrag1);
-            mHasBeenInitialized = true;
-        }
     }
 }

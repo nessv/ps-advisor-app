@@ -35,7 +35,7 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
     //TODO implement
     @Override
     public int getCount() {
-        return 0;
+        return fragmentList.size();
     }
 
     @Override
@@ -49,11 +49,13 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
      * - Set up fragment here
      */
     private void loadFragments() {
-        IndicatorFragment tempFrag = new IndicatorFragment();
+        IndicatorFragment tempFrag;
         String greenImage;    String greenText;
         String yellowImage;   String yellowText;
         String redImage;      String redText;
         for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
+            tempFrag = new IndicatorFragment();
+
             greenImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(0).getImageUrl();
             yellowImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getImageUrl();
             redImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getImageUrl();
@@ -65,6 +67,8 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
            tempFrag.newInstance(greenImage,    greenText,
                                 yellowImage,   yellowText,
                                 redImage,      redText);
+
+           fragmentList.add(counter, tempFrag);
         }
     }
 

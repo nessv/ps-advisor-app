@@ -46,8 +46,8 @@ public class IndicatorCard extends CardView{
 
         try{
             setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.indicator_card_green));
-            setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, NO_ID));
-            setImage(attrs.getResourceId(R.styleable.IndicatorCard_indicator_image, NO_ID));
+            setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
+            setImage(attrs.getResourceId(R.styleable.IndicatorCard_indicator_image, R.string.family_imagePlaceholder));
         } finally {
             attrs.recycle();
         }

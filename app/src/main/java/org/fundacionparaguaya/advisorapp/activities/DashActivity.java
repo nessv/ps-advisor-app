@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -70,13 +69,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         initFragSwitcher(R.id.dash_content, mFamiliesFrag, mMapFrag);
 
         switchToFrag(mFamiliesFrag);
-
-        //TODO: right now, hitting "back" will circumvent the login screen.
-        // also, this should be called before everything in this function, and check if already authenticated.
-        //maybe we could have a separate main activity that accomplishes this all
-
-        Intent login = new Intent(this, LoginActivity.class);
-        startActivity(login);
     }
 
 

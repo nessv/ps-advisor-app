@@ -4,11 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilySynchronizeTask;
-import org.fundacionparaguaya.advisorapp.data.remote.UserLoginTask;
 import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.User;
 
 import java.util.List;
 
@@ -20,13 +19,15 @@ import javax.inject.Inject;
 public class FamilyRepository {
     private final FamilyDao familyDao;
     private final FamilyService familyService;
-
-    private User user;
+    private final AuthenticationManager authManager;
 
     @Inject
-    public FamilyRepository(FamilyDao familyDao, FamilyService familyService) {
+    public FamilyRepository(FamilyDao familyDao,
+                            FamilyService familyService,
+                            AuthenticationManager authManager) {
         this.familyDao = familyDao;
         this.familyService = familyService;
+        this.authManager = authManager;
     }
 
     //region Family
@@ -48,18 +49,13 @@ public class FamilyRepository {
     public void deleteFamily(Family family) {
         familyDao.deleteFamily(family);
     }
-
-    public AsyncTask<Void, Void, Boolean> login(String username, String password) {
-        user = new User(username, password, true);
-        return new UserLoginTask(familyService, user);
-    }
     /**
      * A task which will pull families from the remote database and synchronize them with the
      * local database.
      * @return A new async task to be executed.
      */
     public AsyncTask<Void, Void, Boolean> sync() {
-        return new FamilySynchronizeTask(familyDao, familyService, user.getLogin());
+        return new FamilySynchronizeTask(familyDao, familyService, authManager);
     }
     //endregion
 }

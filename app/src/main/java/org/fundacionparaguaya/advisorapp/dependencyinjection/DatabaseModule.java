@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
@@ -26,6 +27,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class DatabaseModule {
+    private static final String URL_REST_API = "http://povertystoplightiqp.org:8080/";
+
+    private final AuthenticationManager authManager;
     private final LocalDatabase local;
     private final RemoteDatabase remote;
 
@@ -36,12 +40,12 @@ public class DatabaseModule {
                 "Advisor.db"
         ).build();
 
-
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://povertystoplightiqp.org:8080/")
+                .baseUrl(URL_REST_API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         this.remote = new RemoteDatabase(retrofit);
+        this.authManager = new AuthenticationManager(application, remote.authService());
     }
 
     @Provides
@@ -58,8 +62,14 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService) {
-        return new FamilyRepository(familyDao, familyService);
+    AuthenticationManager provideAuthManager() {
+        return this.authManager;
+    }
+
+    @Provides
+    @Singleton
+    FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService, AuthenticationManager authManager) {
+        return new FamilyRepository(familyDao, familyService, authManager);
     }
 
     @Provides
@@ -88,7 +98,10 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    InjectionViewModelFactory provideInjectionViewModelFactory(FamilyRepository familyRepository, SurveyRepository surveyRepository) {
-        return new InjectionViewModelFactory(familyRepository, surveyRepository);
+    InjectionViewModelFactory provideInjectionViewModelFactory(
+            AuthenticationManager authManager,
+            FamilyRepository familyRepository,
+            SurveyRepository surveyRepository) {
+        return new InjectionViewModelFactory(authManager, familyRepository, surveyRepository);
     }
 }

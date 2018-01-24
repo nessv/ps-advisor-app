@@ -36,7 +36,6 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
     public void setQuestion(PersonalQuestion question)
     {
         String description = question.getDescription();
-        //ResponseType type = question.
 
     }
 

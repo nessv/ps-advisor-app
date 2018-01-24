@@ -16,7 +16,7 @@ import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
  * Created by Mone Elokda on 1/23/2018.
  */
 
-public class QuestionTextView extends LinearLayout implements View.OnClickListener{
+public class QuestionTextView extends LinearLayout implements View.OnClickListener, QuestionViewInterface{
 
     private TextView mQuestionTextView;
     private EditText mAnswer;
@@ -30,17 +30,48 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);
 
-        this.setInputType(InputType.TYPE_CLASS_TEXT);
     }
 
     public void setQuestion(PersonalQuestion question)
     {
         String description = question.getDescription();
 
+        switch (question.getResponseType()) {
+            case String:
+                this.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+
+            case Integer:
+                this.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+
+            default:
+                throw new IllegalArgumentException("SurveyQuestion has no valid response type");
+        }
+
     }
 
     public void setQuestion(EconomicQuestion question)
     {
+        String description = question.getDescription();
+
+        switch (question.getResponseType()){
+            case String:
+                this.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+
+            case Integer:
+                this.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+
+            default:
+                throw new IllegalArgumentException("SurveyQuestion has no valid response type");
+        }
+
+    }
+
+    @Override
+    public void setResponse(String s) {
 
     }
 
@@ -51,7 +82,7 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
 
     public void getResponse(String response)
     {
-
+        mAnswer.setText(response);
     }
 
     @Override

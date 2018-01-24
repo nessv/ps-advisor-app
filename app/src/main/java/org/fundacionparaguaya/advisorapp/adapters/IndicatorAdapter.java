@@ -23,8 +23,11 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
 
     SharedSurveyViewModel mSurveyViewModel;
 
-    public IndicatorAdapter(FragmentManager fragmentManager) {
+    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel) {
         super(fragmentManager);
+
+        mSurveyViewModel = surveyViewModel;
+
         indicatorQuestionList = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
         loadFragments();
     }
@@ -51,13 +54,13 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
         String yellowImage;   String yellowText;
         String redImage;      String redText;
         for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
-            greenImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getImageUrl();
-            yellowImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getImageUrl();;
-            redImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(3).getImageUrl();;
+            greenImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(0).getImageUrl();
+            yellowImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getImageUrl();
+            redImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getImageUrl();
 
-            greenText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getDescription();
-            yellowText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getDescription();
-            redText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(3).getDescription();;
+            greenText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(0).getDescription();
+            yellowText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getDescription();
+            redText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getDescription();
 
            tempFrag.newInstance(greenImage,    greenText,
                                 yellowImage,   yellowText,

@@ -37,23 +37,19 @@ public class IndicatorFragment extends AbstractSurveyFragment {
     InjectionViewModelFactory mViewModelFactory;
     SharedSurveyViewModel mSurveyViewModel;
 
-    public static IndicatorFragment newInstance(
-            String greenImage,    String greenText,
-            String yellowImage,   String yellowText,
-            String redImage,      String redText
+    String greenImage;    String greenText;
+    String yellowImage;   String yellowText;
+    String redImage;      String redText;
+
+    public IndicatorFragment newInstance(
+            String greenImage, String greenText,
+            String yellowImage, String yellowText,
+            String redImage, String redText
     ){
         IndicatorFragment fragment = new IndicatorFragment();
-        //Set Green Indicator
-        fragment.mGreenIndicator.setImage(Uri.parse(greenImage));
-        fragment.mGreenIndicator.setText(greenText);
-
-        //Set Yellow Indicator
-        fragment.mYellowIndicator.setImage(Uri.parse(yellowImage));
-        fragment.mYellowIndicator.setText(yellowText);
-
-        //Set Red Indicator
-        fragment.mRedIndicator.setImage(Uri.parse(redImage));
-        fragment.mRedIndicator.setText(redText);
+        this.greenImage = greenImage; this.greenText = greenText;
+        this.yellowImage = yellowImage; this.yellowText = yellowText;
+        this.redImage = redImage; this.redText = redText;
 
         return fragment;
     }
@@ -66,6 +62,19 @@ public class IndicatorFragment extends AbstractSurveyFragment {
         mGreenIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_green);
         mYellowIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_yellow);
         mRedIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_red);
+
+        //Set Green Indicator
+        this.mGreenIndicator.setImage(Uri.parse(greenImage));
+        this.mGreenIndicator.setText(greenText);
+
+        //Set Yellow Indicator
+        this.mYellowIndicator.setImage(Uri.parse(yellowImage));
+        this.mYellowIndicator.setText(yellowText);
+
+        //Set Red Indicator
+        this.mRedIndicator.setImage(Uri.parse(redImage));
+        this.mRedIndicator.setText(redText);
+
 
         return rootView;
     }

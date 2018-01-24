@@ -6,6 +6,7 @@ import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment;
 import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
+import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
 import javax.inject.Singleton;
@@ -34,5 +35,7 @@ public interface ApplicationComponent {
     void inject(SurveyIntroFragment surveyIntroFragment);
 
     void inject(IndicatorFragment indicatorFragment);
+
+    void inject(IndicatorSurveyFragment indicatorSurveyFragment);
 
 }

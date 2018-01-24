@@ -1,25 +1,27 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-        import android.arch.lifecycle.ViewModelProviders;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.graphics.Color;
-        import android.os.Bundle;
-        import android.support.annotation.Nullable;
-        import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-        import org.fundacionparaguaya.advisorapp.R;
-        import org.fundacionparaguaya.advisorapp.fragments.ExampleStackedFragment;
-        import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
-        import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
-        import org.fundacionparaguaya.advisorapp.models.Family;
-        import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
-        import org.fundacionparaguaya.advisorapp.models.Snapshot;
-        import org.fundacionparaguaya.advisorapp.models.Survey;
-        import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-        import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-        import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.ExampleStackedFragment;
+import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
+import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
+import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
 
-        import javax.inject.Inject;
+import javax.inject.Inject;
 
 /**
  * Activity for surveying a family's situation. Displays the fragments that record background info and allows
@@ -31,6 +33,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
     SurveyIntroFragment introFragment;
+
+    IndicatorSurveyFragment indicatorSurveyFragment;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -53,10 +57,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         /**Construct fragments here**/
         introFragment = SurveyIntroFragment.build();
+        indicatorSurveyFragment = IndicatorSurveyFragment.build();
 
         /** Add all fragments you want to switch between as parameter here**/
 
-        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
+        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment, indicatorSurveyFragment);
 
         initViewModel();
     }
@@ -97,12 +102,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
 
                 case BACKGROUND_QUESTIONS:
-                    switchToFrag(/* Background question fragment here */ null);
+                    //switchToFrag( );
+                    //break;
+
+                case INDICATORS:
+                    switchToFrag(indicatorSurveyFragment);
                     break;
-
-                //  case INDICATORS:
-
-                /* * etc * */
             };
         });
     }

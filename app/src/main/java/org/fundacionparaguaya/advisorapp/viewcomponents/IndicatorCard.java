@@ -80,12 +80,12 @@ public class IndicatorCard extends CardView{
         mSurveyCard.setCardBackgroundColor(color);
     }
 
-    public void setImage(Drawable drawable){
-        mImage.setImageDrawable(drawable);
-    }
-
     public void setImage(Uri uri){
         mImage.setImageURI(uri);
+    }
+
+    public void setImage(Drawable drawable){
+        mImage.setImageDrawable(drawable);
     }
 
     public void setImage(int image){

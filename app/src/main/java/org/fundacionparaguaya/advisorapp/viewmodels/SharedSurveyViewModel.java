@@ -127,9 +127,9 @@ public class SharedSurveyViewModel extends ViewModel
         return mSkippedIndicators;
     }
 
-    public void getResponseForIndicator(IndicatorQuestion question)
+    public IndicatorOption getResponseForIndicator(IndicatorQuestion question)
     {
-        mSnapshot.getValue().getIndicatorResponses().get(question);
+        return mSnapshot.getValue().getIndicatorResponses().get(question);
     }
 
     public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response)
@@ -147,6 +147,10 @@ public class SharedSurveyViewModel extends ViewModel
         {
             mSnapshot.getValue().response((EconomicQuestion) question, response);
         }
+    }
+
+    public static class IndicatorSurvey{
+
     }
 
     public static class SurveyProgress

@@ -1,13 +1,68 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
+import org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment;
+import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by alex on 1/21/2018.
+ * Adapter class for the indicators
  */
 
-public class IndicatorAdapter {
+public class IndicatorAdapter extends FragmentPagerAdapter {
 
+    private List<IndicatorQuestion> indicatorQuestionList;
 
+    private ArrayList<Fragment> fragmentList = new ArrayList<>();
 
+    SharedSurveyViewModel mSurveyViewModel;
 
+    public IndicatorAdapter(FragmentManager fragmentManager) {
+        super(fragmentManager);
+        indicatorQuestionList = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
+        loadFragments();
+    }
+
+    //TODO implement switch
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return fragmentList.get(position);
+    }
+
+    /**
+     * Function loads fragments into the arraylist above
+     * - Set picture and text for each indicator here
+     * - Set up fragment here
+     */
+    private void loadFragments() {
+        IndicatorFragment tempFrag = new IndicatorFragment();
+        String greenImage;    String greenText;
+        String yellowImage;   String yellowText;
+        String redImage;      String redText;
+        for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
+            greenImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getImageUrl();
+            yellowImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getImageUrl();;
+            redImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(3).getImageUrl();;
+
+            greenText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getDescription();
+            yellowText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getDescription();
+            redText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(3).getDescription();;
+
+           tempFrag.newInstance(greenImage,    greenText,
+                                yellowImage,   yellowText,
+                                redImage,      redText);
+        }
+    }
 
 }

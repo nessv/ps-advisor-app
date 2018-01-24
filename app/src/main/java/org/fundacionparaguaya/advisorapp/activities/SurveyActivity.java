@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.ExampleStackedFragment;
+import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
@@ -33,6 +34,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     SurveyIntroFragment introFragment;
 
+    IndicatorSurveyFragment indicatorSurveyFragment;
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -54,6 +57,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         /**Construct fragments here**/
         introFragment = SurveyIntroFragment.build();
+
 
         /** Add all fragments you want to switch between as parameter here**/
 
@@ -101,9 +105,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     switchToFrag(/* Background question fragment here */ null);
                     break;
 
-              //  case INDICATORS:
-
-                /* * etc * */
+                case INDICATORS:
+                    switchToFrag(null);
+                    break;
             };
         });
     }

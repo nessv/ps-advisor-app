@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
-        android:id="@+id/surveycard_green"
+        android:id="@+id/indicatorcard_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         custom:color="@color/indicator_card_green"
@@ -16,7 +16,7 @@
     </org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
-        android:id="@+id/surveycard_yellow"
+        android:id="@+id/indicatorcard_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         custom:color="@color/indicator_card_yellow"
@@ -25,7 +25,7 @@
     </org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard
-        android:id="@+id/surveycard_red"
+        android:id="@+id/indicatorcard_red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         custom:color="@color/indicator_card_red"

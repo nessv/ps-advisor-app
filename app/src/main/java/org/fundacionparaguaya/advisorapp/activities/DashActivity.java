@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -91,9 +92,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     private void onSyncButtonPress(View view) {
-        Log.d("SYNC", "onSyncButtonPress: Syncing..");
-        mSyncManager.sync();
-        Log.d("SYNC", "onSyncButtonPress: Finished syncing.");
+        new SyncRepositoryTask().execute();
     }
 
     @Override
@@ -107,4 +106,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     {
         Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
+
+    private class SyncRepositoryTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... Void) {
+            Log.d("SYNC", "onSyncButtonPress: Syncing..");
+            boolean result = mSyncManager.sync();
+            Log.d("SYNC", "onSyncButtonPress: Finished syncing.");
+            return result;
+        }
+    }
 }
+

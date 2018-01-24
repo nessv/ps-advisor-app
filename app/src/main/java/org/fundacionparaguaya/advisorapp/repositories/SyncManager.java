@@ -21,8 +21,14 @@ public class SyncManager {
         this.mSurveyRepository = surveyRepository;
     }
 
-    public void sync() {
-        mFamilyRepository.sync();
-        mSurveyRepository.sync();
+    /**
+     * Synchronizes the local database with the remote one.
+     * @return Whether the sync was successful.
+     */
+    public boolean sync() {
+        boolean result;
+        result = mFamilyRepository.sync();
+        result &= mSurveyRepository.sync();
+        return result;
     }
 }

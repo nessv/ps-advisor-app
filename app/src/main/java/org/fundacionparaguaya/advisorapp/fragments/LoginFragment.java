@@ -179,6 +179,8 @@ public class LoginFragment extends Fragment {
     }
 }
 abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
+    protected static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
+
     LoginFragment mLoginFragment;
     AuthenticationManager mAuthManager;
 
@@ -251,7 +253,7 @@ class PasswordLoginTask extends AbstractLoginTask {
     protected Response<LoginIr> login(User user) throws IOException {
         return mAuthManager.getAuthService()
                 .loginWithPassword(
-                        "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=",
+                        AUTH_KEY,
                         user.getUsername(), user.getPassword()).execute();
     }
 
@@ -272,7 +274,7 @@ class RefreshTokenLoginTask extends AbstractLoginTask {
     protected Response<LoginIr> login(User user) throws IOException {
         return mAuthManager.getAuthService()
                 .loginWithRefreshToken(
-                        "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=",
+                        AUTH_KEY,
                         user.getLogin().getRefreshToken()).execute();
     }
 

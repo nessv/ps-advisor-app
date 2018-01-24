@@ -27,6 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class DatabaseModule {
+    private static final String URL_REST_API = "http://povertystoplightiqp.org:8080/";
+
     private final AuthenticationManager authManager;
     private final LocalDatabase local;
     private final RemoteDatabase remote;
@@ -39,7 +41,7 @@ public class DatabaseModule {
         ).build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://povertystoplightiqp.org:8080/")
+                .baseUrl(URL_REST_API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         this.remote = new RemoteDatabase(retrofit);

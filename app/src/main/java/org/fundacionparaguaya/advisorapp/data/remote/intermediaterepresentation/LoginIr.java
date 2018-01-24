@@ -15,14 +15,17 @@ public class LoginIr {
     private String tokenType;
     @SerializedName("expires_in")
     private int expiresIn;
+    @SerializedName("refresh_token")
+    private String refreshToken;
 
-    public LoginIr(String accessToken, String tokenType, int expiresIn) {
+    public LoginIr(String accessToken, String tokenType, int expiresIn, String refreshToken) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
     }
 
     public Login login() {
-        return new Login(accessToken, tokenType, expiresIn);
+        return new Login(accessToken, tokenType, expiresIn, refreshToken);
     }
 }

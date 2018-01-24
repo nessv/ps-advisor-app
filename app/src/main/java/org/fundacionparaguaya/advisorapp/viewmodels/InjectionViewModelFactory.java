@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
@@ -12,10 +13,12 @@ import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
  */
 
 public class InjectionViewModelFactory implements ViewModelProvider.Factory {
+    private final AuthenticationManager authManager;
     private final FamilyRepository familyRepository;
     private final SurveyRepository surveyRepository;
 
-    public InjectionViewModelFactory(FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+    public InjectionViewModelFactory(AuthenticationManager authManager, FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+        this.authManager = authManager;
         this.familyRepository = familyRepository;
         this.surveyRepository = surveyRepository;
     }
@@ -26,7 +29,7 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(AllFamiliesViewModel.class))
             return (T) new AllFamiliesViewModel(familyRepository);
         else if (modelClass.isAssignableFrom(LoginViewModel.class))
-            return (T) new LoginViewModel(familyRepository);
+            return (T) new LoginViewModel(authManager);
         else if (modelClass.isAssignableFrom(SharedSurveyViewModel.class))
             return (T) new SharedSurveyViewModel(surveyRepository, familyRepository);
         else

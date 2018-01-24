@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="60dp"
     android:background="#E5BE45"
     android:orientation="vertical">
 
@@ -11,40 +13,41 @@
         android:id="@+id/background_question"
         android:text="@string/background_question"
         android:textSize="48sp"
-        android:layout_marginTop="250dp"
-        android:paddingLeft="55dp"
+        android:paddingStart="56dp"
         android:textColor="#333333"
         />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginStart="56dp"
+    >
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/your_name"
-            android:id="@+id/answer_text_field"
-            android:layout_marginLeft="100dp"
-            android:paddingRight="300dp"
-            android:textSize="48sp"
-            android:textColor="#333333"/>
-        
+                android:layout_width="wrap_content"
+                android:minWidth="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/your_name"
+                android:id="@+id/answer_text_field"
+                android:textSize="48sp"
+                android:textColor="#333333"/>
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/answer_text_field"
-            android:text="Next"
-            android:textSize="36sp"
-            android:background="#333333"
-            android:textColor="#E5BE45"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="Next"
+                android:textSize="36sp"
+                android:background="#333333"
+                android:textColor="#E5BE45"/>
     </RelativeLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        />
-
 
 </LinearLayout>

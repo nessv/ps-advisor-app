@@ -44,6 +44,11 @@ public class QuestionDropdownView extends LinearLayout implements View.OnClickLi
         }
     }
 
+    public void addOnSelectionHandler(AdapterView.OnItemSelectedListener listener)
+    {
+        mAnswerSpinner.setOnItemSelectedListener(listener);
+    }
+
     public void setQuestion(EconomicQuestion question){
 
         String description = question.getDescription();

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -63,6 +64,19 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
                 view.setQuestion(q);
                 view.setResponse(mSharedSurveyViewModel.getBackgroundResponse(q));
 
+                view.addOnSelectionHandler(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String s = (String)adapterView.getItemAtPosition(i);
+                        mSharedSurveyViewModel.addBackgroundResponse(q, s);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
                 //add listener to update view model when value is given
                 mQuestionContainer.addView(view);
             }
@@ -87,6 +101,19 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
                 view.setQuestion(q);
                 view.setResponse(mSharedSurveyViewModel.getBackgroundResponse(q));
 
+                view.addOnSelectionHandler(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String s = (String)adapterView.getItemAtPosition(i);
+                        mSharedSurveyViewModel.addBackgroundResponse(q, s);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
                 //add listener to update view model when value is given
                 mQuestionContainer.addView(view);
             }
@@ -102,7 +129,6 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
             }
         }
     }
-
 
     @Nullable
     @Override

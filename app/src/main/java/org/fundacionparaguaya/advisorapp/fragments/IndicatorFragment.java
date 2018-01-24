@@ -66,14 +66,17 @@ public class IndicatorFragment extends AbstractSurveyFragment {
         //Set Green Indicator
         this.mGreenIndicator.setImage(Uri.parse(greenImage));
         this.mGreenIndicator.setText(greenText);
+        mGreenIndicator.setColor(IndicatorCard.CardColor.GREEN);
 
         //Set Yellow Indicator
         this.mYellowIndicator.setImage(Uri.parse(yellowImage));
         this.mYellowIndicator.setText(yellowText);
+        this.mYellowIndicator.setColor(IndicatorCard.CardColor.YELLOW);
 
         //Set Red Indicator
         this.mRedIndicator.setImage(Uri.parse(redImage));
         this.mRedIndicator.setText(redText);
+        this.mRedIndicator.setColor(IndicatorCard.CardColor.RED);
 
 
         return rootView;

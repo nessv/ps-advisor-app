@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.fundacionparaguaya.advisorapp.R;
 
 /**
@@ -23,7 +25,7 @@ public class IndicatorCard extends CardView{
 
     private CardView mSurveyCardSelected;
     private CardView mSurveyCard;
-    private ImageView mImage;
+    private SimpleDraweeView mImage;
     private TextView mText;
 
     public enum CardColor {
@@ -39,7 +41,7 @@ public class IndicatorCard extends CardView{
 
         mSurveyCardSelected = (CardView) findViewById(R.id.survey_card_selected);
         mSurveyCard = (CardView) findViewById(R.id.survey_card_background);
-        mImage = (ImageView) findViewById(R.id.survey_card_image);
+        mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
 
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
@@ -81,11 +83,7 @@ public class IndicatorCard extends CardView{
     }
 
     public void setImage(Uri uri){
-        mImage.setImageURI(uri);
-    }
-
-    public void setImage(Drawable drawable){
-        mImage.setImageDrawable(drawable);
+        mImage.setImageURI(uri, context);
     }
 
     public void setImage(int image){

@@ -4,6 +4,9 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
+import org.fundacionparaguaya.advisorapp.data.remote.SurveySynchronizeTask;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
@@ -11,7 +14,6 @@ import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Survey;
-import org.fundacionparaguaya.advisorapp.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,16 @@ import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Yel
 
 public class SurveyRepository {
     private final SurveyDao surveyDao;
-
-    private User user;
+    private final SurveyService surveyService;
+    private final AuthenticationManager authManager;
 
     @Inject
-    public SurveyRepository(SurveyDao surveyDao) {
+    public SurveyRepository(SurveyDao surveyDao,
+                            SurveyService surveyService,
+                            AuthenticationManager authManager) {
         this.surveyDao = surveyDao;
+        this.surveyService = surveyService;
+        this.authManager = authManager;
 
         //because this in the constructor, can't be done in the main thread.
         AsyncTask.execute(() ->
@@ -76,5 +82,14 @@ public class SurveyRepository {
 
     //region Snapshot
 
+    /**
+     * A task which will pull families from the remote database and synchronize them with the
+     * local database.
+     * @return A new async task to be executed.
+     */
+    public AsyncTask<Void, Void, Boolean> sync() {
+        return new SurveySynchronizeTask(surveyDao, surveyService, authManager);
+    }
+    //e
     //endregion
 }

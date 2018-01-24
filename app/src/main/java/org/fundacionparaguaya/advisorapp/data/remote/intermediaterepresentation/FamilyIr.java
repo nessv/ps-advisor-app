@@ -10,15 +10,15 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 
 public class FamilyIr {
     @SerializedName("familyId")
-    private int id;
+    int id;
     @SerializedName("code")
-    private String code;
+    String code;
     @SerializedName("name")
-    private String name;
+    String name;
     @SerializedName("person")
-    private FamilyMemberIr member;
+    FamilyMemberIr member;
     @SerializedName("active")
-    private boolean active;
+    boolean active;
 
     public FamilyIr(int id, String code, String name, FamilyMemberIr member, boolean active) {
         this.id = id;

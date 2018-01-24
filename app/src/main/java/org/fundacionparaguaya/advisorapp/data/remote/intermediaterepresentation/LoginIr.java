@@ -10,20 +10,13 @@ import org.fundacionparaguaya.advisorapp.models.Login;
 
 public class LoginIr {
     @SerializedName("access_token")
-    private String accessToken;
+    String accessToken;
     @SerializedName("token_type")
-    private String tokenType;
+    String tokenType;
     @SerializedName("expires_in")
-    private int expiresIn;
+    int expiresIn;
     @SerializedName("refresh_token")
-    private String refreshToken;
-
-    public LoginIr(String accessToken, String tokenType, int expiresIn, String refreshToken) {
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
-        this.expiresIn = expiresIn;
-        this.refreshToken = refreshToken;
-    }
+    String refreshToken;
 
     public Login login() {
         return new Login(accessToken, tokenType, expiresIn, refreshToken);

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.SurveyQuestion;
 
 /**
@@ -33,11 +34,12 @@ public class BackgroundQuestionsView extends LinearLayout implements View.OnClic
         mAnswer = (EditText) findViewById(R.id.answer_text_field);
 
         this.setInputType(InputType.TYPE_CLASS_TEXT);
-        //mAnswer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_CLASS_TEXT | );
     }
 
     public void setQuestion(PersonalQuestion question)
     {
+        String description = question.getDescription();
+        //ResponseType type = question.
 
     }
 

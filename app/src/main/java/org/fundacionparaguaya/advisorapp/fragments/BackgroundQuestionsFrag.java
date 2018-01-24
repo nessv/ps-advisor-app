@@ -40,6 +40,9 @@ public class BackgroundQuestionsFrag extends Fragment {
 
     }
 
+    //observe for all changes
+    //if has options -
+
 
 
 

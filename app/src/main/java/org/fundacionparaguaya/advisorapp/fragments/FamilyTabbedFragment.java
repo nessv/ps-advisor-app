@@ -16,6 +16,7 @@ public class FamilyTabbedFragment extends TabbedFrag
     AllFamiliesStackedFrag mFrag1;
 
     static String ALL_FAMILIES_TAG = "ALL_FAM";
+    boolean mHasBeenInitialized = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -26,13 +27,19 @@ public class FamilyTabbedFragment extends TabbedFrag
         mFrag1 = (AllFamiliesStackedFrag) manager.findFragmentByTag(ALL_FAMILIES_TAG);
 
         if (mFrag1 == null)
+        {
             mFrag1 = new AllFamiliesStackedFrag();
+        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.setInitialFragment(mFrag1);
+        if(!mHasBeenInitialized)
+        {
+            this.setInitialFragment(mFrag1);
+            mHasBeenInitialized = true;
+        }
     }
 }

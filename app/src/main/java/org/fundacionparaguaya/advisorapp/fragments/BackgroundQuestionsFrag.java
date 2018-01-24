@@ -16,7 +16,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import javax.inject.Inject;
 
 /**
- * Created by Mone Elokda on 1/22/2018.
+ * Questions about Personal and Economic questions that are asked before the survey
  */
 
 public class BackgroundQuestionsFrag extends Fragment {

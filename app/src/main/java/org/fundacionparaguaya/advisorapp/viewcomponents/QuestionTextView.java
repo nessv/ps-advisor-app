@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,23 +11,21 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
-import org.fundacionparaguaya.advisorapp.models.ResponseType;
-import org.fundacionparaguaya.advisorapp.models.SurveyQuestion;
 
 /**
  * Created by Mone Elokda on 1/23/2018.
  */
 
-public class BackgroundQuestionsView extends LinearLayout implements View.OnClickListener{
+public class QuestionTextView extends LinearLayout implements View.OnClickListener{
 
     private TextView mQuestionTextView;
     private EditText mAnswer;
 
-    public BackgroundQuestionsView(Context context) {
+    public QuestionTextView(Context context) {
         super(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.fragment_question_background, this);
+        inflater.inflate(R.layout.view_questiontext, this);
 
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);

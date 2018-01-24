@@ -10,12 +10,12 @@ import android.widget.TextView;
  * Created by Mone Elokda on 1/23/2018.
  */
 
-public class BackgroundQuestionsDropdown extends LinearLayout implements View.OnClickListener {
+public class QuestionDropdownView extends LinearLayout implements View.OnClickListener {
 
     private TextView mQuestion;
     //private EditText mAnswer;
 
-    public BackgroundQuestionsDropdown(Context context) {
+    public QuestionDropdownView(Context context) {
         super(context);
     }
 

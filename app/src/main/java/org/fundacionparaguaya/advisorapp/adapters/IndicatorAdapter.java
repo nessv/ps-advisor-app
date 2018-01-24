@@ -29,7 +29,7 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
         loadFragments();
     }
 
-    //TODO implement switch
+    //TODO implement
     @Override
     public int getCount() {
         return 0;

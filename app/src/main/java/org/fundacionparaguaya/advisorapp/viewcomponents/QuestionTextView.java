@@ -29,12 +29,13 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
 
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);
-
     }
 
     public void setQuestion(PersonalQuestion question)
     {
         String description = question.getDescription();
+
+        mQuestionTextView.setText(description);
 
         switch (question.getResponseType()) {
             case String:
@@ -54,6 +55,7 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
     public void setQuestion(EconomicQuestion question)
     {
         String description = question.getDescription();
+        mQuestionTextView.setText(description);
 
         switch (question.getResponseType()){
             case String:
@@ -75,7 +77,7 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
 
     }
 
-    public void setInputType(int type)
+    private void setInputType(int type)
     {
         mAnswer.setInputType(type);
     }

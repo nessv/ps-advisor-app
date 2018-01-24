@@ -26,6 +26,8 @@ import javax.inject.Inject;
 
 public class SurveyIntroFragment extends AbstractSurveyFragment
 {
+    static String FRAGMENT_TAG = "SurveyIntroFragment";
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -83,6 +85,11 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
             //create snapshot with family and
         });
+    }
+
+    public static String getFragmentTag()
+    {
+        return FRAGMENT_TAG;
     }
 
     public static SurveyIntroFragment build()

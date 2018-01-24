@@ -1,21 +1,15 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.ExampleStackedFragment;
-import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
@@ -31,7 +25,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 {
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
-    SurveyIntroFragment introFragment;
+    SurveyIntroFragment mIntroFragment;
+    BackgroundQuestionsFrag mQuestionsFragment;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -53,12 +48,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .get(SharedSurveyViewModel.class);
 
         /**Construct fragments here**/
-        introFragment = SurveyIntroFragment.build();
+        mIntroFragment = SurveyIntroFragment.build();
+        mQuestionsFragment = new BackgroundQuestionsFrag();
 
         /** Add all fragments you want to switch between as parameter here**/
 
-        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
-
+        initFragSwitcher(R.id.survey_activity_fragment_container, mIntroFragment, mQuestionsFragment);
         initViewModel();
     }
 
@@ -94,11 +89,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             switch (surveyState)
             {
                 case INTRO:
-                    switchToFrag(introFragment);
+                    switchToFrag(mIntroFragment);
                     break;
 
                 case BACKGROUND_QUESTIONS:
-                    switchToFrag(/* Background question fragment here */ null);
+                    switchToFrag(mQuestionsFragment);
                     break;
 
               //  case INDICATORS:

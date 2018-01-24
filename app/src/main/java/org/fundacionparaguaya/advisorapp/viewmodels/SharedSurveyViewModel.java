@@ -148,6 +148,20 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
+    public @Nullable String getBackgroundResponse(SurveyQuestion question)
+    {
+        if(question instanceof PersonalQuestion)
+        {
+            return getSnapshotValue().getPersonalResponses().get(question);
+        }
+        else if(question instanceof EconomicQuestion)
+        {
+            return getSnapshotValue().getEconomicResponses().get(question);
+        }
+
+        return null;
+    }
+
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception

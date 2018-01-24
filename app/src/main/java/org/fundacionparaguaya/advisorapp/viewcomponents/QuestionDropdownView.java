@@ -1,12 +1,9 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
@@ -21,7 +18,8 @@ import java.util.List;
 public class QuestionDropdownView extends LinearLayout implements View.OnClickListener, QuestionViewInterface {
 
     private TextView mQuestionTextView;
-    private QuestionDropdownView mAnswer;
+    private Spinner mAnswerSpinner;
+    private ArrayAdapter<String> mSpinnerAdapter;
 
     public QuestionDropdownView(Context context) {
         super(context);
@@ -30,17 +28,17 @@ public class QuestionDropdownView extends LinearLayout implements View.OnClickLi
         inflater.inflate(R.layout.view_questiondropdown, this);
 
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
-        mAnswer = (QuestionDropdownView) findViewById(R.id.dropdown_field);
+        mAnswerSpinner = (Spinner) findViewById(R.id.dropdown_field);
     }
 
     public void setQuestion(PersonalQuestion question) {
 
         String description = question.getDescription();
 
+        mQuestionTextView.setText(description);
+
         if(question.getOptions() != null){
-
-            List<String> options = question.getOptions();
-
+            createAdapter(question.getOptions());
         } else {
             throw new IllegalArgumentException("This question has no options");
         }
@@ -50,18 +48,27 @@ public class QuestionDropdownView extends LinearLayout implements View.OnClickLi
 
         String description = question.getDescription();
 
+        mQuestionTextView.setText(description);
+
         if(question.getOptions() != null){
-
-            List<String> options = question.getOptions();
-
+            createAdapter(question.getOptions());
         } else {
             throw new IllegalArgumentException("This question has no options");
         }
     }
 
+    private void createAdapter(List<String> options)
+    {
+        mSpinnerAdapter =
+                new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options);
+
+        mAnswerSpinner.setAdapter(mSpinnerAdapter);
+    }
+
     @Override
     public void setResponse(String s) {
-        mAnswer.setResponse(s);
+        //TODO: Validate this response (make sure it is valid option @benhylak)
+        mAnswerSpinner.setSelection(mSpinnerAdapter.getPosition(s));
     }
 
     @Override

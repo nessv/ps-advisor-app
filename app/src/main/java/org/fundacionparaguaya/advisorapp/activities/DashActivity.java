@@ -67,7 +67,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSettingsFrag = new ExampleTabbedFragment();
 
         initFragSwitcher(R.id.dash_content, mFamiliesFrag, mMapFrag);
-
         switchToFrag(mFamiliesFrag);
     }
 

@@ -126,9 +126,9 @@ public class SharedSurveyViewModel extends ViewModel
         return mSkippedIndicators;
     }
 
-    public IndicatorOption getResponseForIndicator(IndicatorQuestion question)
+    public @Nullable IndicatorOption getResponseForIndicator(IndicatorQuestion question)
     {
-        return mSnapshot.getValue().getIndicatorResponses().get(question);
+        return getSnapshotValue().getIndicatorResponses().get(question);
 
     }
 

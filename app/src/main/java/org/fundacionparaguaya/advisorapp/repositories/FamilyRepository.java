@@ -54,7 +54,7 @@ public class FamilyRepository {
      * local database.
      * @return A new async task to be executed.
      */
-    public AsyncTask<Void, Void, Boolean> sync() {
+    AsyncTask<Void, Void, Boolean> sync() {
         return new FamilySynchronizeTask(familyDao, familyService, authManager);
     }
     //endregion

@@ -87,7 +87,7 @@ public class SurveyRepository {
      * local database.
      * @return A new async task to be executed.
      */
-    public AsyncTask<Void, Void, Boolean> sync() {
+    AsyncTask<Void, Void, Boolean> sync() {
         return new SurveySynchronizeTask(surveyDao, surveyService, authManager);
     }
     //e

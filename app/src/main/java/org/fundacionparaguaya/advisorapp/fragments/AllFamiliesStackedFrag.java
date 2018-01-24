@@ -65,9 +65,13 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
         mFamiliesAdapter.addFamilySelectedHandler(new FamiliesAdapter.FamilySelectedHandler() {
             @Override
+
             public void onFamilySelected(FamiliesAdapter.FamilySelectedEvent e) {
-                Intent surveyIntent = SurveyActivity.build(getContext(), e.getSelectedFamily());
-                startActivity(surveyIntent);
+
+                int id = e.getSelectedFamily().getId();
+                FamilyDetailFrag f = FamilyDetailFrag.build(id);
+
+                navigateTo(f);
             }
         });
     }
@@ -83,7 +87,6 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         viewModel.getFamilies().observe(this, (familiesList) -> {
             mFamiliesAdapter.setFamilyList(familiesList);
         });
-
         //additional callbacks should go here
     }
 

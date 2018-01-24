@@ -95,7 +95,7 @@ public class SurveyIr {
             case "integer":
                 return ResponseType.Integer;
             default:
-                throw new IllegalArgumentException("Response type not know!");
+                throw new IllegalArgumentException("Response type not known!");
         }
     }
 

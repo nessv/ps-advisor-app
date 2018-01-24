@@ -29,12 +29,12 @@
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
 
     <string name="contentDescription_profile_picture">Profile Picture</string>
-<<<<<<< HEAD
+
     <string name="background_question">What is your name?</string>
     <string name="background_information">Background Information</string>
     <string name="your_name">Your Name</string>
-=======
+
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="all_continue">Continue</string>
->>>>>>> fd28913e5dc15c0c8bee514dc7fd3be361a9d5e2
+
 </resources>

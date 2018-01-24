@@ -38,6 +38,7 @@ public class BackgroundQuestionsView extends LinearLayout implements View.OnClic
 
     public void setQuestion(PersonalQuestion question)
     {
+
     }
 
     public void setQuestion(EconomicQuestion question)

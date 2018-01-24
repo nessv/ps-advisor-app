@@ -9,6 +9,7 @@ import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
+import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -74,8 +75,8 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    SurveyRepository provideSurveyRepository(SurveyDao surveyDao) {
-        return new SurveyRepository(surveyDao);
+    SurveyRepository provideSurveyRepository(SurveyDao surveyDao, SurveyService surveyService, AuthenticationManager authManager) {
+        return new SurveyRepository(surveyDao, surveyService, authManager);
     }
 
     @Provides
@@ -94,6 +95,12 @@ public class DatabaseModule {
     @Singleton
     SurveyDao provideSurveyDao(LocalDatabase local) {
         return local.surveyDao();
+    }
+
+    @Provides
+    @Singleton
+    SurveyService provideSurveyService(RemoteDatabase remote) {
+        return remote.surveyService();
     }
 
     @Provides

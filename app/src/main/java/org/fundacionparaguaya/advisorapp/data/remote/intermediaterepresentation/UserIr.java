@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserIr {
     @SerializedName("userId")
-    private int id;
+    int id;
     @SerializedName("username")
-    private String username;
+    String username;
     @SerializedName("pass")
-    private String password;
+    String password;
     @SerializedName("active")
-    private boolean active;
+    boolean active;
 }

@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class SurveyUiSchemaIr {
     @SerializedName("ui:order")
-    private List<String> order;
+    List<String> order;
     @SerializedName("ui:group:personal")
-    private List<String> personalQuestions;
+    List<String> personalQuestions;
     @SerializedName("ui:group:economics")
-    private List<String> economicQuestions;
+    List<String> economicQuestions;
     @SerializedName("ui:group:indicators")
-    private List<String> indicatorQuestions;
+    List<String> indicatorQuestions;
     @SerializedName("ui:custom:fields")
-    private Map<String, SurveyCustomFieldIr> customFields;
+    Map<String, SurveyCustomFieldIr> customFields;
 }

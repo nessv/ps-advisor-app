@@ -11,13 +11,14 @@ import java.util.Map;
 
 public class SurveyQuestionIr {
     @SerializedName("type")
-    private String type;
+    String type;
     @SerializedName("title")
-    private Map<String, String> title;
+    Map<String, String> title;
     @SerializedName("items")
-    private List<SurveyItemsIr> items;
+    IndicatorOptionsIr indicatorOptions;
     @SerializedName("enum")
-    private List<String> options;
+    List<String> options;
     @SerializedName("enumNames")
-    private List<String> optionNames;
+    List<String> optionNames;
+
 }

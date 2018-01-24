@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName;
 
 public class SurveyCustomFieldIr {
     @SerializedName("ui:field")
-    private String field;
+    String field;
 }

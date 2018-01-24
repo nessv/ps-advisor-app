@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class SurveySchemaIr {
     @SerializedName("title")
-    private String title;
+    String title;
     @SerializedName("description")
-    private String description;
+    String description;
     @SerializedName("required")
-    private List<String> requiredQuestions;
+    List<String> requiredQuestions;
     @SerializedName("properties")
-    private Map<String, SurveyQuestionIr> questions;
+    Map<String, SurveyQuestionIr> questions;
 }

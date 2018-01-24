@@ -3,14 +3,14 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 import com.google.gson.annotations.SerializedName;
 
 /**
- * The intermediate representation of the survey question item from the remote database.
+ * The intermediate representation of the survey question option from the remote database.
  */
 
-public class SurveyItemIr {
+public class IndicatorOptionIr {
     @SerializedName("url")
-    private String url;
+    String url;
     @SerializedName("value")
-    private String value;
+    String value;
     @SerializedName("description")
-    private String description;
+    String description;
 }

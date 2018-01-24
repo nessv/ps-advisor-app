@@ -85,7 +85,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
         });
     }
 
-
     public static SurveyIntroFragment build()
     {
         SurveyIntroFragment fragment = new SurveyIntroFragment();

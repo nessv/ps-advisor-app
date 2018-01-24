@@ -57,11 +57,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         /**Construct fragments here**/
         introFragment = SurveyIntroFragment.build();
-
+        indicatorSurveyFragment = IndicatorSurveyFragment.build();
 
         /** Add all fragments you want to switch between as parameter here**/
 
-        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
+        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment, indicatorSurveyFragment);
 
         initViewModel();
     }
@@ -102,7 +102,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
 
                 case BACKGROUND_QUESTIONS:
-                    switchToFrag(/* Background question fragment here */ null);
+                    switchToFrag(indicatorSurveyFragment);
                     break;
 
                 case INDICATORS:

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 
 import javax.inject.Singleton;
@@ -25,8 +26,11 @@ public interface ApplicationComponent {
 
     void inject(LoginFragment loginFragment);
 
+    void inject(FamilyDetailFrag familyDetailFrag);
+
     void inject(SurveyActivity surveyActivity);
 
     void inject(SurveyIntroFragment surveyIntroFragment);
+
 
 }

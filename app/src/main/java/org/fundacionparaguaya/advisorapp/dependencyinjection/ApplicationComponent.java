@@ -3,16 +3,12 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
-import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
-import org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment;
-import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
-import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
-import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
+import org.fundacionparaguaya.advisorapp.fragments.*;
+import org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 
 /**
  * The main application component.
@@ -34,8 +30,8 @@ public interface ApplicationComponent {
 
     void inject(SurveyIntroFragment surveyIntroFragment);
 
-    void inject(IndicatorFragment indicatorFragment);
+    void inject(ChooseIndicatorFragment chooseIndicatorFragment);
 
-    void inject(IndicatorSurveyFragment indicatorSurveyFragment);
+    void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
 
 }

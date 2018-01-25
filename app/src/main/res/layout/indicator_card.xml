@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/survey_card_selected"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    custom:cardBackgroundColor="@color/indicator_card_background"
-    custom:cardCornerRadius="25dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/survey_card_selected"
+        android:layout_width="wrap_content"
+        android:elevation="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="20dp">
 
     <LinearLayout
         android:id="@+id/survey_card_background"

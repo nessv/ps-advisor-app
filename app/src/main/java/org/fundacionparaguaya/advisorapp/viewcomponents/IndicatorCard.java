@@ -23,7 +23,7 @@ import org.fundacionparaguaya.advisorapp.R;
  * Each survey page will have 3 instances of this
  */
 
-public class IndicatorCard extends CardView{
+public class IndicatorCard extends LinearLayout{
 
     private Context context;
 
@@ -41,12 +41,14 @@ public class IndicatorCard extends CardView{
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.indicator_card, this);
+        inflater.inflate(R.layout.indicator_card, this, true);
 
-        mSurveyCardSelected = (CardView) findViewById(R.id.survey_card_selected);
+        mSurveyCardSelected = findViewById(R.id.survey_card_selected);
         mSurveyCard = (LinearLayout) findViewById(R.id.survey_card_background);
         mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
+
+        this.setElevation(0);
 
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
 
@@ -62,9 +64,9 @@ public class IndicatorCard extends CardView{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-            mSurveyCardSelected.setCardBackgroundColor(context.getColor(R.color.indicator_card_selected));
+              mSurveyCardSelected.setCardBackgroundColor(context.getColor(R.color.indicator_card_selected));
         } else {
-            mSurveyCardSelected.setCardBackgroundColor(context.getColor(R.color.indicator_card_background));
+              mSurveyCardSelected.setCardBackgroundColor(context.getColor(android.R.color.transparent));
         }
     }
 

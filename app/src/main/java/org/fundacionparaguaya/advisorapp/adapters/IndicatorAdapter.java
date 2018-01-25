@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment;
-import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
+import org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -25,9 +25,9 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
 
     SharedSurveyViewModel mSurveyViewModel;
 
-    IndicatorSurveyFragment mSurveyFragment;
+    SurveyIndicatorsFragment mSurveyFragment;
 
-    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, IndicatorSurveyFragment parentFrag) {
+    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
         super(fragmentManager);
 
         mSurveyViewModel = surveyViewModel;
@@ -43,7 +43,7 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
         return fragmentList.size();
     }
 
-    public IndicatorSurveyFragment returnParent(){
+    public SurveyIndicatorsFragment returnParent(){
         return mSurveyFragment;
     }
 
@@ -62,12 +62,12 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
      * - Set up fragment here
      */
     private void loadFragments() {
-        IndicatorFragment tempFrag;
+        ChooseIndicatorFragment tempFrag;
         String greenImage;    String greenText;
         String yellowImage;   String yellowText;
         String redImage;      String redText;
         for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
-            tempFrag = new IndicatorFragment();
+            tempFrag = new ChooseIndicatorFragment();
 
             greenImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(0).getImageUrl();
             yellowImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getImageUrl();

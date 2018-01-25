@@ -1,10 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.app.FragmentManager;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,27 +11,21 @@ import android.view.ViewGroup;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.GREEN;
-import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.NONE;
-import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.RED;
-import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.YELLOW;
+import static org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment.SelectedIndicator.GREEN;
+import static org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment.SelectedIndicator.NONE;
+import static org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment.SelectedIndicator.RED;
+import static org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment.SelectedIndicator.YELLOW;
 
 /**
  *
  */
 
-public class IndicatorFragment extends AbstractSurveyFragment {
+public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     IndicatorCard mGreenIndicator;
     IndicatorCard mYellowIndicator;
@@ -56,12 +46,12 @@ public class IndicatorFragment extends AbstractSurveyFragment {
 
     SelectedIndicator selectedIndicator = NONE;
 
-    public IndicatorFragment newInstance( IndicatorAdapter adapter, IndicatorQuestion question,
-            String greenImage, String greenText,
-            String yellowImage, String yellowText,
-            String redImage, String redText
+    public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question,
+                                               String greenImage, String greenText,
+                                               String yellowImage, String yellowText,
+                                               String redImage, String redText
     ){
-        IndicatorFragment fragment = new IndicatorFragment();
+        ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
 
         this.adapter = adapter;
         this.question = question;
@@ -75,7 +65,7 @@ public class IndicatorFragment extends AbstractSurveyFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.fragment_surveyindicators, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_chooseindicator, container, false);
 
         mGreenIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_green);
         mYellowIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_yellow);
@@ -155,7 +145,7 @@ public class IndicatorFragment extends AbstractSurveyFragment {
     }
 
     private void updateParent(){
-        IndicatorSurveyFragment fragment = (IndicatorSurveyFragment) adapter.returnParent();
+        SurveyIndicatorsFragment fragment = (SurveyIndicatorsFragment) adapter.returnParent();
         if (fragment !=null) {
             fragment.nextQuestion();
         }

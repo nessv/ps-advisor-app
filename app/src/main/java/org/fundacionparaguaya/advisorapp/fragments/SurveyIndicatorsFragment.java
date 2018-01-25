@@ -14,20 +14,18 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
-import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.NONE;
+import static org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment.SelectedIndicator.NONE;
 
 /**
  * Created by alex on 1/23/2018.
  */
 
-public class IndicatorSurveyFragment extends AbstractSurveyFragment{
+public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
 
     IndicatorAdapter mAdapter;
     ViewPager mPager;
@@ -90,7 +88,7 @@ public class IndicatorSurveyFragment extends AbstractSurveyFragment{
         mPager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IndicatorFragment fragment = (IndicatorFragment) mAdapter.getItem(mPager.getCurrentItem());
+                ChooseIndicatorFragment fragment = (ChooseIndicatorFragment) mAdapter.getItem(mPager.getCurrentItem());
                 if (fragment.getSelectedIndicator() != NONE) {
                     nextQuestion();
                 }
@@ -129,8 +127,8 @@ public class IndicatorSurveyFragment extends AbstractSurveyFragment{
         }
     }
 
-    public static IndicatorSurveyFragment build(){
-        IndicatorSurveyFragment fragment = new IndicatorSurveyFragment();
+    public static SurveyIndicatorsFragment build(){
+        SurveyIndicatorsFragment fragment = new SurveyIndicatorsFragment();
         return fragment;
     }
 

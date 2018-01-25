@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -30,7 +30,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     SurveyIntroFragment introFragment;
 
-    IndicatorSurveyFragment indicatorSurveyFragment;
+    SurveyIndicatorsFragment surveyIndicatorsFragment;
 
     LinearLayout header;
     LinearLayout fragmentContainer;
@@ -62,11 +62,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         /**Construct fragments here**/
         introFragment = SurveyIntroFragment.build();
-        indicatorSurveyFragment = IndicatorSurveyFragment.build();
+        surveyIndicatorsFragment = SurveyIndicatorsFragment.build();
 
         /** Add all fragments you want to switch between as parameter here**/
 
-        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment, indicatorSurveyFragment);
+        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment, surveyIndicatorsFragment);
 
         initViewModel();
     }
@@ -120,7 +120,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     header.setBackgroundColor(this.getColor(R.color.survey_whitebackground));
                     fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_whitebackground));
                     footer.setBackgroundColor(this.getColor(R.color.survey_grey));
-                    switchToFrag(indicatorSurveyFragment);
+                    switchToFrag(surveyIndicatorsFragment);
                     break;
             };
         });

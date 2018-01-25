@@ -36,7 +36,6 @@
                   app:layout_constraintBottom_toTopOf="@id/survey_activity_footer"
                   app:layout_constraintStart_toStartOf="parent"
                   app:layout_constraintEnd_toEndOf="parent"
-                  android:background="@color/colorPrimaryDark"
                   android:orientation="vertical"
                   android:id="@+id/survey_activity_fragment_container"
                    />
@@ -71,8 +70,7 @@
                      android:progress="20"
                      android:progressTint="#000000"
                      android:progressBackgroundTint="#FFFFFF"
-                     android:layout_alignParentBottom="true"
-        />
+                     android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
 

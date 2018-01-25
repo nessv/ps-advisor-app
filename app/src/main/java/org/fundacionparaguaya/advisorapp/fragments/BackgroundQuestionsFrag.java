@@ -127,6 +127,7 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
                 view.setResponse(mSharedSurveyViewModel.getBackgroundResponse(q));
 
                 //add listener to update view model when value is given
+
                 mQuestionContainer.addView(view);
             }
         }

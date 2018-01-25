@@ -125,7 +125,12 @@ public class SharedSurveyViewModel extends ViewModel
     }
 
     public void addSkippedIndicator(IndicatorQuestion question) {
+        //clears any responses for the question
+        mSnapshot.getValue().getIndicatorResponses().remove(question);
+
         mSkippedIndicators.add(question);
+
+        calculateProgress();
     }
 
     public List<IndicatorQuestion> getSkippedIndicators()
@@ -140,9 +145,11 @@ public class SharedSurveyViewModel extends ViewModel
 
     public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response)
     {
-        getSnapshotValue().response(indicator, response);
+        if(response!=null) {
+            getSnapshotValue().response(indicator, response);
 
-        calculateProgress();
+            calculateProgress();
+        }
     }
 
     public void addBackgroundResponse(SurveyQuestion question, String response)
@@ -177,8 +184,12 @@ public class SharedSurveyViewModel extends ViewModel
     {
         if(getSurveyInProgress() != null && mSurveyState.getValue() != null)
         {
+            int progress = 0;
+            String progressString = "";
+
             switch (mSurveyState.getValue())
             {
+
                 case BACKGROUND_QUESTIONS:
 
                     int totalQuestions = getSurveyInProgress().getEconomicQuestions().size() +
@@ -187,11 +198,24 @@ public class SharedSurveyViewModel extends ViewModel
                     int completedQuestions = mSnapshot.getValue().getPersonalResponses().size() +
                             mSnapshot.getValue().getEconomicResponses().size();
 
-                    int progress = (100*completedQuestions)/totalQuestions;
+                    progress = (100*completedQuestions)/totalQuestions;
+                    progressString = (totalQuestions-completedQuestions) + " Questions Remaining";
 
-                    String progressString = (totalQuestions-completedQuestions) + " Questions Remaining";
-                    mProgress.setValue(new SurveyProgress(progress, progressString));
+                    break;
+
+                case INDICATORS:
+                    int totalIndicators = getSurveyInProgress().getIndicatorQuestions().size();
+
+                    int skippedIndicators = mSkippedIndicators.size();
+                    int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
+
+                    progress = (100* completedIndicators+ skippedIndicators)/totalIndicators;
+                    progressString = (totalIndicators-completedIndicators) + " Indicators Remaining, " +
+                    skippedIndicators + " Skipped" ;
+
             }
+
+            mProgress.setValue(new SurveyProgress(progress, progressString));
         }
     }
 

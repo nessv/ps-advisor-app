@@ -51,6 +51,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 tools:text="5 Questions Remaining"
+                android:textSize="20dp"
+                android:id="@+id/tv_surveyactivity_questionsleft"
                 android:layout_alignParentStart="true"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"/>
@@ -58,6 +60,8 @@
         <TextView
                 android:layout_marginTop="16dp"
                 android:layout_alignParentEnd="true"
+                android:textSize="20dp"
+                android:id="@+id/tv_surveyactivity_nextup"
                 android:layout_width="wrap_content"
                 tools:text="Next Up: Indicators"
                 android:layout_gravity="start"
@@ -66,10 +70,13 @@
 
         <ProgressBar android:layout_width="match_parent"
                      android:layout_height="12dp"
+                     android:layout_marginStart="-4dp"
+                     android:layout_marginEnd="-4dp"
+                     android:id="@+id/progressbar_surveyactivity"
                      style="@android:style/Widget.ProgressBar.Horizontal"
                      android:progress="20"
                      android:progressTint="#000000"
-                     android:progressBackgroundTint="#FFFFFF"
+                     android:progressBackgroundTint="@android:color/transparent"
                      android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 

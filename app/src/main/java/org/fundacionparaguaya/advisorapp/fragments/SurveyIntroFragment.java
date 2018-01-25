@@ -50,7 +50,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setTitle("");f
+        setTitle("");
     }
 
     @Nullable
@@ -80,7 +80,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
             /**when snapshot is made**/
             mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
-                mSurveyViewModel.getSurveyState().setValue(SurveyState.BACKGROUND_QUESTIONS);
+                mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
             }));
 
             //create snapshot with family and

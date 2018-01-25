@@ -1,11 +1,15 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -16,7 +20,6 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
-import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
@@ -30,10 +33,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 {
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
-    SurveyIntroFragment mIntroFragment;
-    BackgroundQuestionsFrag mQuestionsFragment;
-
     TextView mTvTitle;
+    TextView mTvQuestionsLeft;
+    TextView mTvNextUp;
+
+    ProgressBar mProgressBar;
+    ObjectAnimator mProgressAnimator;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -43,8 +48,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putBoolean("init", true);
     }
 
     @Override
@@ -61,16 +64,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-
         mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+        mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
+        mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 
-        /**Construct fragments here**/
-        mIntroFragment = SurveyIntroFragment.build();
-        mQuestionsFragment = new BackgroundQuestionsFrag();
-
+        mProgressBar = findViewById(R.id.progressbar_surveyactivity);
 
         setFragmentContainer(R.id.survey_activity_fragment_container);
-        /** Add all fragments you want to switch between as parameter here**/
 
         initViewModel();
     }
@@ -78,6 +78,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     public void initViewModel()
     {
+
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value
         int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
 
@@ -99,8 +100,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             }
         }));
 
-        mSurveyViewModel.getSnapshot().observe(this, snapshot -> {
-            //update progress bar
+        mSurveyViewModel.getProgress().observe(this, surveyProgress -> {
+
+            ObjectAnimator progressAnimator = ObjectAnimator.ofInt(mProgressBar,
+                    "progress", mProgressBar.getProgress(), surveyProgress.getPercentageComplete());
+
+            progressAnimator.setDuration(400);
+            progressAnimator.start();
+
+            mProgressBar.setProgress(surveyProgress.getPercentageComplete());
+            mTvQuestionsLeft.setText(surveyProgress.getDescription());
         });
 
         mSurveyViewModel.getSurveyState().observe(this, surveyState -> {

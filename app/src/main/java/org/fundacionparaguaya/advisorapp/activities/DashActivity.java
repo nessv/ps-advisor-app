@@ -60,6 +60,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -72,9 +78,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         if(!hasFragForClass(FamilyTabbedFragment.class)) {
             constructFragment(FamilyTabbedFragment.class);
+            switchToFrag(FamilyTabbedFragment.class);
         }
-
-        switchToFrag(FamilyTabbedFragment.class);
     }
 
 

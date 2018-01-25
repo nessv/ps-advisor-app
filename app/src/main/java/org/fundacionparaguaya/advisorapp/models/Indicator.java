@@ -12,6 +12,10 @@ public class Indicator {
     private String dimension;
     private List<IndicatorOption> options;
 
+    public Indicator(String name, String dimension) {
+        this(name, dimension, null);
+    }
+
     public Indicator(String name, String dimension, List<IndicatorOption> options) {
         this.name = name;
         this.dimension = dimension;
@@ -28,6 +32,10 @@ public class Indicator {
 
     public List<IndicatorOption> getOptions() {
         return options;
+    }
+
+    public void setOptions(List<IndicatorOption> options) {
+        this.options = options;
     }
 
     @Override

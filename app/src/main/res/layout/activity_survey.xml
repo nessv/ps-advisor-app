@@ -25,6 +25,7 @@
                 android:textSize="48sp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="28dp"
+                android:id="@+id/tv_surveyactivity_title"
                 tools:text="Test Title"/>
     </LinearLayout>
 

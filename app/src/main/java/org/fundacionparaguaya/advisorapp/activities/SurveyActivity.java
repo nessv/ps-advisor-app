@@ -5,16 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
+import org.w3c.dom.Text;
 
 import javax.inject.Inject;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Activity for surveying a family's situation. Displays the fragments that record background info and allows
@@ -28,6 +33,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     SurveyIntroFragment mIntroFragment;
     BackgroundQuestionsFrag mQuestionsFragment;
 
+    TextView mTvTitle;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -54,6 +60,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mSurveyViewModel = ViewModelProviders
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
+
+
+        mTvTitle = findViewById(R.id.tv_surveyactivity_title);
 
         /**Construct fragments here**/
         mIntroFragment = SurveyIntroFragment.build();
@@ -128,6 +137,25 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 /* * etc * */
             };
         });
+    }
+
+    @Override
+    public void switchToFrag(Class fragmentClass)
+    {
+        if(!hasFragForClass(fragmentClass))
+        {
+            try{
+                Fragment f = (Fragment)fragmentClass.getConstructor().newInstance();
+                addFragment(f);
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
+        AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
+        this.mTvTitle.setText(fragment.getTitle());
+
+        super.switchToFrag(fragmentClass);
     }
 
     public void setTitle(String title) {

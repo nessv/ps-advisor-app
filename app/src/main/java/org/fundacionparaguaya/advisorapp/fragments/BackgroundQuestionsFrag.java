@@ -49,6 +49,8 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
         mSharedSurveyViewModel = ViewModelProviders.
                  of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
+
+        setTitle("Background Questions");
     }
 
     @Override

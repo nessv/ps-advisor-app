@@ -12,8 +12,7 @@
         android:layout_width="292dp"
         android:layout_height="447dp"
         android:layout_margin="14dp"
-        android:background="@drawable/survey_card"
-        android:backgroundTint="@color/indicator_card_green">
+        android:background="@drawable/survey_card">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/survey_card_image"

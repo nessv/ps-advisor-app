@@ -10,23 +10,15 @@ import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 
 public class FamilyMemberIr {
     @SerializedName("personId")
-    private int id;
+    int id;
     @SerializedName("firstName")
-    private String firstName;
+    String firstName;
     @SerializedName("lastName")
-    private String lastName;
+    String lastName;
     @SerializedName("gender")
-    private String gender;
+    String gender;
     @SerializedName("profileUrl")
-    private String profileUrl;
-
-    public FamilyMemberIr(int id, String firstName, String lastName, String gender, String profileUrl) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.profileUrl = profileUrl;
-    }
+    String profileUrl;
 
     public FamilyMember familyMember() {
         return new FamilyMember(firstName, lastName, profileUrl);

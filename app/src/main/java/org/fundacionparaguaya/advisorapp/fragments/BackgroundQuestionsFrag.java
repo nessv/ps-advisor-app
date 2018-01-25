@@ -163,6 +163,7 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
                     }
                 });
                 //add listener to update view model when value is given
+
                 mQuestionContainer.addView(view);
             }
         }

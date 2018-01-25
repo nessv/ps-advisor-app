@@ -108,25 +108,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             {
                 case INTRO:
 
-                    if(!hasFragForClass(SurveyIntroFragment.class))
-                    {
-                        addFragment(mIntroFragment);
-                    }
-
-                    getSupportFragmentManager().executePendingTransactions();
-
                     switchToFrag(SurveyIntroFragment.class);
 
                     break;
 
                 case BACKGROUND_QUESTIONS:
-
-                    if(!hasFragForClass(BackgroundQuestionsFrag.class))
-                    {
-                        addFragment(mQuestionsFragment);
-                    }
-
-                    getSupportFragmentManager().executePendingTransactions();
 
                     switchToFrag(BackgroundQuestionsFrag.class);
 

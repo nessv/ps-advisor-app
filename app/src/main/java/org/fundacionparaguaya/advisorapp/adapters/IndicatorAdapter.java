@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment;
+import org.fundacionparaguaya.advisorapp.fragments.IndicatorSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -24,10 +25,13 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
 
     SharedSurveyViewModel mSurveyViewModel;
 
-    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel) {
+    IndicatorSurveyFragment mSurveyFragment;
+
+    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, IndicatorSurveyFragment parentFrag) {
         super(fragmentManager);
 
         mSurveyViewModel = surveyViewModel;
+        mSurveyFragment = parentFrag;
 
         indicatorQuestionList = mSurveyViewModel.getSurveyInProgress().getIndicatorQuestions();
         loadFragments();
@@ -37,6 +41,10 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return fragmentList.size();
+    }
+
+    public IndicatorSurveyFragment returnParent(){
+        return mSurveyFragment;
     }
 
     @Override

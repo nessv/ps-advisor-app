@@ -105,6 +105,7 @@ public class IndicatorFragment extends AbstractSurveyFragment {
                     mRedIndicator.setSelected(false);
                     mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(0));
                     selectedIndicator = GREEN;
+                    updateParent();
                 } else {
                     mGreenIndicator.setSelected(false);
                     selectedIndicator = NONE;
@@ -122,7 +123,7 @@ public class IndicatorFragment extends AbstractSurveyFragment {
                     mRedIndicator.setSelected(false);
                     mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(1));
                     selectedIndicator = YELLOW;
-
+                    updateParent();
                 } else {
                     mYellowIndicator.setSelected(false);
                     selectedIndicator = NONE;
@@ -140,6 +141,7 @@ public class IndicatorFragment extends AbstractSurveyFragment {
                     mRedIndicator.setSelected(true);
                     mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(2));
                     selectedIndicator = RED;
+                    updateParent();
                 } else {
                     mRedIndicator.setSelected(false);
                     selectedIndicator = NONE;
@@ -150,6 +152,13 @@ public class IndicatorFragment extends AbstractSurveyFragment {
         return rootView;
 
 
+    }
+
+    private void updateParent(){
+        IndicatorSurveyFragment fragment = (IndicatorSurveyFragment) adapter.returnParent();
+        if (fragment !=null) {
+            fragment.nextQuestion();
+        }
     }
 
     public SelectedIndicator getSelectedIndicator(){

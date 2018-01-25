@@ -60,7 +60,7 @@ public class IndicatorSurveyFragment extends AbstractSurveyFragment{
                              @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_surveyindicatorsurvey, container, false);
 
-        mAdapter = new IndicatorAdapter(getFragmentManager(), mSurveyViewModel);
+        mAdapter = new IndicatorAdapter(getFragmentManager(), mSurveyViewModel, this);
         mPager = (ViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
 
         mPager.setAdapter(mAdapter);

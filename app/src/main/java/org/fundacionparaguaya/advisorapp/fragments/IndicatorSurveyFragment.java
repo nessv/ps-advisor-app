@@ -70,6 +70,8 @@ public class IndicatorSurveyFragment extends AbstractSurveyFragment{
         skipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
         skipButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_skipbuttontext);
 
+        backButton.setVisibility(view.GONE);
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,10 +102,31 @@ public class IndicatorSurveyFragment extends AbstractSurveyFragment{
 
     public void nextQuestion(){
         mPager.setCurrentItem(mPager.getCurrentItem()+1);
+        checkConditions();
     }
 
     public void previousQuestion(){
         mPager.setCurrentItem(mPager.getCurrentItem()-1);
+        checkConditions();
+    }
+
+    private void checkConditions(){
+        if (mPager.getCurrentItem() == mAdapter.getCount()-1){
+            backButton.setVisibility(getView().VISIBLE);
+            skipButton.setVisibility(getView().GONE);
+        } else if (mPager.getCurrentItem() == 0){
+            skipButtonText.setText(R.string.survey_skip);
+            backButton.setVisibility(getView().VISIBLE); //change to gone when you get the selecting to work
+            skipButton.setVisibility(getView().VISIBLE);
+        } else if (mPager.getCurrentItem() == mAdapter.getCount() - 2) {
+            skipButtonText.setText(R.string.survey_next);
+            backButton.setVisibility(getView().VISIBLE);
+            skipButton.setVisibility(getView().VISIBLE);
+        } else {
+            skipButtonText.setText(R.string.survey_skip);
+            backButton.setVisibility(getView().VISIBLE);
+            skipButton.setVisibility(getView().VISIBLE);
+        }
     }
 
     public static IndicatorSurveyFragment build(){

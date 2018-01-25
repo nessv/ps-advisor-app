@@ -1,7 +1,9 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -12,9 +14,6 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 
-/**
- * Created by Mone Elokda on 1/23/2018.
- */
 
 public class QuestionTextView extends LinearLayout implements View.OnClickListener, QuestionViewInterface{
 
@@ -77,14 +76,20 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
 
     }
 
+    public void responseTextChangedListener(TextWatcher watcher){
+
+        mAnswer.addTextChangedListener(watcher);
+
+    }
+
     private void setInputType(int type)
     {
         mAnswer.setInputType(type);
     }
 
-    public void getResponse(String response)
+    public String getResponse()
     {
-        mAnswer.setText(response);
+        return mAnswer.getText().toString();
     }
 
     @Override

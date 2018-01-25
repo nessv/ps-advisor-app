@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.w3c.dom.Text;
@@ -81,6 +82,16 @@ public class IndicatorSurveyFragment extends AbstractSurveyFragment{
             public void onClick(View v) {
                 mSurveyViewModel.addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
                 nextQuestion();
+            }
+        });
+
+        mPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IndicatorFragment fragment = (IndicatorFragment) mAdapter.getItem(mPager.getCurrentItem());
+                if (fragment.getSelectedIndicator() != NONE) {
+                    nextQuestion();
+                }
             }
         });
 

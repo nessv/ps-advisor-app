@@ -44,7 +44,7 @@ public abstract class StackedFrag extends Fragment
         }
         catch (ClassCastException e)
         {
-           // throw new ClassCastException("Parent activity or fragment must implement NavigationListener");
+            throw new ClassCastException("Parent activity or fragment must implement NavigationListener");
         }
     }
 }

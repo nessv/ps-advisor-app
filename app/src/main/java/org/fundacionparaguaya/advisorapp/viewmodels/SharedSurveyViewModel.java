@@ -45,7 +45,6 @@ public class SharedSurveyViewModel extends ViewModel
         mSurveyRepository = surveyRepository;
         mFamilyRepository = familyRepository;
 
-        //Progress.setValue(new SurveyProgress(0, ""));
         mSurveyState = new MutableLiveData<>();
 
         mSurveyState.setValue(SurveyState.NONE);

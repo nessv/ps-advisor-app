@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -22,6 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.GREEN;
+import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.NONE;
+import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.RED;
+import static org.fundacionparaguaya.advisorapp.fragments.IndicatorFragment.SelectedIndicator.YELLOW;
 
 /**
  *
@@ -33,20 +41,30 @@ public class IndicatorFragment extends AbstractSurveyFragment {
     IndicatorCard mYellowIndicator;
     IndicatorCard mRedIndicator;
 
+    IndicatorQuestion question;
+
     @Nullable
     InjectionViewModelFactory mViewModelFactory;
     SharedSurveyViewModel mSurveyViewModel;
+    IndicatorAdapter adapter;
 
     String greenImage;    String greenText;
     String yellowImage;   String yellowText;
     String redImage;      String redText;
 
-    public IndicatorFragment newInstance(
+    enum SelectedIndicator { RED, YELLOW, GREEN, NONE};
+
+    SelectedIndicator selectedIndicator = NONE;
+
+    public IndicatorFragment newInstance( IndicatorAdapter adapter, IndicatorQuestion question,
             String greenImage, String greenText,
             String yellowImage, String yellowText,
             String redImage, String redText
     ){
         IndicatorFragment fragment = new IndicatorFragment();
+
+        this.adapter = adapter;
+        this.question = question;
         this.greenImage = greenImage; this.greenText = greenText;
         this.yellowImage = yellowImage; this.yellowText = yellowText;
         this.redImage = redImage; this.redText = redText;
@@ -78,8 +96,64 @@ public class IndicatorFragment extends AbstractSurveyFragment {
         this.mRedIndicator.setText(redText);
         this.mRedIndicator.setColor(IndicatorCard.CardColor.RED);
 
+        mGreenIndicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedIndicator != GREEN){
+                    mGreenIndicator.setSelected(true);
+                    mYellowIndicator.setSelected(false);
+                    mRedIndicator.setSelected(false);
+                    mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(0));
+                    selectedIndicator = GREEN;
+                } else {
+                    mGreenIndicator.setSelected(false);
+                    selectedIndicator = NONE;
+                    mSurveyViewModel.addSkippedIndicator(question);
+                }
+            }
+        });
 
+        mYellowIndicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedIndicator != YELLOW){
+                    mGreenIndicator.setSelected(false);
+                    mYellowIndicator.setSelected(true);
+                    mRedIndicator.setSelected(false);
+                    mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(1));
+                    selectedIndicator = YELLOW;
+
+                } else {
+                    mYellowIndicator.setSelected(false);
+                    selectedIndicator = NONE;
+                    mSurveyViewModel.addSkippedIndicator(question);
+                }
+            }
+        });
+
+        mRedIndicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedIndicator != RED){
+                    mGreenIndicator.setSelected(false);
+                    mYellowIndicator.setSelected(false);
+                    mRedIndicator.setSelected(true);
+                    mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(2));
+                    selectedIndicator = RED;
+                } else {
+                    mRedIndicator.setSelected(false);
+                    selectedIndicator = NONE;
+                    mSurveyViewModel.addSkippedIndicator(question);
+                }
+            }
+        });
         return rootView;
+
+
+    }
+
+    public SelectedIndicator getSelectedIndicator(){
+        return selectedIndicator;
     }
 
     @Override
@@ -95,7 +169,4 @@ public class IndicatorFragment extends AbstractSurveyFragment {
                 .get(SharedSurveyViewModel.class);
 
     }
-
-
-
 }

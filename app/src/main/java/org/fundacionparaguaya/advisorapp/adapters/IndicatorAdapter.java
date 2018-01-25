@@ -21,6 +21,8 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
 
+    private FragmentManager fragmentManager;
+
     SharedSurveyViewModel mSurveyViewModel;
 
     public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel) {
@@ -41,6 +43,10 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position);
+    }
+
+    public IndicatorQuestion getQuestion(int position){
+        return indicatorQuestionList.get(position);
     }
 
     /**
@@ -64,12 +70,15 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
             yellowText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getDescription();
             redText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getDescription();
 
-           tempFrag.newInstance(greenImage,    greenText,
+           tempFrag.newInstance(this, indicatorQuestionList.get(counter),
+                                greenImage,    greenText,
                                 yellowImage,   yellowText,
                                 redImage,      redText);
 
            fragmentList.add(counter, tempFrag);
         }
+
+        Fragment
     }
 
 }

@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
         <TextView
-            android:id="@+id/indicatorsurve_skipbuttontext"
+            android:id="@+id/indicatorsurvey_skipbuttontext"
             android:layout_width="wrap_content"
             android:layout_height="52dp"
             android:text="@string/survey_skip"

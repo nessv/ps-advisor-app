@@ -1,13 +1,17 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,7 +28,7 @@ public class IndicatorCard extends CardView{
     private Context context;
 
     private CardView mSurveyCardSelected;
-    private CardView mSurveyCard;
+    private LinearLayout mSurveyCard;
     private SimpleDraweeView mImage;
     private TextView mText;
 
@@ -40,14 +44,14 @@ public class IndicatorCard extends CardView{
         inflater.inflate(R.layout.indicator_card, this);
 
         mSurveyCardSelected = (CardView) findViewById(R.id.survey_card_selected);
-        mSurveyCard = (CardView) findViewById(R.id.survey_card_background);
+        mSurveyCard = (LinearLayout) findViewById(R.id.survey_card_background);
         mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
 
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
 
         try{
-            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, R.color.colorPrimaryDark));
+            setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, Color.TRANSPARENT));
             setText(attrs.getResourceId(R.styleable.IndicatorCard_indicator_text, R.string.defaultindicatortext));
             setImage(attrs.getResourceId(R.styleable.IndicatorCard_indicator_image, R.string.family_imagePlaceholder));
         } finally {
@@ -58,28 +62,28 @@ public class IndicatorCard extends CardView{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-            mSurveyCardSelected.setBackgroundColor(context.getColor(R.color.indicator_card_background));
+            mSurveyCardSelected.setCardBackgroundColor(context.getColor(R.color.indicator_card_selected));
         } else {
-            mSurveyCardSelected.setBackground(context.getDrawable(R.drawable.survey_card_background));
+            mSurveyCardSelected.setCardBackgroundColor(context.getColor(R.color.indicator_card_background));
         }
     }
 
     public void setColor(CardColor color){
         switch(color) {
             case RED:
-                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.indicator_card_red));
+                mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.indicator_card_green)));
                 break;
             case YELLOW:
-                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.indicator_card_yellow));
+                mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.indicator_card_yellow)));
                 break;
             case GREEN:
-                mSurveyCard.setCardBackgroundColor(context.getColor(R.color.indicator_card_green));
+                mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.indicator_card_red)));
                 break;
         }
     }
 
     public void setColor(int color){
-        mSurveyCard.setCardBackgroundColor(color);
+        mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 
     public void setImage(Uri uri){

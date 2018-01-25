@@ -29,8 +29,13 @@
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
 
-    <string name="contentDescription_profile_picture">Profile Picture</string>
+    <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">New Snapshot</string>
+    <string name="survey_back">Back</string>
+    <string name="survey_next">Next</string>
+    <string name="survey_skip">Skip</string>
+
     <string name="all_continue">Continue</string>
     <string name="defaultindicatortext">This is bad. This should not be the text being displayed</string>
+
 </resources>

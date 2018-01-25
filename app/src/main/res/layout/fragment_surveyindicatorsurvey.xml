@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/indicatorsurvey"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,24 +17,45 @@
     <LinearLayout
         android:id="@+id/indicatorsurvey_backbutton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageButton
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="52dp"
+            android:src="@drawable/indicatorsurvey_arrow"
+            android:scaleX="-1"/>
         <TextView
+            android:id="@+id/indicatorsurvey_backbuttontext"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/survey_back"
+            android:textSize="36sp"
+            android:textColor="@color/survey_navbuttons"
+            android:paddingStart="20dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/indicatorsurvey_skipbutton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
         <TextView
+            android:id="@+id/indicatorsurve_skipbuttontext"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="52dp"
+            android:text="@string/survey_skip"
+            android:textSize="36sp"
+            android:textColor="@color/survey_navbuttons"
+            android:paddingEnd="20dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/indicatorsurvey_arrow" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

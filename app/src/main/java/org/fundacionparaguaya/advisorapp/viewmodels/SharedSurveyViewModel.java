@@ -45,7 +45,6 @@ public class SharedSurveyViewModel extends ViewModel
         mSurveyRepository = surveyRepository;
         mFamilyRepository = familyRepository;
 
-        mProgress.setValue(new SurveyProgress());
         mSurveyState = new MutableLiveData<>();
 
         mSurveyState.setValue(SurveyState.NONE);
@@ -112,13 +111,25 @@ public class SharedSurveyViewModel extends ViewModel
         return mSurveyState;
     }
 
+    public void setSurveyState(SurveyState state)
+    {
+        mSurveyState.setValue(state);
+
+        calculateProgress();
+    }
+
     public MutableLiveData<SurveyProgress> getProgress()
     {
         return mProgress;
     }
 
     public void addSkippedIndicator(IndicatorQuestion question) {
+        //clears any responses for the question
+        mSnapshot.getValue().getIndicatorResponses().remove(question);
+
         mSkippedIndicators.add(question);
+
+        calculateProgress();
     }
 
     public List<IndicatorQuestion> getSkippedIndicators()
@@ -134,18 +145,77 @@ public class SharedSurveyViewModel extends ViewModel
 
     public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response)
     {
-        getSnapshotValue().response(indicator, response);
+        if(response!=null) {
+            getSnapshotValue().response(indicator, response);
+
+            calculateProgress();
+        }
     }
 
     public void addBackgroundResponse(SurveyQuestion question, String response)
+    { //TODO if string is empty, we probably want to remove any response that we used to have...?
+        if(response!=null && !response.isEmpty()) {
+            if (question instanceof PersonalQuestion) {
+                getSnapshotValue().response((PersonalQuestion) question, response);
+            }
+            else if (question instanceof EconomicQuestion) {
+                getSnapshotValue().response((EconomicQuestion) question, response);
+            }
+
+            calculateProgress();
+        }
+    }
+
+    public @Nullable String getBackgroundResponse(SurveyQuestion question)
     {
         if(question instanceof PersonalQuestion)
         {
-            getSnapshotValue().response((PersonalQuestion) question, response);
+            return getSnapshotValue().getPersonalResponses().get(question);
         }
         else if(question instanceof EconomicQuestion)
         {
-            getSnapshotValue().response((EconomicQuestion) question, response);
+            return getSnapshotValue().getEconomicResponses().get(question);
+        }
+
+        return null;
+    }
+
+    public void calculateProgress()
+    {
+        if(getSurveyInProgress() != null && mSurveyState.getValue() != null)
+        {
+            int progress = 0;
+            String progressString = "";
+
+            switch (mSurveyState.getValue())
+            {
+
+                case BACKGROUND_QUESTIONS:
+
+                    int totalQuestions = getSurveyInProgress().getEconomicQuestions().size() +
+                            getSurveyInProgress().getPersonalQuestions().size();
+
+                    int completedQuestions = mSnapshot.getValue().getPersonalResponses().size() +
+                            mSnapshot.getValue().getEconomicResponses().size();
+
+                    progress = (100*completedQuestions)/totalQuestions;
+                    progressString = (totalQuestions-completedQuestions) + " Questions Remaining";
+
+                    break;
+
+                case INDICATORS:
+                    int totalIndicators = getSurveyInProgress().getIndicatorQuestions().size();
+
+                    int skippedIndicators = mSkippedIndicators.size();
+                    int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
+
+                    progress = (100* completedIndicators+ skippedIndicators)/totalIndicators;
+                    progressString = (totalIndicators-completedIndicators) + " Indicators Remaining, " +
+                    skippedIndicators + " Skipped" ;
+
+            }
+
+            mProgress.setValue(new SurveyProgress(progress, progressString));
         }
     }
 
@@ -175,6 +245,12 @@ public class SharedSurveyViewModel extends ViewModel
         String mProgressDescription;
         int mPercentageComplete;
 
+        SurveyProgress(int percentage, String description)
+        {
+            mPercentageComplete = percentage;
+            mProgressDescription =description;
+        }
+
         void setDescription(String description)
         {
             mProgressDescription = description;
@@ -185,12 +261,12 @@ public class SharedSurveyViewModel extends ViewModel
             mPercentageComplete = percentage;
         }
 
-        String getDescription()
+        public String getDescription()
         {
             return mProgressDescription;
         }
 
-        int getPercentageComplete()
+        public int getPercentageComplete()
         {
             return mPercentageComplete;
         }

@@ -1,17 +1,18 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
+import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -28,19 +29,28 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 {
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
-    SurveyIntroFragment introFragment;
+    TextView mTvTitle;
+    TextView mTvQuestionsLeft;
+    TextView mTvNextUp;
+
+    ProgressBar mProgressBar;
+    ObjectAnimator mProgressAnimator;
 
     SurveyIndicatorsFragment surveyIndicatorsFragment;
 
-    LinearLayout header;
-    LinearLayout fragmentContainer;
-    RelativeLayout footer;
+    LinearLayout mHeader;
+    RelativeLayout mFooter;
 
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
     SharedSurveyViewModel mSurveyViewModel;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -56,18 +66,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        header = (LinearLayout) findViewById(R.id.survey_activity_header);
-        fragmentContainer = (LinearLayout) findViewById(R.id.survey_activity_fragment_container);
-        footer = (RelativeLayout) findViewById(R.id.survey_activity_footer);
+        mHeader = (LinearLayout) findViewById(R.id.survey_activity_header);
+        mFooter = (RelativeLayout) findViewById(R.id.survey_activity_footer);
 
-        /**Construct fragments here**/
-        introFragment = SurveyIntroFragment.build();
-        surveyIndicatorsFragment = SurveyIndicatorsFragment.build();
+   	    mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+        mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
+        mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 
-        /** Add all fragments you want to switch between as parameter here**/
+        mProgressBar = findViewById(R.id.progressbar_surveyactivity);
 
-        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment, surveyIndicatorsFragment);
-
+        setFragmentContainer(R.id.survey_activity_fragment_container);
         initViewModel();
     }
 
@@ -95,35 +103,53 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             }
         }));
 
-        mSurveyViewModel.getSnapshot().observe(this, snapshot -> {
-            //update progress bar
+        mSurveyViewModel.getProgress().observe(this, surveyProgress -> {
+
+            ObjectAnimator progressAnimator = ObjectAnimator.ofInt(mProgressBar,
+                    "progress", mProgressBar.getProgress(), surveyProgress.getPercentageComplete());
+
+            progressAnimator.setDuration(400);
+            progressAnimator.start();
+
+            mProgressBar.setProgress(surveyProgress.getPercentageComplete());
+            mTvQuestionsLeft.setText(surveyProgress.getDescription());
         });
 
         mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
+            Class<? extends AbstractSurveyFragment> nextFragment = null;
+
             switch (surveyState)
             {
                 case INTRO:
-                    header.setBackgroundColor(this.getColor(R.color.survey_lightyellow));
-                    fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_lightyellow));
-                    footer.setBackgroundColor(this.getColor(R.color.survey_darkyellow));
-                    switchToFrag(introFragment);
+                    nextFragment = SurveyIntroFragment.class;
                     break;
 
                 case BACKGROUND_QUESTIONS:
-                    header.setBackgroundColor(this.getColor(R.color.survey_darkyellow));
-                    fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_lightyellow));
-                    footer.setBackgroundColor(this.getColor(R.color.survey_darkyellow));
-                    //switchToFrag( );
-                    //break;
+                    nextFragment = SurveyQuestionsFrag.class;
+                    break;
 
                 case INDICATORS:
-                    header.setBackgroundColor(this.getColor(R.color.survey_whitebackground));
-                    fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_whitebackground));
-                    footer.setBackgroundColor(this.getColor(R.color.survey_grey));
-                    switchToFrag(surveyIndicatorsFragment);
+                    nextFragment = SurveyIndicatorsFragment.class;
                     break;
-            };
+            }
+
+            if(nextFragment!=null) switchToSurveyFrag(nextFragment);
         });
+    }
+
+    void switchToSurveyFrag(Class<? extends AbstractSurveyFragment> fragmentClass)
+    {
+        super.switchToFrag(fragmentClass);
+
+        AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
+
+        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(),
+                this.getTheme()));
+
+        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(),
+                this.getTheme()));
+
+        this.mTvTitle.setText(fragment.getTitle());
     }
 
     public void setTitle(String title) {

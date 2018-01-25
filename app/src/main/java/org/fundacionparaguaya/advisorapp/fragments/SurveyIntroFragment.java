@@ -26,6 +26,8 @@ import javax.inject.Inject;
 
 public class SurveyIntroFragment extends AbstractSurveyFragment
 {
+    static String FRAGMENT_TAG = "SurveyIntroFragment";
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -48,7 +50,10 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        //get family name from arguments
+        setTitle("");
+
+        setFooterColor(R.color.survey_darkyellow);
+        setHeaderColor(R.color.survey_darkyellow);
     }
 
     @Nullable
@@ -78,11 +83,16 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
             /**when snapshot is made**/
             mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
-                mSurveyViewModel.getSurveyState().setValue(SurveyState.BACKGROUND_QUESTIONS);
+                mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
             }));
 
             //create snapshot with family and
         });
+    }
+
+    public static String getFragmentTag()
+    {
+        return FRAGMENT_TAG;
     }
 
     public static SurveyIntroFragment build()

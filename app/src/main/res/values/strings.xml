@@ -29,6 +29,9 @@
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
 
+    <string name="contentDescription_profile_picture">Profile Picture</string>
+    <string name="bkgquestions_title">Background Information</string>
+    
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="survey_back">Back</string>

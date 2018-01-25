@@ -1,13 +1,15 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.app.Activity;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
-import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Extending this class makes it easier to switch between fragments within the activity's container,
@@ -22,50 +24,83 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
 
     private int mFragmentContainer;
 
+    private Map<Class, String> fragmentTags = new HashMap<>();
 
     /**
      * Sets the container for the fragments and attaches/detatches so their state is tracked by fragment manager
      *
      *
-     * @param fragments Frags to add to fragment manager
+     * @param resourceId Container that holds fragment
      */
-    public void initFragSwitcher(int resourceId, Fragment ... fragments)
+    public void setFragmentContainer(int resourceId)
     {
         mFragmentContainer = resourceId;
 
-        for(Fragment frag: fragments)
-        {
-            getSupportFragmentManager().beginTransaction().attach(frag).commit();
-            getSupportFragmentManager().beginTransaction().detach(frag).commit();
+    }
+
+    public void addFragmentFromClass(Class fragmentClass)
+    {
+        Fragment fragment;
+
+        try {
+            fragment = (Fragment) fragmentClass.getConstructor().newInstance();
+
+            getSupportFragmentManager().beginTransaction().add(fragment, fragment.getClass().getName()).commit();
+            getSupportFragmentManager().executePendingTransactions();
+
+            Fragment f = getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+
+            getSupportFragmentManager().beginTransaction().detach(f).commit();
+            getSupportFragmentManager().executePendingTransactions();
+
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
+    public void addFragment(Fragment fragment)
+    {
+        getSupportFragmentManager().beginTransaction().add(fragment, fragment.getClass().getName()).commit();
+        getSupportFragmentManager().executePendingTransactions();
+
+        getSupportFragmentManager().beginTransaction().detach(fragment).commit();
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
+    protected Fragment getFragment(Class fragmentClass)
+    {
+        return getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
+    }
+
+    protected ViewGroup getFragmentContainer()
+    {
+        return findViewById(mFragmentContainer);
+    }
     /**
      * Detatches the currently attached fragment and replaces it with the specific fragment
      *
-     * @param frag Fragment to switch to
+     * @param fragmentClass Class of the fragment to switch to
      */
-    protected void switchToFrag(Fragment frag)
+    protected void switchToFrag(Class fragmentClass)
     {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        if(mLastFrag!=null) {
-            ft.detach(mLastFrag);
+        if(!hasFragForClass(fragmentClass))
+        {
+            addFragmentFromClass(fragmentClass);
         }
 
-        ft.attach(frag).replace(mFragmentContainer, frag).commit();
+        if(mLastFrag!=null) {
+            getSupportFragmentManager().beginTransaction().detach(mLastFrag).commit();
+        }
 
-        mLastFrag = frag;
+        Fragment f = getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
+        getSupportFragmentManager().beginTransaction().attach(f).replace(mFragmentContainer, f).commit();
+
+        mLastFrag = f;
     }
 
-    /** Replaces the current fragment without saving the old fragment's state*/
-    protected void removeThenSwitchFrag(Fragment frag)
+    protected boolean hasFragForClass(Class fragmentClass)
     {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(mLastFrag).commit();
-
-        mLastFrag=null;
-
-        switchToFrag(frag);
+        return (getSupportFragmentManager().findFragmentByTag(fragmentClass.getName())) != null;
     }
+
 }

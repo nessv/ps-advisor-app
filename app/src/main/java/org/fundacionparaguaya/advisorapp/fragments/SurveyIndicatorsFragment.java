@@ -40,6 +40,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
 
     SharedSurveyViewModel mSurveyViewModel;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInsanceState) {
         super.onCreate(savedInsanceState);
@@ -50,6 +51,9 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
         mSurveyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
+
+        setFooterColor(R.color.survey_grey);
+        setHeaderColor(R.color.survey_grey);
     }
 
     @Nullable

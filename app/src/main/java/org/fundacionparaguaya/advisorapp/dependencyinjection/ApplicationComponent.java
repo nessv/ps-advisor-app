@@ -4,11 +4,12 @@ import android.app.Application;
 
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.*;
-import org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
+
 
 /**
  * The main application component.
@@ -33,5 +34,5 @@ public interface ApplicationComponent {
     void inject(ChooseIndicatorFragment chooseIndicatorFragment);
 
     void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
-
+    void inject(SurveyQuestionsFrag surveyQuestionsFrag);
 }

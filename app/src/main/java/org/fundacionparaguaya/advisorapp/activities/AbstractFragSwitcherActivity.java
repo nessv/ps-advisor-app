@@ -1,17 +1,10 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.app.Activity;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
-import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
-import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 
-import java.util.Dictionary;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,13 +35,33 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
 
     }
 
+    public void addFragmentFromClass(Class fragmentClass)
+    {
+        Fragment fragment;
+
+        try {
+            fragment = (Fragment) fragmentClass.getConstructor().newInstance();
+
+            getSupportFragmentManager().beginTransaction().add(fragment, fragment.getClass().getName()).commit();
+            getSupportFragmentManager().executePendingTransactions();
+
+            Fragment f = getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
+
+            getSupportFragmentManager().beginTransaction().detach(f).commit();
+            getSupportFragmentManager().executePendingTransactions();
+
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addFragment(Fragment fragment)
     {
         getSupportFragmentManager().beginTransaction().add(fragment, fragment.getClass().getName()).commit();
         getSupportFragmentManager().executePendingTransactions();
 
-        Fragment f = getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName());
-        getSupportFragmentManager().beginTransaction().detach(f).commit();
+        getSupportFragmentManager().beginTransaction().detach(fragment).commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     protected Fragment getFragment(Class fragmentClass)
@@ -63,16 +76,17 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
      */
     protected void switchToFrag(Class fragmentClass)
     {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if(!hasFragForClass(fragmentClass))
+        {
+            addFragmentFromClass(fragmentClass);
+        }
 
         if(mLastFrag!=null) {
             getSupportFragmentManager().beginTransaction().detach(mLastFrag).commit();
         }
 
-        getSupportFragmentManager().executePendingTransactions();
-
         Fragment f = getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
-        ft.attach(f).replace(mFragmentContainer, f).commit();
+        getSupportFragmentManager().beginTransaction().attach(f).replace(mFragmentContainer, f).commit();
 
         mLastFrag = f;
     }
@@ -81,4 +95,5 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
     {
         return (getSupportFragmentManager().findFragmentByTag(fragmentClass.getName())) != null;
     }
+
 }

@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
@@ -12,19 +13,18 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
-{
+public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener {
     DashboardTabBarView tabBarView;
 
-	@Override
-    public void onBackPressed()
-    {
-        ((TabbedFrag)getFragment(getClassForType(tabBarView.getSelected()))).onNavigateBack();
+    static String SELECTED_TAB_KEY = "SELECTED_TAB";
+
+    @Override
+    public void onBackPressed() {
+        ((TabbedFrag) getFragment(getClassForType(tabBarView.getSelected()))).onNavigateBack();
     }
 
     private Class getClassForType(DashboardTab.TabType type) {
-        switch (type)
-        {
+        switch (type) {
             case FAMILY:
                 return FamilyTabbedFragment.class;
             case MAP:
@@ -40,59 +40,53 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        if(!hasFragForClass(getClassForType(event.getSelectedTab()))) {
-            constructFragment(getClassForType(event.getSelectedTab()));
-        }
-
         switchToFrag(getClassForType(event.getSelectedTab()));
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
 
-	private void constructFragment(Class fragClass)
-    {
-        try{
-            addFragment((Fragment) fragClass.getConstructor().newInstance());
-        }
-        catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        //save selected tab
+        outState.putString(SELECTED_TAB_KEY, tabBarView.getSelected().name());
         super.onSaveInstanceState(outState);
-
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
-        tabBarView.addTabSelectedHandler(handler);
-
         setFragmentContainer(R.id.dash_content);
 
-        if(!hasFragForClass(FamilyTabbedFragment.class)) {
-            constructFragment(FamilyTabbedFragment.class);
+        tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
+
+        if (savedInstanceState != null) {
+            String selectTypeName = savedInstanceState.getString(SELECTED_TAB_KEY);
+
+            if (selectTypeName != null) {
+                DashboardTab.TabType previouslySelected = DashboardTab.TabType.valueOf(selectTypeName);
+                tabBarView.selectTab(previouslySelected);
+                switchToFrag(getClassForType(previouslySelected));
+            }
+        }
+        else
+        {
             switchToFrag(FamilyTabbedFragment.class);
         }
+
+        tabBarView.addTabSelectedHandler(handler);
     }
 
 
 
     @Override
-    public void onShowBackNav()
-    {
+    public void onShowBackNav() {
         Toast.makeText(getApplicationContext(), "Show Back Nav", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onHideBackNav()
-    {
+    public void onHideBackNav() {
         Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
 }

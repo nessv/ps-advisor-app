@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -137,20 +135,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     @Override
     public void switchToFrag(Class fragmentClass)
     {
-        if(!hasFragForClass(fragmentClass))
-        {
-            try{
-                Fragment f = (Fragment)fragmentClass.getConstructor().newInstance();
-                addFragment(f);
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-        }
+        super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
         this.mTvTitle.setText(fragment.getTitle());
-
-        super.switchToFrag(fragmentClass);
     }
 
     public void setTitle(String title) {

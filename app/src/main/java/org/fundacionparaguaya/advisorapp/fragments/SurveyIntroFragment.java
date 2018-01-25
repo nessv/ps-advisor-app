@@ -50,7 +50,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setTitle("");f
+        setTitle("");
     }
 
     @Nullable

@@ -11,9 +11,6 @@ import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 
 import java.util.List;
 
-/**
- * Created by Mone Elokda on 1/23/2018.
- */
 
 public class QuestionDropdownView extends LinearLayout implements View.OnClickListener, QuestionViewInterface {
 

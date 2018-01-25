@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -88,6 +90,23 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
                 view.setQuestion(q);
                 view.setResponse(mSharedSurveyViewModel.getBackgroundResponse(q));
+                view.responseTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String s = view.getResponse();
+                        mSharedSurveyViewModel.addBackgroundResponse(q, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
 
                 //add listener to update view model when value is given
                 mQuestionContainer.addView(view);
@@ -126,6 +145,23 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
                 view.setQuestion(q);
                 view.setResponse(mSharedSurveyViewModel.getBackgroundResponse(q));
 
+                view.responseTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String s = view.getResponse();
+                        mSharedSurveyViewModel.addBackgroundResponse(q, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
                 //add listener to update view model when value is given
                 mQuestionContainer.addView(view);
             }
@@ -150,6 +186,5 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
     //observe for all changes
     //if has options -
-
 
 }

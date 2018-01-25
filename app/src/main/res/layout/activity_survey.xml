@@ -29,8 +29,8 @@
     </LinearLayout>
 
     <LinearLayout
-                  android:layout_height="0dp"
-                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
                   app:layout_constraintTop_toBottomOf="@id/survey_activity_header"
                   app:layout_constraintBottom_toTopOf="@id/survey_activity_footer"
                   app:layout_constraintStart_toStartOf="parent"

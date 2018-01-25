@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -30,6 +32,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     IndicatorSurveyFragment indicatorSurveyFragment;
 
+    LinearLayout header;
+    LinearLayout fragmentContainer;
+    RelativeLayout footer;
+
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -48,6 +55,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mSurveyViewModel = ViewModelProviders
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
+
+        header = (LinearLayout) findViewById(R.id.survey_activity_header);
+        fragmentContainer = (LinearLayout) findViewById(R.id.survey_activity_fragment_container);
+        footer = (RelativeLayout) findViewById(R.id.survey_activity_footer);
 
         /**Construct fragments here**/
         introFragment = SurveyIntroFragment.build();
@@ -92,14 +103,23 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             switch (surveyState)
             {
                 case INTRO:
+                    header.setBackgroundColor(this.getColor(R.color.survey_lightyellow));
+                    fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_lightyellow));
+                    footer.setBackgroundColor(this.getColor(R.color.survey_darkyellow));
                     switchToFrag(introFragment);
                     break;
 
                 case BACKGROUND_QUESTIONS:
+                    header.setBackgroundColor(this.getColor(R.color.survey_darkyellow));
+                    fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_lightyellow));
+                    footer.setBackgroundColor(this.getColor(R.color.survey_darkyellow));
                     //switchToFrag( );
                     //break;
 
                 case INDICATORS:
+                    header.setBackgroundColor(this.getColor(R.color.survey_whitebackground));
+                    fragmentContainer.setBackgroundColor(this.getColor(R.color.survey_whitebackground));
+                    footer.setBackgroundColor(this.getColor(R.color.survey_grey));
                     switchToFrag(indicatorSurveyFragment);
                     break;
             };

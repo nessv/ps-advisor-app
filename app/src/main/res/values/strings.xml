@@ -30,6 +30,10 @@
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
 
     <string name="contentDescription_profile_picture">Profile Picture</string>
+
+    <string name="bkgquestions_title">Background Information</string>
+
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="all_continue">Continue</string>
+
 </resources>

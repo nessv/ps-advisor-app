@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+        android:paddingVertical="60dp"
+        android:background="#E5BE45"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/background_question"
+        android:text="What is your name?"
+        android:textSize="48sp"
+        android:paddingStart="56dp"
+        android:textColor="#333333"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginStart="56dp">
+        <EditText
+                android:layout_width="wrap_content"
+                android:minWidth="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/answer_text_field"
+                android:hint="Your Name"
+                android:textSize="48sp"
+                android:textColor="#333333"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="Next"
+                android:textSize="36sp"
+                android:background="#333333"
+                android:textColor="#E5BE45"/>
+    </RelativeLayout>
+
+</LinearLayout>

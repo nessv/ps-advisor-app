@@ -28,6 +28,10 @@ public class SurveyQuestion {
         return description;
     }
 
+    public ResponseType getResponseType(){
+        return type;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -3,6 +3,8 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     IndicatorQuestion question;
 
+    SurveyIndicatorsFragment parentFragment;
+
     @Nullable
     InjectionViewModelFactory mViewModelFactory;
     SharedSurveyViewModel mSurveyViewModel;
@@ -58,6 +62,8 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         this.greenImage = greenImage; this.greenText = greenText;
         this.yellowImage = yellowImage; this.yellowText = yellowText;
         this.redImage = redImage; this.redText = redText;
+
+        parentFragment = (SurveyIndicatorsFragment) adapter.returnParent();
 
         return fragment;
     }
@@ -145,9 +151,14 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     }
 
     private void updateParent(){
-        SurveyIndicatorsFragment fragment = (SurveyIndicatorsFragment) adapter.returnParent();
-        if (fragment !=null) {
-            fragment.nextQuestion();
+
+        if (parentFragment !=null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    parentFragment.nextQuestion();
+                }
+            }, 500); // Millisecond 1000 = 1 sec
         }
     }
 

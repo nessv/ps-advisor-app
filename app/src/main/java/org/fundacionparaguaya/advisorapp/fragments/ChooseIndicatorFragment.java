@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.NetworkOnMainThreadException;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,20 +90,22 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mRedIndicator.setImage(Uri.parse(redImage));
         mRedIndicator.setText(redText);
 
+//        try {
+//            switch (mSurveyViewModel.getResponseForIndicator(question)) {
+//            case:
+//            }
+//        } catch (NullPointerException e){
+//            selectedIndicator = NONE;
+//        }
+
+
         mGreenIndicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedIndicator != GREEN){
-                    mGreenIndicator.setSelected(true);
-                    mYellowIndicator.setSelected(false);
-                    mRedIndicator.setSelected(false);
-                    mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(0));
-                    selectedIndicator = GREEN;
-                    updateParent();
+                    setSelected(GREEN);
                 } else {
-                    mGreenIndicator.setSelected(false);
-                    selectedIndicator = NONE;
-                    mSurveyViewModel.addSkippedIndicator(question);
+                    setSelected(NONE);
                 }
             }
         });
@@ -111,16 +114,9 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             @Override
             public void onClick(View v) {
                 if (selectedIndicator != YELLOW){
-                    mGreenIndicator.setSelected(false);
-                    mYellowIndicator.setSelected(true);
-                    mRedIndicator.setSelected(false);
-                    mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(1));
-                    selectedIndicator = YELLOW;
-                    updateParent();
+                    setSelected(YELLOW);
                 } else {
-                    mYellowIndicator.setSelected(false);
-                    selectedIndicator = NONE;
-                    mSurveyViewModel.addSkippedIndicator(question);
+                    setSelected(NONE);
                 }
             }
         });
@@ -129,22 +125,56 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             @Override
             public void onClick(View v) {
                 if (selectedIndicator != RED){
-                    mGreenIndicator.setSelected(false);
-                    mYellowIndicator.setSelected(false);
-                    mRedIndicator.setSelected(true);
-                    mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(2));
-                    selectedIndicator = RED;
-                    updateParent();
+                    setSelected(GREEN);
                 } else {
-                    mRedIndicator.setSelected(false);
-                    selectedIndicator = NONE;
-                    mSurveyViewModel.addSkippedIndicator(question);
+                    setSelected(NONE);
                 }
             }
         });
         return rootView;
 
 
+    }
+
+    private void setSelected(SelectedIndicator indicator){
+        switch(indicator){
+            case GREEN:
+                mGreenIndicator.setSelected(true);
+                mYellowIndicator.setSelected(false);
+                mRedIndicator.setSelected(false);
+                mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(0));
+                selectedIndicator = GREEN;
+                break;
+            case YELLOW:
+                mGreenIndicator.setSelected(false);
+                mYellowIndicator.setSelected(true);
+                mRedIndicator.setSelected(false);
+                mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(1));
+                selectedIndicator = YELLOW;
+                break;
+            case RED:
+                mGreenIndicator.setSelected(false);
+                mYellowIndicator.setSelected(false);
+                mRedIndicator.setSelected(true);
+                mSurveyViewModel.addIndicatorResponse(question, question.getOptions().get(2));
+                selectedIndicator = RED;
+                break;
+            case NONE:
+                mGreenIndicator.setSelected(false);
+                mYellowIndicator.setSelected(false);
+                mRedIndicator.setSelected(false);
+                mSurveyViewModel.addSkippedIndicator(question);
+                selectedIndicator = NONE;
+                break;
+            default:
+                mGreenIndicator.setSelected(false);
+                mYellowIndicator.setSelected(false);
+                mRedIndicator.setSelected(false);
+                mSurveyViewModel.addSkippedIndicator(question);
+                selectedIndicator = NONE;
+                break;
+        }
+        updateParent();
     }
 
     private void updateParent(){

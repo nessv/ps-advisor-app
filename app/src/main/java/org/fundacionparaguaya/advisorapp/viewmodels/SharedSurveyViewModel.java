@@ -157,7 +157,8 @@ public class SharedSurveyViewModel extends ViewModel
     }
 
     public void addBackgroundResponse(SurveyQuestion question, String response)
-    { //TODO if string is empty, we probably want to remove any response that we used to have...?
+    {
+        //TODO if string is empty, we probably want to remove any response that we used to have...?
         if(response!=null && !response.isEmpty()) {
             if (question instanceof PersonalQuestion) {
                 getSnapshotValue().response((PersonalQuestion) question, response);

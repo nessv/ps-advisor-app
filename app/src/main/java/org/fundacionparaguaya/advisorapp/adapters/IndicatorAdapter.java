@@ -12,6 +12,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Adapter class for the indicators
@@ -20,6 +21,8 @@ import java.util.List;
 public class IndicatorAdapter extends FragmentPagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
+
+    private Set<IndicatorQuestion> skippedQuestions;
 
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
 
@@ -37,7 +40,6 @@ public class IndicatorAdapter extends FragmentPagerAdapter {
         loadFragments();
     }
 
-    //TODO implement
     @Override
     public int getCount() {
         return fragmentList.size();

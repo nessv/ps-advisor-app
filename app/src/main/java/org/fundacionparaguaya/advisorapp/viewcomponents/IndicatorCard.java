@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,8 +24,8 @@ public class IndicatorCard extends LinearLayout{
 
     private Context context;
 
-    private CardView mSurveyCardSelected;
-    private CardView mSurveyCard;
+    private CardView mIndicatorBackground;
+    private CardView mIndicatorCard;
     private SimpleDraweeView mImage;
     private TextView mText;
 
@@ -43,8 +40,8 @@ public class IndicatorCard extends LinearLayout{
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.indicator_card, this, true);
 
-        mSurveyCardSelected = findViewById(R.id.survey_card_selected);
-        mSurveyCard = (CardView) findViewById(R.id.survey_card_background);
+        mIndicatorBackground = findViewById(R.id.survey_card_selected);
+        mIndicatorCard = (CardView) findViewById(R.id.survey_card_background);
         mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
 
@@ -64,28 +61,28 @@ public class IndicatorCard extends LinearLayout{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-              mSurveyCardSelected.setCardBackgroundColor(context.getColor(R.color.indicator_card_selected));
+              mIndicatorBackground.setCardBackgroundColor(context.getColor(R.color.indicator_card_selected));
         } else {
-              mSurveyCardSelected.setCardBackgroundColor(context.getColor(android.R.color.transparent));
+              mIndicatorBackground.setCardBackgroundColor(context.getColor(android.R.color.transparent));
         }
     }
 
     public void setColor(CardColor color){
         switch(color) {
             case RED:
-                mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.indicator_card_green)));
+                setColor(R.color.indicator_card_red);
                 break;
             case YELLOW:
-                mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.indicator_card_yellow)));
+                setColor(R.color.indicator_card_yellow);
                 break;
             case GREEN:
-                mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(context.getColor(R.color.indicator_card_red)));
+                setColor(R.color.indicator_card_green);
                 break;
         }
     }
 
     public void setColor(int color){
-        mSurveyCard.setBackgroundTintList(ColorStateList.valueOf(color));
+        mIndicatorCard.setCardBackgroundColor(context.getColor(color));
     }
 
     public void setImage(Uri uri){

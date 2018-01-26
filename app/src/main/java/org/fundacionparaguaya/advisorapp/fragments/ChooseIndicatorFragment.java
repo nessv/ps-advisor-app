@@ -78,19 +78,16 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mRedIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_red);
 
         //Set Green Indicator
-        this.mGreenIndicator.setImage(Uri.parse(greenImage));
-        this.mGreenIndicator.setText(greenText);
-        mGreenIndicator.setColor(IndicatorCard.CardColor.GREEN);
+        mGreenIndicator.setImage(Uri.parse(greenImage));
+        mGreenIndicator.setText(greenText);
 
         //Set Yellow Indicator
-        this.mYellowIndicator.setImage(Uri.parse(yellowImage));
-        this.mYellowIndicator.setText(yellowText);
-        this.mYellowIndicator.setColor(IndicatorCard.CardColor.YELLOW);
+        mYellowIndicator.setImage(Uri.parse(yellowImage));
+        mYellowIndicator.setText(yellowText);
 
         //Set Red Indicator
-        this.mRedIndicator.setImage(Uri.parse(redImage));
-        this.mRedIndicator.setText(redText);
-        this.mRedIndicator.setColor(IndicatorCard.CardColor.RED);
+        mRedIndicator.setImage(Uri.parse(redImage));
+        mRedIndicator.setText(redText);
 
         mGreenIndicator.setOnClickListener(new View.OnClickListener() {
             @Override

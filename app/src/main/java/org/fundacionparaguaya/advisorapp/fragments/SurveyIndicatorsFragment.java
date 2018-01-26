@@ -84,8 +84,12 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSurveyViewModel.addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
-                nextQuestion();
+                if (mPager.getCurrentItem() == mAdapter.getCount() - 1){
+                    //TODO: Close the survey activity
+                } else {
+                    mSurveyViewModel.addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                    nextQuestion();
+                }
             }
         });
 
@@ -115,13 +119,14 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
     private void checkConditions(){
         if (mPager.getCurrentItem() == mAdapter.getCount()-1){
             backButton.setVisibility(getView().VISIBLE);
-            skipButton.setVisibility(getView().GONE);
+            skipButton.setVisibility(getView().VISIBLE);
+            skipButtonText.setText(R.string.survey_finish);
         } else if (mPager.getCurrentItem() == 0){
             skipButtonText.setText(R.string.survey_skip);
             backButton.setVisibility(getView().VISIBLE); //change to gone when you get the selecting to work
             skipButton.setVisibility(getView().VISIBLE);
         } else if (mPager.getCurrentItem() == mAdapter.getCount() - 2) {
-            skipButtonText.setText(R.string.survey_next);
+            skipButtonText.setText(R.string.survey_skip);
             backButton.setVisibility(getView().VISIBLE);
             skipButton.setVisibility(getView().VISIBLE);
         } else {

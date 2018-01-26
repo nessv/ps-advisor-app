@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -10,10 +11,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.yarolegovich.discretescrollview.transform.Pivot;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -90,13 +95,21 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mRedIndicator.setImage(Uri.parse(redImage));
         mRedIndicator.setText(redText);
 
-//        try {
-//            switch (mSurveyViewModel.getResponseForIndicator(question)) {
-//            case:
-//            }
-//        } catch (NullPointerException e){
-//            selectedIndicator = NONE;
-//        }
+        IndicatorOption test = mSurveyViewModel.getResponseForIndicator(question);
+        IndicatorOption test1 = question.getOptions().get(0);
+
+        try {
+            if (test.equals(question.getOptions().get(0))) {
+                mGreenIndicator.setSelected(true);
+            } else if(test.equals(question.getOptions().get(1))) {
+                mYellowIndicator.setSelected(true);
+            } else if (test.equals(question.getOptions().get(2))) {
+                mRedIndicator.setSelected(true);
+            }
+        } catch (NullPointerException e){
+            selectedIndicator = NONE;
+            Toast.makeText(getContext(), "Null Pointer", Toast.LENGTH_SHORT).show();
+        }
 
 
         mGreenIndicator.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +138,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             @Override
             public void onClick(View v) {
                 if (selectedIndicator != RED){
-                    setSelected(GREEN);
+                    setSelected(RED);
                 } else {
                     setSelected(NONE);
                 }
@@ -135,6 +148,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
 
     }
+
+    /**
+     * Sets the desired selected indicator
+     * @param indicator
+     */
 
     private void setSelected(SelectedIndicator indicator){
         switch(indicator){

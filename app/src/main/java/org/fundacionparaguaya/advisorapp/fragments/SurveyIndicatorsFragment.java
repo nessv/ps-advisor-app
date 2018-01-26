@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -28,7 +30,7 @@ import static org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragmen
 public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
 
     IndicatorAdapter mAdapter;
-    ViewPager mPager;
+    NonSwipeableViewPager mPager;
 
     LinearLayout backButton;
     TextView backButtonText;
@@ -63,7 +65,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
         View view = inflater.inflate(R.layout.fragment_surveyindicatorsurvey, container, false);
 
         mAdapter = new IndicatorAdapter(getFragmentManager(), mSurveyViewModel, this);
-        mPager = (ViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
+        mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
 
         mPager.setAdapter(mAdapter);
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
+    <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd = "20dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -69,5 +71,4 @@
                 android:src="@drawable/indicatorsurvey_arrow" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
-
 </android.support.constraint.ConstraintLayout>

@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.fundacionparaguaya.advisorapp.fragments.ChooseIndicatorFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
@@ -18,7 +19,7 @@ import java.util.Set;
  * Adapter class for the indicators
  */
 
-public class IndicatorAdapter extends FragmentPagerAdapter {
+public class IndicatorAdapter extends FragmentStatePagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
 

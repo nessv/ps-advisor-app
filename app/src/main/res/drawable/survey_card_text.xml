@@ -4,5 +4,5 @@
     <solid
         android:color="@color/indicator_card_background"/>
     <corners
-        android:radius="24dp"/>
+        android:radius="10dp"/>
 </shape>

@@ -28,7 +28,7 @@ public class IndicatorCard extends LinearLayout{
     private Context context;
 
     private CardView mSurveyCardSelected;
-    private LinearLayout mSurveyCard;
+    private CardView mSurveyCard;
     private SimpleDraweeView mImage;
     private TextView mText;
 
@@ -44,7 +44,7 @@ public class IndicatorCard extends LinearLayout{
         inflater.inflate(R.layout.indicator_card, this, true);
 
         mSurveyCardSelected = findViewById(R.id.survey_card_selected);
-        mSurveyCard = (LinearLayout) findViewById(R.id.survey_card_background);
+        mSurveyCard = (CardView) findViewById(R.id.survey_card_background);
         mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
 

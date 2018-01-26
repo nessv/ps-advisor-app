@@ -131,7 +131,7 @@ public class SharedSurveyViewModel extends ViewModel
         calculateProgress();
     }
 
-    public List<IndicatorQuestion> getSkippedIndicators()
+    public Set<IndicatorQuestion> getSkippedIndicators()
     {
         return mSkippedIndicators;
     }

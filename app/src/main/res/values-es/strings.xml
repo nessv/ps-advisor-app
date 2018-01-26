@@ -2,10 +2,9 @@
     <string name="app_name">App de Asesora</string>
     <string name="fpicon_desc">Fundacion Paraguaya Logo</string>
 
-    <!-- They don't call 'em bugs in spanish!!! -->
+    <!-- Bug Reporting -->
     <string name="bugbutton_desc">Reportar un Error</string>
     <string name="backbutton_desc">Regresa</string>
-    <string name="contentDescription_profile_picture">Foto de perfil</string>
 
     <!--Tab Captions -->
     <string name="family_tab">Familias</string>
@@ -17,6 +16,9 @@
     <string name="topbar_backbutton">Regresa</string>
     <string name="topbar_synclabel">Sincronización Ahora</string>
     <string name="topbar_lastsync">Última sincronización: hace 3 horas</string>
+
+    <!-- Familie View -->
+    <string name="family_imagePlaceholder" translatable="false">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
 
     <!-- Login Activity -->
     <string name="login_success">El login fue correcta.</string>
@@ -33,10 +35,11 @@
     <string name="survey_back">Esplada</string>
     <string name="survey_next">Siguiente</string>
     <string name="survey_skip">Omitir</string>
+    <string name="bkgquestions_title">Información de Fondo</string>
 
+    <!-- Other -->
     <string name="all_continue">Continuar</string>
     <string name="defaultindicatortext">This is bad. This should not be the text being displayed</string>
-
-    <string name="bkgquestions_title">Información de Fondo</string>
+    <string name="contentDescription_profile_picture">Foto de perfil</string>
 
 </resources>

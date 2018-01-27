@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 
 /**
  * Default class for a SurveyCard inside of the survey
@@ -28,6 +29,8 @@ public class IndicatorCard extends LinearLayout{
     private CardView mIndicatorCard;
     private SimpleDraweeView mImage;
     private TextView mText;
+
+    private IndicatorOption mIndicatorOption;
 
     public enum CardColor {
         RED, YELLOW, GREEN
@@ -57,6 +60,19 @@ public class IndicatorCard extends LinearLayout{
             attrs.recycle();
         }
 
+    }
+
+    public void setOption(IndicatorOption option)
+    {
+        mIndicatorOption = option;
+
+        this.setImage(Uri.parse(option.getImageUrl()));
+        this.setText(option.getDescription());
+    }
+
+    public IndicatorOption getOption()
+    {
+        return mIndicatorOption;
     }
 
     public void setSelected(boolean isSelected){

@@ -179,13 +179,4 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
         return v;
     }
-
-    public static String getFragmentTag()
-    {
-        return FRAGMENT_TAG;
-    }
-
-    //observe for all changes
-    //if has options -
-
 }

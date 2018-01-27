@@ -52,10 +52,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        /**Construct fragments here**/
+        /* Construct fragments here**/
         introFragment = SurveyIntroFragment.build();
 
-        /** Add all fragments you want to switch between as parameter here**/
+        /* Add all fragments you want to switch between as parameter here**/
 
         initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
 

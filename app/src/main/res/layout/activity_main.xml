@@ -86,10 +86,11 @@
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
-                <TextView
+                <com.github.curioustechizen.ago.RelativeTimeTextView
                     android:id="@+id/last_sync_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:relative_time_prefix="@string/topbar_lastsync_prefix"
                     android:textSize="14sp"/>
             </LinearLayout>
 

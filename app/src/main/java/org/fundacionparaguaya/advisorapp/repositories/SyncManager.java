@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -24,17 +26,19 @@ public class SyncManager {
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
     private SharedPreferences mPreferences;
-    private long mLastSyncedTime;
+
+    private MutableLiveData<Long> mLastSyncedTime;
 
     @Inject
     public SyncManager(Application application, FamilyRepository familyRepository, SurveyRepository surveyRepository) {
         this.mFamilyRepository = familyRepository;
         this.mSurveyRepository = surveyRepository;
 
-
         mPreferences = application.getApplicationContext()
                 .getSharedPreferences(PREFS_SYNC, MODE_PRIVATE);
-        mLastSyncedTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
+
+        mLastSyncedTime = new MutableLiveData<>();
+        mLastSyncedTime.setValue(mPreferences.getLong(KEY_LAST_SYNC_TIME, -1));
     }
 
     /**
@@ -56,14 +60,15 @@ public class SyncManager {
     }
 
     private void updateLastSyncedTime() {
-        mLastSyncedTime = new Date().getTime();
+        //post because this is run on a background thread
+        mLastSyncedTime.postValue(new Date().getTime());
 
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putLong(KEY_LAST_SYNC_TIME, mLastSyncedTime);
+        editor.putLong(KEY_LAST_SYNC_TIME, mLastSyncedTime.getValue());
         editor.apply();
     }
 
-    public long getLastSyncedTime() {
+    public LiveData<Long> getLastSyncedTime() {
         return mLastSyncedTime;
     }
 }

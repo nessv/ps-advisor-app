@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.marlonlom.utilities.timeago.TimeAgo;
+import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -29,7 +29,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     DashboardTabBarView tabBarView;
     TextView mSyncLabel;
     ImageButton mSyncButton;
-    TextView mLastSyncTextView;
+    RelativeTimeTextView mLastSyncTextView;
 
     TabbedFrag mFamiliesFrag;
     TabbedFrag mMapFrag;
@@ -85,12 +85,17 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSyncLabel = findViewById(R.id.topbar_synclabel);
 
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
-        updateLastSyncDisplay();
 
         mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
 
-        autoRefresh();
+        //update last sync label when the sync manager updates
+        mSyncManager.getLastSyncedTime().observe(this, (value)->
+        {
+            if(value != -1) {
+                mLastSyncTextView.setReferenceTime(value);
+            }
+        });
 
         /**
          * Create fragment for each tab
@@ -121,23 +126,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
 
-    private void autoRefresh() {
-        mHandler.postDelayed(() -> {
-            updateLastSyncDisplay();
-            autoRefresh();
-        }, 15000);
-    }
-
-    private void updateLastSyncDisplay() {
-        String result = getString(R.string.topbar_lastsync_prefix);
-        if (mSyncManager.getLastSyncedTime() == -1) {
-            result += getString(R.string.topbar_lastsync_never);
-        } else {
-            result += TimeAgo.using(mSyncManager.getLastSyncedTime());
-        }
-        mLastSyncTextView.setText(result);
-    }
-
     private class SyncRepositoryTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute() {
@@ -154,7 +142,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         protected void onPostExecute(Boolean aBoolean) {
             mSyncButton.setEnabled(true);
             mSyncLabel.setText(R.string.topbar_synclabel);
-            updateLastSyncDisplay();
         }
     }
 }

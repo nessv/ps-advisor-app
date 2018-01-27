@@ -52,16 +52,14 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     @Nullable
     IndicatorCard selectedIndicator;
 
-    public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question){
+    public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question) {
 
         ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
         this.adapter = adapter;
         this.question = question;
 
-        for(IndicatorOption option: question.getOptions())
-        {
-            switch(option.getLevel())
-            {
+        for (IndicatorOption option : question.getOptions()) {
+            switch (option.getLevel()) {
                 case Green:
                     mGreenOption = option;
                     break;
@@ -80,7 +78,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chooseindicator, container, false);
 
         mGreenIndicator = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_green);
@@ -108,24 +106,24 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         try {
             if (responses.equals(question.getOptions().get(0))) {
                 mGreenIndicator.setSelected(true);
-            } else if(responses.equals(question.getOptions().get(1))) {
+            } else if (responses.equals(question.getOptions().get(1))) {
                 mYellowIndicator.setSelected(true);
             } else if (responses.equals(question.getOptions().get(2))) {
                 mRedIndicator.setSelected(true);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Toast.makeText(getContext(), "Null Pointer", Toast.LENGTH_SHORT).show();
         }
 
-        mGreenIndicator.setOnClickListener((event)-> {
+        mGreenIndicator.setOnClickListener((event) -> {
             onSelect(mGreenIndicator, mGreenOption);
         });
 
-        mYellowIndicator.setOnClickListener((event)-> {
+        mYellowIndicator.setOnClickListener((event) -> {
             onSelect(mYellowIndicator, mYellowOption);
         });
 
-        mRedIndicator.setOnClickListener((event)-> {
+        mRedIndicator.setOnClickListener((event) -> {
             onSelect(mRedIndicator, mRedOption);
         });
         return rootView;
@@ -133,11 +131,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     }
 
-    private void onSelect(IndicatorCard indicator, IndicatorOption option){
-        if (indicator.equals(selectedIndicator)){
-               indicator.setSelected(false);
-               setSelected(null, null);
-               selectedIndicator = null;
+    private void onSelect(IndicatorCard indicator, IndicatorOption option) {
+        if (indicator.equals(selectedIndicator)) {
+            indicator.setSelected(false);
+            setSelected(null, null);
+            selectedIndicator = null;
         } else {
             setSelected(indicator, option);
             selectedIndicator = indicator;
@@ -146,37 +144,36 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     /**
      * Sets the desired selected indicator
+     *
      * @param indicator
      */
     private void setSelected(@Nullable IndicatorCard indicator, @Nullable IndicatorOption option) {
-
-
-            if (indicator == null) {
-                parentFragment.addSkippedIndicator(question);
-            } else {
-                for (IndicatorCard indicatorCard : mCards) {
-                    if (indicatorCard.equals(indicator)) {
-                        indicatorCard.setSelected(true);
-                    } else {
-                        indicatorCard.setSelected(false);
-                    }
+        if (indicator == null) {
+            parentFragment.removeIndicatorResponse(question);
+        } else {
+            for (IndicatorCard indicatorCard : mCards) {
+                if (indicatorCard.equals(indicator)) {
+                    indicatorCard.setSelected(true);
+                } else {
+                    indicatorCard.setSelected(false);
                 }
-                parentFragment.addIndicatorResponse(question, option);
-                updateParent();
             }
+            parentFragment.addIndicatorResponse(question, option);
+            updateParent();
+        }
 
     }
 
-    public boolean isCardSelected(){
-        if (selectedIndicator.equals(null)){
+    public boolean isCardSelected() {
+        if (selectedIndicator.equals(null)) {
             return false;
         }
         return true;
     }
 
-    private void updateParent(){
+    private void updateParent() {
 
-        if (parentFragment !=null) {
+        if (parentFragment != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

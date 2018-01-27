@@ -156,6 +156,11 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
+    public void removeIndicatorResponse(IndicatorQuestion question){
+        mSnapshot.getValue().getIndicatorResponses().remove(question);
+        calculateProgress();
+    }
+
     public void addBackgroundResponse(SurveyQuestion question, String response)
     {
         //TODO if string is empty, we probably want to remove any response that we used to have...?

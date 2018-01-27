@@ -15,6 +15,7 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
@@ -122,6 +123,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
 
     public void addSkippedIndicator(IndicatorQuestion question) {
         mSurveyViewModel.addSkippedIndicator(question);
+    }
+
+    public void removeIndicatorResponse(IndicatorQuestion question){
+        mSurveyViewModel.removeIndicatorResponse(question);
     }
 
     private void checkConditions(){

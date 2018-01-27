@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.animation.ObjectAnimator;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +15,6 @@ import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
@@ -66,7 +62,11 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        /** Add all fragments you want to switch between as parameter here**/
+        mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+        mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
+        mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
+
+        mProgressBar = findViewById(R.id.progressbar_surveyactivity);
 
         setFragmentContainer(R.id.survey_activity_fragment_container);
 
@@ -92,7 +92,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
         {
-            if(family!=null && mSurveyViewModel.getSurveyState().getValue().equals(SurveyState.NONE))
+            if(mSurveyViewModel.getSurveyState().getValue().equals(SurveyState.NONE))
             {
                 mSurveyViewModel.getSurveyState().setValue(SurveyState.INTRO);
             }
@@ -125,7 +125,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
                     break;
 
-              //  case INDICATORS:
+                //  case INDICATORS:
 
                 /* * etc * */
             };
@@ -141,9 +141,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         this.mTvTitle.setText(fragment.getTitle());
     }
 
-    public void setTitle(String title) {
-
-    }
 
     //Returns and intent to open this activity, with an extra for the family's Id.
     public static Intent build(Context c, Family family)

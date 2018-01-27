@@ -51,6 +51,9 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
                 .get(SharedSurveyViewModel.class);
 
         setTitle("");
+
+        setFooterColor(R.color.survey_darkyellow);
+        setHeaderColor(R.color.survey_darkyellow);
     }
 
     @Nullable

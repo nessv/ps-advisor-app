@@ -10,10 +10,10 @@ import android.support.v4.app.Fragment;
 public abstract class AbstractSurveyFragment extends Fragment{
 
     private boolean mShowHeader;
-    private Color mHeaderColor;
+    private int mHeaderColor;
 
     private boolean mShowFooter;
-    private Color mFooterColor;
+    private int mFooterColor;
 
     private String mTitle;
 
@@ -25,11 +25,11 @@ public abstract class AbstractSurveyFragment extends Fragment{
         this.mShowHeader = mShowHeader;
     }
 
-    public Color getHeaderColor() {
+    public int getHeaderColor() {
         return mHeaderColor;
     }
 
-    public void setHeaderColor(Color mHeaderColor) {
+    public void setHeaderColor(int mHeaderColor) {
         this.mHeaderColor = mHeaderColor;
     }
 
@@ -41,11 +41,11 @@ public abstract class AbstractSurveyFragment extends Fragment{
         this.mShowFooter = mShowFooter;
     }
 
-    public Color getFooterColor() {
+    public int getFooterColor() {
         return mFooterColor;
     }
 
-    public void setFooterColor(Color mFooterColor) {
+    public void setFooterColor(int mFooterColor) {
         this.mFooterColor = mFooterColor;
     }
 

@@ -60,7 +60,6 @@ public class ExampleStackedFragment extends StackedFrag
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         //navigate to a new fragment and increment the label when the button is clicked
         mButton.setOnClickListener((clickEvent) -> {
             if(getParentFragment()!=null){

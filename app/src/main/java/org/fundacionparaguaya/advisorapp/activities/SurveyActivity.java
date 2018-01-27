@@ -1,16 +1,19 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.animation.ObjectAnimator;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.ExampleStackedFragment;
-import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
+import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
@@ -21,6 +24,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
 
 import javax.inject.Inject;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Activity for surveying a family's situation. Displays the fragments that record background info and allows
@@ -31,12 +35,22 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 {
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
-    SurveyIntroFragment introFragment;
+    TextView mTvTitle;
+    TextView mTvQuestionsLeft;
+    TextView mTvNextUp;
+
+    ProgressBar mProgressBar;
+    ObjectAnimator mProgressAnimator;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
     SharedSurveyViewModel mSurveyViewModel;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -52,12 +66,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        /* Construct fragments here**/
-        introFragment = SurveyIntroFragment.build();
+        /** Add all fragments you want to switch between as parameter here**/
 
-        /* Add all fragments you want to switch between as parameter here**/
-
-        initFragSwitcher(R.id.survey_activity_fragment_container, introFragment);
+        setFragmentContainer(R.id.survey_activity_fragment_container);
 
         initViewModel();
     }
@@ -65,6 +76,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
     public void initViewModel()
     {
+
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value
         int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
 
@@ -80,25 +92,37 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
         {
-            if(mSurveyViewModel.getSurveyState().getValue().equals(SurveyState.NONE))
+            if(family!=null && mSurveyViewModel.getSurveyState().getValue().equals(SurveyState.NONE))
             {
                 mSurveyViewModel.getSurveyState().setValue(SurveyState.INTRO);
             }
         }));
 
-        mSurveyViewModel.getSnapshot().observe(this, snapshot -> {
-            //update progress bar
+        mSurveyViewModel.getProgress().observe(this, surveyProgress -> {
+
+            ObjectAnimator progressAnimator = ObjectAnimator.ofInt(mProgressBar,
+                    "progress", mProgressBar.getProgress(), surveyProgress.getPercentageComplete());
+
+            progressAnimator.setDuration(400);
+            progressAnimator.start();
+
+            mProgressBar.setProgress(surveyProgress.getPercentageComplete());
+            mTvQuestionsLeft.setText(surveyProgress.getDescription());
         });
 
         mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
             switch (surveyState)
             {
                 case INTRO:
-                    switchToFrag(introFragment);
+
+                    switchToFrag(SurveyIntroFragment.class);
+
                     break;
 
                 case BACKGROUND_QUESTIONS:
-                    switchToFrag(/* Background question fragment here */ null);
+
+                    switchToFrag(BackgroundQuestionsFrag.class);
+
                     break;
 
               //  case INDICATORS:
@@ -106,6 +130,15 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 /* * etc * */
             };
         });
+    }
+
+    @Override
+    public void switchToFrag(Class fragmentClass)
+    {
+        super.switchToFrag(fragmentClass);
+
+        AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
+        this.mTvTitle.setText(fragment.getTitle());
     }
 
     public void setTitle(String title) {

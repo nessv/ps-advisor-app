@@ -30,7 +30,8 @@
             android:background="@color/topbarBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/dashboardTabView"
-            app:layout_constraintTop_toTopOf="parent" android:baselineAligned="false">
+            app:layout_constraintTop_toTopOf="parent"
+            android:baselineAligned="false">
 
         <LinearLayout
             android:id="@+id/dashboardtopbar_backbutton"

@@ -84,7 +84,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     public void setFamilyList(final List<? extends Family> families){
         if(mFamilyList == null){
             mFamilyList = families;
-            notifyItemRangeInserted(0, families.size());
+            notifyDataSetChanged();
         } else {
             /*DiffUtil class updates the list with the least number of update operations by comparing the old list
             * and the new list and calculating the differences between them and hence calculate the updates
@@ -165,9 +165,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
     /*An event listener that will be called when the FamilySelectedEvent is triggered when one
     * family on the AllFamilies list is selected*/
-
     public interface FamilySelectedHandler{
         void onFamilySelected(FamilySelectedEvent e);
     }
-
 }

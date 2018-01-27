@@ -5,6 +5,7 @@ import android.app.Application;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
 import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
@@ -32,5 +33,5 @@ public interface ApplicationComponent {
     void inject(SurveyActivity surveyActivity);
     void inject(SurveyIntroFragment surveyIntroFragment);
 
-
+    void inject(BackgroundQuestionsFrag backgroundQuestionsFrag);
 }

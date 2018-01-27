@@ -6,15 +6,15 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+
 import android.widget.Toast;
 
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.ExampleTabbedFragment;
-import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
-import org.fundacionparaguaya.advisorapp.fragments.TabbedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
@@ -24,53 +24,52 @@ import javax.inject.Inject;
 
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
-    private final Handler mHandler = new Handler();
-
     DashboardTabBarView tabBarView;
     TextView mSyncLabel;
     ImageButton mSyncButton;
     RelativeTimeTextView mLastSyncTextView;
 
-    TabbedFrag mFamiliesFrag;
-    TabbedFrag mMapFrag;
-    TabbedFrag mArchiveFrag;
-    TabbedFrag mSettingsFrag;
-
     @Inject
     SyncManager mSyncManager;
 
-	@Override
-    public void onBackPressed()
-    {
-        getFragForType(tabBarView.getSelected()).onNavigateBack();
+    static String SELECTED_TAB_KEY = "SELECTED_TAB";
+
+    @Override
+    public void onBackPressed() {
+        ((TabbedFrag) getFragment(getClassForType(tabBarView.getSelected()))).onNavigateBack();
     }
 
-    private TabbedFrag getFragForType(DashboardTab.TabType type) {
-        switch (type)
-        {
+    private Class getClassForType(DashboardTab.TabType type) {
+        switch (type) {
             case FAMILY:
-                return mFamiliesFrag;
+                return FamilyTabbedFragment.class;
             case MAP:
-                return mMapFrag;
+                return ExampleTabbedFragment.class;
             case ARCHIVE:
-                return mArchiveFrag;
+                return ExampleTabbedFragment.class;
             case SETTINGS:
-                return mSettingsFrag;
+                return ExampleTabbedFragment.class;
         }
 
         return null;
     }
 
-    private DashboardTabBarView.TabSelectedHandler mTabSelectedHandler = (event) ->
+    private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
-        switchToFrag(getFragForType(event.getSelectedTab()));
+        switchToFrag(getClassForType(event.getSelectedTab()));
 
         Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
+        //save selected tab
+        outState.putString(SELECTED_TAB_KEY, tabBarView.getSelected().name());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ((AdvisorApplication) this.getApplication())
@@ -79,12 +78,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         setContentView(R.layout.activity_main);
 
-	    tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
-        tabBarView.addTabSelectedHandler(mTabSelectedHandler);
+        setFragmentContainer(R.id.dash_content);
 
-        mSyncLabel = findViewById(R.id.topbar_synclabel);
+        tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
 
-        mLastSyncTextView = findViewById(R.id.last_sync_textview);
+	mSyncLabel = findViewById(R.id.topbar_synclabel);
+	mLastSyncTextView = findViewById(R.id.last_sync_textview);
 
         mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
@@ -97,17 +96,21 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             }
         });
 
-        /**
-         * Create fragment for each tab
-         */
-        mFamiliesFrag = new FamilyTabbedFragment();
-        mMapFrag = new ExampleTabbedFragment();
-        mArchiveFrag = new ExampleTabbedFragment();
-        mSettingsFrag = new ExampleTabbedFragment();
+        if (savedInstanceState != null) {
+            String selectTypeName = savedInstanceState.getString(SELECTED_TAB_KEY);
 
-        initFragSwitcher(R.id.dash_content, mFamiliesFrag, mMapFrag);
+            if (selectTypeName != null) {
+                DashboardTab.TabType previouslySelected = DashboardTab.TabType.valueOf(selectTypeName);
+                tabBarView.selectTab(previouslySelected);
+                switchToFrag(getClassForType(previouslySelected));
+            }
+        }
+        else
+        {
+            switchToFrag(FamilyTabbedFragment.class);
+        }
 
-        switchToFrag(mFamiliesFrag);
+        tabBarView.addTabSelectedHandler(handler);
     }
 
     private void onSyncButtonPress(View view) {
@@ -115,14 +118,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     @Override
-    public void onShowBackNav()
-    {
+    public void onShowBackNav() {
         Toast.makeText(getApplicationContext(), "Show Back Nav", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onHideBackNav()
-    {
+    public void onHideBackNav() {
         Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
     }
 

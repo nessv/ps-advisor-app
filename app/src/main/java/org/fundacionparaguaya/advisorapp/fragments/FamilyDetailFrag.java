@@ -79,6 +79,9 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
+        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+        mFamilyImage.setImageURI(uri);
+
         Button surveyButton  = view.findViewById(R.id.survey_button);
 
         surveyButton.setOnClickListener((View view1) -> {
@@ -94,9 +97,6 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
         mFamilyName.setText(family.getName());
         mAddress.setText(family.getAddress());
         mLocation.setText((CharSequence) family.getLocation());
-
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
-        mFamilyImage.setImageURI(uri);
     }
 
     public static FamilyDetailFrag build(int familyId)

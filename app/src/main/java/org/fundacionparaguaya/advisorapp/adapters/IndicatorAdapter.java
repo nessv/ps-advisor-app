@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,7 +24,7 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
 
-    private Set<IndicatorQuestion> skippedQuestions;
+    private ArrayList<ChooseIndicatorFragment> chooseIndicatorFragments = new ArrayList<>();
 
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
 
@@ -55,6 +56,14 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
         return fragmentList.get(position);
     }
 
+//    @Nullable
+//    public ChooseIndicatorFragment getIndicatorFragment(int position){
+//        if (position >= chooseIndicatorFragments.size()){
+//            return null;
+//        }
+//        return chooseIndicatorFragments.get(position);
+//    }
+
     public IndicatorQuestion getQuestion(int position){
         return indicatorQuestionList.get(position);
     }
@@ -66,30 +75,15 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
      */
     private void loadFragments() {
         ChooseIndicatorFragment tempFrag;
-        String greenImage;    String greenText;
-        String yellowImage;   String yellowText;
-        String redImage;      String redText;
         for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
             tempFrag = new ChooseIndicatorFragment();
 
-            greenImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(0).getImageUrl();
-            yellowImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getImageUrl();
-            redImage = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getImageUrl();
-
-            greenText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(0).getDescription();
-            yellowText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(1).getDescription();
-            redText = indicatorQuestionList.get(counter).getIndicator().getOptions().get(2).getDescription();
-
-           tempFrag.newInstance(this, indicatorQuestionList.get(counter),
-                                greenImage,    greenText,
-                                yellowImage,   yellowText,
-                                redImage,      redText);
+           tempFrag.newInstance(this, indicatorQuestionList.get(counter));
 
            fragmentList.add(counter, tempFrag);
+           chooseIndicatorFragments.add(tempFrag);
         }
-        SurveySummaryFragment summaryFragment = new SurveySummaryFragment();
-        summaryFragment.newInstance(mSurveyViewModel);
-        fragmentList.add(summaryFragment);
+        fragmentList.add(new SurveySummaryFragment().newInstance(mSurveyViewModel));
 
     }
 

@@ -39,19 +39,15 @@ public class SurveySummaryFragment extends AbstractSurveyFragment {
 
         linearLayout = view.findViewById(R.id.surveysummary_fragment);
 
-        ArrayList<String> skippedQs = new ArrayList<>();
-
-        for ( IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()){
-                skippedQs.add(skippedQuestions.getName());
+        try {
+            for (IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()) {
+                TextView textView = new TextView(getContext());
+                textView.setText(skippedQuestions.getName());
+                linearLayout.addView(textView);
+            }
+        } catch (NullPointerException e){
+            // No skipped questions
         }
-
-        for( int i = 0; i < skippedQs.size(); i++ )
-        {
-            TextView textView = new TextView(getContext());
-            textView.setText(skippedQs.get(i));
-            linearLayout.addView(textView);
-        }
-
         return view;
     }
 

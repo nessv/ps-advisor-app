@@ -125,7 +125,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
                     break;
 
-              //  case INDICATORS:
+                //  case INDICATORS:
 
                 /* * etc * */
             };
@@ -141,9 +141,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         this.mTvTitle.setText(fragment.getTitle());
     }
 
-    public void setTitle(String title) {
-
-    }
 
     //Returns and intent to open this activity, with an extra for the family's Id.
     public static Intent build(Context c, Family family)

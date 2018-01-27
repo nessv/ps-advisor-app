@@ -61,7 +61,7 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
         for(PersonalQuestion q : mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions())
         {
-            if(q.getOptions().size()>0) //if it has options, it calls for a drop down
+            if(q.getOptions() != null && q.getOptions().size()>0) //if it has options, it calls for a drop down
             {
                 QuestionDropdownView view = new QuestionDropdownView(getContext());
 
@@ -115,7 +115,7 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
         for(EconomicQuestion q : mSharedSurveyViewModel.getSurveyInProgress().getEconomicQuestions())
         {
-            if(q.getOptions().size()>0) //if it has options, it calls for a drop down
+            if(q.getOptions()!=null && q.getOptions().size()>0) //if it has options, it calls for a drop down
             {
                 QuestionDropdownView view = new QuestionDropdownView(getContext());
 
@@ -179,13 +179,4 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
         return v;
     }
-
-    public static String getFragmentTag()
-    {
-        return FRAGMENT_TAG;
-    }
-
-    //observe for all changes
-    //if has options -
-
 }

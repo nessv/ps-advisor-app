@@ -209,7 +209,7 @@ public class SharedSurveyViewModel extends ViewModel
                     int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
 
                     progress = (100* completedIndicators+ skippedIndicators)/totalIndicators;
-                    progressString = (totalIndicators-completedIndicators) + " Indicators Remaining, " +
+                    progressString = (totalIndicators-(completedIndicators+skippedIndicators)) + " Indicators Remaining, " +
                     skippedIndicators + " Skipped" ;
 
             }

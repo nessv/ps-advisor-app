@@ -35,9 +35,11 @@
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="all_continue">Continuar</string>
     <string name="surveyacivity_exit_cd">Encuesta de Salida</string>
-
     <string name="bkgquestions_title">Información de Fondo</string>
-    <string name="surveyactivity_exit_explanation">You won\'t be able to recover the snapshot in progress.</string>
-    <string name="all_cancel">Cancel</string>
+    <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
+    <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
+    <string name="all_cancel">Cancelar</string>
+    <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
+
 
 </resources>

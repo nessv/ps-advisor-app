@@ -56,14 +56,6 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
         return fragmentList.get(position);
     }
 
-//    @Nullable
-//    public ChooseIndicatorFragment getIndicatorFragment(int position){
-//        if (position >= chooseIndicatorFragments.size()){
-//            return null;
-//        }
-//        return chooseIndicatorFragments.get(position);
-//    }
-
     public IndicatorQuestion getQuestion(int position){
         return indicatorQuestionList.get(position);
     }

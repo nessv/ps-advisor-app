@@ -2,33 +2,31 @@ package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
-import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
-import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
-import org.fundacionparaguaya.advisorapp.data.remote.SurveySynchronizeTask;
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
-import org.fundacionparaguaya.advisorapp.models.ResponseType;
-import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.data.remote.*;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SurveyIr;
+import org.fundacionparaguaya.advisorapp.models.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Green;
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Red;
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Yellow;
+import retrofit2.Response;
+
+import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
 
 /**
  * The utility for the storage of surveys and snapshots.
  */
 
 public class SurveyRepository {
+    private static final String TAG = "SurveyRepository";
+
     private final SurveyDao surveyDao;
     private final SurveyService surveyService;
     private final AuthenticationManager authManager;
@@ -101,18 +99,34 @@ public class SurveyRepository {
     public LiveData<Survey> getSurvey(int id) {
         return surveyDao.querySurvey(id);
     }
-    //endregion
-
-    //region Snapshot
 
     /**
-     * A task which will pull families from the remote database and synchronize them with the
-     * local database.
-     * @return A new async task to be executed.
+     * Synchronizes the local surveys with the remote database.
+     * @return Whether the sync was successful.
      */
-    public AsyncTask<Void, Void, Boolean> sync() {
-        return new SurveySynchronizeTask(surveyDao, surveyService, authManager);
+    boolean sync() {
+        try {
+            Response<List<SurveyIr>> response =
+                    surveyService.getSurveys(authManager.getAuthenticationString()).execute();
+
+            if (!response.isSuccessful()) {
+                return false;
+            }
+
+            if (response.body() == null) {
+                return false;
+            }
+
+            List<Survey> surveys = new ArrayList<>(response.body().size());
+            for (SurveyIr surveyIr : response.body()) {
+                surveys.add(surveyIr.compile());
+            }
+            surveyDao.insertSurveys(surveys.toArray(new Survey[surveys.size()]));
+        } catch (IOException e) {
+            Log.e(TAG, "sync: Could not sync the survey repository!", e);
+            return false;
+        }
+        return true;
     }
-    //e
     //endregion
 }

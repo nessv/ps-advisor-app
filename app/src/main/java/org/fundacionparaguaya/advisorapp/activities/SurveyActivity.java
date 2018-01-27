@@ -7,18 +7,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
+import android.support.v4.app.Fragment;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.*;
+import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
 
 import javax.inject.Inject;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Activity for surveying a family's situation. Displays the fragments that record background info and allows
@@ -69,7 +74,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mHeader = (LinearLayout) findViewById(R.id.survey_activity_header);
         mFooter = (RelativeLayout) findViewById(R.id.survey_activity_footer);
 
-   	    mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+   	mTvTitle = findViewById(R.id.tv_surveyactivity_title);
         mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
         mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 
@@ -152,9 +157,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         this.mTvTitle.setText(fragment.getTitle());
     }
 
-    public void setTitle(String title) {
-
-    }
 
     //Returns and intent to open this activity, with an extra for the family's Id.
     public static Intent build(Context c, Family family)

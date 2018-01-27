@@ -14,8 +14,11 @@
 
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Regresa</string>
-    <string name="topbar_synclabel">Sincronización Ahora</string>
-    <string name="topbar_lastsync">Última sincronización: hace 3 horas</string>
+    <string name="topbar_synclabel">Sincronizar</string>
+    <string name="topbar_synclabel_syncing">Sincronizando…</string>
+    <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
+    <string name="topbar_lastsync_never">nada</string>
+
 
     <!-- Login Activity -->
     <string name="login_success">El login fue correcta.</string>

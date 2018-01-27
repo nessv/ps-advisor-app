@@ -186,9 +186,5 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((AdvisorApplication) getActivity().getApplication())
-                .getApplicationComponent()
-                .inject(this);
     }
 }

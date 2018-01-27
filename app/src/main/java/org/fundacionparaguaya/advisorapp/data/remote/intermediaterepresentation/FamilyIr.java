@@ -19,16 +19,4 @@ public class FamilyIr {
     FamilyMemberIr member;
     @SerializedName("active")
     boolean active;
-
-    public FamilyIr(int id, String code, String name, FamilyMemberIr member, boolean active) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.member = member;
-        this.active = active;
-    }
-
-    public Family family() {
-        return new Family(id, name, null, null, null);
-    }
 }

@@ -75,22 +75,23 @@
                 android:layout_marginEnd="10dp"/>
 
             <LinearLayout
-                android:id="@+id/topbar_synclabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/topbar_synclabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/topbar_synclabel"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
-                <TextView
+                <com.github.curioustechizen.ago.RelativeTimeTextView
+                    android:id="@+id/last_sync_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/topbar_lastsync"
+                    app:relative_time_prefix="@string/topbar_lastsync_prefix"
                     android:textSize="14sp"/>
             </LinearLayout>
 

@@ -7,9 +7,7 @@ import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Survey view model that is shared across all of the fragments/activity related to the view model
@@ -28,7 +26,7 @@ public class SharedSurveyViewModel extends ViewModel
     MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
     private MutableLiveData<SurveyState> mSurveyState;
 
-    List<IndicatorQuestion> mSkippedIndicators;
+    Set<IndicatorQuestion> mSkippedIndicators;
 
     MutableLiveData<Snapshot> mSnapshot;
 
@@ -50,7 +48,7 @@ public class SharedSurveyViewModel extends ViewModel
         mSurveyState.setValue(SurveyState.NONE);
         mSnapshot = new MutableLiveData<Snapshot>();
 
-        mSkippedIndicators = new ArrayList<>();
+        mSkippedIndicators = new HashSet<>();
     }
 
     public LiveData<Family> getCurrentFamily()
@@ -127,12 +125,13 @@ public class SharedSurveyViewModel extends ViewModel
         //clears any responses for the question
         mSnapshot.getValue().getIndicatorResponses().remove(question);
 
+        //skipped indicators is a hashset, so there will be no duplicate entries.
         mSkippedIndicators.add(question);
 
         calculateProgress();
     }
 
-    public List<IndicatorQuestion> getSkippedIndicators()
+    public Set<IndicatorQuestion> getSkippedIndicators()
     {
         return mSkippedIndicators;
     }
@@ -140,19 +139,31 @@ public class SharedSurveyViewModel extends ViewModel
     public @Nullable IndicatorOption getResponseForIndicator(IndicatorQuestion question)
     {
         return getSnapshotValue().getIndicatorResponses().get(question);
+
     }
 
     public void addIndicatorResponse(IndicatorQuestion indicator, IndicatorOption response)
     {
         if(response!=null) {
+            if(mSkippedIndicators.contains(indicator))
+            {
+                mSkippedIndicators.remove(indicator);
+            }
+
             getSnapshotValue().response(indicator, response);
 
             calculateProgress();
         }
     }
 
+    public void removeIndicatorResponse(IndicatorQuestion question){
+        mSnapshot.getValue().getIndicatorResponses().remove(question);
+        calculateProgress();
+    }
+
     public void addBackgroundResponse(SurveyQuestion question, String response)
-    { //TODO if string is empty, we probably want to remove any response that we used to have...?
+    {
+        //TODO if string is empty, we probably want to remove any response that we used to have...?
         if(response!=null && !response.isEmpty()) {
             if (question instanceof PersonalQuestion) {
                 getSnapshotValue().response((PersonalQuestion) question, response);
@@ -218,6 +229,9 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
+    public static class IndicatorSurvey{
+
+    }
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception
@@ -235,7 +249,6 @@ public class SharedSurveyViewModel extends ViewModel
             }
             else return value;
     }
-
 
     public static class SurveyProgress
     {

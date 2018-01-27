@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.LinearLayout;
 import android.support.v4.app.Fragment;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
-import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -38,6 +41,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     ProgressBar mProgressBar;
     ObjectAnimator mProgressAnimator;
 
+    SurveyIndicatorsFragment surveyIndicatorsFragment;
+
+    LinearLayout mHeader;
+    RelativeLayout mFooter;
+
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
@@ -62,21 +71,22 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .of(this, mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+        mHeader = (LinearLayout) findViewById(R.id.survey_activity_header);
+        mFooter = (RelativeLayout) findViewById(R.id.survey_activity_footer);
+
+   	mTvTitle = findViewById(R.id.tv_surveyactivity_title);
         mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
         mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 
         mProgressBar = findViewById(R.id.progressbar_surveyactivity);
 
         setFragmentContainer(R.id.survey_activity_fragment_container);
-
         initViewModel();
     }
 
 
     public void initViewModel()
     {
-
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value
         int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
 
@@ -111,33 +121,39 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         });
 
         mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
+            Class<? extends AbstractSurveyFragment> nextFragment = null;
+
             switch (surveyState)
             {
                 case INTRO:
-
-                    switchToFrag(SurveyIntroFragment.class);
-
+                    nextFragment = SurveyIntroFragment.class;
                     break;
 
                 case BACKGROUND_QUESTIONS:
-
-                    switchToFrag(BackgroundQuestionsFrag.class);
-
+                    nextFragment = SurveyQuestionsFrag.class;
                     break;
 
-                //  case INDICATORS:
+                case INDICATORS:
+                    nextFragment = SurveyIndicatorsFragment.class;
+                    break;
+            }
 
-                /* * etc * */
-            };
+            if(nextFragment!=null) switchToSurveyFrag(nextFragment);
         });
     }
 
-    @Override
-    public void switchToFrag(Class fragmentClass)
+    void switchToSurveyFrag(Class<? extends AbstractSurveyFragment> fragmentClass)
     {
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
+
+        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(),
+                this.getTheme()));
+
+        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(),
+                this.getTheme()));
+
         this.mTvTitle.setText(fragment.getTitle());
     }
 

@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -29,9 +30,9 @@ import javax.inject.Inject;
  * Questions about Personal and Economic questions that are asked before the survey
  */
 
-public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
+public class SurveyQuestionsFrag extends AbstractSurveyFragment {
 
-    static String FRAGMENT_TAG = "BackgroundQuestionsFrag";
+    static String FRAGMENT_TAG = "SurveyQuestionsFrag";
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -39,6 +40,15 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
     LinearLayout mQuestionContainer;
     Button mSubmitButton;
+
+    public SurveyQuestionsFrag()
+    {
+        super();
+
+        //sets colors for parent activity (set by parent activity in SurveyActivity.switchSurveyFrag)
+        setFooterColor(R.color.survey_darkyellow);
+        setHeaderColor(R.color.survey_darkyellow);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,6 +186,12 @@ public class BackgroundQuestionsFrag extends AbstractSurveyFragment {
 
         mQuestionContainer = v.findViewById(R.id.linearlayout_bkgquestions_container);
         mSubmitButton = v.findViewById(R.id.btn_bkgquestions_continue);
+
+        mSubmitButton.setOnClickListener((event)->
+        {
+            //TODO: should check if all required questions are completed
+            mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
+        });
 
         return v;
     }

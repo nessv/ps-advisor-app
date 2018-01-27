@@ -37,5 +37,10 @@
 
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="all_continue">Continue</string>
+    <string name="surveyacivity_exit_cd">Exit Survey</string>
+    <string name="surveyactivity_exit_confirmation">Are you sure you want to exit?</string>
+    <string name="surveyactivity_exit_explanation">You won\'t be able to recover the snapshot in progress.</string>
+    <string name="all_cancel">Cancel</string>
+    <string name="surveyactivity_discard_snapshot">Discard Snapshot</string>
 
 </resources>

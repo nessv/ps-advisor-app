@@ -6,11 +6,6 @@
                                              xmlns:tools="http://schemas.android.com/tools"
 >
 
-    <ImageButton android:layout_width="56dp" android:layout_height="56dp"
-                 app:layout_constraintEnd_toEndOf="parent"
-
-    />
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="92dp"
@@ -28,6 +23,17 @@
                 android:id="@+id/tv_surveyactivity_title"
                 tools:text="Test Title"/>
     </LinearLayout>
+
+    <ImageButton android:layout_width="56dp" android:layout_height="56dp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 android:layout_marginTop="12dp"
+                 android:contentDescription="@string/surveyacivity_exit_cd"
+                 android:layout_marginEnd="12dp"
+                 android:background="@color/float_transparent"
+                 android:id="@+id/btn_surveyactivity_close"
+                 android:src="@drawable/ic_circleclose"
+    />
 
     <LinearLayout
                   android:layout_height="0dp"

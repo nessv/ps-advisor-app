@@ -1,18 +1,23 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
  * A family is the entity that is being helped by the advisor.
  */
 
-@Entity(tableName = "families")
+@Entity(tableName = "families",
+        indices={@Index(value="remote_id", unique=true)})
 public class Family {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "remote_id")
+    private int remoteId;
     private String name;
     private String address;
     @Embedded
@@ -21,20 +26,38 @@ public class Family {
     private FamilyMember member;
 
     @Ignore
-    public Family(int id, String name, FamilyMember member) {
-        this(id, name, member, "", Location.UNKNOWN);
+    public Family(String name) {
+        this(name, "", Location.UNKNOWN);
     }
 
-    public Family(int id, String name, FamilyMember member, String address, Location location) {
-        this.id = id;
+    @Ignore
+    public Family(String name, String address, Location location) {
+        this(-1, name, address, location);
+    }
+
+    @Ignore
+    public Family(int remoteId, String name, String address, Location location) {
+        this.remoteId = remoteId;
         this.name = name;
-        this.member = member;
         this.address = address;
         this.location = location;
     }
 
+    public Family(int id, int remoteId, String name, String address, Location location, FamilyMember member) {
+        this.id = id;
+        this.remoteId = remoteId;
+        this.name = name;
+        this.address = address;
+        this.location = location;
+        this.member = member;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public int getRemoteId() {
+        return remoteId;
     }
 
     public String getName() {

@@ -34,7 +34,7 @@ public class IrMapper {
     }
 
     public static Family mapFamily(FamilyIr ir) {
-        return new Family(ir.id, ir.name, null, null, null);
+        return new Family(ir.id, ir.name, null, null);
     }
 
     public static List<Survey> mapSurveys(List<SurveyIr> ir) {

@@ -66,7 +66,7 @@ public class SurveySummary_Layout extends ConstraintLayout {
 
     public void setNumSkipped(int num){
 
-        numSkipped.setText(num + " Questions Skipped");
+        numSkipped.setText(num + " " + getResources().getString(R.string.surveysummary_questionsleft));
 
     }
 

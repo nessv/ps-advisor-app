@@ -12,6 +12,7 @@ import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummary_Layout;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.w3c.dom.Text;
 
@@ -24,8 +25,10 @@ import java.util.ArrayList;
 public class SurveySummaryFragment extends AbstractSurveyFragment {
 
     LinearLayout linearLayout;
-
     IndicatorAdapter adapter;
+
+    SurveySummary_Layout backgroundQs;
+    SurveySummary_Layout indicators;
 
     SurveyIndicatorsFragment parentFragment;
 
@@ -45,11 +48,17 @@ public class SurveySummaryFragment extends AbstractSurveyFragment {
 
         linearLayout = view.findViewById(R.id.surveysummary_fragment);
 
+        backgroundQs = (SurveySummary_Layout) view.findViewById(R.id.surveysummary_background);
+        indicators = (SurveySummary_Layout) view.findViewById(R.id.surveysummary_indicators);
+
         try {
             for (IndicatorQuestion skippedQuestions : parentFragment.getSkippedIndicators()) {
-                TextView textView = new TextView(getContext());
-                textView.setText(skippedQuestions.getName());
-                linearLayout.addView(textView);
+                //Add in the card instances here
+
+
+//                TextView textView = new TextView(getContext());
+//                textView.setText(skippedQuestions.getName());
+//                linearLayout.addView(textView);
             }
         } catch (NullPointerException e){
             // No skipped questions

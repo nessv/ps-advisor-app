@@ -38,6 +38,11 @@
     <string name="survey_skip">Omitir</string>
     <string name="bkgquestions_title">Información de Fondo</string>
 
+    <!-- Survey Summary -->
+    <string name="surveysummary_backgroundtitle">Preguntas de Fondo</string>
+    <string name="surveysummary_indicatortitle">Indicadores</string>
+    <string name="surveysummary_questionsleft">Preguntas Restantes</string>
+
     <!-- Other -->
     <string name="all_continue">Continuar</string>
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>

@@ -35,11 +35,11 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
         mQuestionTextView.setText(description);
 
         switch (question.getResponseType()) {
-            case String:
+            case STRING:
                 this.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
 
-            case Integer:
+            case INTEGER:
                 this.setInputType(InputType.TYPE_CLASS_NUMBER);
                 break;
 

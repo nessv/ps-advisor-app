@@ -12,8 +12,8 @@ import org.fundacionparaguaya.advisorapp.models.Survey;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Economic;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Personal;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 
 /**
  * The intermediate representation of the survey from the remote database.
@@ -42,11 +42,11 @@ public class SurveyIr {
     }
 
     private List<BackgroundQuestion> compilePersonal() {
-        return compileBackground(uiSchema.personalQuestions, Personal);
+        return compileBackground(uiSchema.personalQuestions, PERSONAL);
     }
 
     private List<BackgroundQuestion> compileEconomic() {
-        return compileBackground(uiSchema.economicQuestions, Economic);
+        return compileBackground(uiSchema.economicQuestions, ECONOMIC);
     }
 
     private List<BackgroundQuestion> compileBackground(List<String> names, BackgroundQuestion.QuestionType type) {
@@ -87,11 +87,11 @@ public class SurveyIr {
     private ResponseType mapResponseType(String from) {
         switch (from) {
             case "string":
-                return ResponseType.String;
+                return ResponseType.STRING;
             case "number":
-                return ResponseType.Integer;
+                return ResponseType.INTEGER;
             case "integer":
-                return ResponseType.Integer;
+                return ResponseType.INTEGER;
             default:
                 throw new IllegalArgumentException("Response type not known!");
         }

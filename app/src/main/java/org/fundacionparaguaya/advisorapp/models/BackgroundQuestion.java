@@ -60,7 +60,7 @@ public class BackgroundQuestion extends SurveyQuestion {
     }
 
     public enum QuestionType {
-        Personal,
-        Economic
+        PERSONAL,
+        ECONOMIC
     }
 }

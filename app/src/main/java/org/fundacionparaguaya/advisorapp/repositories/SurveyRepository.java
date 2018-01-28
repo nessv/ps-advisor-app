@@ -11,15 +11,14 @@ import org.fundacionparaguaya.advisorapp.models.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import retrofit2.Response;
 
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Economic;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Personal;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
 
 /**
@@ -82,12 +81,12 @@ public class SurveyRepository {
             List<String> economicOptions = new ArrayList<>();
             economicOptions.add("Employed");
             economicOptions.add("Not Employed");
-            economicQuestions.add(new BackgroundQuestion("employmentStatus", "Employment status.", ResponseType.String, Economic, economicOptions));
+            economicQuestions.add(new BackgroundQuestion("employmentStatus", "Employment status.", ResponseType.STRING, ECONOMIC, economicOptions));
 
             List<BackgroundQuestion> personalQuestions = new ArrayList<>();
 
-            personalQuestions.add(new BackgroundQuestion("name", "What is your name?", ResponseType.String, Personal));
-            personalQuestions.add(new BackgroundQuestion("income", "What is your annual income?", ResponseType.Integer, Personal));
+            personalQuestions.add(new BackgroundQuestion("name", "What is your name?", ResponseType.STRING, PERSONAL));
+            personalQuestions.add(new BackgroundQuestion("income", "What is your annual income?", ResponseType.INTEGER, PERSONAL));
 
             surveyDao.insertSurvey(new Survey(1,personalQuestions, economicQuestions, indicatorQuestions));
         });

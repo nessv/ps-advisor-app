@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Economic;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Personal;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 
 /**
  * A snapshot represents the family's level of poverty at a specific point in time. It is
@@ -87,9 +87,9 @@ public class Snapshot {
     }
 
     public String getBackgroundResponse(BackgroundQuestion question) {
-        if (question.getQuestionType() == Personal) {
+        if (question.getQuestionType() == PERSONAL) {
             return personalResponses.get(question);
-        } else if (question.getQuestionType() == Economic) {
+        } else if (question.getQuestionType() == ECONOMIC) {
             return economicResponses.get(question);
         } else {
             throw new UnsupportedOperationException(

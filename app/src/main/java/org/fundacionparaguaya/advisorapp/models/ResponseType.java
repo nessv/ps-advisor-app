@@ -5,7 +5,10 @@ package org.fundacionparaguaya.advisorapp.models;
  */
 
 public enum ResponseType {
-    Integer,
-    String,
-    Indicator
+    INTEGER,
+    STRING,
+    INDICATOR,
+    PHONE_NUMBER,
+    PHOTO,
+    LOCATION
 }

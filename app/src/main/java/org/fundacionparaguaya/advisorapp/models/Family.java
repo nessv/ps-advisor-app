@@ -45,6 +45,8 @@ public class Family {
         this.name = name;
     }
 
+    public void setLocation(Location location) {this.location = location; }
+
     public FamilyMember getMember() {
         return member;
     }

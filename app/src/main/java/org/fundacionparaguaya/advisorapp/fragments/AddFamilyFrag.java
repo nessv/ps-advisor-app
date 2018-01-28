@@ -1,34 +1,39 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
-import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 public class AddFamilyFrag extends StackedFrag {
-    
+
+    private AddFamilyAdapter mAddFamilyAdapter;
+
+    private static String NEW_FAMILY_KEY = "SELECTED_FAMILY";
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-    FamilyInformationViewModel mFamilyInformationViewModel;
+    AddFamilyViewModel mAddFamilyViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -38,12 +43,11 @@ public class AddFamilyFrag extends StackedFrag {
                 .getApplicationComponent()
                 .inject(this);
 
-        mFamilyInformationViewModel = ViewModelProviders
+        mAddFamilyViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
-                .get(FamilyInformationViewModel.class);
+                .get(AddFamilyViewModel.class);
 
-        List<String> addFamilyQuestions = new ArrayList<String>();
-        addFamilyQuestions.add();
+
     }
 
     @Override
@@ -58,6 +62,7 @@ public class AddFamilyFrag extends StackedFrag {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.setAdapter(mAddFamilyAdapter);
 
         return view;
     }
@@ -67,5 +72,75 @@ public class AddFamilyFrag extends StackedFrag {
         super.onViewCreated(view, savedInstanceState);
     }
 
+
+    private class AddFamilyAdapter extends RecyclerView.Adapter {
+
+        MutableLiveData<List<BackgroundQuestion>> questionsList = mAddFamilyViewModel.getQuestions();
+
+        @Override
+        public int getItemViewType(int position) {
+            // Just as an example, return 0 or 2 depending on position
+            // Note that unlike in ListView adapters, types don't have to be contiguous
+            return position % 2 * 2;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_addfamilyquestion, parent, false);
+
+            switch (viewType){
+                case 0: return new ViewHolderString(parent);
+
+            }
+
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            switch (getItemViewType(position)){
+                case 0:
+                    ViewHolderString viewHolderString =(ViewHolderString)holder;
+
+            }
+
+
+        }
+
+        public class ViewHolderString extends RecyclerView.ViewHolder {
+
+
+            LinearLayout familyInfoItem;
+            TextView familyInfoQuestion;
+            EditText familyInfoEntry;
+
+            public ViewHolderString(View itemView) {
+                super(itemView);
+                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_addfamily);
+                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_question);
+                //familyInfoQuestion.setText(nameQuestion.getDescription());
+                familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_text_field);
+                
+            }
+
+        }
+
+
+
+
+        @Override
+        public int getItemCount() {
+            return 0;
+        }
+    }
+
+    public static AddFamilyFrag build(int familyId)
+    {
+        Bundle args = new Bundle();
+        args.putInt(NEW_FAMILY_KEY, familyId);
+        AddFamilyFrag f = new AddFamilyFrag();
+        f.setArguments(args);
+
+        return f;
+    }
 
 }

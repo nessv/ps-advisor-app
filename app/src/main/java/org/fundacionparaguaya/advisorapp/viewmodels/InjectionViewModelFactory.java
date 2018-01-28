@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
+import org.fundacionparaguaya.advisorapp.adapters.AddFamilyAdapter;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
@@ -37,9 +38,10 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
         else if (modelClass.isAssignableFrom(SharedSurveyViewModel.class)) {
             return (T) new SharedSurveyViewModel(surveyRepository, familyRepository);
         }
+        else if (modelClass.isAssignableFrom(AddFamilyViewModel.class)) {
+            return (T) new AddFamilyViewModel(familyRepository);
+        }
         else
             throw new IllegalArgumentException("The view model was not found for " + modelClass.toString());
     }
-
-
 }

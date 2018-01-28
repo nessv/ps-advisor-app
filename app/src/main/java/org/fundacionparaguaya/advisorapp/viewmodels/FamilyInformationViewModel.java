@@ -14,6 +14,7 @@ public class FamilyInformationViewModel extends ViewModel {
     private FamilyRepository mFamilyRepository;
     private LiveData<Family> currentFamily;
 
+
     public  FamilyInformationViewModel(FamilyRepository familyRepository){
         mFamilyRepository = familyRepository;
     }
@@ -27,6 +28,8 @@ public class FamilyInformationViewModel extends ViewModel {
         currentFamily = mFamilyRepository.getFamily(id);
         return currentFamily;
     }
+
+
 
     /**Gets the current family that's been set by setFamily**/
     public LiveData<Family> getCurrentFamily()

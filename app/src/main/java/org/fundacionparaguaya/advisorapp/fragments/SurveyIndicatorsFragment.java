@@ -22,6 +22,8 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 
@@ -123,6 +125,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
 
     public void addSkippedIndicator(IndicatorQuestion question) {
         mSurveyViewModel.addSkippedIndicator(question);
+    }
+
+    public Set<IndicatorQuestion> getSkippedIndicators(){
+        return mSurveyViewModel.getSkippedIndicators();
     }
 
     public void removeIndicatorResponse(IndicatorQuestion question){

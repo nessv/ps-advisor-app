@@ -8,7 +8,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.w3c.dom.Text;
 
@@ -20,18 +23,21 @@ import java.util.ArrayList;
 
 public class SurveySummaryFragment extends AbstractSurveyFragment {
 
-
-    SharedSurveyViewModel mSurveyViewModel;
-
     LinearLayout linearLayout;
 
-    public SurveySummaryFragment newInstance(SharedSurveyViewModel surveyViewModel){
+    IndicatorAdapter adapter;
+
+    SurveyIndicatorsFragment parentFragment;
+
+    public SurveySummaryFragment newInstance(IndicatorAdapter adapter){
 
         SurveySummaryFragment fragment = new SurveySummaryFragment();
-        mSurveyViewModel = surveyViewModel;
+
+        this.adapter = adapter;
+        parentFragment = (SurveyIndicatorsFragment) adapter.returnParent();
 
         return fragment;
-    };
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -40,7 +46,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment {
         linearLayout = view.findViewById(R.id.surveysummary_fragment);
 
         try {
-            for (IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()) {
+            for (IndicatorQuestion skippedQuestions : parentFragment.getSkippedIndicators()) {
                 TextView textView = new TextView(getContext());
                 textView.setText(skippedQuestions.getName());
                 linearLayout.addView(textView);

@@ -75,7 +75,7 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
            fragmentList.add(counter, tempFrag);
            chooseIndicatorFragments.add(tempFrag);
         }
-        fragmentList.add(new SurveySummaryFragment().newInstance(mSurveyViewModel));
+        fragmentList.add(new SurveySummaryFragment().newInstance(this));
 
     }
 

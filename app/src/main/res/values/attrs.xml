@@ -10,4 +10,8 @@
         <attr name="indicator_text" format="string"/>
         <attr name="indicator_color" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="SurveySummary_Layout">
+        <attr name="surveysummary_title" format="string"/>
+    </declare-styleable>
 </resources>

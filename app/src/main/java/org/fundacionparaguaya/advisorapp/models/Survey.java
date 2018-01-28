@@ -22,9 +22,9 @@ public class Survey {
     @PrimaryKey
     private int id;
     @ColumnInfo(name="personal_questions")
-    private List<PersonalQuestion> personalQuestions;
+    private List<BackgroundQuestion> personalQuestions;
     @ColumnInfo(name="economic_questions")
-    private List<EconomicQuestion> economicQuestions;
+    private List<BackgroundQuestion> economicQuestions;
     @ColumnInfo(name="indicator_questions")
     private List<IndicatorQuestion> indicatorQuestions;
 
@@ -34,8 +34,8 @@ public class Survey {
     }
 
     public Survey(int id,
-                  List<PersonalQuestion> personalQuestions,
-                  List<EconomicQuestion> economicQuestions,
+                  List<BackgroundQuestion> personalQuestions,
+                  List<BackgroundQuestion> economicQuestions,
                   List<IndicatorQuestion> indicatorQuestions) {
         this.id = id;
         this.personalQuestions = personalQuestions;
@@ -47,11 +47,11 @@ public class Survey {
         return id;
     }
 
-    public List<PersonalQuestion> getPersonalQuestions() {
+    public List<BackgroundQuestion> getPersonalQuestions() {
         return personalQuestions;
     }
 
-    public List<EconomicQuestion> getEconomicQuestions() {
+    public List<BackgroundQuestion> getEconomicQuestions() {
         return economicQuestions;
     }
 

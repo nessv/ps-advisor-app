@@ -58,33 +58,54 @@ public class FamilyRepository {
      * @return Whether the sync was successful.
      */
     boolean sync() {
-        try {
-            List<Family> pending = familyDao.queryUnsyncedFamilies();
+        boolean successful;
+        successful = pushFamilies();
+        if (successful) {
+            successful = pullFamilies();
+        }
+        return successful;
+    }
 
-            for (Family family : pending) {
+    private boolean pushFamilies() {
+        List<Family> pending = familyDao.queryPendingFamilies();
+        boolean success = true;
+
+        // attempt to push each of the pending families
+        for (Family family : pending) {
+            try {
                 Response<FamilyIr> response = familyService
                         .postFamily(authManager.getAuthenticationString(), IrMapper.mapFamily(family))
                         .execute();
-                if (response.isSuccessful()) {
-                    familyDao.deleteFamily(family);
-                }
-            }
 
+                if (response.isSuccessful() || response.body() != null) {
+                    // update the local family with the ID assigned by remote db
+                    Family remoteFamily = IrMapper.mapFamily(response.body());
+                    remoteFamily.setId(family.getId());
+                    familyDao.insertFamily(remoteFamily);
+                } else {
+                    success = false;
+                }
+            } catch (IOException e) {
+                Log.e(TAG, String.format("pushFamilies: Could not push family \"%s\"!", family.getName()), e);
+                success = false;
+            }
+        }
+        return success;
+    }
+
+    private boolean pullFamilies() {
+        try {
             Response<List<FamilyIr>> response =
                     familyService.getFamilies(authManager.getAuthenticationString()).execute();
 
-            if (!response.isSuccessful()) {
-                return false;
-            }
-
-            if (response.body() == null) {
+            if (!response.isSuccessful() || response.body() == null) {
                 return false;
             }
 
             List<Family> families = IrMapper.mapFamilies(response.body());
             familyDao.insertFamilies(families.toArray(new Family[families.size()]));
         } catch (IOException e) {
-            Log.e(TAG, "sync: Could not sync the family repository!", e);
+            Log.e(TAG, "pullFamilies: Could not pull families!", e);
             return false;
         }
         return true;

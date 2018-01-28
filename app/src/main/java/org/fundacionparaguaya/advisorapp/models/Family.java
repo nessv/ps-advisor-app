@@ -60,6 +60,10 @@ public class Family {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Long getRemoteId() {
         return remoteId;
     }

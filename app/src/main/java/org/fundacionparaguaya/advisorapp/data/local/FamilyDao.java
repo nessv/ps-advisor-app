@@ -25,8 +25,13 @@ public interface FamilyDao {
     @Query("SELECT * FROM families WHERE id = :id")
     LiveData<Family> queryFamily(int id);
 
+    /**
+     * Queries for all families that only exist locally, which haven't been pushed to the
+     * remote database and do not have a remote ID.
+     * @return The pending families.
+     */
     @Query("SELECT * FROM families WHERE remote_id IS NULL")
-    List<Family> queryUnsyncedFamilies();
+    List<Family> queryPendingFamilies();
 
     @Insert(onConflict = REPLACE)
     long insertFamily(Family family);

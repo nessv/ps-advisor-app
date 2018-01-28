@@ -11,13 +11,14 @@ import org.fundacionparaguaya.advisorapp.models.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import retrofit2.Response;
 
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
 
 /**
@@ -76,16 +77,16 @@ public class SurveyRepository {
             indicatorQuestions.add(new IndicatorQuestion(new Indicator("Yet Another Long Question", "Home", indicatorOptions)));
 
 
-            List<EconomicQuestion> economicQuestions = new ArrayList<>();
+            List<BackgroundQuestion> economicQuestions = new ArrayList<>();
             List<String> economicOptions = new ArrayList<>();
             economicOptions.add("Employed");
             economicOptions.add("Not Employed");
-            economicQuestions.add(new EconomicQuestion("employmentStatus", "Employment status.", ResponseType.String, economicOptions));
+            economicQuestions.add(new BackgroundQuestion("employmentStatus", "Employment status.", ResponseType.STRING, ECONOMIC, economicOptions));
 
-            List<PersonalQuestion> personalQuestions = new ArrayList<>();
+            List<BackgroundQuestion> personalQuestions = new ArrayList<>();
 
-            personalQuestions.add(new PersonalQuestion("name", "What is your name?", ResponseType.String));
-            personalQuestions.add(new PersonalQuestion("income", "What is your annual income?", ResponseType.Integer));
+            personalQuestions.add(new BackgroundQuestion("name", "What is your name?", ResponseType.STRING, PERSONAL));
+            personalQuestions.add(new BackgroundQuestion("income", "What is your annual income?", ResponseType.INTEGER, PERSONAL));
 
             surveyDao.insertSurvey(new Survey(1,personalQuestions, economicQuestions, indicatorQuestions));
         });

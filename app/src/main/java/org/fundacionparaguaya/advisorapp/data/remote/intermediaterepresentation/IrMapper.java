@@ -1,17 +1,19 @@
 package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation;
 
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.Login;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 
 /**
  * A utility for mapping IR objects to their corresponding model objects, and vice versa.
@@ -56,27 +58,27 @@ public class IrMapper {
         return new Survey(ir.id, mapPersonal(ir), mapEconomic(ir), mapIndicator(ir));
     }
 
-    private static List<PersonalQuestion> mapPersonal(SurveyIr ir) {
-        List<PersonalQuestion> questions = new ArrayList<>();
-        for (String name : ir.uiSchema.personalQuestions) {
-            SurveyQuestionIr questionIr = ir.schema.questions.get(name);
-            questions.add(new PersonalQuestion(
-                    name,
-                    questionIr.title.get("es"),
-                    mapResponseType(questionIr.type),
-                    questionIr.options));
-        }
-        return questions;
+    private static List<BackgroundQuestion> mapPersonal(SurveyIr ir) {
+        return mapBackground(PERSONAL, ir);
     }
 
-    private static List<EconomicQuestion> mapEconomic(SurveyIr ir) {
-        List<EconomicQuestion> questions = new ArrayList<>();
-        for (String name : ir.uiSchema.economicQuestions) {
+    private static List<BackgroundQuestion> mapEconomic(SurveyIr ir) {
+        return mapBackground(ECONOMIC, ir);
+    }
+
+    private static List<BackgroundQuestion> mapBackground(
+            BackgroundQuestion.QuestionType type, SurveyIr ir) {
+
+        List<String> names = type == PERSONAL ?
+                ir.uiSchema.personalQuestions : ir.uiSchema.economicQuestions;
+        List<BackgroundQuestion> questions = new ArrayList<>();
+        for (String name : names) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
-            questions.add(new EconomicQuestion(
+            questions.add(new BackgroundQuestion(
                     name,
                     questionIr.title.get("es"),
                     mapResponseType(questionIr.type),
+                    type,
                     questionIr.options));
         }
         return questions;
@@ -106,11 +108,11 @@ public class IrMapper {
     private static ResponseType mapResponseType(String ir) {
         switch (ir) {
             case "string":
-                return ResponseType.String;
+                return ResponseType.STRING;
             case "number":
-                return ResponseType.Integer;
+                return ResponseType.INTEGER;
             case "integer":
-                return ResponseType.Integer;
+                return ResponseType.INTEGER;
             default:
                 throw new IllegalArgumentException("Response type not known!");
         }

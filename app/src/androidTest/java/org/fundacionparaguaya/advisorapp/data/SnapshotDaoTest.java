@@ -8,7 +8,6 @@ import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;

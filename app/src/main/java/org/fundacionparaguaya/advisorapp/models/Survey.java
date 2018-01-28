@@ -26,9 +26,9 @@ public class Survey {
     @ColumnInfo(name="remote_id")
     private Long remoteId;
     @ColumnInfo(name="personal_questions")
-    private List<PersonalQuestion> personalQuestions;
+    private List<BackgroundQuestion> personalQuestions;
     @ColumnInfo(name="economic_questions")
-    private List<EconomicQuestion> economicQuestions;
+    private List<BackgroundQuestion> economicQuestions;
     @ColumnInfo(name="indicator_questions")
     private List<IndicatorQuestion> indicatorQuestions;
 
@@ -39,16 +39,16 @@ public class Survey {
 
     @Ignore
     public Survey(Long remoteId,
-                  List<PersonalQuestion> personalQuestions,
-                  List<EconomicQuestion> economicQuestions,
+                  List<BackgroundQuestion> personalQuestions,
+                  List<BackgroundQuestion> economicQuestions,
                   List<IndicatorQuestion> indicatorQuestions) {
         this(-1, remoteId, personalQuestions, economicQuestions, indicatorQuestions);
     }
 
     public Survey(int id,
                   Long remoteId,
-                  List<PersonalQuestion> personalQuestions,
-                  List<EconomicQuestion> economicQuestions,
+                  List<BackgroundQuestion> personalQuestions,
+                  List<BackgroundQuestion> economicQuestions,
                   List<IndicatorQuestion> indicatorQuestions) {
         this.id = id;
         this.remoteId = remoteId;
@@ -65,11 +65,11 @@ public class Survey {
         return remoteId;
     }
 
-    public List<PersonalQuestion> getPersonalQuestions() {
+    public List<BackgroundQuestion> getPersonalQuestions() {
         return personalQuestions;
     }
 
-    public List<EconomicQuestion> getEconomicQuestions() {
+    public List<BackgroundQuestion> getEconomicQuestions() {
         return economicQuestions;
     }
 

@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 
 /**
  * A snapshot represents the family's level of poverty at a specific point in time. It is
@@ -43,8 +45,8 @@ public class Snapshot {
     private int familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
-    private Map<PersonalQuestion, String> personalResponses;
-    private Map<EconomicQuestion, String> economicResponses;
+    private Map<BackgroundQuestion, String> personalResponses;
+    private Map<BackgroundQuestion, String> economicResponses;
     private Map<IndicatorQuestion, IndicatorOption> indicatorResponses;
 
     @Ignore
@@ -53,8 +55,8 @@ public class Snapshot {
     }
 
     public Snapshot(int id, int familyId, int surveyId,
-                    Map<PersonalQuestion, String> personalResponses,
-                    Map<EconomicQuestion, String> economicResponses,
+                    Map<BackgroundQuestion, String> personalResponses,
+                    Map<BackgroundQuestion, String> economicResponses,
                     Map<IndicatorQuestion, IndicatorOption> indicatorResponses) {
         this.id = id;
         this.familyId = familyId;
@@ -76,24 +78,31 @@ public class Snapshot {
         return surveyId;
     }
 
-    public Map<PersonalQuestion, String> getPersonalResponses() {
+    public Map<BackgroundQuestion, String> getPersonalResponses() {
         return personalResponses;
     }
 
-    public Map<EconomicQuestion, String> getEconomicResponses() {
+    public Map<BackgroundQuestion, String> getEconomicResponses() {
         return economicResponses;
+    }
+
+    public String getBackgroundResponse(BackgroundQuestion question) {
+        if (question.getQuestionType() == PERSONAL) {
+            return personalResponses.get(question);
+        } else if (question.getQuestionType() == ECONOMIC) {
+            return economicResponses.get(question);
+        } else {
+            throw new UnsupportedOperationException(
+                    String.format("Unknown question type %s", question.getQuestionType().toString()));
+        }
     }
 
     public Map<IndicatorQuestion, IndicatorOption> getIndicatorResponses() {
         return indicatorResponses;
     }
 
-    public void response(PersonalQuestion question, String response) {
-        personalResponses.put(question, response);
-    }
-
-    public void response(EconomicQuestion question, String response) {
-        economicResponses.put(question, response);
+    public void response(BackgroundQuestion question, String response) {
+        personalResponses.put(question, response); // TODO: map to correct list
     }
 
     public void response(IndicatorQuestion question, IndicatorOption response) {

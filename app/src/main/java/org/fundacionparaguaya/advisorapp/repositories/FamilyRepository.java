@@ -46,7 +46,7 @@ public class FamilyRepository {
     }
 
     public void saveFamily(Family family) {
-        familyDao.insertFamilyAsync(family);
+        familyDao.insertFamily(family);
     }
 
     public void deleteFamily(Family family) {

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,7 +89,10 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
             Intent surveyIntent = SurveyActivity.build(getContext(),
                     mFamilyInformationViewModel.getCurrentFamily().getValue());
 
-            startActivity(surveyIntent);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+            startActivity(surveyIntent, bundle);
         });
     }
 

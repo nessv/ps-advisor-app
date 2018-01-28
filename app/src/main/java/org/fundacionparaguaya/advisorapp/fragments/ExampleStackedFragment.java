@@ -36,18 +36,18 @@ public class ExampleStackedFragment extends StackedFrag
         }
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_test, container, false);
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mTextView.setText(mDisplayText);
-
         mButton = (Button)rootView.findViewById(R.id.button);
 
         return rootView;
     }
+
 
     @Override
     public void onResume() {
@@ -59,7 +59,6 @@ public class ExampleStackedFragment extends StackedFrag
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         //navigate to a new fragment and increment the label when the button is clicked
         mButton.setOnClickListener((clickEvent) -> {

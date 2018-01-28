@@ -7,47 +7,56 @@ import java.util.List;
  * survey, they will choose one of those levels.
  */
 
-public class Indicator
-{
+public class Indicator {
     private String name;
     private String dimension;
+    private List<IndicatorOption> options;
 
-    private IndicatorOption redLevel;
-    private IndicatorOption yellowLevel;
-    private IndicatorOption greenLevel;
-
-    public void setRedLevel(IndicatorOption redLevel)
-    {
-        this.redLevel = redLevel;
+    public Indicator(String name, String dimension) {
+        this(name, dimension, null);
     }
 
-    public void setYellowLevel(IndicatorOption yellowLevel)
-    {
-        this.yellowLevel = yellowLevel;
+    public Indicator(String name, String dimension, List<IndicatorOption> options) {
+        this.name = name;
+        this.dimension = dimension;
+        this.options = options;
     }
 
-    public void setGreenLevel(IndicatorOption greenLevel)
-    {
-        this.greenLevel = greenLevel;
+    public String getName() {
+        return name;
     }
 
-    public IndicatorOption.Level getLevelForOption(IndicatorOption option)
-    {
-        if(redLevel.equals(option))
-        {
-            return IndicatorOption.Level.Red;
-        }
-        else if(yellowLevel.equals(option))
-        {
-            return IndicatorOption.Level.Yellow;
-        }
-        else if(greenLevel.equals(option))
-        {
-            return IndicatorOption.Level.Green;
-        }
-        else
-        {
-            return IndicatorOption.Level.None;
-        }
+    public String getDimension() {
+        return dimension;
+    }
+
+    public List<IndicatorOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<IndicatorOption> options) {
+        this.options = options;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Indicator indicator = (Indicator) o;
+
+        if (getName() != null ? !getName().equals(indicator.getName()) : indicator.getName() != null)
+            return false;
+        if (getDimension() != null ? !getDimension().equals(indicator.getDimension()) : indicator.getDimension() != null)
+            return false;
+        return getOptions() != null ? getOptions().equals(indicator.getOptions()) : indicator.getOptions() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getDimension() != null ? getDimension().hashCode() : 0);
+        result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
+        return result;
     }
 }

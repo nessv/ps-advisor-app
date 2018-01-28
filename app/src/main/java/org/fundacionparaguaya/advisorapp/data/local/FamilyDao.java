@@ -25,6 +25,9 @@ public interface FamilyDao {
     @Query("SELECT * FROM families WHERE id = :id")
     LiveData<Family> queryFamily(int id);
 
+    @Query("SELECT * FROM families WHERE remote_id IS NULL")
+    List<Family> queryUnsyncedFamilies();
+
     @Insert(onConflict = REPLACE)
     long insertFamily(Family family);
 

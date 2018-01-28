@@ -11,7 +11,6 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,10 +46,7 @@ public class FamilyRepository {
     }
 
     public void saveFamily(Family family) {
-        int rowCount = familyDao.updateFamily(family);
-        if (rowCount == 0) { // didn't already exist
-            familyDao.insertFamily(family);
-        }
+        familyDao.insertFamilyAsync(family);
     }
 
     public void deleteFamily(Family family) {
@@ -63,6 +59,17 @@ public class FamilyRepository {
      */
     boolean sync() {
         try {
+            List<Family> pending = familyDao.queryUnsyncedFamilies();
+
+            for (Family family : pending) {
+                Response<FamilyIr> response = familyService
+                        .postFamily(authManager.getAuthenticationString(), IrMapper.mapFamily(family))
+                        .execute();
+                if (response.isSuccessful()) {
+                    familyDao.deleteFamily(family);
+                }
+            }
+
             Response<List<FamilyIr>> response =
                     familyService.getFamilies(authManager.getAuthenticationString()).execute();
 

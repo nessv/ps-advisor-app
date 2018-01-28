@@ -1,7 +1,5 @@
 package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation;
 
-import android.support.annotation.NonNull;
-
 import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
@@ -33,8 +31,17 @@ public class IrMapper {
         return families;
     }
 
+    public static FamilyIr mapFamily(Family family) {
+        FamilyIr ir = new FamilyIr();
+        ir.id = family.getRemoteId() != null ? family.getRemoteId() : -1;
+        ir.name = family.getName();
+        ir.code = "PLACEHOLDER";
+        ir.active = true;
+        return ir;
+    }
+
     public static Family mapFamily(FamilyIr ir) {
-        return new Family(ir.id, ir.name, null, null);
+        return new Family(ir.id, ir.name, null, null, null);
     }
 
     public static List<Survey> mapSurveys(List<SurveyIr> ir) {

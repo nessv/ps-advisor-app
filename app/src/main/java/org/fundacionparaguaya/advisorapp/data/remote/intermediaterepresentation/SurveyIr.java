@@ -2,24 +2,13 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import com.google.gson.annotations.SerializedName;
 
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
-import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
-import org.fundacionparaguaya.advisorapp.models.ResponseType;
-import org.fundacionparaguaya.advisorapp.models.Survey;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The intermediate representation of the survey from the remote database.
  */
 
 public class SurveyIr {
     @SerializedName("id")
-    int id;
+    long id;
     @SerializedName("title")
     String title;
     @SerializedName("description")

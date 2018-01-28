@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e69d2dac334e5745a49029b1c27a9568",
+    "identityHash": "dc70576b32703f79e3e80717cf484bea",
     "entities": [
       {
         "tableName": "families",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER NOT NULL, `name` TEXT, `address` TEXT, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_profile_url` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `name` TEXT, `address` TEXT, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_profile_url` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,7 +18,7 @@
             "fieldPath": "remoteId",
             "columnName": "remote_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "name",
@@ -107,13 +107,19 @@
       },
       {
         "tableName": "surveys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "personalQuestions",
@@ -138,9 +144,18 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_surveys_remote_id",
+            "unique": true,
+            "columnNames": [
+              "remote_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_surveys_remote_id` ON `${TABLE_NAME}` (`remote_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -236,7 +251,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e69d2dac334e5745a49029b1c27a9568\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"dc70576b32703f79e3e80717cf484bea\")"
     ]
   }
 }

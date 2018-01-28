@@ -14,10 +14,13 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "families",
         indices={@Index(value="remote_id", unique=true)})
 public class Family {
+    // TODO: use same constraints on remote database for local database
+    // TODO: add missing fields (code, active)
+    // TODO: create builder notation
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "remote_id")
-    private int remoteId;
+    private Long remoteId;
     private String name;
     private String address;
     @Embedded
@@ -32,18 +35,19 @@ public class Family {
 
     @Ignore
     public Family(String name, String address, Location location) {
-        this(-1, name, address, location);
+        this(null, name, address, location, null);
     }
 
     @Ignore
-    public Family(int remoteId, String name, String address, Location location) {
+    public Family(Long remoteId, String name, String address, Location location, FamilyMember member) {
         this.remoteId = remoteId;
         this.name = name;
         this.address = address;
         this.location = location;
+        this.member = member;
     }
 
-    public Family(int id, int remoteId, String name, String address, Location location, FamilyMember member) {
+    public Family(int id, Long remoteId, String name, String address, Location location, FamilyMember member) {
         this.id = id;
         this.remoteId = remoteId;
         this.name = name;
@@ -56,7 +60,7 @@ public class Family {
         return id;
     }
 
-    public int getRemoteId() {
+    public Long getRemoteId() {
         return remoteId;
     }
 

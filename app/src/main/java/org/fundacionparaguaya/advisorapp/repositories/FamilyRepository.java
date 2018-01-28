@@ -78,10 +78,10 @@ public class FamilyRepository {
                         .execute();
 
                 if (response.isSuccessful() || response.body() != null) {
-                    // update the local family with the ID assigned by remote db
+                    // overwrite the pending family with the family from remote db
                     Family remoteFamily = IrMapper.mapFamily(response.body());
                     remoteFamily.setId(family.getId());
-                    familyDao.insertFamily(remoteFamily);
+                    familyDao.updateFamily(remoteFamily);
                 } else {
                     success = false;
                 }

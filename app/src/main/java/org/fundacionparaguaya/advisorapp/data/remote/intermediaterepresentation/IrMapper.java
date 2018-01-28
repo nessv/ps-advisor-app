@@ -38,12 +38,12 @@ public class IrMapper {
         ir.id = family.getRemoteId() != null ? family.getRemoteId() : -1;
         ir.name = family.getName();
         ir.code = "PLACEHOLDER";
-        ir.active = true;
+        ir.active = family.isActive();
         return ir;
     }
 
     public static Family mapFamily(FamilyIr ir) {
-        return new Family(ir.id, ir.name, null, null, null);
+        return new Family(ir.id, ir.name, null, null, null, ir.active);
     }
 
     public static List<Survey> mapSurveys(List<SurveyIr> ir) {

@@ -15,7 +15,7 @@ import android.arch.persistence.room.PrimaryKey;
         indices={@Index(value="remote_id", unique=true)})
 public class Family {
     // TODO: use same constraints on remote database for local database
-    // TODO: add missing fields (code, active)
+    // TODO: add missing fields (code)
     // TODO: create builder notation
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -23,6 +23,8 @@ public class Family {
     private Long remoteId;
     private String name;
     private String address;
+    @ColumnInfo(name="is_active")
+    private boolean isActive;
     @Embedded
     private Location location;
     @Embedded(prefix = "family_member_")
@@ -35,25 +37,22 @@ public class Family {
 
     @Ignore
     public Family(String name, String address, Location location) {
-        this(null, name, address, location, null);
+        this(null, name, address, location, null, true);
     }
 
     @Ignore
-    public Family(Long remoteId, String name, String address, Location location, FamilyMember member) {
-        this.remoteId = remoteId;
-        this.name = name;
-        this.address = address;
-        this.location = location;
-        this.member = member;
+    public Family(Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
+        this(-1, remoteId, name, address, location, member, isActive);
     }
 
-    public Family(int id, Long remoteId, String name, String address, Location location, FamilyMember member) {
+    public Family(int id, Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
         this.id = id;
         this.remoteId = remoteId;
         this.name = name;
         this.address = address;
         this.location = location;
         this.member = member;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -86,6 +85,10 @@ public class Family {
 
     public Location getLocation() {
         return location;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     @Override

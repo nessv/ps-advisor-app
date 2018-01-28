@@ -52,8 +52,6 @@ public class LoginFragment extends Fragment {
 
     AuthenticationManager mAuthManager;
 
-
-
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 

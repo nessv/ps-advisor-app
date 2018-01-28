@@ -18,6 +18,8 @@ import javax.inject.Inject;
 
 import retrofit2.Response;
 
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Economic;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Personal;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
 
 /**
@@ -76,16 +78,16 @@ public class SurveyRepository {
             indicatorQuestions.add(new IndicatorQuestion(new Indicator("Yet Another Long Question", "Home", indicatorOptions)));
 
 
-            List<EconomicQuestion> economicQuestions = new ArrayList<>();
+            List<BackgroundQuestion> economicQuestions = new ArrayList<>();
             List<String> economicOptions = new ArrayList<>();
             economicOptions.add("Employed");
             economicOptions.add("Not Employed");
-            economicQuestions.add(new EconomicQuestion("employmentStatus", "Employment status.", ResponseType.String, economicOptions));
+            economicQuestions.add(new BackgroundQuestion("employmentStatus", "Employment status.", ResponseType.String, Economic, economicOptions));
 
-            List<PersonalQuestion> personalQuestions = new ArrayList<>();
+            List<BackgroundQuestion> personalQuestions = new ArrayList<>();
 
-            personalQuestions.add(new PersonalQuestion("name", "What is your name?", ResponseType.String));
-            personalQuestions.add(new PersonalQuestion("income", "What is your annual income?", ResponseType.Integer));
+            personalQuestions.add(new BackgroundQuestion("name", "What is your name?", ResponseType.String, Personal));
+            personalQuestions.add(new BackgroundQuestion("income", "What is your annual income?", ResponseType.Integer, Personal));
 
             surveyDao.insertSurvey(new Survey(1,personalQuestions, economicQuestions, indicatorQuestions));
         });

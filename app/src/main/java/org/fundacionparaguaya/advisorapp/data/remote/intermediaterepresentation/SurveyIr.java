@@ -2,16 +2,18 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import com.google.gson.annotations.SerializedName;
 
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Economic;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.Personal;
 
 /**
  * The intermediate representation of the survey from the remote database.
@@ -39,27 +41,23 @@ public class SurveyIr {
         return new Survey(id, compilePersonal(), compileEconomic(), compileIndicator());
     }
 
-    private List<PersonalQuestion> compilePersonal() {
-        List<PersonalQuestion> questions = new ArrayList<>();
-        for (String name : uiSchema.personalQuestions) {
-            SurveyQuestionIr questionIr = schema.questions.get(name);
-            questions.add(new PersonalQuestion(
-                    name,
-                    questionIr.title.get("es"),
-                    mapResponseType(questionIr.type),
-                    questionIr.options));
-        }
-        return questions;
+    private List<BackgroundQuestion> compilePersonal() {
+        return compileBackground(uiSchema.personalQuestions, Personal);
     }
 
-    private List<EconomicQuestion> compileEconomic() {
-        List<EconomicQuestion> questions = new ArrayList<>();
-        for (String name : uiSchema.economicQuestions) {
+    private List<BackgroundQuestion> compileEconomic() {
+        return compileBackground(uiSchema.economicQuestions, Economic);
+    }
+
+    private List<BackgroundQuestion> compileBackground(List<String> names, BackgroundQuestion.QuestionType type) {
+        List<BackgroundQuestion> questions = new ArrayList<>();
+        for (String name : names) {
             SurveyQuestionIr questionIr = schema.questions.get(name);
-            questions.add(new EconomicQuestion(
+            questions.add(new BackgroundQuestion(
                     name,
                     questionIr.title.get("es"),
                     mapResponseType(questionIr.type),
+                    type,
                     questionIr.options));
         }
         return questions;

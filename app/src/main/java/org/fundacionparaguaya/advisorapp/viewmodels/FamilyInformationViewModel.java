@@ -33,6 +33,10 @@ public class FamilyInformationViewModel extends ViewModel {
     private LiveData<Map<IndicatorQuestion, IndicatorOption>> mIndicatorsForSelected = Transformations.map(mSelectedSnapshot, selected ->
     {
         //group by dimension and sort alphabetically, then
+
+        //if == null
+        // return null
+
         if(selected==null)
         {
             return null;

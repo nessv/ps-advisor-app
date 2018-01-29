@@ -25,6 +25,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.User;
@@ -50,8 +51,6 @@ public class LoginFragment extends Fragment {
     ImageView mHelpButton;
 
     AuthenticationManager mAuthManager;
-
-
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -211,7 +210,7 @@ abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
                 return false;
             }
 
-            Login login = response.body().login();
+            Login login = IrMapper.map(response.body());
             user.setLogin(login);
             user.setEnabled(true);
             mAuthManager.saveRefreshToken();

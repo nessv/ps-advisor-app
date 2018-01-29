@@ -19,8 +19,4 @@ public class FamilyMemberIr {
     String gender;
     @SerializedName("profileUrl")
     String profileUrl;
-
-    public FamilyMember familyMember() {
-        return new FamilyMember(firstName, lastName, profileUrl);
-    }
 }

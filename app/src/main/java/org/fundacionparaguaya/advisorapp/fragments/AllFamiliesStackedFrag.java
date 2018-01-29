@@ -92,7 +92,7 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
 
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    Family family = new Family("Mudge");
+                    Family family = Family.builder().name("Mudge").code("US.AM.20170925").build();
                     mAllFamiliesViewModel.save(family);
                     return null;
                 }

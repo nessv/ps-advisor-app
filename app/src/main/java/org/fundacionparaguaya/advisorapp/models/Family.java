@@ -6,22 +6,24 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 /**
  * A family is the entity that is being helped by the advisor.
  */
 
 @Entity(tableName = "families",
-        indices={@Index(value="remote_id", unique=true)})
+        indices={@Index(value="remote_id", unique=true), @Index(value="code", unique=true)})
 public class Family {
-    // TODO: use same constraints on remote database for local database
-    // TODO: add missing fields (code)
-    // TODO: create builder notation
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "remote_id")
     private Long remoteId;
+    @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "code")
+    private String code;
+    @ColumnInfo(name = "address")
     private String address;
     @ColumnInfo(name="is_active")
     private boolean isActive;
@@ -30,25 +32,21 @@ public class Family {
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
 
-    @Ignore
-    public Family(String name) {
-        this(name, "", Location.UNKNOWN);
-    }
-
-    @Ignore
-    public Family(String name, String address, Location location) {
-        this(null, name, address, location, null, true);
-    }
-
-    @Ignore
-    public Family(Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
-        this(0, remoteId, name, address, location, member, isActive);
-    }
-
-    public Family(int id, Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
+    /**
+     * Creates a new family. You should use the {@link Family#builder()} to construct a new family instead.
+     */
+    public Family(int id,
+                  Long remoteId,
+                  @NonNull String name,
+                  @NonNull String code,
+                  String address,
+                  Location location,
+                  FamilyMember member,
+                  boolean isActive) {
         this.id = id;
         this.remoteId = remoteId;
         this.name = name;
+        this.code = code;
         this.address = address;
         this.location = location;
         this.member = member;
@@ -67,12 +65,24 @@ public class Family {
         return remoteId;
     }
 
+    public void setRemoteId(Long remoteId) {
+        this.remoteId = remoteId;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public FamilyMember getMember() {
@@ -89,6 +99,10 @@ public class Family {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -120,5 +134,55 @@ public class Family {
         result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (member != null ? member.hashCode() : 0);
         return result;
+    }
+
+    public static class Builder {
+        private Long remoteId;
+        private String name;
+        private String code;
+        private String address;
+        private Location location;
+        private FamilyMember member;
+        private boolean isActive = true;
+
+        public Builder remoteId(Long remoteId) {
+            this.remoteId = remoteId;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder code(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder location(Location location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder member(FamilyMember member) {
+            this.member = member;
+            return this;
+        }
+
+        public Builder isActive(boolean isActive) {
+            this.isActive = isActive;
+            return this;
+        }
+
+
+        public Family build() {
+            return new Family(0, remoteId, name, code, address, location, member, isActive);
+        }
     }
 }

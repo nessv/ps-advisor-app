@@ -42,7 +42,7 @@ public class Family {
 
     @Ignore
     public Family(Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
-        this(-1, remoteId, name, address, location, member, isActive);
+        this(0, remoteId, name, address, location, member, isActive);
     }
 
     public Family(int id, Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
@@ -98,23 +98,27 @@ public class Family {
 
         Family family = (Family) o;
 
-        if (getId() != family.getId()) return false;
-        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null)
+        if (id != family.id) return false;
+        if (isActive != family.isActive) return false;
+        if (remoteId != null ? !remoteId.equals(family.remoteId) : family.remoteId != null)
             return false;
-        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
+        if (name != null ? !name.equals(family.name) : family.name != null) return false;
+        if (address != null ? !address.equals(family.address) : family.address != null)
             return false;
-        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+        if (location != null ? !location.equals(family.location) : family.location != null)
             return false;
-        return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
+        return member != null ? member.equals(family.member) : family.member == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
-        result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
-        result = 31 * result + (getMember() != null ? getMember().hashCode() : 0);
+        int result = id;
+        result = 31 * result + (remoteId != null ? remoteId.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (isActive ? 1 : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (member != null ? member.hashCode() : 0);
         return result;
     }
 }

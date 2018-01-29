@@ -34,7 +34,7 @@ public class Survey {
 
     @Ignore
     public Survey() {
-        this(-1, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this(0, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     @Ignore
@@ -42,7 +42,7 @@ public class Survey {
                   List<BackgroundQuestion> personalQuestions,
                   List<BackgroundQuestion> economicQuestions,
                   List<IndicatorQuestion> indicatorQuestions) {
-        this(-1, remoteId, personalQuestions, economicQuestions, indicatorQuestions);
+        this(0, remoteId, personalQuestions, economicQuestions, indicatorQuestions);
     }
 
     public Survey(int id,

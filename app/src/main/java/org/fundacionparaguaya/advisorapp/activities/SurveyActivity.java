@@ -170,13 +170,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
 
-        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(),
-                this.getTheme()));
-
-        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(),
-                this.getTheme()));
-
-        this.mTvTitle.setText(fragment.getTitle());
     }
 
 

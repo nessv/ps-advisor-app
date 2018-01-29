@@ -1,40 +1,70 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
  * A family is the entity that is being helped by the advisor.
  */
 
-@Entity(tableName = "families")
+@Entity(tableName = "families",
+        indices={@Index(value="remote_id", unique=true)})
 public class Family {
+    // TODO: use same constraints on remote database for local database
+    // TODO: add missing fields (code)
+    // TODO: create builder notation
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "remote_id")
+    private Long remoteId;
     private String name;
     private String address;
+    @ColumnInfo(name="is_active")
+    private boolean isActive;
     @Embedded
     private Location location;
     @Embedded(prefix = "family_member_")
     private FamilyMember member;
 
     @Ignore
-    public Family(int id, String name, FamilyMember member) {
-        this(id, name, member, "", Location.UNKNOWN);
+    public Family(String name) {
+        this(name, "", Location.UNKNOWN);
     }
 
-    public Family(int id, String name, FamilyMember member, String address, Location location) {
+    @Ignore
+    public Family(String name, String address, Location location) {
+        this(null, name, address, location, null, true);
+    }
+
+    @Ignore
+    public Family(Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
+        this(0, remoteId, name, address, location, member, isActive);
+    }
+
+    public Family(int id, Long remoteId, String name, String address, Location location, FamilyMember member, boolean isActive) {
         this.id = id;
+        this.remoteId = remoteId;
         this.name = name;
-        this.member = member;
         this.address = address;
         this.location = location;
+        this.member = member;
+        this.isActive = isActive;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Long getRemoteId() {
+        return remoteId;
     }
 
     public String getName() {
@@ -59,6 +89,10 @@ public class Family {
         return location;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,23 +100,27 @@ public class Family {
 
         Family family = (Family) o;
 
-        if (getId() != family.getId()) return false;
-        if (getName() != null ? !getName().equals(family.getName()) : family.getName() != null)
+        if (id != family.id) return false;
+        if (isActive != family.isActive) return false;
+        if (remoteId != null ? !remoteId.equals(family.remoteId) : family.remoteId != null)
             return false;
-        if (getAddress() != null ? !getAddress().equals(family.getAddress()) : family.getAddress() != null)
+        if (name != null ? !name.equals(family.name) : family.name != null) return false;
+        if (address != null ? !address.equals(family.address) : family.address != null)
             return false;
-        if (getLocation() != null ? !getLocation().equals(family.getLocation()) : family.getLocation() != null)
+        if (location != null ? !location.equals(family.location) : family.location != null)
             return false;
-        return getMember() != null ? getMember().equals(family.getMember()) : family.getMember() == null;
+        return member != null ? member.equals(family.member) : family.member == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
-        result = 31 * result + (getLocation() != null ? getLocation().hashCode() : 0);
-        result = 31 * result + (getMember() != null ? getMember().hashCode() : 0);
+        int result = id;
+        result = 31 * result + (remoteId != null ? remoteId.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (isActive ? 1 : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (member != null ? member.hashCode() : 0);
         return result;
     }
 }

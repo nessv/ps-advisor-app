@@ -1,25 +1,21 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
-import org.fundacionparaguaya.advisorapp.data.remote.*;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SurveyIr;
-import org.fundacionparaguaya.advisorapp.models.*;
+import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import retrofit2.Response;
-
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
-import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
-import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.*;
 
 /**
  * The utility for the storage of surveys and snapshots.
@@ -39,57 +35,6 @@ public class SurveyRepository {
         this.surveyDao = surveyDao;
         this.surveyService = surveyService;
         this.authManager = authManager;
-
-        //because this in the constructor, can't be done in the main thread.
-        AsyncTask.execute(() ->
-        {
-            List<IndicatorQuestion> indicatorQuestions = new ArrayList<>();
-            List<IndicatorOption> indicatorOptions = new ArrayList<>();
-            indicatorOptions.add(new IndicatorOption("Has a stove.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-3.jpg", Green));
-            indicatorOptions.add(new IndicatorOption("Has no stove.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-2.jpg", Yellow));
-            indicatorOptions.add(new IndicatorOption("Has no kitchen.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/21-1.jpg", Red));
-            indicatorQuestions.add(new IndicatorQuestion(new Indicator("properKitchen", "Home", indicatorOptions)));
-
-            indicatorOptions = new ArrayList<>();
-            indicatorOptions.add(new IndicatorOption("Has a phone.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-3.jpg", Green));
-            indicatorOptions.add(new IndicatorOption("Has a dead phone.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-2.jpg", Yellow));
-            indicatorOptions.add(new IndicatorOption("Has no phone.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-1.jpg", Red));
-            indicatorQuestions.add(new IndicatorQuestion(new Indicator("phone", "Home", indicatorOptions)));
-
-            indicatorOptions = new ArrayList<>();
-            indicatorOptions.add(new IndicatorOption("Another question, green.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-3.jpg", Green));
-            indicatorOptions.add(new IndicatorOption("Another question, yellow", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-2.jpg", Yellow));
-            indicatorOptions.add(new IndicatorOption("Another question, red", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-1.jpg", Red));
-            indicatorQuestions.add(new IndicatorQuestion(new Indicator("Another Question", "Home", indicatorOptions)));
-
-            indicatorOptions = new ArrayList<>();
-            indicatorOptions.add(new IndicatorOption("Yet another question, green.", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-3.jpg", Green));
-            indicatorOptions.add(new IndicatorOption("Yet another question, yellow", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-2.jpg", Yellow));
-            indicatorOptions.add(new IndicatorOption("Yet another question, red", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-1.jpg", Red));
-            indicatorQuestions.add(new IndicatorQuestion(new Indicator("Yet Another Question", "Home", indicatorOptions)));
-
-            indicatorOptions = new ArrayList<>();
-            indicatorOptions.add(new IndicatorOption("A longer question that goes into a little detail, green", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-3.jpg", Green));
-            indicatorOptions.add(new IndicatorOption("An even longer question that really gets into the nitty " +
-                    "gritty of the family's situation, yellow", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-2.jpg", Yellow));
-            indicatorOptions.add(new IndicatorOption("Yet another question that is even longer. extremely long, and infact the longest of the long." +
-                    ", red", "https://s3.us-east-2.amazonaws.com/fp-psp-images/25-1.jpg", Red));
-            indicatorQuestions.add(new IndicatorQuestion(new Indicator("Yet Another Long Question", "Home", indicatorOptions)));
-
-
-            List<BackgroundQuestion> economicQuestions = new ArrayList<>();
-            List<String> economicOptions = new ArrayList<>();
-            economicOptions.add("Employed");
-            economicOptions.add("Not Employed");
-            economicQuestions.add(new BackgroundQuestion("employmentStatus", "Employment status.", ResponseType.STRING, ECONOMIC, economicOptions));
-
-            List<BackgroundQuestion> personalQuestions = new ArrayList<>();
-
-            personalQuestions.add(new BackgroundQuestion("name", "What is your name?", ResponseType.STRING, PERSONAL));
-            personalQuestions.add(new BackgroundQuestion("income", "What is your annual income?", ResponseType.INTEGER, PERSONAL));
-
-            surveyDao.insertSurvey(new Survey(1,personalQuestions, economicQuestions, indicatorQuestions));
-        });
     }
 
     //region Survey
@@ -118,10 +63,7 @@ public class SurveyRepository {
                 return false;
             }
 
-            List<Survey> surveys = new ArrayList<>(response.body().size());
-            for (SurveyIr surveyIr : response.body()) {
-                surveys.add(surveyIr.compile());
-            }
+            List<Survey> surveys = IrMapper.mapSurveys(response.body());
             surveyDao.insertSurveys(surveys.toArray(new Survey[surveys.size()]));
         } catch (IOException e) {
             Log.e(TAG, "sync: Could not sync the survey repository!", e);

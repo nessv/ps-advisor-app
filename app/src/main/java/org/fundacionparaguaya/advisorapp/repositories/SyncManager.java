@@ -30,7 +30,7 @@ public class SyncManager {
     private MutableLiveData<Long> mLastSyncedTime;
 
     @Inject
-    public SyncManager(Application application, FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+    SyncManager(Application application, FamilyRepository familyRepository, SurveyRepository surveyRepository) {
         this.mFamilyRepository = familyRepository;
         this.mSurveyRepository = surveyRepository;
 

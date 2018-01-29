@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="420dp"
+                                             android:layout_height="620dp"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<View android:layout_width="match_parent" android:layout_height="56dp"
+             android:background="@drawable/familydetail_subtab_header">
+</View>
+
+    <ImageButton android:layout_width="56dp"
+                 android:layout_height="56dp"
+                 android:scaleType="fitXY"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:layout_gravity="center_vertical"
+                 android:background="@color/float_transparent"
+                 android:src="@drawable/familydetail_subtab_mainaction"/>
+
+</android.support.constraint.ConstraintLayout>

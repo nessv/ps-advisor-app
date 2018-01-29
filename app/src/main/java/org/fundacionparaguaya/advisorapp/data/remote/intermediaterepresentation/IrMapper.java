@@ -2,6 +2,7 @@ package org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation
 
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
@@ -47,6 +48,22 @@ public class IrMapper {
                 .remoteId(ir.id)
                 .name(ir.name)
                 .code(ir.code)
+                .member(mapFamilyMember(ir.member))
+                .build();
+    }
+
+    private static FamilyMember mapFamilyMember(FamilyMemberIr ir) {
+        if (ir == null) return null;
+
+        return FamilyMember.builder()
+                .firstName(ir.firstName)
+                .lastName(ir.lastName)
+                .birthdate(ir.birthdate)
+                .phoneNumber(ir.phoneNumber)
+                .identificationType(ir.identificationType)
+                .identificationNumber(ir.identificationNumber)
+                .gender(ir.gender)
+                .profileUrl(ir.profileUrl)
                 .build();
     }
 
@@ -58,7 +75,7 @@ public class IrMapper {
         return surveys;
     }
 
-    public static Survey mapSurvey(SurveyIr ir) {
+    private static Survey mapSurvey(SurveyIr ir) {
         return new Survey(ir.id, mapPersonal(ir), mapEconomic(ir), mapIndicator(ir));
     }
 

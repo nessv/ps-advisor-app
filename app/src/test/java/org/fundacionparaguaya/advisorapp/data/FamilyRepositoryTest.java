@@ -41,9 +41,8 @@ public class FamilyRepositoryTest {
 
     @Before
     public void setUp() {
-        member = new FamilyMember("Joe", "Smith", "");
-        family = new Family(1L, "Smith", null, null, member, true);
-
+        member = FamilyMember.builder().firstName("Joe").lastName("Smith").build();
+        family = Family.builder().remoteId(1L).name("Smith").member(member).build();
     }
 
     //region Family

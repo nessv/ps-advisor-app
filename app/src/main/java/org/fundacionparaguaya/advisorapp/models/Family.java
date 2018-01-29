@@ -117,6 +117,7 @@ public class Family {
         if (remoteId != null ? !remoteId.equals(family.remoteId) : family.remoteId != null)
             return false;
         if (name != null ? !name.equals(family.name) : family.name != null) return false;
+        if (code != null ? !code.equals(family.code) : family.code != null) return false;
         if (address != null ? !address.equals(family.address) : family.address != null)
             return false;
         if (location != null ? !location.equals(family.location) : family.location != null)
@@ -129,6 +130,7 @@ public class Family {
         int result = id;
         result = 31 * result + (remoteId != null ? remoteId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (isActive ? 1 : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
@@ -137,6 +139,7 @@ public class Family {
     }
 
     public static class Builder {
+        private int id;
         private Long remoteId;
         private String name;
         private String code;
@@ -144,6 +147,14 @@ public class Family {
         private Location location;
         private FamilyMember member;
         private boolean isActive = true;
+
+        /**
+         * Sets the ID of the new family. Should only be used if overwriting an existing family!
+         */
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder remoteId(Long remoteId) {
             this.remoteId = remoteId;
@@ -182,7 +193,7 @@ public class Family {
 
 
         public Family build() {
-            return new Family(0, remoteId, name, code, address, location, member, isActive);
+            return new Family(id, remoteId, name, code, address, location, member, isActive);
         }
     }
 }

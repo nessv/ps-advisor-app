@@ -81,7 +81,7 @@ public class SnapshotDaoTest {
 
         surveyDao.insertSurvey(survey);
 
-        Family family = new Family(1, 1L, "Smith", null, null, null, true);
+        Family family = Family.builder().id(1).remoteId(1L).name("Smith").build();
         familyDao.insertFamily(family);
 
         Snapshot snapshot = new Snapshot(family, survey);

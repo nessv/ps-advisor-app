@@ -5,6 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="fp_green">#49A34B</color>
 
+    <color name="black">#313131</color>
+    <color name="white">#FDFDFD</color>
+
     <!--DashboardTab Colors-->
     <color name="tabSelected">@color/fp_green</color>
     <color name="captionSelected">#FFFFFF</color>

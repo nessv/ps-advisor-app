@@ -42,7 +42,7 @@ public class FamilyDaoTest {
     @Test
     public void ShouldBeAbleToInsertAFamily() {
         FamilyMember member = new FamilyMember("Joe", "Smith", "");
-        Family family = new Family(1, "Smith", member);
+        Family family = new Family(1, 1L, "Smith", null, null, member, true);
 
         familyDao.insertFamily(family);
 
@@ -55,9 +55,9 @@ public class FamilyDaoTest {
     @Test
     public void ShouldBeAbleToInsertFamilies() {
         FamilyMember member1 = new FamilyMember("Joe", "Smith", "");
-        Family family1 = new Family(1, "Smith", member1);
+        Family family1 = new Family(1, 1L, "Smith", null, null, member1, true);
         FamilyMember member2 = new FamilyMember("Bob", "Gogan", "");
-        Family family2 = new Family(2, "Gogan", member2);
+        Family family2 = new Family(2, 2L, "Gogan", null, null, member2, true);
 
         familyDao.insertFamily(family1);
         familyDao.insertFamily(family2);
@@ -70,9 +70,9 @@ public class FamilyDaoTest {
     @Test
     public void ShouldBeAbleToQueryFamilyById() {
         FamilyMember member1 = new FamilyMember("Joe", "Smith", "");
-        Family family1 = new Family(1, "Smith", member1);
+        Family family1 = new Family(1, 1L, "Smith", null, null, member1, true);
         FamilyMember member2 = new FamilyMember("Bob", "Gogan", "");
-        Family family2 = new Family(2, "Gogan", member2);
+        Family family2 = new Family(2, 2L, "Gogan", null, null, member2, true);
         familyDao.insertFamily(family1);
         familyDao.insertFamily(family2);
 
@@ -84,7 +84,7 @@ public class FamilyDaoTest {
     @Test
     public void ShouldBeAbleToUpdateAFamily() {
         FamilyMember member = new FamilyMember("Joe", "Smith", "");
-        Family family = new Family(1, "Smith", member);
+        Family family = new Family(1, 1L, "Smith", null, null, member, true);
         familyDao.insertFamily(family);
 
         family.setName("Smithy");
@@ -100,7 +100,7 @@ public class FamilyDaoTest {
     @Test
     public void ShouldBeAbleToDeleteAFamily() {
         FamilyMember member = new FamilyMember("Joe", "Smith", "");
-        Family family = new Family(1, "Smith", member);
+        Family family = new Family(1, 1L, "Smith", null, null, member, true);
         familyDao.insertFamily(family);
 
         familyDao.deleteFamily(family);

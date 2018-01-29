@@ -22,6 +22,10 @@ public class AllFamiliesViewModel extends ViewModel {
     public LiveData<List<Family>> getFamilies(){
         return mFamilyRepository.getFamilies();
     }
+
+    public void save(Family family) {
+        mFamilyRepository.saveFamily(family);
+    }
 }
 
 

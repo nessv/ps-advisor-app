@@ -59,26 +59,24 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        question = mSurveyViewModel.getFocusedQuestion();
-
         setFooterColor(R.color.surveysummary_background);
         setHeaderColor(R.color.surveysummary_background);
         setTitle(getString(R.string.survey_summary_title));
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_surveysummary_chooseindicator, container, false);
+    public void onResume() {
+        mGreenCard = (IndicatorCard) getView().findViewById(R.id.surveysummary_indicatorcard_green);
+        mYellowCard = (IndicatorCard) getView().findViewById(R.id.surveysummary_indicatorcard_yellow);
+        mRedCard = (IndicatorCard) getView().findViewById(R.id.surveysummary_indicatorcard_red);
 
-        mGreenCard = (IndicatorCard) rootView.findViewById(R.id.surveysummary_indicatorcard_green);
-        mYellowCard = (IndicatorCard) rootView.findViewById(R.id.surveysummary_indicatorcard_yellow);
-        mRedCard = (IndicatorCard) rootView.findViewById(R.id.surveysummary_indicatorcard_red);
+        backButton = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_backbutton);
+        backButtonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_backbuttontext);
 
-        backButton = (LinearLayout) rootView.findViewById(R.id.surveysummary_indicator_backbutton);
-        backButtonText = (TextView) rootView.findViewById(R.id.surveysummary_indicator_backbuttontext);
+        saveButton = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_nextbutton);
+        saveButtonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_nextbuttontext);
 
-        saveButton = (LinearLayout) rootView.findViewById(R.id.surveysummary_indicator_nextbutton);
-        saveButtonText = (TextView) rootView.findViewById(R.id.surveysummary_indicator_nextbuttontext);
+        question = mSurveyViewModel.getFocusedQuestion();
 
         for (IndicatorOption option : question.getOptions()) {
             switch (option.getLevel()) {
@@ -135,6 +133,12 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
                 mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         });
+        super.onResume();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_surveysummary_chooseindicator, container, false);
 
         return rootView;
     }

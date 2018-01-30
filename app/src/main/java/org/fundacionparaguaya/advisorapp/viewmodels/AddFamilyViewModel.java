@@ -31,7 +31,7 @@ public class AddFamilyViewModel extends ViewModel {
         mFamilyRepository = familyRepository;
         mBgQuestions=new MutableLiveData<>();
         //Here is the problem. The family needs to have more parameters passed in now. using build() didn't seem to work here
-        familyCreated = new Family("");
+        familyCreated = Family.builder().name("").code("").build();
 
         fillQuestions();
     }

@@ -22,8 +22,14 @@ public interface FamilyDao {
     @Query("SELECT * FROM families WHERE is_active = 1")
     LiveData<List<Family>> queryFamilies();
 
+    @Query("SELECT * FROM families WHERE is_active = 1")
+    List<Family> queryFamiliesNow();
+
     @Query("SELECT * FROM families WHERE id = :id")
     LiveData<Family> queryFamily(int id);
+
+    @Query("SELECT * FROM families WHERE id = :id")
+    Family queryFamilyNow(int id);
 
     /**
      * Queries for all families that only exist locally, which haven't been pushed to the
@@ -44,7 +50,4 @@ public interface FamilyDao {
 
     @Delete
     int deleteFamily(Family family);
-
-    @Query("DELETE FROM families WHERE id NOT IN (:ids)")
-    void deleteFamiliesExcluding(long ... ids);
 }

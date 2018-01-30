@@ -25,14 +25,19 @@ public class SyncManager {
     
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
+    private SnapshotRepository mSnapshotRepository;
     private SharedPreferences mPreferences;
 
     private MutableLiveData<Long> mLastSyncedTime;
 
     @Inject
-    SyncManager(Application application, FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+    SyncManager(Application application,
+                FamilyRepository familyRepository,
+                SurveyRepository surveyRepository,
+                SnapshotRepository snapshotRepository) {
         this.mFamilyRepository = familyRepository;
         this.mSurveyRepository = surveyRepository;
+        this.mSnapshotRepository = snapshotRepository;
 
         mPreferences = application.getApplicationContext()
                 .getSharedPreferences(PREFS_SYNC, MODE_PRIVATE);
@@ -50,6 +55,8 @@ public class SyncManager {
         boolean result;
         result = mFamilyRepository.sync();
         result &= mSurveyRepository.sync();
+        result &= mSnapshotRepository.sync();
+
         Log.d(TAG, String.format("sync: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 

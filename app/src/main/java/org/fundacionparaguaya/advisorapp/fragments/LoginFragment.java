@@ -210,7 +210,7 @@ abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
                 return false;
             }
 
-            Login login = IrMapper.map(response.body());
+            Login login = IrMapper.mapLogin(response.body());
             user.setLogin(login);
             user.setEnabled(true);
             mAuthManager.saveRefreshToken();

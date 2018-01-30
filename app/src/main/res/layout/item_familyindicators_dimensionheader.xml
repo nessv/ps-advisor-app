@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/gray_btn_bg_color"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:textAppearance="@style/Label"
+              android:id="@+id/tv_familyindicators_sectionlabel"
+              tools:text="Housing and Infrastructure"
+              android:layout_gravity="center_vertical"
+              android:layout_marginStart="16dp">
+</TextView>
+</LinearLayout>

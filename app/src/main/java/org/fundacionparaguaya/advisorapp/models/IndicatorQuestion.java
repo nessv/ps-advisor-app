@@ -1,5 +1,7 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * survey.
  */
 
-public class IndicatorQuestion extends SurveyQuestion {
+public class IndicatorQuestion extends SurveyQuestion implements Comparable {
     @SerializedName("indicator")
     private Indicator indicator;
     @SerializedName("options")
@@ -48,5 +50,27 @@ public class IndicatorQuestion extends SurveyQuestion {
         result = 31 * result + (getIndicator() != null ? getIndicator().hashCode() : 0);
         result = 31 * result + (getOptions() != null ? getOptions().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        try {
+            IndicatorQuestion other = (IndicatorQuestion)o;
+
+            //if they are in the same dimension, sort by name
+            if(other.getIndicator().getDimension().equals(this.getIndicator().getDimension()))
+            {
+                return this.getDescription().compareTo(other.getDescription());
+            }
+            else //sort by dimension
+            {
+                return this.getIndicator().getDimension().compareTo(other.getIndicator().getDimension());
+            }
+        }
+        catch (ClassCastException e)
+        {
+            Log.e("", e.getMessage());
+            throw e;
+        }
     }
 }

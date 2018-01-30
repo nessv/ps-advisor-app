@@ -19,10 +19,14 @@
 
     </style>
 
-    <style name="spinnerItemStyle" parent="Label"/>
+    <style name="spinnerItemStyle" parent="Label">
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity"></item>
+    </style>
 
     <style name="spinnerDropDownItemStyle" parent="Label">
-        <item name="android:padding">20dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+
     </style>
 
     <!--========= Font Styles =========-->
@@ -57,7 +61,7 @@
     </style>
 
     <style name="CardHeading" parent="@android:style/TextAppearance">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
         <item name="android:textColor">#313131</item>
     </style>

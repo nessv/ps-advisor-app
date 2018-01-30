@@ -11,10 +11,16 @@ import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
@@ -176,7 +182,6 @@ public class IrMapper {
 
     public static Snapshot mapSnapshot(SnapshotIr ir, Family family, Survey survey) {
         // TODO: parse created at time
-        // TODO: latest flag
         return new Snapshot(
                 0,
                 ir.id,
@@ -184,7 +189,8 @@ public class IrMapper {
                 survey.getId(),
                 mapPersonalResponses(ir, survey),
                 mapEconomicResponses(ir, survey),
-                mapIndicatorResponses(ir, survey));
+                mapIndicatorResponses(ir, survey),
+                mapDate(ir.createdAt));
     }
 
     public static SnapshotIr mapSnapshot(Snapshot snapshot, Survey survey) {
@@ -275,6 +281,17 @@ public class IrMapper {
                 return option;
         }
         return null;
+    }
+
+    private static Date mapDate(String ir) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
+        df.setTimeZone(tz);
+        try {
+            return df.parse(ir);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     private static IndicatorOption.Level mapIndicatorOptionLevel(String level) {

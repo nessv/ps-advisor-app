@@ -12,6 +12,7 @@ import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,5 +67,21 @@ public class Converters {
     public static Map<IndicatorQuestion, IndicatorOption> toIndicatorResponse(String value) {
         Type listType = new TypeToken<Map<IndicatorQuestion, IndicatorOption>>() {}.getType();
         return gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public Long fromDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        return date.getTime();
+    }
+
+    @TypeConverter
+    public Date toDate(Long value) {
+        if (value == null) {
+            return null;
+        }
+        return new Date(value);
     }
 }

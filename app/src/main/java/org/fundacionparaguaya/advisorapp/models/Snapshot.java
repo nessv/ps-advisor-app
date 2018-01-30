@@ -10,6 +10,7 @@ import android.arch.persistence.room.TypeConverters;
 
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,10 +54,13 @@ public class Snapshot {
     private Map<BackgroundQuestion, String> economicResponses;
     @ColumnInfo(name = "indicator_responses")
     private Map<IndicatorQuestion, IndicatorOption> indicatorResponses;
+    @ColumnInfo(name = "created_at")
+    private Date createdAt;
+
 
     @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, null, family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(0, null, family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(), new HashMap<>(), null);
     }
 
     public Snapshot(int id,
@@ -65,7 +69,8 @@ public class Snapshot {
                     int surveyId,
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
-                    Map<IndicatorQuestion, IndicatorOption> indicatorResponses) {
+                    Map<IndicatorQuestion, IndicatorOption> indicatorResponses,
+                    Date createdAt) {
         this.id = id;
         this.remoteId = remoteId;
         this.familyId = familyId;
@@ -73,6 +78,7 @@ public class Snapshot {
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -93,6 +99,10 @@ public class Snapshot {
 
     public int getSurveyId() {
         return surveyId;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Map<BackgroundQuestion, String> getPersonalResponses() {

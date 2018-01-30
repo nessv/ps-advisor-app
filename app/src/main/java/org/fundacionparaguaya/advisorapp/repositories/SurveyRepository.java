@@ -1,17 +1,13 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SurveyIr;
-import org.fundacionparaguaya.advisorapp.models.Family;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.io.IOException;
@@ -55,6 +51,13 @@ public class SurveyRepository {
 
     public LiveData<Survey> getSurvey(int id) {
         return surveyDao.querySurvey(id);
+    }
+
+    /**
+     * Gets a survey synchronously.
+     */
+    public Survey getSurveyNow(int id) {
+        return surveyDao.querySurveyNow(id);
     }
 
     private boolean pullSurveys() {

@@ -14,9 +14,9 @@ public class SnapshotIr {
     @SerializedName("survey_id")
     long surveyId;
     @SerializedName("personal_survey_data")
-    Map<String, String> personalResponses;
+    Map<String, Object> personalResponses;
     @SerializedName("economic_survey_data")
-    Map<String, String> economicResponses;
+    Map<String, Object> economicResponses;
     @SerializedName("indicator_survey_data")
     Map<String, String> indicatorResponses;
     @SerializedName("created_at")

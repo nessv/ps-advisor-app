@@ -52,6 +52,13 @@ public class FamilyRepository {
         return familyDao.queryFamily(id);
     }
 
+    /**
+     * Gets a family synchronously.
+     */
+    public Family getFamilyNow(int id) {
+        return familyDao.queryFamilyNow(id);
+    }
+
     public void saveFamily(Family family) {
         familyDao.insertFamily(family);
     }

@@ -52,9 +52,37 @@ public class SnapshotRepository {
         return snapshotDao.querySnapshotsForFamily(family.getId());
     }
 
+    public void saveSnapshot(Snapshot snapshot) {
+        snapshotDao.insertSnapshot(snapshot);
+    }
+
     private boolean pushSnapshots() {
-        // TODO: Push snapshots
-        return true;
+        List<Snapshot> pending = snapshotDao.queryPendingSnapshots();
+        boolean success = true;
+
+        // attempt to push each of the pending snapshots
+        for (Snapshot snapshot : pending) {
+            try {
+                Family family = familyRepository.getFamilyNow(snapshot.getFamilyId());
+                Survey survey = surveyRepository.getSurveyNow(snapshot.getSurveyId());
+                Response<SnapshotIr> response = snapshotService
+                        .postSnapshot(authManager.getAuthenticationString(), IrMapper.mapSnapshot(snapshot, survey))
+                        .execute();
+
+                if (response.isSuccessful() && response.body() != null) {
+                    // overwrite the pending snapshot with the snapshot from remote db
+                    Snapshot remoteSnapshot = IrMapper.mapSnapshot(response.body(), family, survey);
+                    remoteSnapshot.setId(snapshot.getId());
+                    snapshotDao.updateSnapshot(remoteSnapshot);
+                } else {
+                    success = false;
+                }
+            } catch (IOException e) {
+                Log.e(TAG, String.format("pushFamilies: Could not push snapshot \"%d\"!", snapshot.getId()), e);
+                success = false;
+            }
+        }
+        return success;
     }
 
     private boolean pullSnapshots() {
@@ -70,8 +98,6 @@ public class SnapshotRepository {
                         List<Snapshot> snapshots = IrMapper.mapSnapshots(response.body(), family, survey);
                         snapshotDao.insertSnapshots(snapshots.toArray(new Snapshot[snapshots.size()]));
                     }
-                    List<Snapshot> snapshots = snapshotDao.querySnapshotsNow(survey.getId());
-                    Log.d(TAG, "pullSnapshots: " + snapshots.size());
                 } catch (IOException e) {
                     Log.e(TAG, format("pullSnapshots: Could not pull snapshots for family \"%s\"!", family.getName()), e);
                     success = false;

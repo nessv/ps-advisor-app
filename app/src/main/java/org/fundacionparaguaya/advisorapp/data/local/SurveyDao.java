@@ -26,6 +26,9 @@ public interface SurveyDao {
     @Query("SELECT * FROM surveys WHERE id = :id")
     LiveData<Survey> querySurvey(int id);
 
+    @Query("SELECT * FROM surveys WHERE id = :id")
+    Survey querySurveyNow(int id);
+
     @Insert(onConflict = REPLACE)
     long insertSurvey(Survey survey);
 

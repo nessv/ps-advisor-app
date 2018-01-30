@@ -85,6 +85,7 @@ public class SnapshotDaoTest {
         familyDao.insertFamily(family);
 
         Snapshot snapshot = new Snapshot(family, survey);
+        snapshot.setId(1);
         snapshot.response(survey.getPersonalQuestions().get(0), "Joe");
         snapshot.response(survey.getEconomicQuestions().get(0), survey.getEconomicQuestions().get(0).getOptions().get(0));
         snapshot.response(survey.getIndicatorQuestions().get(0), survey.getIndicatorQuestions().get(0).getOptions().get(1));

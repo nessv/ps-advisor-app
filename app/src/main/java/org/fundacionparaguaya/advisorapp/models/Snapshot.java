@@ -154,4 +154,37 @@ public class Snapshot {
         indicatorResponses.put(question, response);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Snapshot snapshot = (Snapshot) o;
+
+        if (getId() != snapshot.getId()) return false;
+        if (getFamilyId() != snapshot.getFamilyId()) return false;
+        if (getSurveyId() != snapshot.getSurveyId()) return false;
+        if (getRemoteId() != null ? !getRemoteId().equals(snapshot.getRemoteId()) : snapshot.getRemoteId() != null)
+            return false;
+        if (getPersonalResponses() != null ? !getPersonalResponses().equals(snapshot.getPersonalResponses()) : snapshot.getPersonalResponses() != null)
+            return false;
+        if (getEconomicResponses() != null ? !getEconomicResponses().equals(snapshot.getEconomicResponses()) : snapshot.getEconomicResponses() != null)
+            return false;
+        if (getIndicatorResponses() != null ? !getIndicatorResponses().equals(snapshot.getIndicatorResponses()) : snapshot.getIndicatorResponses() != null)
+            return false;
+        return getCreatedAt() != null ? getCreatedAt().equals(snapshot.getCreatedAt()) : snapshot.getCreatedAt() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (getRemoteId() != null ? getRemoteId().hashCode() : 0);
+        result = 31 * result + getFamilyId();
+        result = 31 * result + getSurveyId();
+        result = 31 * result + (getPersonalResponses() != null ? getPersonalResponses().hashCode() : 0);
+        result = 31 * result + (getEconomicResponses() != null ? getEconomicResponses().hashCode() : 0);
+        result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
+        result = 31 * result + (getCreatedAt() != null ? getCreatedAt().hashCode() : 0);
+        return result;
+    }
 }

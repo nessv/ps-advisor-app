@@ -181,7 +181,6 @@ public class IrMapper {
     }
 
     public static Snapshot mapSnapshot(SnapshotIr ir, Family family, Survey survey) {
-        // TODO: parse created at time
         return new Snapshot(
                 0,
                 ir.id,
@@ -258,7 +257,6 @@ public class IrMapper {
 
     }
 
-    // TODO: combine these two get question methods into one with generics
     private static BackgroundQuestion getBackgroundQuestion(List<BackgroundQuestion> questions, String name) {
         for (BackgroundQuestion question : questions) {
             if (question.getName().equals(name))
@@ -272,7 +270,7 @@ public class IrMapper {
             if (question.getName().equals(name))
                 return question;
         }
-        throw new UnsupportedOperationException("Could not find a mating indicator question for " + name + "!");
+        throw new UnsupportedOperationException("Could not find a matching indicator question for " + name + "!");
     }
 
     private static IndicatorOption getIndicatorOption(List<IndicatorOption> indicatorOptions, IndicatorOption.Level level) {

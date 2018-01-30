@@ -1,12 +1,15 @@
 package org.fundacionparaguaya.advisorapp.viewmodels;
 
 import android.arch.lifecycle.*;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.models.*;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /**
@@ -15,12 +18,13 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND}
+    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
 
     SurveyRepository mSurveyRepository;
+    SnapshotRepository mSnapshotRespository;
     FamilyRepository mFamilyRepository;
 
     MutableLiveData<SurveyProgress> mProgress = new MutableLiveData<SurveyProgress>();
@@ -39,11 +43,12 @@ public class SharedSurveyViewModel extends ViewModel
     private int mSurveyId;
     private int mFamilyId;
 
-    public SharedSurveyViewModel(SurveyRepository surveyRepository, FamilyRepository familyRepository) {
+    public SharedSurveyViewModel(SnapshotRepository snapshotRepository, SurveyRepository surveyRepository, FamilyRepository familyRepository) {
         super();
 
         mSurveyRepository = surveyRepository;
         mFamilyRepository = familyRepository;
+        mSnapshotRespository = snapshotRepository;
 
         mSurveyState = new MutableLiveData<>();
 
@@ -58,6 +63,22 @@ public class SharedSurveyViewModel extends ViewModel
         return mFamily;
     }
 
+    public void saveSnapshotAsync()
+    {
+        SaveAsyncTask task = new SaveAsyncTask(this);
+        task.execute();
+    }
+    private void saveSnapshot()
+    {
+        if(mSnapshot.getValue()!=null) {
+
+            mSnapshotRespository.saveSnapshot(mSnapshot.getValue());
+        }
+        else
+        {
+            throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
+        }
+    }
     /**
      * Sets the family that is taking the survey
      *
@@ -222,7 +243,7 @@ public class SharedSurveyViewModel extends ViewModel
                     int skippedIndicators = mSkippedIndicators.size();
                     int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
 
-                    progress = (100* completedIndicators+ skippedIndicators)/totalIndicators;
+                    progress = (100* (completedIndicators + skippedIndicators))/totalIndicators;
                     progressString = (totalIndicators-(completedIndicators+skippedIndicators)) + " Indicators Remaining, " +
                     skippedIndicators + " Skipped" ;
 
@@ -284,4 +305,27 @@ public class SharedSurveyViewModel extends ViewModel
             return mPercentageComplete;
         }
     }
+
+    static class SaveAsyncTask extends AsyncTask<Void, Void, Void>
+    {
+        private WeakReference<SharedSurveyViewModel> viewModelReference;
+
+        SaveAsyncTask(SharedSurveyViewModel viewModel)
+        {
+            viewModelReference = new WeakReference<SharedSurveyViewModel>(viewModel);
+        }
+
+        @Override
+        protected Void doInBackground (Void ... voids) {
+            viewModelReference.get().saveSnapshot();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
+        }
+    }
+
 }

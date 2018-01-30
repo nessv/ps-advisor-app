@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveySummaryAdapter;
@@ -35,6 +36,8 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     SurveySummaryAdapter indicatorAdapter;
 
     ArrayList<String> indicatorNames = new ArrayList<>();
+
+    Button mSubmitButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -84,6 +87,15 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
         View view = inflater.inflate(R.layout.fragment_surveysummary, container, false);
 
         backgroundQs = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_background);
+        mSubmitButton = view.findViewById(R.id.btn_surveysummary_submit);
+
+        mSubmitButton.setOnClickListener((event)->
+        {
+            //TODO add a confirmation dialog here, warning the user that they can't go back.
+            mSurveyViewModel.saveSnapshotAsync();
+            //will switch states when finished... should show a loading dialog here in the meantime...
+        });
+
         indicators = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_indicators);
 
         return view;

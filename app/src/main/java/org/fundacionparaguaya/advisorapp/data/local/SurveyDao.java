@@ -20,6 +20,9 @@ public interface SurveyDao {
     @Query("SELECT * FROM surveys")
     LiveData<List<Survey>> querySurveys();
 
+    @Query("SELECT * FROM surveys")
+    List<Survey> querySurveysNow();
+
     @Query("SELECT * FROM surveys WHERE id = :id")
     LiveData<Survey> querySurvey(int id);
 

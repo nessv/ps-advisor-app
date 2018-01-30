@@ -22,6 +22,9 @@ public interface FamilyDao {
     @Query("SELECT * FROM families WHERE is_active = 1")
     LiveData<List<Family>> queryFamilies();
 
+    @Query("SELECT * FROM families WHERE is_active = 1")
+    List<Family> queryFamiliesNow();
+
     @Query("SELECT * FROM families WHERE id = :id")
     LiveData<Family> queryFamily(int id);
 

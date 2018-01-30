@@ -22,6 +22,9 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
     LiveData<List<Snapshot>> querySnapshots(int surveyId);
 
+    @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
+    List<Snapshot> querySnapshotsNow(int surveyId);
+
     @Query("SELECT * FROM snapshots WHERE family_id = :familyId")
     LiveData<List<Snapshot>> querySnapshotsForFamily(int familyId);
 

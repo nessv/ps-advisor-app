@@ -41,6 +41,13 @@ public class FamilyRepository {
         return familyDao.queryFamilies();
     }
 
+    /**
+     * Gets the families synchronously.
+     */
+    public List<Family> getFamiliesNow() {
+        return familyDao.queryFamiliesNow();
+    }
+
     public LiveData<Family> getFamily(int id) {
         return familyDao.queryFamily(id);
     }

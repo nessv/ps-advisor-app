@@ -41,24 +41,33 @@ import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.Questi
 public class Snapshot {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "remote_id")
+    private Long remoteId;
     @ColumnInfo(name = "family_id")
     private int familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
+    @ColumnInfo(name = "personal_responses")
     private Map<BackgroundQuestion, String> personalResponses;
+    @ColumnInfo(name = "economic_responses")
     private Map<BackgroundQuestion, String> economicResponses;
+    @ColumnInfo(name = "indicator_responses")
     private Map<IndicatorQuestion, IndicatorOption> indicatorResponses;
 
     @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(0, null, family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 
-    public Snapshot(int id, int familyId, int surveyId,
+    public Snapshot(int id,
+                    Long remoteId,
+                    int familyId,
+                    int surveyId,
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
                     Map<IndicatorQuestion, IndicatorOption> indicatorResponses) {
         this.id = id;
+        this.remoteId = remoteId;
         this.familyId = familyId;
         this.surveyId = surveyId;
         this.personalResponses = personalResponses;
@@ -68,6 +77,14 @@ public class Snapshot {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Long getRemoteId() {
+        return remoteId;
     }
 
     public int getFamilyId() {
@@ -86,6 +103,9 @@ public class Snapshot {
         return economicResponses;
     }
 
+    /**
+     * Get the response to the given background question.
+     */
     public String getBackgroundResponse(BackgroundQuestion question) {
         if (question.getQuestionType() == PERSONAL) {
             return personalResponses.get(question);
@@ -97,43 +117,31 @@ public class Snapshot {
         }
     }
 
+    /**
+     * Get all of the current responses to indicator questions.
+     */
     public Map<IndicatorQuestion, IndicatorOption> getIndicatorResponses() {
         return indicatorResponses;
     }
 
+    /**
+     * Record a response for a background question.
+     */
     public void response(BackgroundQuestion question, String response) {
-        personalResponses.put(question, response); // TODO: map to correct list
+        if (question.getQuestionType() == PERSONAL)
+            personalResponses.put(question, response);
+        else if (question.getQuestionType() == ECONOMIC)
+            economicResponses.put(question, response);
+        else
+            throw new UnsupportedOperationException(
+                    String.format("Unknown question type %s", question.getQuestionType().toString()));
     }
 
+    /**
+     * Record a response for a indicator question.
+     */
     public void response(IndicatorQuestion question, IndicatorOption response) {
         indicatorResponses.put(question, response);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Snapshot snapshot = (Snapshot) o;
-
-        if (getId() != snapshot.getId()) return false;
-        if (getFamilyId() != snapshot.getFamilyId()) return false;
-        if (getSurveyId() != snapshot.getSurveyId()) return false;
-        if (getPersonalResponses() != null ? !getPersonalResponses().equals(snapshot.getPersonalResponses()) : snapshot.getPersonalResponses() != null)
-            return false;
-        if (getEconomicResponses() != null ? !getEconomicResponses().equals(snapshot.getEconomicResponses()) : snapshot.getEconomicResponses() != null)
-            return false;
-        return getIndicatorResponses() != null ? getIndicatorResponses().equals(snapshot.getIndicatorResponses()) : snapshot.getIndicatorResponses() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId();
-        result = 31 * result + getFamilyId();
-        result = 31 * result + getSurveyId();
-        result = 31 * result + (getPersonalResponses() != null ? getPersonalResponses().hashCode() : 0);
-        result = 31 * result + (getEconomicResponses() != null ? getEconomicResponses().hashCode() : 0);
-        result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
-        return result;
-    }
 }

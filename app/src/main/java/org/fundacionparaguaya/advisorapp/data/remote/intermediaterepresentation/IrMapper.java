@@ -8,13 +8,20 @@ import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
 import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
+import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Green;
+import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.None;
+import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Red;
+import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Yellow;
 
 /**
  * A utility for mapping IR objects to their corresponding model objects, and vice versa.
@@ -22,10 +29,13 @@ import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.Questi
 
 public class IrMapper {
 
-    public static Login map(LoginIr ir) {
+    //region Login
+    public static Login mapLogin(LoginIr ir) {
         return new Login(ir.accessToken, ir.tokenType, ir.expiresIn, ir.refreshToken);
     }
+    //endregion Login
 
+    //region Family
     public static List<Family> mapFamilies(List<FamilyIr> ir) {
         List<Family> families = new ArrayList<>(ir.size());
         for (FamilyIr familyIr : ir) {
@@ -66,7 +76,9 @@ public class IrMapper {
                 .profileUrl(ir.profileUrl)
                 .build();
     }
+    //endregion
 
+    //region Survey
     public static List<Survey> mapSurveys(List<SurveyIr> ir) {
         List<Survey> surveys = new ArrayList<>(ir.size());
         for (SurveyIr surveyIr : ir) {
@@ -142,14 +154,105 @@ public class IrMapper {
     private static IndicatorOption.Level mapOptionLevel(String ir) {
         switch (ir) {
             case "GREEN":
-                return IndicatorOption.Level.Green;
+                return Green;
             case "YELLOW":
-                return IndicatorOption.Level.Yellow;
+                return Yellow;
             case "RED":
-                return IndicatorOption.Level.Red;
+                return Red;
             default:
-                return IndicatorOption.Level.None;
+                return None;
         }
     }
+    //endregion
 
+    //region Snapshot
+    public static List<Snapshot> mapSnapshots(List<SnapshotIr> ir, Family family, Survey survey) {
+        List<Snapshot> snapshots = new ArrayList<>(ir.size());
+        for (SnapshotIr snapshotIr : ir) {
+            snapshots.add(mapSnapshot(snapshotIr, family, survey));
+        }
+        return snapshots;
+    }
+
+    public static Snapshot mapSnapshot(SnapshotIr ir, Family family, Survey survey) {
+        // TODO: parse created at time
+        // TODO: latest flag
+        return new Snapshot(
+                0,
+                ir.id,
+                family.getId(),
+                survey.getId(),
+                mapPersonalResponses(ir, survey),
+                mapEconomicResponses(ir, survey),
+                mapIndicatorResponses(ir, survey));
+    }
+
+    private static Map<BackgroundQuestion, String> mapPersonalResponses(SnapshotIr ir, Survey survey) {
+        Map<BackgroundQuestion, String> responses = new HashMap<>();
+        if (ir.personalResponses == null) return responses;
+        for (String question : ir.personalResponses.keySet()) {
+            responses.put(getBackgroundQuestion(survey.getPersonalQuestions(), question), ir.personalResponses.get(question));
+        }
+        return responses;
+    }
+
+    private static Map<BackgroundQuestion, String> mapEconomicResponses(SnapshotIr ir, Survey survey) {
+        Map<BackgroundQuestion, String> responses = new HashMap<>();
+        for (String question : ir.economicResponses.keySet()) {
+            responses.put(getBackgroundQuestion(survey.getEconomicQuestions(), question), ir.economicResponses.get(question));
+        }
+        return responses;
+
+    }
+
+    private static Map<IndicatorQuestion, IndicatorOption> mapIndicatorResponses(SnapshotIr ir, Survey survey) {
+        Map<IndicatorQuestion, IndicatorOption> responses = new HashMap<>();
+        for (String question : ir.indicatorResponses.keySet()) {
+            IndicatorQuestion indicatorQuestion =
+                    getIndicatorQuestion(survey.getIndicatorQuestions(), question);
+            responses.put(indicatorQuestion,
+                    getIndicatorOption(indicatorQuestion.getOptions(), mapIndicatorOptionLevel(ir.indicatorResponses.get(question))));
+        }
+        return responses;
+
+    }
+
+    // TODO: combine these two get question methods into one with generics
+    private static BackgroundQuestion getBackgroundQuestion(List<BackgroundQuestion> questions, String name) {
+        for (BackgroundQuestion question : questions) {
+            if (question.getName().equals(name))
+                return question;
+        }
+        return null;
+    }
+
+    private static IndicatorQuestion getIndicatorQuestion(List<IndicatorQuestion> questions, String name) {
+        for (IndicatorQuestion question : questions) {
+            if (question.getName().equals(name))
+                return question;
+        }
+        throw new UnsupportedOperationException("Could not find a mating indicator question for " + name + "!");
+    }
+
+    private static IndicatorOption getIndicatorOption(List<IndicatorOption> indicatorOptions, IndicatorOption.Level level) {
+        for (IndicatorOption option : indicatorOptions) {
+            if (option.getLevel() == level)
+                return option;
+        }
+        return null;
+    }
+
+    private static IndicatorOption.Level mapIndicatorOptionLevel(String level) {
+        switch (level.toLowerCase()) {
+            case "red":
+                return Red;
+            case "yellow":
+                return Yellow;
+            case "green":
+                return Green;
+            default:
+                return None;
+        }
+    }
+    //endregion Snapshot
 }

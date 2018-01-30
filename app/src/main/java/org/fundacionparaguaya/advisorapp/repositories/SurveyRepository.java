@@ -1,13 +1,17 @@
 package org.fundacionparaguaya.advisorapp.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SurveyIr;
+import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.io.IOException;
@@ -42,34 +46,41 @@ public class SurveyRepository {
         return surveyDao.querySurveys();
     }
 
+    /**
+     * Gets the surveys synchronously.
+     */
+    public List<Survey> getSurveysNow() {
+        return surveyDao.querySurveysNow();
+    }
+
     public LiveData<Survey> getSurvey(int id) {
         return surveyDao.querySurvey(id);
     }
 
-    /**
-     * Synchronizes the local surveys with the remote database.
-     * @return Whether the sync was successful.
-     */
-    boolean sync() {
+    private boolean pullSurveys() {
         try {
             Response<List<SurveyIr>> response =
                     surveyService.getSurveys(authManager.getAuthenticationString()).execute();
 
-            if (!response.isSuccessful()) {
-                return false;
-            }
-
-            if (response.body() == null) {
+            if (!response.isSuccessful() || response.body() == null) {
                 return false;
             }
 
             List<Survey> surveys = IrMapper.mapSurveys(response.body());
             surveyDao.insertSurveys(surveys.toArray(new Survey[surveys.size()]));
         } catch (IOException e) {
-            Log.e(TAG, "sync: Could not sync the survey repository!", e);
+            Log.e(TAG, "pullSurveys: Could not sync the survey repository!", e);
             return false;
         }
         return true;
     }
     //endregion
+
+    /**
+     * Synchronizes the local surveys with the remote database.
+     * @return Whether the sync was successful.
+     */
+    boolean sync() {
+        return pullSurveys();
+    }
 }

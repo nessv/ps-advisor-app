@@ -1,16 +1,21 @@
 package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
+import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Room;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
+import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
+import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
+import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
@@ -81,6 +86,16 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
+    SnapshotRepository provideSnapshotRepository(SnapshotDao snapshotDao,
+                                                 SnapshotService snapshotService,
+                                                 AuthenticationManager authManager,
+                                                 FamilyRepository familyRepository,
+                                                 SurveyRepository surveyRepository) {
+        return new SnapshotRepository(snapshotDao, snapshotService, authManager, familyRepository, surveyRepository);
+    }
+
+    @Provides
+    @Singleton
     FamilyDao provideFamilyDao(LocalDatabase local) {
         return local.familyDao();
     }
@@ -105,10 +120,23 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
+    SnapshotDao provideSnapshotDao(LocalDatabase local) {
+        return local.snapshotDao();
+    }
+
+    @Provides
+    @Singleton
+    SnapshotService provideSnapshotService(RemoteDatabase remote) {
+        return remote.snapshotService();
+    }
+
+    @Provides
+    @Singleton
     InjectionViewModelFactory provideInjectionViewModelFactory(
             AuthenticationManager authManager,
             FamilyRepository familyRepository,
-            SurveyRepository surveyRepository) {
-        return new InjectionViewModelFactory(authManager, familyRepository, surveyRepository);
+            SurveyRepository surveyRepository,
+            SnapshotRepository snapshotRepository) {
+        return new InjectionViewModelFactory(authManager, familyRepository, surveyRepository, snapshotRepository);
     }
 }

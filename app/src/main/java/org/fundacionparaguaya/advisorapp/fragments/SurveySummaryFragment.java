@@ -55,6 +55,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     @Override
     public void onResume() {
         try {
+            indicatorNames.clear();
             for (IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()) {
                 //Add in the card instances here
                 indicatorNames.add(skippedQuestions.getName());

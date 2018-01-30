@@ -145,19 +145,7 @@ public class SharedSurveyViewModel extends ViewModel
         mSnapshot.getValue().getIndicatorResponses().remove(question);
 
         //skipped indicators is a hashset, so there will be no duplicate entries.
-
-        boolean isskipped = true;
-
-        for(IndicatorQuestion q:mSkippedIndicators){
-            if (q.equals(question)){
-                isskipped = false;
-                break;
-            }
-        }
-
-        if (isskipped){
-            mSkippedIndicators.add(question);
-        }
+        mSkippedIndicators.add(question);
         calculateProgress();
     }
 

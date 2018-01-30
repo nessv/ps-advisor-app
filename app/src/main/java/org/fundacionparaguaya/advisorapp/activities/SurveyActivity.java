@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
+
+import android.support.v4.app.Fragment;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
@@ -37,6 +41,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     TextView mTvTitle;
     TextView mTvQuestionsLeft;
     TextView mTvNextUp;
+
+    ImageButton mExitButton;
 
     ProgressBar mProgressBar;
     ObjectAnimator mProgressAnimator;
@@ -79,6 +85,24 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 
         mProgressBar = findViewById(R.id.progressbar_surveyactivity);
+        mExitButton = findViewById(R.id.btn_surveyactivity_close);
+
+        mExitButton.setOnClickListener((event)->
+        {
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
+                    .setContentText(getString(R.string.surveyactivity_exit_explanation))
+                    .setCancelText(getString(R.string.all_cancel))
+                    .setConfirmText(getString(R.string.surveyactivity_discard_snapshot))
+                    .showCancelButton(true)
+                    .setConfirmClickListener((dialog)->
+                    {
+                        this.finish();
+                    })
+                    .setCancelClickListener(SweetAlertDialog::cancel)
+                    .show();
+        });
+
 
         setFragmentContainer(R.id.survey_activity_fragment_container);
         initViewModel();
@@ -154,13 +178,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
 
-        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(),
-                this.getTheme()));
-
-        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(),
-                this.getTheme()));
-
-        this.mTvTitle.setText(fragment.getTitle());
     }
 
 

@@ -191,33 +191,18 @@ public class SharedSurveyViewModel extends ViewModel
         calculateProgress();
     }
 
-    public void addBackgroundResponse(SurveyQuestion question, String response)
+    public void addBackgroundResponse(BackgroundQuestion question, String response)
     {
         //TODO if string is empty, we probably want to remove any response that we used to have...?
         if(response!=null && !response.isEmpty()) {
-            if (question instanceof PersonalQuestion) {
-                getSnapshotValue().response((PersonalQuestion) question, response);
-            }
-            else if (question instanceof EconomicQuestion) {
-                getSnapshotValue().response((EconomicQuestion) question, response);
-            }
-
+            getSnapshotValue().response(question, response);
             calculateProgress();
         }
     }
 
-    public @Nullable String getBackgroundResponse(SurveyQuestion question)
+    public @Nullable String getBackgroundResponse(BackgroundQuestion question)
     {
-        if(question instanceof PersonalQuestion)
-        {
-            return getSnapshotValue().getPersonalResponses().get(question);
-        }
-        else if(question instanceof EconomicQuestion)
-        {
-            return getSnapshotValue().getEconomicResponses().get(question);
-        }
-
-        return null;
+        return getSnapshotValue().getBackgroundResponse(question);
     }
 
     public void calculateProgress()

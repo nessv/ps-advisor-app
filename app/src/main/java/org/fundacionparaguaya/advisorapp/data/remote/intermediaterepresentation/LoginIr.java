@@ -17,8 +17,4 @@ public class LoginIr {
     int expiresIn;
     @SerializedName("refresh_token")
     String refreshToken;
-
-    public Login login() {
-        return new Login(accessToken, tokenType, expiresIn, refreshToken);
-    }
 }

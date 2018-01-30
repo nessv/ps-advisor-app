@@ -41,9 +41,8 @@ public class FamilyRepositoryTest {
 
     @Before
     public void setUp() {
-        member = new FamilyMember("Joe", "Smith", "");
-        family = new Family(1, "Smith", member);
-
+        member = FamilyMember.builder().firstName("Joe").lastName("Smith").build();
+        family = Family.builder().remoteId(1L).name("Smith").member(member).build();
     }
 
     //region Family
@@ -69,7 +68,6 @@ public class FamilyRepositoryTest {
     @Test
     public void ShouldBeAbleToCreateFamily() {
 
-        when(familyDao.updateFamily(family)).thenReturn(0);
         repo.saveFamily(family);
 
         verify(familyDao, times(1)).insertFamily(family);
@@ -78,11 +76,9 @@ public class FamilyRepositoryTest {
     @Test
     public void ShouldBeAbleToChangeFamily() {
 
-        when(familyDao.updateFamily(family)).thenReturn(1);
         repo.saveFamily(family);
 
-        verify(familyDao, atLeastOnce()).updateFamily(family);
-        verify(familyDao, never()).insertFamily(any(Family.class));
+        verify(familyDao, times(1)).insertFamily(any(Family.class));
     }
 
     @Test

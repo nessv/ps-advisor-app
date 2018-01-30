@@ -6,8 +6,7 @@ import android.view.View;
 import android.widget.*;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class QuestionDropdownView extends LinearLayout implements View.OnClickLi
         mAnswerSpinner = (Spinner) findViewById(R.id.dropdown_field);
     }
 
-    public void setQuestion(PersonalQuestion question) {
+    public void setQuestion(BackgroundQuestion question) {
 
         String description = question.getDescription();
 
@@ -44,19 +43,6 @@ public class QuestionDropdownView extends LinearLayout implements View.OnClickLi
     public void addOnSelectionHandler(AdapterView.OnItemSelectedListener listener)
     {
         mAnswerSpinner.setOnItemSelectedListener(listener);
-    }
-
-    public void setQuestion(EconomicQuestion question){
-
-        String description = question.getDescription();
-
-        mQuestionTextView.setText(description);
-
-        if(question.getOptions() != null){
-            createAdapter(question.getOptions());
-        } else {
-            throw new IllegalArgumentException("This question has no options");
-        }
     }
 
     private void createAdapter(List<String> options)

@@ -42,34 +42,48 @@ public class SurveyRepository {
         return surveyDao.querySurveys();
     }
 
+    /**
+     * Gets the surveys synchronously.
+     */
+    public List<Survey> getSurveysNow() {
+        return surveyDao.querySurveysNow();
+    }
+
     public LiveData<Survey> getSurvey(int id) {
         return surveyDao.querySurvey(id);
     }
 
     /**
-     * Synchronizes the local surveys with the remote database.
-     * @return Whether the sync was successful.
+     * Gets a survey synchronously.
      */
-    boolean sync() {
+    public Survey getSurveyNow(int id) {
+        return surveyDao.querySurveyNow(id);
+    }
+
+    private boolean pullSurveys() {
         try {
             Response<List<SurveyIr>> response =
                     surveyService.getSurveys(authManager.getAuthenticationString()).execute();
 
-            if (!response.isSuccessful()) {
-                return false;
-            }
-
-            if (response.body() == null) {
+            if (!response.isSuccessful() || response.body() == null) {
                 return false;
             }
 
             List<Survey> surveys = IrMapper.mapSurveys(response.body());
             surveyDao.insertSurveys(surveys.toArray(new Survey[surveys.size()]));
         } catch (IOException e) {
-            Log.e(TAG, "sync: Could not sync the survey repository!", e);
+            Log.e(TAG, "pullSurveys: Could not sync the survey repository!", e);
             return false;
         }
         return true;
     }
     //endregion
+
+    /**
+     * Synchronizes the local surveys with the remote database.
+     * @return Whether the sync was successful.
+     */
+    boolean sync() {
+        return pullSurveys();
+    }
 }

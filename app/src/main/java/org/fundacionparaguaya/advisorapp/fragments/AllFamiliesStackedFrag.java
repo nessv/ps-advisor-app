@@ -89,14 +89,12 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         super.onViewCreated(view, savedInstanceState);
 
         ImageButton addButton = view.findViewById(R.id.add_families_button);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 StackedFrag addFamily = new AddFamilyFrag();
                 navigateTo(addFamily);
-                /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.addfamily_container, addFamily);
-                transaction.commit();*/
             }
         });
     }

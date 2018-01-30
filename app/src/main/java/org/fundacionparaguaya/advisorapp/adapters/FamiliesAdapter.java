@@ -82,7 +82,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
 
     public void setFamilyList(final List<? extends Family> families){
-        if(mFamilyList == null){
+        if(mFamilyList == null || mFamilyList.size() == 0){
             mFamilyList = families;
             notifyDataSetChanged();
         } else {

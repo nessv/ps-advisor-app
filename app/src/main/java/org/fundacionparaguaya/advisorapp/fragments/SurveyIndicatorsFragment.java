@@ -87,7 +87,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
             @Override
             public void onClick(View v) {
                 if (mPager.getCurrentItem() == mAdapter.getCount() - 1){
-                    mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.REVIEW);
+                    mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
                 } else {
                     addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
                     nextQuestion();

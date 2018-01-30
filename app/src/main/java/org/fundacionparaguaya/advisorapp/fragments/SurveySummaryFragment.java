@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 /**
- * Created by alex on 1/25/2018.
+ *
  */
 
 public class SurveySummaryFragment extends AbstractSurveyFragment implements SurveySummaryAdapter.InterfaceClickListener {
@@ -33,7 +32,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     @Inject
     InjectionViewModelFactory mViewModelFactory;
 
-    SurveySummaryAdapter summaryAdapter;
+    SurveySummaryAdapter indicatorAdapter;
 
     ArrayList<String> indicatorNames = new ArrayList<>();
 
@@ -72,6 +71,10 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
             indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
         }
         backgroundQs.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+
+        indicatorAdapter = indicators.getAdapter();
+        indicatorAdapter.setClickListener(this::onItemClick);
+
         super.onResume();
     }
 
@@ -86,9 +89,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     }
 
     public void onItemClick(View view, int position) {
-        Toast.makeText(getContext(), "You clicked " + summaryAdapter.getIndicatorName(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        mSurveyViewModel.setFocusedQuestion(indicatorAdapter.getIndicatorName(position));
+        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.REVIEWINDICATORS);
     }
-
-
-
 }

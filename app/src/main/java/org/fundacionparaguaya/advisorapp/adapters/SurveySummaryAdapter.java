@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by alex on 1/28/2018.
+ *
  */
 
 public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdapter.IndicatorViewHolder> {
@@ -49,6 +49,7 @@ public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdap
     @Override
     public void onBindViewHolder(IndicatorViewHolder viewHolder, int position) {
         viewHolder.indicatorName.setText(indicatorNames.get(position));
+//        viewHolder.cardView.setOnClickListener;
     }
 
     @Override
@@ -65,11 +66,14 @@ public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdap
             super(view);
             cardView = (CardView) view.findViewById(R.id.surveysummary_skippedindicatorcard);
             indicatorName = (TextView) view.findViewById(R.id.surveysummary_skippedindicatortext);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view){
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null) {
+                mClickListener.onItemClick(view, getAdapterPosition());
+            }
         }
 
     }

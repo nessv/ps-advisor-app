@@ -60,6 +60,10 @@ public class SurveySummaryComponent extends ConstraintLayout {
         }
     }
 
+    public SurveySummaryAdapter getAdapter(){
+        return rvAdapter;
+    }
+
     public void setNames(List<String> names){
         rvAdapter = new SurveySummaryAdapter(context,names);
         recyclerView.setAdapter(rvAdapter);

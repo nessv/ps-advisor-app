@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,11 +10,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
+
+import javax.inject.Inject;
 
 /**
  *
@@ -34,16 +40,30 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
 
     SurveySummaryFragment parentFragment;
 
+    SharedSurveyViewModel mSurveyViewModel;
+
+    @Inject
+    InjectionViewModelFactory mViewModelFactory;
+
     @Nullable
     IndicatorCard selectedIndicatorCard;
 
-    public SurveySummaryIndicatorsFragment newInstance(IndicatorQuestion question, SurveySummaryFragment parentFragment) {
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        ((AdvisorApplication) getActivity().getApplication())
+                .getApplicationComponent()
+                .inject(this);
 
-        SurveySummaryIndicatorsFragment fragment = new SurveySummaryIndicatorsFragment();
-        this.question = question;
-        this.parentFragment = parentFragment;
+        mSurveyViewModel = ViewModelProviders
+                .of(getActivity(), mViewModelFactory)
+                .get(SharedSurveyViewModel.class);
 
-        return fragment;
+        question = mSurveyViewModel.getFocusedQuestion();
+
+        setFooterColor(R.color.surveysummary_background);
+        setHeaderColor(R.color.surveysummary_background);
+        setTitle(getString(R.string.survey_summary_title));
     }
 
     @Override
@@ -74,7 +94,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
             }
         }
 
-        IndicatorOption existingResponse = parentFragment.getResponses(question);
+        IndicatorOption existingResponse = mSurveyViewModel.getResponseForIndicator(question);
 
         if(existingResponse!=null)
         {
@@ -98,9 +118,25 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         mYellowCard.setOnClickListener(this);
         mRedCard.setOnClickListener(this);
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
+            }
+        });
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
+                } catch (NullPointerException e) {
+                    mSurveyViewModel.addSkippedIndicator(question);
+                }
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
+            }
+        });
+
         return rootView;
-
-
     }
 
     /**
@@ -127,8 +163,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         if(indicatorCard.equals(selectedIndicatorCard))
         {
             indicatorCard.setSelected(false);
-            parentFragment.removeIndicatorResponse(question);
-
+            mSurveyViewModel.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
         }
         else
@@ -137,26 +172,9 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
 
-            parentFragment.addIndicatorResponse(question, indicatorCard.getOption());
-
-
+            mSurveyViewModel.addIndicatorResponse(question, indicatorCard.getOption());
             selectedIndicatorCard = indicatorCard;
         }
 
     }
-
-    public boolean isCardSelected() {
-        if (selectedIndicatorCard == null) {
-            return false;
-        }
-        return true;
-    }
-
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
 }

@@ -139,6 +139,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
                 case REVIEW:
                     nextFragment = SurveySummaryFragment.class;
+                    break;
+                    
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);

@@ -13,14 +13,14 @@ import org.fundacionparaguaya.advisorapp.models.Indicator;
  * Created by alex on 1/28/2018.
  */
 
-public class SurveySummarySkippedIndicators extends LinearLayout{
+public class SurveySummaryIndicators extends LinearLayout{
 
     Context context;
     AttributeSet attributeSet;
 
     TextView textView;
 
-    public SurveySummarySkippedIndicators(Context context, AttributeSet attrs) {
+    public SurveySummaryIndicators(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;

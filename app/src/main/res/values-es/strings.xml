@@ -36,6 +36,7 @@
     <string name="survey_next">Siguiente</string>
     <string name="survey_finish">Terminar</string>
     <string name="survey_skip">Omitir</string>
+    <string name="survey_save">Salvar</string>
     <string name="bkgquestions_title">Información de Fondo</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Enviar Instantánea</string>

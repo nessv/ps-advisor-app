@@ -44,7 +44,7 @@
                 android:paddingEnd="20dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:text="Location"
+                android:text="Next"
                 android:textSize="36sp"
                 android:background="#333333"
                 android:textColor="#F7F7F7"/>

@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +58,7 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(AddFamilyViewModel.class);
 
-        mAddFamilyAdapter = new AddFamilyAdapter();
+        mAddFamilyAdapter = new AddFamilyAdapter(this);
 
         mAddFamilyViewModel.getQuestions().observe(this, (questions) ->
         {
@@ -101,9 +103,10 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
         int PHOTO_INPUT = 3;
 
         List<BackgroundQuestion> mQuestionsList;
+        QuestionResponseListener mQuestionResponseListener;
 
-        public AddFamilyAdapter(){
-
+        public AddFamilyAdapter(QuestionResponseListener listener){
+            mQuestionResponseListener = listener;
         }
 
         public void setQuestionsList(List<BackgroundQuestion> questionsList)
@@ -158,6 +161,7 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
             {
                 QuestionViewHolder questionViewHolder = (QuestionViewHolder)holder;
                 questionViewHolder.setQuestion(mQuestionsList.get(position));
+                questionViewHolder.setQuestionResponseListener(mQuestionResponseListener);
             }
             catch (ClassCastException e)
             {
@@ -174,6 +178,7 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
 
         public static class TextQuestionViewHolder extends QuestionViewHolder {
 
+
             LinearLayout familyInfoItem;
             TextView familyInfoQuestion;
             EditText familyInfoEntry;
@@ -183,28 +188,39 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
                 familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
                 familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_textquestion);
                 familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_text_field);
-                
+
+                familyInfoEntry.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String answer = familyInfoEntry.getText().toString();
+                        mQuestionResponseListener.onQuestionAnswered(mQuestion, answer);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
             }
 
             @Override
             public void setQuestion(BackgroundQuestion question) {
                 mQuestion = question;
                 familyInfoQuestion.setText(question.getDescription());
-                //question field
-                //description
             }
 
-            public void onResponse()
-            {
-               String response = familyInfoEntry.getText().toString();
-            }
         }
 
         public static class LocationViewHolder extends QuestionViewHolder{
+
             LinearLayout familyInfoItem;
             TextView familyInfoQuestion;
             EditText familyInfoEntry;
-            Button addLocation;
 
             public LocationViewHolder(View itemView) {
                 super(itemView);
@@ -212,7 +228,7 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
                 familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
                 familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_locationquestion);
                 familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
-                addLocation = (Button) itemView.findViewById(R.id.add_location);
+
             }
 
             @Override
@@ -222,10 +238,12 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
 
             }
 
-            public void onResponse()
-            {
 
+            public String onResponse()
+            {
+                return familyInfoEntry.getText().toString();
             }
+
         }
 
         public static class PictureViewHolder extends QuestionViewHolder{
@@ -266,26 +284,26 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
                 cameraButton.setVisibility(View.INVISIBLE);
                 galleryButton.setVisibility(View.INVISIBLE);
             }
+
         }
 
         abstract static class QuestionViewHolder extends RecyclerView.ViewHolder
         {
             protected BackgroundQuestion mQuestion;
+            QuestionResponseListener mQuestionResponseListener;
 
             public QuestionViewHolder(View itemView) {
                 super(itemView);
             }
 
+            public void setQuestionResponseListener(QuestionResponseListener listener)
+            {
+                mQuestionResponseListener = listener;
+            }
+
             public abstract void setQuestion(BackgroundQuestion question);
         }
 
-        public class ResponseCreatedEvent {
-
-        }
-
-        public interface ResponseCreatedHandler{
-            void onResponseCreated(ResponseCreatedHandler e);
-        }
 
     }
 

@@ -27,7 +27,7 @@ public class SurveySummarySkippedIndicators extends LinearLayout{
         this.attributeSet = attrs;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.surveysummary_skipped, this);
+        inflater.inflate(R.layout.surveysummary_row, this);
 
         textView = (TextView) findViewById(R.id.surveysummary_skippedindicatortext);
     }

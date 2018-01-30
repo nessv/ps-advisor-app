@@ -37,11 +37,13 @@
     <string name="survey_finish">Terminar</string>
     <string name="survey_skip">Omitir</string>
     <string name="bkgquestions_title">Información de Fondo</string>
+    <string name="survey_indicators_title"></string>
+    <string name="survey_summary_title">Enviar Instantánea</string>
 
     <!-- Survey Summary -->
-    <string name="surveysummary_backgroundtitle">Preguntas de Fondo</string>
-    <string name="surveysummary_indicatortitle">Indicadores</string>
-    <string name="surveysummary_questionsleft">Preguntas Restantes</string>
+    <string name="survey_summary_backgroundtitle">Preguntas de Fondo</string>
+    <string name="survey_summary_indicatortitle">Indicadores</string>
+    <string name="survey_summary_questionsleft">Preguntas Restantes</string>
 
     <!-- Other -->
     <string name="all_continue">Continuar</string>

@@ -45,5 +45,6 @@
 
     <!--Survey Summary Colors-->
     <color name="surveysummary_textcolor">#313131</color>
+    <color name="surveysummary_background">#F2F2F2</color>
 
 </resources>

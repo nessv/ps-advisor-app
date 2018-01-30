@@ -36,11 +36,13 @@
     <string name="survey_finish">Finish</string>
     <string name="survey_skip">Skip</string>
     <string name="bkgquestions_title">Background Information</string>
+    <string name="survey_indicators_title"></string>
+    <string name="survey_summary_title">Submit Snapshot</string>
 
     <!-- Survey Summary -->
-    <string name="surveysummary_backgroundtitle">Background Questions</string>
-    <string name="surveysummary_indicatortitle">Indicators</string>
-    <string name="surveysummary_questionsleft">Questions Left</string>
+    <string name="survey_summary_backgroundtitle">Background Questions</string>
+    <string name="survey_summary_indicatortitle">Indicators</string>
+    <string name="survey_summary_questionsleft">Questions Left</string>
 
 
 

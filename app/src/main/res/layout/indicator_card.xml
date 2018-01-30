@@ -5,7 +5,8 @@
     android:id="@+id/survey_card_selected"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
     android:elevation="0dp"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="20dp"

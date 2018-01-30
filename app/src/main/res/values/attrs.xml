@@ -11,7 +11,7 @@
         <attr name="indicator_color" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="SurveySummary_Layout">
+    <declare-styleable name="SurveySummaryComponent">
         <attr name="surveysummary_title" format="string"/>
     </declare-styleable>
 </resources>

@@ -23,8 +23,7 @@
         android:padding="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/surveysummary_layout"
+        app:layout_constraintStart_toEndOf="@id/surveysummary_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
@@ -32,19 +31,20 @@
             android:id="@+id/surveysummary_layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="@string/surveysummary_defaulttitle"
             android:textSize="36sp"
-            android:textColor="@color/surveysummary_textcolor"
-            />
+            android:textColor="@color/surveysummary_textcolor"/>
 
         <TextView
             android:id="@+id/surveysummary_layout_numskipped"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:text="3 Questions Skipped"
             android:textSize="25sp"/>
 
-        <android.support.v7.app.AlertController.RecycleListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/surveysummary_layout_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"

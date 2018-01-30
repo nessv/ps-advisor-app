@@ -17,6 +17,7 @@ import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -136,6 +137,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case INDICATORS:
                     nextFragment = SurveyIndicatorsFragment.class;
                     break;
+                case REVIEW:
+                    nextFragment = SurveySummaryFragment.class;
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);

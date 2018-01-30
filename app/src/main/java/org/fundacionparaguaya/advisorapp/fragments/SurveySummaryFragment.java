@@ -1,69 +1,92 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
+import org.fundacionparaguaya.advisorapp.adapters.SurveySummaryAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.Survey;
-import org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummary_Layout;
+import org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent;
+import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 /**
  * Created by alex on 1/25/2018.
  */
 
-public class SurveySummaryFragment extends AbstractSurveyFragment {
+public class SurveySummaryFragment extends AbstractSurveyFragment implements SurveySummaryAdapter.InterfaceClickListener {
 
-    LinearLayout linearLayout;
-    IndicatorAdapter adapter;
+    SurveySummaryComponent backgroundQs;
+    SurveySummaryComponent indicators;
 
-    SurveySummary_Layout backgroundQs;
-    SurveySummary_Layout indicators;
+    SharedSurveyViewModel mSurveyViewModel;
 
-    SurveyIndicatorsFragment parentFragment;
+    @Inject
+    InjectionViewModelFactory mViewModelFactory;
 
-    public SurveySummaryFragment newInstance(IndicatorAdapter adapter){
+    SurveySummaryAdapter summaryAdapter;
 
-        SurveySummaryFragment fragment = new SurveySummaryFragment();
+    ArrayList<String> indicatorNames = new ArrayList<>();
 
-        this.adapter = adapter;
-        parentFragment = (SurveyIndicatorsFragment) adapter.returnParent();
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        ((AdvisorApplication) getActivity().getApplication())
+                .getApplicationComponent()
+                .inject(this);
 
-        return fragment;
+        mSurveyViewModel = ViewModelProviders
+                .of(getActivity(), mViewModelFactory)
+                .get(SharedSurveyViewModel.class);
+
+        setFooterColor(R.color.surveysummary_background);
+        setHeaderColor(R.color.surveysummary_background);
+        setTitle(getString(R.string.survey_summary_title));
+}
+
+    @Override
+    public void onResume() {
+        try {
+            for (IndicatorQuestion skippedQuestions : mSurveyViewModel.getSkippedIndicators()) {
+                //Add in the card instances here
+                indicatorNames.add(skippedQuestions.getName());
+            }
+            indicators.setNames(indicatorNames);
+            if (indicatorNames.size() == 0){
+                indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+            } else {
+                indicators.setState(SurveySummaryComponent.SurveySummaryState.INCOMPLETE);
+            }
+
+
+        } catch (NullPointerException e){
+            indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+        }
+        backgroundQs.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+        super.onResume();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_surveysummary, container, false);
 
-        linearLayout = view.findViewById(R.id.surveysummary_fragment);
+        backgroundQs = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_background);
+        indicators = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_indicators);
 
-        backgroundQs = (SurveySummary_Layout) view.findViewById(R.id.surveysummary_background);
-        indicators = (SurveySummary_Layout) view.findViewById(R.id.surveysummary_indicators);
-
-        try {
-            for (IndicatorQuestion skippedQuestions : parentFragment.getSkippedIndicators()) {
-                //Add in the card instances here
-
-
-//                TextView textView = new TextView(getContext());
-//                textView.setText(skippedQuestions.getName());
-//                linearLayout.addView(textView);
-            }
-        } catch (NullPointerException e){
-            // No skipped questions
-        }
         return view;
+    }
+
+    public void onItemClick(View view, int position) {
+        Toast.makeText(getContext(), "You clicked " + summaryAdapter.getIndicatorName(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
 

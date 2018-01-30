@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import android.support.v4.app.Fragment;
@@ -166,6 +167,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case REVIEWINDICATORS:
                     nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
+
+                case COMPLETE:
+                    this.finish();
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);
@@ -177,7 +181,17 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
+        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(), this.getTheme()));
+        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(), this.getTheme()));
 
+        if(!fragment.isShowFooter())
+        {
+            mFooter.setVisibility(View.GONE);
+        }
+        else
+        {
+            mFooter.setVisibility(View.VISIBLE);
+        }
     }
 
 

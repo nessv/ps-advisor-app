@@ -12,6 +12,7 @@ import android.text.format.DateFormat;
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -163,6 +164,8 @@ public class Snapshot {
     public String toString() {
 
         PrettyTime prettyTime = new PrettyTime();
+
+        if(createdAt ==null) createdAt = new Date();
 
         if(mIsLatest)
         {

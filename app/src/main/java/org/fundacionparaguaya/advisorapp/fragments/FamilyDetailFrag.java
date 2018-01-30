@@ -22,6 +22,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -29,7 +30,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import javax.inject.Inject;
 
 
-public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
+public class FamilyDetailFrag extends StackedFrag implements Observer<Family>, SubTabFragmentCallback {
 
     private static String SELECTED_FAMILY_KEY = "SELECTED_FAMILY";
 
@@ -112,5 +113,16 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family> {
         f.setArguments(args);
 
         return f;
+    }
+
+    @Override
+    public void onTakeSnapshot() {
+        Intent surveyIntent = SurveyActivity.build(getContext(),
+                mFamilyInformationViewModel.getCurrentFamily().getValue());
+
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+            android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+        startActivity(surveyIntent, bundle);
     }
 }

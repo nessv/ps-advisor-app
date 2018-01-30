@@ -9,12 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
@@ -38,6 +40,8 @@ public class FamilyIndicatorsSubtab extends Fragment {
     @Inject
     InjectionViewModelFactory mViewModelFactory;
     FamilyInformationViewModel mFamilyInformationViewModel;
+
+    ImageButton mBtnNewSnapshot;
 
     RecyclerView mRvIndicatorList;
 
@@ -66,6 +70,22 @@ public class FamilyIndicatorsSubtab extends Fragment {
         mSnapshotSpinner = view.findViewById(R.id.spinner_indicatorsubtab_snapshot);
 
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
+
+        mBtnNewSnapshot = view.findViewById(R.id.btn_familyindicators_newsnapshot);
+        mBtnNewSnapshot.setOnClickListener(l->
+        {
+          try
+          {
+              ((SubTabFragmentCallback)getParentFragment()).onTakeSnapshot();
+          }
+          catch (NullPointerException | ClassCastException e)
+          {
+              Log.wtf(this.getClass().getName(), e.getMessage());
+
+              throw e;
+          }
+        });
+
         mRvIndicatorList.setLayoutManager(new StickyHeaderLayoutManager());
         mRvIndicatorList.setAdapter(mIndicatorAdapter);
 

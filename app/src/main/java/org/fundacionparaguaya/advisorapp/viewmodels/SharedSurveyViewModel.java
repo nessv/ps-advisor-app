@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, REVIEW}
+    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -33,6 +33,8 @@ public class SharedSurveyViewModel extends ViewModel
     LiveData<Family> mFamily;
 
     Survey mSurvey;
+
+    IndicatorQuestion focusedQuestion;
 
     private int mSurveyId;
     private int mFamilyId;
@@ -116,6 +118,23 @@ public class SharedSurveyViewModel extends ViewModel
         calculateProgress();
     }
 
+    public void setFocusedQuestion(String name){
+        for (IndicatorQuestion question:mSkippedIndicators){
+            if (question.getName().equals(name)){
+                setFocusedQuestion(question);
+                break;
+            }
+        }
+    }
+
+    public void setFocusedQuestion(IndicatorQuestion question){
+        focusedQuestion = question;
+    }
+
+    public IndicatorQuestion getFocusedQuestion(){
+        return focusedQuestion;
+    }
+
     public MutableLiveData<SurveyProgress> getProgress()
     {
         return mProgress;
@@ -127,7 +146,6 @@ public class SharedSurveyViewModel extends ViewModel
 
         //skipped indicators is a hashset, so there will be no duplicate entries.
         mSkippedIndicators.add(question);
-
         calculateProgress();
     }
 

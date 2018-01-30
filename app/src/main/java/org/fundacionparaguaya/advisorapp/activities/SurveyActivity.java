@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
+
 import android.support.v4.app.Fragment;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -19,13 +20,14 @@ import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
 
 import javax.inject.Inject;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Activity for surveying a family's situation. Displays the fragments that record background info and allows
@@ -157,6 +159,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
                 case INDICATORS:
                     nextFragment = SurveyIndicatorsFragment.class;
+                    break;
+                case SUMMARY:
+                    nextFragment = SurveySummaryFragment.class;
+                    break;
+                case REVIEWINDICATORS:
+                    nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
             }
 

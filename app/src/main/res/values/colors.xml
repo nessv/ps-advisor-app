@@ -43,4 +43,8 @@
     <color name="indicator_card_selected">#4F4F4F</color>
     <color name="indicator_card_background">@color/survey_whitebackground</color>
 
+    <!--Survey Summary Colors-->
+    <color name="surveysummary_textcolor">#313131</color>
+    <color name="surveysummary_background">#F2F2F2</color>
+
 </resources>

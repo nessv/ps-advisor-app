@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -203,6 +204,7 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
             LinearLayout familyInfoItem;
             TextView familyInfoQuestion;
             EditText familyInfoEntry;
+            Button addLocation;
 
             public LocationViewHolder(View itemView) {
                 super(itemView);
@@ -210,7 +212,7 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
                 familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
                 familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_locationquestion);
                 familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
-
+                addLocation = (Button) itemView.findViewById(R.id.add_location);
             }
 
             @Override
@@ -285,10 +287,6 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
             void onResponseCreated(ResponseCreatedHandler e);
         }
 
-
     }
-
-
-
 
 }

@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionResponseListener;
@@ -42,9 +44,12 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
 
     private static String NEW_FAMILY_KEY = "SELECTED_FAMILY";
 
+    private static float MIN_QUESTION_OPACITY = 0.3f;
+
     @Inject
     InjectionViewModelFactory mViewModelFactory;
     AddFamilyViewModel mAddFamilyViewModel;
+    DiscreteScrollView mDsvQuestionList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -74,13 +79,18 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
 
         View view = inflater.inflate(R.layout.addfamily_frag, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.addfaily_questions);
+        mDsvQuestionList = (DiscreteScrollView) view.findViewById(R.id.addfaily_questions);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(layoutManager);
+        mDsvQuestionList.setHasFixedSize(true);
 
-        recyclerView.setAdapter(mAddFamilyAdapter);
+        mDsvQuestionList.setAdapter(mAddFamilyAdapter);
+
+        mDsvQuestionList.setSlideOnFling(true);
+        mDsvQuestionList.setSlideOnFlingThreshold(1800);
+
+        mDsvQuestionList.setItemTransformer(new QuestionFadeTransformer());
 
         return view;
     }
@@ -93,6 +103,31 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
     @Override
     public void onQuestionAnswered(BackgroundQuestion q, Object response) {
         mAddFamilyViewModel.addFamilyResponse(q, response);
+    }
+
+
+    /**Fades the questions that are not centered in the Discrete Scroll View**/
+    public class QuestionFadeTransformer implements DiscreteScrollItemTransformer
+    {
+        @Override
+        public void transformItem(View item, float position) {
+            //pos inbetween -1 and 1, inclusive
+
+            //first normalize so between 0 and 1
+            //1 is max value
+
+            float absPosition = Math.abs(position);
+            absPosition = 1-absPosition; //flip value.. so 1 is max
+
+            //we want to scale 0->1 to .3->1
+            //0 -> .3
+            //1 -> 1
+            // (0.7)(x) + 0.3
+
+            float output = 0.7f * (absPosition) + 0.2f; //inbetween 100% and 30% output
+
+            item.setAlpha(output);
+        }
     }
 
 

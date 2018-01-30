@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import org.fundacionparaguaya.advisorapp.adapters.AddFamilyAdapter;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;

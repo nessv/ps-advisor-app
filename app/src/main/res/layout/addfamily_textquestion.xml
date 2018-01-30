@@ -4,13 +4,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
         android:paddingVertical="60dp"
+        android:id="@+id/item_textquestion"
         android:background="#F7F7F7"
         android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addfamily_question"
+        android:id="@+id/addfamily_textquestion"
         tools:text="What is your name?"
         android:textSize="48sp"
         android:paddingStart="56dp"

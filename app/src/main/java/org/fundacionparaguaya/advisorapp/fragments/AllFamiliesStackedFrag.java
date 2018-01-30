@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -87,16 +89,15 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         super.onViewCreated(view, savedInstanceState);
 
         ImageButton addButton = view.findViewById(R.id.add_families_button);
-        addButton.setOnClickListener((event) -> {
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    Family family = new Family("Mudge");
-                    mAllFamiliesViewModel.save(family);
-                    return null;
-                }
-            }.execute();
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StackedFrag addFamily = new AddFamilyFrag();
+                navigateTo(addFamily);
+                /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.addfamily_container, addFamily);
+                transaction.commit();*/
+            }
         });
     }
 

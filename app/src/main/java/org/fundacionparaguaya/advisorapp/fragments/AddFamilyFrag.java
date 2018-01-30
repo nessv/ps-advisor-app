@@ -1,31 +1,39 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionResponseListener;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.viewcomponents.QuestionViewInterface;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
-public class AddFamilyFrag extends StackedFrag {
+public class AddFamilyFrag extends StackedFrag implements QuestionResponseListener {
 
     private AddFamilyAdapter mAddFamilyAdapter;
 
@@ -46,6 +54,13 @@ public class AddFamilyFrag extends StackedFrag {
         mAddFamilyViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(AddFamilyViewModel.class);
+
+        mAddFamilyAdapter = new AddFamilyAdapter();
+
+        mAddFamilyViewModel.getQuestions().observe(this, (questions) ->
+        {
+            mAddFamilyAdapter.setQuestionsList(questions);
+        });
 
 
     }
@@ -72,75 +87,208 @@ public class AddFamilyFrag extends StackedFrag {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onQuestionAnswered(BackgroundQuestion q, Object response) {
+        mAddFamilyViewModel.addFamilyResponse(q, response);
+    }
 
-    private class AddFamilyAdapter extends RecyclerView.Adapter {
 
-        MutableLiveData<List<BackgroundQuestion>> questionsList = mAddFamilyViewModel.getQuestions();
+    private static class AddFamilyAdapter extends RecyclerView.Adapter {
+
+        int STRING_INPUT = 1;
+        int LOCATION_INPUT = 2;
+        int PHOTO_INPUT = 3;
+
+        List<BackgroundQuestion> mQuestionsList;
+
+        public AddFamilyAdapter(){
+
+        }
+
+        public void setQuestionsList(List<BackgroundQuestion> questionsList)
+        {
+            mQuestionsList = questionsList;
+            notifyDataSetChanged();
+        }
+
 
         @Override
         public int getItemViewType(int position) {
-            // Just as an example, return 0 or 2 depending on position
-            // Note that unlike in ListView adapters, types don't have to be contiguous
-            return position % 2 * 2;
+            BackgroundQuestion question = mQuestionsList.get(position);
+            switch (question.getResponseType()){
+                case STRING:
+                case PHONE_NUMBER:
+                    return  STRING_INPUT;
+
+                case PHOTO:
+                    return PHOTO_INPUT;
+
+                case LOCATION:
+                    return LOCATION_INPUT;
+                default:
+                    return -1;
+            }
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_addfamilyquestion, parent, false);
 
-            switch (viewType){
-                case 0: return new ViewHolderString(parent);
-
+            if (viewType == STRING_INPUT){
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_textquestion, parent, false);
+                 return new TextQuestionViewHolder(view);
+            }
+            else if (viewType == LOCATION_INPUT){
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_locationquestion, parent, false);
+                return new LocationViewHolder(view);
+            }
+            else if (viewType == PHOTO_INPUT){
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_picturequestion, parent, false);
+                return new PictureViewHolder(view);
+            }
+            else {
+                return null;
             }
 
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            switch (getItemViewType(position)){
-                case 0:
-                    ViewHolderString viewHolderString =(ViewHolderString)holder;
-
+            try
+            {
+                QuestionViewHolder questionViewHolder = (QuestionViewHolder)holder;
+                questionViewHolder.setQuestion(mQuestionsList.get(position));
             }
-
-
+            catch (ClassCastException e)
+            {
+                Log.e("", e.getMessage());
+            }
         }
 
-        public class ViewHolderString extends RecyclerView.ViewHolder {
 
+        @Override
+        public int getItemCount() {
+            return mQuestionsList.size();
+        }
+
+
+        public static class TextQuestionViewHolder extends QuestionViewHolder {
 
             LinearLayout familyInfoItem;
             TextView familyInfoQuestion;
             EditText familyInfoEntry;
 
-            public ViewHolderString(View itemView) {
+            public TextQuestionViewHolder(View itemView) {
                 super(itemView);
-                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_addfamily);
-                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_question);
-                //familyInfoQuestion.setText(nameQuestion.getDescription());
+                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
+                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_textquestion);
                 familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_text_field);
                 
             }
 
+            @Override
+            public void setQuestion(BackgroundQuestion question) {
+                mQuestion = question;
+                familyInfoQuestion.setText(question.getDescription());
+                //question field
+                //description
+            }
+
+            public void onResponse()
+            {
+               String response = familyInfoEntry.getText().toString();
+            }
+        }
+
+        public static class LocationViewHolder extends QuestionViewHolder{
+            LinearLayout familyInfoItem;
+            TextView familyInfoQuestion;
+            EditText familyInfoEntry;
+
+            public LocationViewHolder(View itemView) {
+                super(itemView);
+
+                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
+                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_locationquestion);
+                familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
+
+            }
+
+            @Override
+            public void setQuestion(BackgroundQuestion question) {
+                mQuestion = question;
+                familyInfoQuestion.setText(question.getDescription());
+
+            }
+
+            public void onResponse()
+            {
+
+            }
+        }
+
+        public static class PictureViewHolder extends QuestionViewHolder{
+
+            LinearLayout familyInfoItem;
+            TextView familyInfoQuestion;
+            ImageButton cameraButton;
+            ImageButton galleryButton;
+            ImageView responsePicture;
+
+
+            public PictureViewHolder(View itemView) {
+                super(itemView);
+                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_picturequestion);
+                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_picturequestion);
+                cameraButton = (ImageButton) itemView.findViewById(R.id.camera_button);
+                galleryButton = (ImageButton) itemView.findViewById(R.id.gallery_button);
+
+                cameraButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        itemView.getContext().startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void setQuestion(BackgroundQuestion question) {
+                mQuestion = question;
+                familyInfoQuestion.setText(question.getDescription());
+
+            }
+
+            public void onResponse()
+            {
+                responsePicture.setVisibility(View.VISIBLE);
+                cameraButton.setVisibility(View.INVISIBLE);
+                galleryButton.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        abstract static class QuestionViewHolder extends RecyclerView.ViewHolder
+        {
+            protected BackgroundQuestion mQuestion;
+
+            public QuestionViewHolder(View itemView) {
+                super(itemView);
+            }
+
+            public abstract void setQuestion(BackgroundQuestion question);
+        }
+
+        public class ResponseCreatedEvent {
+
+        }
+
+        public interface ResponseCreatedHandler{
+            void onResponseCreated(ResponseCreatedHandler e);
         }
 
 
-
-
-        @Override
-        public int getItemCount() {
-            return 0;
-        }
     }
 
-    public static AddFamilyFrag build(int familyId)
-    {
-        Bundle args = new Bundle();
-        args.putInt(NEW_FAMILY_KEY, familyId);
-        AddFamilyFrag f = new AddFamilyFrag();
-        f.setArguments(args);
 
-        return f;
-    }
+
 
 }

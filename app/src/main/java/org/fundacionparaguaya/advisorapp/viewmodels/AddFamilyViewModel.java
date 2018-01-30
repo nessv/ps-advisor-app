@@ -29,6 +29,9 @@ public class AddFamilyViewModel extends ViewModel {
 
     public AddFamilyViewModel(FamilyRepository familyRepository){
         mFamilyRepository = familyRepository;
+        mBgQuestions=new MutableLiveData<>();
+
+        fillQuestions();
     }
 
 

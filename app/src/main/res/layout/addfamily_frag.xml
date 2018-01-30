@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/item_addfamily"
+    android:id="@+id/addfamily_container"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add a New Family"
+        android:paddingLeft="40dp"
         android:textSize="48sp"
         android:textColor="#333333"/>
 
@@ -17,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/addfaily_questions"
-            tools:listitem="@layout/view_addfamilyquestion">
+            tools:listitem="@layout/addfamily_textquestion">
         </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

@@ -26,8 +26,10 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.adapters.AddFamilyAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionResponseListener;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewcomponents.QuestionViewInterface;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
@@ -105,6 +107,11 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
         mAddFamilyViewModel.addFamilyResponse(q, response);
     }
 
+    @Override
+    public void onFamilyAdded(Family family) {
+
+    }
+
 
     /**Fades the questions that are not centered in the Discrete Scroll View**/
     public class QuestionFadeTransformer implements DiscreteScrollItemTransformer
@@ -128,218 +135,6 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
 
             item.setAlpha(output);
         }
-    }
-
-
-    private static class AddFamilyAdapter extends RecyclerView.Adapter {
-
-        int STRING_INPUT = 1;
-        int LOCATION_INPUT = 2;
-        int PHOTO_INPUT = 3;
-
-        List<BackgroundQuestion> mQuestionsList;
-        QuestionResponseListener mQuestionResponseListener;
-
-        public AddFamilyAdapter(QuestionResponseListener listener){
-            mQuestionResponseListener = listener;
-        }
-
-        public void setQuestionsList(List<BackgroundQuestion> questionsList)
-        {
-            mQuestionsList = questionsList;
-            notifyDataSetChanged();
-        }
-
-
-        @Override
-        public int getItemViewType(int position) {
-            BackgroundQuestion question = mQuestionsList.get(position);
-            switch (question.getResponseType()){
-                case STRING:
-                case PHONE_NUMBER:
-                    return  STRING_INPUT;
-
-                case PHOTO:
-                    return PHOTO_INPUT;
-
-                case LOCATION:
-                    return LOCATION_INPUT;
-                default:
-                    return -1;
-            }
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-
-            if (viewType == STRING_INPUT){
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_textquestion, parent, false);
-                 return new TextQuestionViewHolder(view);
-            }
-            else if (viewType == LOCATION_INPUT){
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_locationquestion, parent, false);
-                return new LocationViewHolder(view);
-            }
-            else if (viewType == PHOTO_INPUT){
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_picturequestion, parent, false);
-                return new PictureViewHolder(view);
-            }
-            else {
-                return null;
-            }
-
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            try
-            {
-                QuestionViewHolder questionViewHolder = (QuestionViewHolder)holder;
-                questionViewHolder.setQuestion(mQuestionsList.get(position));
-                questionViewHolder.setQuestionResponseListener(mQuestionResponseListener);
-            }
-            catch (ClassCastException e)
-            {
-                Log.e("", e.getMessage());
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return mQuestionsList.size();
-        }
-
-
-        public static class TextQuestionViewHolder extends QuestionViewHolder {
-
-
-            LinearLayout familyInfoItem;
-            TextView familyInfoQuestion;
-            EditText familyInfoEntry;
-
-            public TextQuestionViewHolder(View itemView) {
-                super(itemView);
-                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
-                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_textquestion);
-                familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_text_field);
-
-                familyInfoEntry.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        String answer = familyInfoEntry.getText().toString();
-                        mQuestionResponseListener.onQuestionAnswered(mQuestion, answer);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void setQuestion(BackgroundQuestion question) {
-                mQuestion = question;
-                familyInfoQuestion.setText(question.getDescription());
-            }
-
-        }
-
-        public static class LocationViewHolder extends QuestionViewHolder{
-
-            LinearLayout familyInfoItem;
-            TextView familyInfoQuestion;
-            EditText familyInfoEntry;
-
-            public LocationViewHolder(View itemView) {
-                super(itemView);
-
-                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
-                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_locationquestion);
-                familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
-
-            }
-
-            @Override
-            public void setQuestion(BackgroundQuestion question) {
-                mQuestion = question;
-                familyInfoQuestion.setText(question.getDescription());
-
-            }
-
-
-            public String onResponse()
-            {
-                return familyInfoEntry.getText().toString();
-            }
-
-        }
-
-        public static class PictureViewHolder extends QuestionViewHolder{
-
-            LinearLayout familyInfoItem;
-            TextView familyInfoQuestion;
-            ImageButton cameraButton;
-            ImageButton galleryButton;
-            ImageView responsePicture;
-
-
-            public PictureViewHolder(View itemView) {
-                super(itemView);
-                familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_picturequestion);
-                familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_picturequestion);
-                cameraButton = (ImageButton) itemView.findViewById(R.id.camera_button);
-                galleryButton = (ImageButton) itemView.findViewById(R.id.gallery_button);
-
-                cameraButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                        itemView.getContext().startActivity(intent);
-                    }
-                });
-            }
-
-            @Override
-            public void setQuestion(BackgroundQuestion question) {
-                mQuestion = question;
-                familyInfoQuestion.setText(question.getDescription());
-
-            }
-
-            public void onResponse()
-            {
-                responsePicture.setVisibility(View.VISIBLE);
-                cameraButton.setVisibility(View.INVISIBLE);
-                galleryButton.setVisibility(View.INVISIBLE);
-            }
-
-        }
-
-        abstract static class QuestionViewHolder extends RecyclerView.ViewHolder
-        {
-            protected BackgroundQuestion mQuestion;
-            QuestionResponseListener mQuestionResponseListener;
-
-            public QuestionViewHolder(View itemView) {
-                super(itemView);
-            }
-
-            public void setQuestionResponseListener(QuestionResponseListener listener)
-            {
-                mQuestionResponseListener = listener;
-            }
-
-            public abstract void setQuestion(BackgroundQuestion question);
-        }
-
-
     }
 
 }

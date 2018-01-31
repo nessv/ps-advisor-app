@@ -33,4 +33,7 @@ public interface ApplicationComponent {
 
     void inject(SurveyQuestionsFrag backgroundQuestionsFrag);
     void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
+
+    void inject(SurveySummaryFragment surveySummaryFragment);
+    void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 }

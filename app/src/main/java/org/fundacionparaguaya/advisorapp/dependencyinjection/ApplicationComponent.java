@@ -2,16 +2,13 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
 
+import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
-import org.fundacionparaguaya.advisorapp.fragments.AllFamiliesStackedFrag;
-import org.fundacionparaguaya.advisorapp.fragments.BackgroundQuestionsFrag;
-import org.fundacionparaguaya.advisorapp.fragments.FamilyDetailFrag;
-import org.fundacionparaguaya.advisorapp.fragments.LoginFragment;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
 
 /**
  * The main application component.
@@ -23,15 +20,20 @@ public interface ApplicationComponent {
 
     Application application();
 
-    void inject(AllFamiliesStackedFrag allFamiliesFragment);
-
     void inject(LoginFragment loginFragment);
 
+    void inject(DashActivity dashActivity);
+    void inject(AllFamiliesStackedFrag allFamiliesFragment);
     void inject(FamilyDetailFrag familyDetailFrag);
+    void inject(FamilyIndicatorsListFrag familIndicatorsFrag);
+
 
     void inject(SurveyActivity surveyActivity);
-
     void inject(SurveyIntroFragment surveyIntroFragment);
 
-    void inject(BackgroundQuestionsFrag backgroundQuestionsFrag);
+    void inject(SurveyQuestionsFrag backgroundQuestionsFrag);
+    void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
+
+    void inject(SurveySummaryFragment surveySummaryFragment);
+    void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 }

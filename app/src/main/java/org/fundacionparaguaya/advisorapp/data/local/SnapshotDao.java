@@ -22,6 +22,9 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
     LiveData<List<Snapshot>> querySnapshots(int surveyId);
 
+    @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
+    List<Snapshot> querySnapshotsNow(int surveyId);
+
     @Query("SELECT * FROM snapshots WHERE family_id = :familyId")
     LiveData<List<Snapshot>> querySnapshotsForFamily(int familyId);
 
@@ -30,6 +33,14 @@ public interface SnapshotDao {
 
     @Query("SELECT * FROM snapshots WHERE id = :id")
     LiveData<Snapshot> querySnapshot(int id);
+
+    /**
+     * Queries for all snapshots that only exist locally, which haven't been pushed to the
+     * remote database and do not have a remote ID.
+     * @return The pending snapshots.
+     */
+    @Query("SELECT * FROM snapshots WHERE remote_id IS NULL")
+    List<Snapshot> queryPendingSnapshots();
 
     @Insert(onConflict = REPLACE)
     long insertSnapshot(Snapshot snapshot);

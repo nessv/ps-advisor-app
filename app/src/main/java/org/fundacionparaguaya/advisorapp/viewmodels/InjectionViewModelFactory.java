@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
+import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 
 /**
@@ -16,11 +17,16 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
     private final AuthenticationManager authManager;
     private final FamilyRepository familyRepository;
     private final SurveyRepository surveyRepository;
+    private final SnapshotRepository snapshotRepository;
 
-    public InjectionViewModelFactory(AuthenticationManager authManager, FamilyRepository familyRepository, SurveyRepository surveyRepository) {
+    public InjectionViewModelFactory(AuthenticationManager authManager,
+                                     FamilyRepository familyRepository,
+                                     SurveyRepository surveyRepository,
+                                     SnapshotRepository snapshotRepository) {
         this.authManager = authManager;
         this.familyRepository = familyRepository;
         this.surveyRepository = surveyRepository;
+        this.snapshotRepository = snapshotRepository;
     }
 
     @NonNull
@@ -32,10 +38,10 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
             return (T) new LoginViewModel(authManager);
         else if (modelClass.isAssignableFrom(FamilyInformationViewModel.class))
         {
-            return (T) new FamilyInformationViewModel(familyRepository);
+            return (T) new FamilyInformationViewModel(familyRepository, snapshotRepository);
         }
         else if (modelClass.isAssignableFrom(SharedSurveyViewModel.class)) {
-            return (T) new SharedSurveyViewModel(surveyRepository, familyRepository);
+            return (T) new SharedSurveyViewModel(snapshotRepository, surveyRepository, familyRepository);
         }
         else
             throw new IllegalArgumentException("The view model was not found for " + modelClass.toString());

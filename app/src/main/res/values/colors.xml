@@ -5,6 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="fp_green">#49A34B</color>
 
+    <color name="black">#313131</color>
+    <color name="white">#FDFDFD</color>
+
     <!--DashboardTab Colors-->
     <color name="tabSelected">@color/fp_green</color>
     <color name="captionSelected">#FFFFFF</color>
@@ -28,4 +31,24 @@
     <color name="login_button">@color/fp_green</color>
     <color name="login_buttontext">#FDFDFD</color>
     <color name="login_helpbutton">#757478</color>
+
+    <!--Survey Colors-->
+    <color name="survey_darkyellow">#D6B03A</color>
+    <color name="survey_lightyellow">#E5BE45</color>
+    <color name="survey_whitebackground">#F2F2F2</color>
+    <color name="survey_grey">#26828282</color>
+    <color name="survey_navbuttons">#4F4F4F</color>
+    <color name="surveyindicators_background">@color/survey_whitebackground</color>
+
+    <!--Indicator Survey Colors-->
+    <color name="indicator_card_red">#EB5757</color>
+    <color name="indicator_card_yellow">#F2C94C</color>
+    <color name="indicator_card_green">#49A34B</color>
+    <color name="indicator_card_selected">#4F4F4F</color>
+    <color name="indicator_card_background">@color/survey_whitebackground</color>
+
+    <!--Survey Summary Colors-->
+    <color name="surveysummary_textcolor">#313131</color>
+    <color name="surveysummary_background">#F2F2F2</color>
+
 </resources>

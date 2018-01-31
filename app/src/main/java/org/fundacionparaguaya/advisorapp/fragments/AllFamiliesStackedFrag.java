@@ -1,10 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,18 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.activities.LoginActivity;
-import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -94,11 +86,17 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton addButton  = view.findViewById(R.id.add_families_button);
+        ImageButton addButton = view.findViewById(R.id.add_families_button);
+        addButton.setOnClickListener((event) -> {
+            new AsyncTask<Void, Void, Void>() {
 
-        addButton.setOnClickListener((event) ->
-        {
-            mAllFamiliesViewModel.sync();
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Family family = Family.builder().name("Mudge").code("US.AM.20170925").build();
+                    mAllFamiliesViewModel.save(family);
+                    return null;
+                }
+            }.execute();
         });
     }
 

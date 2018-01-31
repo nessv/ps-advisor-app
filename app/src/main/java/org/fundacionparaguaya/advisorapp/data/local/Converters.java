@@ -3,15 +3,16 @@ package org.fundacionparaguaya.advisorapp.data.local;
 import android.arch.persistence.room.TypeConverter;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,69 +21,67 @@ import java.util.Map;
  */
 
 public class Converters {
-    @TypeConverter
-    public static String fromPersonalQuestions(List<PersonalQuestion> questions) {
-        return new Gson().toJson(questions);
+    private static Gson gson() {
+        return new GsonBuilder().enableComplexMapKeySerialization().create();
     }
 
     @TypeConverter
-    public static List<PersonalQuestion> toPersonalQuestions(String value) {
-        Type listType = new TypeToken<ArrayList<PersonalQuestion>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public static String fromBackgroundQuestions(List<BackgroundQuestion> questions) {
+        return gson().toJson(questions);
     }
 
     @TypeConverter
-    public static String fromEconomicQuestions(List<EconomicQuestion> questions) {
-        return new Gson().toJson(questions);
-    }
-
-    @TypeConverter
-    public static List<EconomicQuestion> toEconomicQuestions(String value) {
-        Type listType = new TypeToken<ArrayList<EconomicQuestion>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public static List<BackgroundQuestion> toBackgroundQuestions(String value) {
+        Type listType = new TypeToken<ArrayList<BackgroundQuestion>>() {}.getType();
+        return gson().fromJson(value, listType);
     }
 
     @TypeConverter
     public static String fromIndicatorQuestions(List<IndicatorQuestion> questions) {
-        return new Gson().toJson(questions);
+        return gson().toJson(questions);
     }
 
     @TypeConverter
     public static List<IndicatorQuestion> toIndicatorQuestions(String value) {
         Type listType = new TypeToken<ArrayList<IndicatorQuestion>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+        return gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromPersonalResponses(Map<PersonalQuestion, String> responses) {
-        return new Gson().toJson(responses);
+    public static String fromBackgroundResponses(Map<BackgroundQuestion, String> responses) {
+        return gson().toJson(responses);
     }
 
     @TypeConverter
-    public static Map<PersonalQuestion, String> toPersonalResponses(String value) {
-        Type listType = new TypeToken<Map<PersonalQuestion, String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
-    }
-
-    @TypeConverter
-    public static String fromEconomicResponse(Map<EconomicQuestion, String> responses) {
-        return new Gson().toJson(responses);
-    }
-
-    @TypeConverter
-    public static Map<EconomicQuestion, String> toEconomicResponse(String value) {
-        Type listType = new TypeToken<Map<EconomicQuestion, String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public static Map<BackgroundQuestion, String> toBackgroundResponses(String value) {
+        Type listType = new TypeToken<Map<BackgroundQuestion, String>>() {}.getType();
+        return gson().fromJson(value, listType);
     }
 
     @TypeConverter
     public static String fromIndicatorResponse(Map<IndicatorQuestion, IndicatorOption> responses) {
-        return new Gson().toJson(responses);
+        return gson().toJson(responses);
     }
 
     @TypeConverter
     public static Map<IndicatorQuestion, IndicatorOption> toIndicatorResponse(String value) {
-        Type listType = new TypeToken<Map<IndicatorQuestion, String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+        Type listType = new TypeToken<Map<IndicatorQuestion, IndicatorOption>>() {}.getType();
+        return gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public Long fromDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        return date.getTime();
+    }
+
+    @TypeConverter
+    public Date toDate(Long value) {
+        if (value == null) {
+            return null;
+        }
+        return new Date(value);
     }
 }

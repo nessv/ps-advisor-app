@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,8 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 
 public class QuestionTextView extends LinearLayout implements View.OnClickListener, QuestionViewInterface{
@@ -24,44 +22,24 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
         super(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.view_questiontext, this);
+        inflater.inflate(R.layout.view_bkgquestion_text, this);
 
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);
     }
 
-    public void setQuestion(PersonalQuestion question)
+    public void setQuestion(BackgroundQuestion question)
     {
         String description = question.getDescription();
 
         mQuestionTextView.setText(description);
 
         switch (question.getResponseType()) {
-            case String:
+            case STRING:
                 this.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
 
-            case Integer:
-                this.setInputType(InputType.TYPE_CLASS_NUMBER);
-                break;
-
-            default:
-                throw new IllegalArgumentException("SurveyQuestion has no valid response type");
-        }
-
-    }
-
-    public void setQuestion(EconomicQuestion question)
-    {
-        String description = question.getDescription();
-        mQuestionTextView.setText(description);
-
-        switch (question.getResponseType()){
-            case String:
-                this.setInputType(InputType.TYPE_CLASS_TEXT);
-                break;
-
-            case Integer:
+            case INTEGER:
                 this.setInputType(InputType.TYPE_CLASS_NUMBER);
                 break;
 

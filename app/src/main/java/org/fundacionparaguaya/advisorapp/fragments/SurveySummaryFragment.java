@@ -71,11 +71,12 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
                 indicators.setState(SurveySummaryComponent.SurveySummaryState.INCOMPLETE);
             }
 
-
         } catch (NullPointerException e){
             indicators.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
         }
         backgroundQs.setState(SurveySummaryComponent.SurveySummaryState.COMPLETE);
+
+        indicators.setNumSkipped(indicatorNames.size());
 
         indicatorAdapter = indicators.getAdapter();
         indicatorAdapter.setClickListener(this::onItemClick);

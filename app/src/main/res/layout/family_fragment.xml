@@ -183,9 +183,9 @@
 
     <fragment
              android:layout_marginStart="16dp"
-            android:name="org.fundacionparaguaya.advisorapp.fragments.FamilyIndicatorsSubtab"
+            android:name="org.fundacionparaguaya.advisorapp.fragments.FamilyIndicatorsListFrag"
             android:layout_width="wrap_content"
-            tools:layout="@layout/fragment_indicatorsubtab"
+            tools:layout="@layout/fragment_familydetail_indicators"
             android:layout_height="match_parent"
             android:id="@+id/fragment_indicatorsubtab"/>
 

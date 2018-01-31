@@ -8,7 +8,7 @@
               android:paddingBottom="8dp">
     <View android:layout_width="40dp"
           android:layout_height="40dp"
-          android:id="@+id/view_familyindicators_color"
+          android:id="@+id/view_familydetail_indicatoritem_color"
           android:background="@drawable/indicatoritem_colorshape"
           android:layout_gravity="center_vertical"
     />
@@ -21,7 +21,7 @@
                     android:orientation="vertical">
         <TextView
                 tools:text="Clean Water"
-                android:id="@+id/tv_familyindicators_title"
+                android:id="@+id/tv_familydetail_indicatoritem_title"
                 android:textAppearance="@style/CardHeading"
                 android:maxLines="2"
                 android:ellipsize = "end"
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/tv_familyindicators_description"
+                android:id="@+id/tv_familydetail_indicatoritem_description"
                 tools:text="We don't have access to a number of things"
                 android:textAppearance="@style/Body.Small"
                 android:maxLines="2"

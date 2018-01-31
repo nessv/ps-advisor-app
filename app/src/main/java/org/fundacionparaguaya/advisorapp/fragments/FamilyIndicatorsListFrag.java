@@ -31,7 +31,7 @@ import java.util.*;
  * List of all the indicators a family has
  */
 
-public class FamilyIndicatorsSubtab extends Fragment {
+public class FamilyIndicatorsListFrag extends Fragment {
 
     Spinner mSnapshotSpinner;
     SpinnerAdapter mSpinnerAdapter;
@@ -64,22 +64,22 @@ public class FamilyIndicatorsSubtab extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_indicatorsubtab, container, false);
+        View view = inflater.inflate(R.layout.fragment_familydetail_indicators, container, false);
 
-        mSnapshotSpinner = view.findViewById(R.id.spinner_indicatorsubtab_snapshot);
-
+        mSnapshotSpinner = view.findViewById(R.id.spinner_familyindicators_snapshot);
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
-
         mBtnNewSnapshot = view.findViewById(R.id.btn_familyindicators_newsnapshot);
+
         mBtnNewSnapshot.setOnClickListener(l->
         {
           try
           {
+              //starts the survey activity
               ((SubTabFragmentCallback)getParentFragment()).onTakeSnapshot();
           }
           catch (NullPointerException | ClassCastException e)
           {
-              Log.wtf(this.getClass().getName(), e.getMessage());
+              Log.e(this.getClass().getName(), e.getMessage());
 
               throw e;
           }
@@ -130,7 +130,12 @@ public class FamilyIndicatorsSubtab extends Fragment {
         SortedMap<IndicatorQuestion, IndicatorOption> mIndicatorOptionMap;
         List<Map.Entry<IndicatorQuestion, IndicatorOption>> mIndicatorMapEntries;
 
-        //HashMap<IndicatorOption.Level, Section> sectionLevelHashMap;
+        private static class Section {
+            IndicatorOption.Level mLevel;
+            ArrayList<Map.Entry<IndicatorQuestion, IndicatorOption>> indicatorEntries = new ArrayList<>();
+        }
+
+        //section for each color
         Section mRedSection = new Section();
         Section mYellowSection = new Section();
         Section mGreenSection = new Section();
@@ -139,7 +144,6 @@ public class FamilyIndicatorsSubtab extends Fragment {
 
         FamilyIndicatorAdapter()
         {
-            mIndicatorMapEntries = new ArrayList<>();
             mSections = new ArrayList<>();
 
             mRedSection.mLevel = IndicatorOption.Level.Red;
@@ -149,12 +153,6 @@ public class FamilyIndicatorsSubtab extends Fragment {
             mSections.add(mRedSection);
             mSections.add(mYellowSection);
             mSections.add(mGreenSection);
-        }
-
-        private class Section {
-            IndicatorOption.Level mLevel;
-
-            ArrayList<Map.Entry<IndicatorQuestion, IndicatorOption>> indicatorEntries = new ArrayList<>();
         }
 
         @Override
@@ -170,10 +168,7 @@ public class FamilyIndicatorsSubtab extends Fragment {
             mYellowSection.indicatorEntries.clear();
             mGreenSection.indicatorEntries.clear();
 
-            mIndicatorMapEntries.clear();
-            mIndicatorMapEntries.addAll(indicatorMap.entrySet());
-
-            for(Map.Entry<IndicatorQuestion, IndicatorOption> optionEntry: mIndicatorMapEntries)
+            for(Map.Entry<IndicatorQuestion, IndicatorOption> optionEntry: indicatorMap.entrySet())
             {
                 IndicatorOption.Level optionLevel = optionEntry.getValue().getLevel();
 
@@ -212,18 +207,20 @@ public class FamilyIndicatorsSubtab extends Fragment {
             return mSections.get(sectionIndex).indicatorEntries.size();
         }
 
+        /**For creating the indicator items**/
         @Override
         public ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.
-                    from(parent.getContext()).inflate(R.layout.item_familyindicator, parent, false);
+                    from(parent.getContext()).inflate(R.layout.item_familydetailindicator, parent, false);
 
             return new FamilyIndicatorViewHolder(itemView);
         }
 
+        /**For creating the header view holder**/
         @Override
         public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int headerType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View v = inflater.inflate(R.layout.item_familyindicators_dimensionheader, parent, false);
+            View v = inflater.inflate(R.layout.item_familydetail_indicatoritem_header, parent, false);
             return new HeaderViewHolder(v);
         }
 
@@ -247,7 +244,7 @@ public class FamilyIndicatorsSubtab extends Fragment {
 
             HeaderViewHolder(View itemView) {
                 super(itemView);
-                titleTextView = (TextView) itemView.findViewById(R.id.tv_familyindicators_sectionlabel);
+                titleTextView = (TextView) itemView.findViewById(R.id.tv_familydetail_indicators_sectionlabel);
             }
         }
 
@@ -263,9 +260,9 @@ public class FamilyIndicatorsSubtab extends Fragment {
             public FamilyIndicatorViewHolder(View itemView) {
                 super(itemView);
 
-                mTitle = itemView.findViewById(R.id.tv_familyindicators_title);
-                mLevelDescription = itemView.findViewById(R.id.tv_familyindicators_description);
-                mLevelIndicator = itemView.findViewById(R.id.view_familyindicators_color);
+                mTitle = itemView.findViewById(R.id.tv_familydetail_indicatoritem_title);
+                mLevelDescription = itemView.findViewById(R.id.tv_familydetail_indicatoritem_description);
+                mLevelIndicator = itemView.findViewById(R.id.view_familydetail_indicatoritem_color);
             }
 
             public void setIndicatorResponse(Map.Entry<IndicatorQuestion, IndicatorOption> indicatorResponse)

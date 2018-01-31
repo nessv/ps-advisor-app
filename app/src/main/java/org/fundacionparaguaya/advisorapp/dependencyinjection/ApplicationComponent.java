@@ -25,7 +25,7 @@ public interface ApplicationComponent {
     void inject(DashActivity dashActivity);
     void inject(AllFamiliesStackedFrag allFamiliesFragment);
     void inject(FamilyDetailFrag familyDetailFrag);
-    void inject(FamilyIndicatorsSubtab familIndicatorsFrag);
+    void inject(FamilyIndicatorsListFrag familIndicatorsFrag);
 
 
     void inject(SurveyActivity surveyActivity);

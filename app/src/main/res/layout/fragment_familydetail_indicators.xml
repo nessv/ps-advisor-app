@@ -14,7 +14,7 @@
                   android:scaleType="centerCrop"
                   android:id="@+id/linearlayout_familyindicators_header"
                   android:clipToPadding="false"
-                  android:background="@drawable/familysubtab_header"
+                  android:background="@drawable/familydetailtabs_header"
                   android:elevation="6dp"
                   android:orientation="vertical">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                      android:scaleType="fitXY"
                      android:layout_alignParentEnd="true"
                      android:background="@color/float_transparent"
-                     android:src="@drawable/ic_familysubtab_mainaction"/>
+                     android:src="@drawable/ic_familydetailtabs_mainaction"/>
     </RelativeLayout>
 
     <LinearLayout android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         <Spinner
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/spinner_indicatorsubtab_snapshot"
+                android:id="@+id/spinner_familyindicators_snapshot"
                 android:layout_width="wrap_content"
                 android:minHeight="24dp"
                 android:paddingEnd="28dp"
@@ -61,7 +61,7 @@
         <android.support.v7.widget.RecyclerView
                 android:background="@color/white"
                 android:id="@+id/rv_familyindicators_list"
-                tools:listitem="@layout/item_familyindicator"
+                tools:listitem="@layout/item_familydetailindicator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

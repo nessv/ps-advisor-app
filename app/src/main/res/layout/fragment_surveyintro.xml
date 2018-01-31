@@ -12,7 +12,7 @@
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:textAppearance="@style/OpenSans.Black.BigHero"
+              android:textAppearance="@style/BigHero.Black"
               android:text="@string/surveyintro_newsnapshot"
               android:gravity="center"
 
@@ -20,7 +20,7 @@
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:textAppearance="@style/OpenSans.Black.Heading"
+              android:textAppearance="@style/Heading"
               tools:text="Garcia Family"
               android:id="@+id/tv_surveyintro_familyname"
               android:gravity="center"

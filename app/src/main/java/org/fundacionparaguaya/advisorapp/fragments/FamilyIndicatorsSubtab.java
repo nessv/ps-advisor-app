@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -131,19 +130,29 @@ public class FamilyIndicatorsSubtab extends Fragment {
         SortedMap<IndicatorQuestion, IndicatorOption> mIndicatorOptionMap;
         List<Map.Entry<IndicatorQuestion, IndicatorOption>> mIndicatorMapEntries;
 
-        HashMap<String, Section> sectionDimensionHashMap;
+        //HashMap<IndicatorOption.Level, Section> sectionLevelHashMap;
+        Section mRedSection = new Section();
+        Section mYellowSection = new Section();
+        Section mGreenSection = new Section();
 
         ArrayList<Section> mSections;
 
         FamilyIndicatorAdapter()
         {
             mIndicatorMapEntries = new ArrayList<>();
-            sectionDimensionHashMap = new HashMap<>();
             mSections = new ArrayList<>();
+
+            mRedSection.mLevel = IndicatorOption.Level.Red;
+            mYellowSection.mLevel = IndicatorOption.Level.Yellow;
+            mGreenSection.mLevel = IndicatorOption.Level.Green;
+
+            mSections.add(mRedSection);
+            mSections.add(mYellowSection);
+            mSections.add(mGreenSection);
         }
 
         private class Section {
-            String dimension;
+            IndicatorOption.Level mLevel;
 
             ArrayList<Map.Entry<IndicatorQuestion, IndicatorOption>> indicatorEntries = new ArrayList<>();
         }
@@ -153,33 +162,40 @@ public class FamilyIndicatorsSubtab extends Fragment {
             return true;
         }
 
-
         void setIndicators(SortedMap<IndicatorQuestion, IndicatorOption> indicatorMap)
         {
             mIndicatorOptionMap = indicatorMap;
 
+            mRedSection.indicatorEntries.clear();
+            mYellowSection.indicatorEntries.clear();
+            mGreenSection.indicatorEntries.clear();
+
             mIndicatorMapEntries.clear();
             mIndicatorMapEntries.addAll(indicatorMap.entrySet());
 
-            mSections.clear();
-            sectionDimensionHashMap.clear();
-
             for(Map.Entry<IndicatorQuestion, IndicatorOption> optionEntry: mIndicatorMapEntries)
             {
-                String dimension  = optionEntry.getKey().getIndicator().getDimension();
+                IndicatorOption.Level optionLevel = optionEntry.getValue().getLevel();
 
-                if(sectionDimensionHashMap.containsKey(dimension))
+                Section s = null;
+
+                switch (optionLevel)
                 {
-                    sectionDimensionHashMap.get(dimension).indicatorEntries.add(optionEntry);
+                    case Red:
+                        s = mRedSection;
+                        break;
+
+                    case Yellow:
+                        s = mYellowSection;
+                        break;
+
+                    case Green:
+                        s = mGreenSection;
+                        break;
                 }
-                else
-                {
-                    Section section = new Section();
-                    section.dimension  = dimension;
-                    section.indicatorEntries.add(optionEntry);
-                    sectionDimensionHashMap.put(dimension, section);
 
-                    mSections.add(section);
+                if(s!=null) {
+                    s.indicatorEntries.add(optionEntry);
                 }
             }
 
@@ -223,13 +239,13 @@ public class FamilyIndicatorsSubtab extends Fragment {
             Section s = mSections.get(sectionIndex);
             HeaderViewHolder hvh = (HeaderViewHolder) viewHolder;
 
-            hvh.titleTextView.setText(s.dimension);
+            hvh.titleTextView.setText(s.mLevel.name());
         }
 
         public class HeaderViewHolder extends SectioningAdapter.HeaderViewHolder {
             TextView titleTextView;
 
-            public HeaderViewHolder(View itemView) {
+            HeaderViewHolder(View itemView) {
                 super(itemView);
                 titleTextView = (TextView) itemView.findViewById(R.id.tv_familyindicators_sectionlabel);
             }
@@ -326,48 +342,5 @@ public class FamilyIndicatorsSubtab extends Fragment {
             this.context = context;
             this.values = values;
         }
-
-        /*
-        @Override
-        public int getCount(){
-            return values.length;
-        }
-
-        @Override
-        public Snapshot getItem(int position){
-            return values[position];
-        }
-
-        @Override
-        public long getItemId(int position){
-            return position;
-        }
-
-        // And the "magic" goes here
-        // This is for the "passive" state of the spinner
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
-            TextView label = new TextView(context);
-            label.setTextColor(getResources().getColor(R.color.black, context.getTheme()));
-            // Then you can get the current item using the values array (Users array) and the current position
-            // You can NOW reference each method you has created in your bean object (User class)
-            label.setText(values[position].getDate())  ;
-
-            // And finally return your dynamic (or custom) view for each spinner item
-            return label;
-        }
-
-        // And here is when the "chooser" is popped up
-        // Normally is the same view, but you can customize it if you want
-        @Override
-        public View getDropDownView(int position, View convertView,
-                                    ViewGroup parent) {
-            TextView label = new TextView(context);
-            label.setTextColor(getResources().getColor(R.color.black, context.getTheme()));
-            label.setText(values[position].getDate());
-
-            return label;
-        }*/
     }
 }

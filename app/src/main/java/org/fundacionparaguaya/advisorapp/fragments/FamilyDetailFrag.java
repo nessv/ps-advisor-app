@@ -83,19 +83,6 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family>, S
 
         Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
         mFamilyImage.setImageURI(uri);
-
-      //  Button surveyButton  = view.findViewById(R.id.survey_button);
-
-        /*
-        surveyButton.setOnClickListener((View view1) -> {
-            Intent surveyIntent = SurveyActivity.build(getContext(),
-                    mFamilyInformationViewModel.getCurrentFamily().getValue());
-
-            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
-
-            startActivity(surveyIntent, bundle);
-        });*/
     }
 
     @Override

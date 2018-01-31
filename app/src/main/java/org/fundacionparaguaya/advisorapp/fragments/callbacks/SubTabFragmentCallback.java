@@ -1,7 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
 /**
- * Created by benjaminhylak on 1/30/18.
+ * A call back for the tabs in the family detail fragment
  */
 
 public interface SubTabFragmentCallback {

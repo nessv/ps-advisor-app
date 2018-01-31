@@ -69,7 +69,7 @@ public class IndicatorQuestion extends SurveyQuestion implements Comparable {
         }
         catch (ClassCastException e)
         {
-            Log.e("", e.getMessage());
+            Log.e(this.getClass().getName(), e.getMessage());
             throw e;
         }
     }

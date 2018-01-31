@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +38,7 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
     InjectionViewModelFactory mViewModelFactory;
     SharedSurveyViewModel mSharedSurveyViewModel;
 
-    DiscreteScrollView mDsvQuestionList;
+    RecyclerView mDsvQuestionList;
     BackgroundQuestionAdapter mAdapter;
 
     public SurveyQuestionsFrag()
@@ -85,8 +87,9 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
         mDsvQuestionList = v.findViewById(R.id.dsv_surveyquestions_list);
         mAdapter = new BackgroundQuestionAdapter(this);
         mDsvQuestionList.setAdapter(mAdapter);
-        mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
+        //mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
 
+        mDsvQuestionList.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;
     }
 
@@ -104,13 +107,13 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
 
     @Override
     public void onNext(View v) {
-        int currentIndex = mDsvQuestionList.getCurrentItem();
+       /* int currentIndex = mDsvQuestionList.getCurrentItem();
         currentIndex++;
 
         if(currentIndex<mAdapter.getItemCount())
         {
             mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }
+        }*/
     }
 
     @Override

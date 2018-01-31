@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.adapters;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         else {
             BackgroundQuestion question = mQuestionsList.get(position);
 
-            if (question.getOptions() != null && question.getOptions().size() > 0) {
+            if (question.getOptions() != null && question.getOptions().size() > 1) {
                 return DROPDOWN_INPUT;
             }
             else {
@@ -139,11 +140,25 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
         EditText familyInfoEntry;
 
-        public TextQuestionViewHolder(View itemView) {
-            super(itemView);
+        @Override
+        public void setQuestion(BackgroundQuestion question) {
+            super.setQuestion(question);
+
 
             familyInfoEntry = (EditText) itemView.findViewById(R.id.et_questiontext_answer);
 
+            switch (question.getResponseType())
+            {
+                case INTEGER:
+                    familyInfoEntry.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+            }
+
+        }
+
+        @Override
+        public void setQuestionResponseListener(BackgroundQuestionCallback listener) {
+            super.setQuestionResponseListener(listener);
 
             familyInfoEntry.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -162,6 +177,10 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
                 }
             });
+        }
+
+        public TextQuestionViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
@@ -308,6 +327,8 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
             submitButtonContainer = (LinearLayout) itemView.findViewById(R.id.submit_button_view);
             submitButton = (Button) itemView.findViewById(R.id.submit_button);
+
+            submitButton.setOnClickListener((view)-> mBackgroundQuestionCallback.onFinish());
         }
     }
 

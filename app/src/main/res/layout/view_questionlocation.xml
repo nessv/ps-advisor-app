@@ -4,8 +4,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:id="@+id/item_questionlocation"
-        android:paddingVertical="60dp"
         android:orientation="vertical">
 
     <TextView
@@ -30,7 +31,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/entry_location_field"
-                android:textSize="48sp"
+                android:textSize="36sp"
                 android:textColor="#333333"/>
 
         <Button

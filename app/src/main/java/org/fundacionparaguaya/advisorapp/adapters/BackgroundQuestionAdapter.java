@@ -15,23 +15,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionResponseListener;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
 
-public class AddFamilyAdapter extends RecyclerView.Adapter {
+public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
     int STRING_INPUT = 1;
     int LOCATION_INPUT = 2;
     int PHOTO_INPUT = 3;
-    int BUTTON_INPUT = 4;
+    int SUBMIT_BUTTON = 4;
 
     List<BackgroundQuestion> mQuestionsList;
     QuestionResponseListener mQuestionResponseListener;
 
-    public AddFamilyAdapter(QuestionResponseListener listener){
+    public BackgroundQuestionAdapter(QuestionResponseListener listener){
         mQuestionResponseListener = listener;
     }
 
@@ -48,7 +49,7 @@ public class AddFamilyAdapter extends RecyclerView.Adapter {
 
         if(position >= getItemCount()){
 
-            return BUTTON_INPUT;
+            return SUBMIT_BUTTON;
 
         } else {
             switch (question.getResponseType()) {
@@ -58,7 +59,6 @@ public class AddFamilyAdapter extends RecyclerView.Adapter {
 
                 case PHOTO:
                     return PHOTO_INPUT;
-
                 case LOCATION:
                     return LOCATION_INPUT;
                 default:
@@ -82,7 +82,7 @@ public class AddFamilyAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_picturequestion, parent, false);
             return new PictureViewHolder(view);
         }
-        else if (viewType == BUTTON_INPUT){
+        else if (viewType == SUBMIT_BUTTON){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_submit, parent, false);
             return new SubmitViewHolder(view);
         }
@@ -265,6 +265,25 @@ public class AddFamilyAdapter extends RecyclerView.Adapter {
             submitButtonContainer = (LinearLayout) itemView.findViewById(R.id.submit_button_view);
             submitButton = (Button) itemView.findViewById(R.id.submit_button);
 
+        }
+    }
+
+    /**Fades the questions that are not centered in the Discrete Scroll View**/
+    public static class QuestionFadeTransformer implements DiscreteScrollItemTransformer
+    {
+        @Override
+        public void transformItem(View item, float position) {
+            //pos inbetween -1 and 1, inclusive
+
+            //first normalize so between 0 and 1
+            //1 is max value
+
+            float absPosition = Math.abs(position);
+            absPosition = 1-absPosition; //flip value.. so 1 is max
+
+            float output = 0.7f * (absPosition) + 0.2f; //in between 100% and 20% output
+
+            item.setAlpha(output);
         }
     }
 

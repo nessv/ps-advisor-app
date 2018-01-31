@@ -94,6 +94,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
                 }
             }
         });
+        checkConditions();
         return view;
     }
 
@@ -133,11 +134,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
     }
 
     private void checkConditions(){
-        if (mPager.getCurrentItem() == mAdapter.getCount()-1) {
-            backButton.setVisibility(getView().VISIBLE);
-            skipButton.setVisibility(getView().VISIBLE);
-            skipButtonText.setText(R.string.survey_finish);
-        } else if (mPager.getCurrentItem() == 0){
+        if (mPager.getCurrentItem() == 0){
             skipButtonText.setText(R.string.survey_skip);
             backButton.setVisibility(getView().GONE); //change to gone when you get the selecting to work
             skipButton.setVisibility(getView().VISIBLE);

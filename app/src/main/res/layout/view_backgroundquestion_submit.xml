@@ -12,9 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/submit_button"
         android:layout_margin="30dp"
-        android:text="SUBMIT"
+        android:text="Submit"
         android:background="#333333"
-        android:textColor="#F7F7F7"
-        />
-
+        android:textColor="#F7F7F7"/>
 </LinearLayout>

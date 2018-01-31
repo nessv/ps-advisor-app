@@ -12,19 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.BackgroundQuestionAdapter;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionResponseListener;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import javax.inject.Inject;
 
-public class AddFamilyFrag extends StackedFrag implements QuestionResponseListener {
+public class AddFamilyFrag extends StackedFrag implements BackgroundQuestionCallback {
 
     private BackgroundQuestionAdapter mBackgroundQuestionAdapter;
 
@@ -55,8 +53,6 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
         {
             mBackgroundQuestionAdapter.setQuestionsList(questions);
         });
-
-
     }
 
     @Override
@@ -92,8 +88,19 @@ public class AddFamilyFrag extends StackedFrag implements QuestionResponseListen
     }
 
     @Override
-    public void onFamilyAdded(Family family) {
+    public void onNext(View v) {
+        int currentIndex = mDsvQuestionList.getCurrentItem();
+        currentIndex++;
 
+        if(currentIndex<mBackgroundQuestionAdapter.getItemCount())
+        {
+            mDsvQuestionList.smoothScrollToPosition(currentIndex);
+        }
     }
 
+    @Override
+    public void onFinish() {
+        //get family from view model
+        //save it
+    }
 }

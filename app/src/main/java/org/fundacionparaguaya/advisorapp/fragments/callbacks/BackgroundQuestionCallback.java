@@ -1,15 +1,17 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
+import android.view.View;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.util.Objects;
 
 /**
- * Created by Mone Elokda on 1/29/2018.
+ * A callback for fragments that are displaying a list of background questions
  */
 
-public interface QuestionResponseListener {
+public interface BackgroundQuestionCallback {
     void onQuestionAnswered(BackgroundQuestion q, Object response);
-    void onFamilyAdded(Family family);
+    void onNext(View v);
+    void onFinish();
 }

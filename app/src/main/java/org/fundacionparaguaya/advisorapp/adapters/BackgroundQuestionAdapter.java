@@ -8,32 +8,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.QuestionResponseListener;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
 
 public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
-    int STRING_INPUT = 1;
-    int LOCATION_INPUT = 2;
-    int PHOTO_INPUT = 3;
-    int SUBMIT_BUTTON = 4;
+    final static int STRING_INPUT = 1;
+    final static int LOCATION_INPUT = 2;
+    final static int PHOTO_INPUT = 3;
+    final static int DROPDOWN_INPUT =4; //TODO: implement dropdowns
+    final static int SUBMIT_BUTTON = 5;
 
     List<BackgroundQuestion> mQuestionsList;
-    QuestionResponseListener mQuestionResponseListener;
+    BackgroundQuestionCallback mBackgroundQuestionCallback;
 
-    public BackgroundQuestionAdapter(QuestionResponseListener listener){
-        mQuestionResponseListener = listener;
+    public BackgroundQuestionAdapter(BackgroundQuestionCallback listener){
+        mBackgroundQuestionCallback = listener;
     }
 
     public void setQuestionsList(List<BackgroundQuestion> questionsList)
@@ -42,53 +38,79 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-
     @Override
     public int getItemViewType(int position) {
-        BackgroundQuestion question = mQuestionsList.get(position);
 
-        if(position >= getItemCount()){
-
+        if(position == mQuestionsList.size()){
             return SUBMIT_BUTTON;
+        }
+        else {
+            BackgroundQuestion question = mQuestionsList.get(position);
 
-        } else {
-            switch (question.getResponseType()) {
-                case STRING:
-                case PHONE_NUMBER:
-                    return STRING_INPUT;
+            if (question.getOptions() != null && question.getOptions().size() > 0) {
+                return DROPDOWN_INPUT;
+            }
+            else {
+                switch (question.getResponseType()) {
+                    case STRING:
+                    case PHONE_NUMBER:
+                    case INTEGER:
+                        return STRING_INPUT;
 
-                case PHOTO:
-                    return PHOTO_INPUT;
-                case LOCATION:
-                    return LOCATION_INPUT;
-                default:
-                    return -1;
+                    case PHOTO:
+                        return PHOTO_INPUT;
+
+                    case LOCATION:
+                        return LOCATION_INPUT;
+
+                    default:
+                        return -1;
+                }
             }
         }
     }
 
+    //inflate the correct type of question view
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
-        if (viewType == STRING_INPUT){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_textquestion, parent, false);
-            return new TextQuestionViewHolder(view);
+        View itemView;
+        RecyclerView.ViewHolder vh = null;
+
+        switch (viewType)
+        {
+            case STRING_INPUT:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questiontext, parent, false);
+                vh = new TextQuestionViewHolder(itemView);
+                break;
+
+            case LOCATION_INPUT:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questionlocation, parent, false);
+                vh = new LocationViewHolder(itemView);
+                break;
+
+            case PHOTO_INPUT:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questionphoto, parent, false);
+                vh = new PictureViewHolder(itemView);
+                break;
+
+            case DROPDOWN_INPUT:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questiondropdown, parent, false);
+                vh = new DropdownViewHolder(itemView);
+                break;
+
+            case SUBMIT_BUTTON:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_backgroundquestion_submit, parent, false);
+                vh = new SubmitViewHolder(itemView);
+                break;
         }
-        else if (viewType == LOCATION_INPUT){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_locationquestion, parent, false);
-            return new LocationViewHolder(view);
+
+        if(vh==null)
+        {
+            throw new IllegalArgumentException("View holder was not a valid type for background questions");
         }
-        else if (viewType == PHOTO_INPUT){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_picturequestion, parent, false);
-            return new PictureViewHolder(view);
-        }
-        else if (viewType == SUBMIT_BUTTON){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addfamily_submit, parent, false);
-            return new SubmitViewHolder(view);
-        }
-        else {
-            return null;
-        }
+
+        return vh;
     }
 
     @Override
@@ -97,7 +119,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         {
             QuestionViewHolder questionViewHolder = (QuestionViewHolder)holder;
             questionViewHolder.setQuestion(mQuestionsList.get(position));
-            questionViewHolder.setQuestionResponseListener(mQuestionResponseListener);
+            questionViewHolder.setQuestionResponseListener(mBackgroundQuestionCallback);
         }
         catch (ClassCastException e)
         {
@@ -108,24 +130,19 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mQuestionsList.size();
+        if(mQuestionsList == null) return 0; //if no questions, no submit button
+        else return mQuestionsList.size() + 1; //+1 for the submit button
     }
 
 
     public static class TextQuestionViewHolder extends QuestionViewHolder {
 
-
-        LinearLayout familyInfoItem;
-        TextView familyInfoQuestion;
         EditText familyInfoEntry;
-        Button nextButton;
 
         public TextQuestionViewHolder(View itemView) {
             super(itemView);
-            familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
-            familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_textquestion);
-            familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_text_field);
-            nextButton = (Button) itemView.findViewById(R.id.next_button);
+
+            familyInfoEntry = (EditText) itemView.findViewById(R.id.et_questiontext_answer);
 
 
             familyInfoEntry.addTextChangedListener(new TextWatcher() {
@@ -137,7 +154,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     String answer = familyInfoEntry.getText().toString();
-                    mQuestionResponseListener.onQuestionAnswered(mQuestion, answer);
+                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, answer);
                 }
 
                 @Override
@@ -145,22 +162,56 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
                 }
             });
+        }
+    }
 
-            nextButton.setOnClickListener(new View.OnClickListener() {
+    public static class DropdownViewHolder extends QuestionViewHolder {
+
+        LinearLayout familyInfoItem;
+        Spinner mSpinnerOptions;
+        ArrayAdapter<String> mSpinnerAdapter;
+
+
+        public DropdownViewHolder(View itemView) {
+            super(itemView);
+
+            mSpinnerOptions = (Spinner) itemView.findViewById(R.id.spinner_questiondropdown);
+
+            mSpinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onClick(View view) {
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String s = (String)adapterView.getItemAtPosition(i);
+                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, s);
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    //TODO should remove last response
                 }
             });
         }
 
         @Override
         public void setQuestion(BackgroundQuestion question) {
-            mQuestion = question;
-            familyInfoQuestion.setText(question.getDescription());
+            super.setQuestion(question);
+
+            if(question.getOptions() != null){
+                createAdapter(question.getOptions());
+            } else {
+                throw new IllegalArgumentException("This question has no options");
+            }
+        }
+
+        private void createAdapter(List<String> options)
+        {
+            mSpinnerAdapter =
+                    new ArrayAdapter<String>(itemView.getContext(), android.R.layout.simple_spinner_dropdown_item, options);
+
+            mSpinnerOptions.setAdapter(mSpinnerAdapter);
         }
 
     }
+
 
     public static class LocationViewHolder extends QuestionViewHolder{
 
@@ -172,20 +223,11 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         public LocationViewHolder(View itemView) {
             super(itemView);
 
-            familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_textquestion);
-            familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_locationquestion);
+            familyInfoQuestion = (TextView) itemView.findViewById(R.id.tv_questionall_title);
             familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
-            nextButton = (Button) itemView.findViewById(R.id.next_button);
+            nextButton = (Button) itemView.findViewById(R.id.btn_questionall_next);
 
         }
-
-        @Override
-        public void setQuestion(BackgroundQuestion question) {
-            mQuestion = question;
-            familyInfoQuestion.setText(question.getDescription());
-
-        }
-
 
         public String onResponse()
         {
@@ -197,20 +239,15 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
     public static class PictureViewHolder extends QuestionViewHolder{
 
         LinearLayout familyInfoItem;
-        TextView familyInfoQuestion;
         ImageButton cameraButton;
         ImageButton galleryButton;
         ImageView responsePicture;
-        Button nextButton;
-
 
         public PictureViewHolder(View itemView) {
             super(itemView);
             familyInfoItem = (LinearLayout) itemView.findViewById(R.id.item_picturequestion);
-            familyInfoQuestion = (TextView) itemView.findViewById(R.id.addfamily_picturequestion);
             cameraButton = (ImageButton) itemView.findViewById(R.id.camera_button);
             galleryButton = (ImageButton) itemView.findViewById(R.id.gallery_button);
-            nextButton = (Button) itemView.findViewById(R.id.next_button);
 
             cameraButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -219,13 +256,6 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
                     itemView.getContext().startActivity(intent);
                 }
             });
-        }
-
-        @Override
-        public void setQuestion(BackgroundQuestion question) {
-            mQuestion = question;
-            familyInfoQuestion.setText(question.getDescription());
-
         }
 
         public void onResponse()
@@ -240,18 +270,32 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
     abstract static class QuestionViewHolder extends RecyclerView.ViewHolder
     {
         protected BackgroundQuestion mQuestion;
-        QuestionResponseListener mQuestionResponseListener;
+        BackgroundQuestionCallback mBackgroundQuestionCallback;
+        TextView mTvQuestionTitle;
+        Button mBtnNext;
 
         public QuestionViewHolder(View itemView) {
             super(itemView);
+
+            mBtnNext = itemView.findViewById(R.id.btn_questionall_next);
+            mTvQuestionTitle = itemView.findViewById(R.id.tv_questionall_title);
         }
 
-        public void setQuestionResponseListener(QuestionResponseListener listener)
+        public void setQuestionResponseListener(BackgroundQuestionCallback listener)
         {
-            mQuestionResponseListener = listener;
+            mBackgroundQuestionCallback = listener;
+            mBtnNext.setOnClickListener(mBackgroundQuestionCallback::onNext);
         }
 
-        public abstract void setQuestion(BackgroundQuestion question);
+        /**Stores the question that is being set and sets the title of the question
+         *
+         * @param question Question to set
+         */
+        public void setQuestion(BackgroundQuestion question)
+        {
+            mQuestion = question;
+            mTvQuestionTitle.setText(question.getDescription());
+        }
     }
 
     public class SubmitViewHolder extends RecyclerView.ViewHolder{
@@ -264,7 +308,6 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
             submitButtonContainer = (LinearLayout) itemView.findViewById(R.id.submit_button_view);
             submitButton = (Button) itemView.findViewById(R.id.submit_button);
-
         }
     }
 
@@ -278,12 +321,14 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
             //first normalize so between 0 and 1
             //1 is max value
 
-            float absPosition = Math.abs(position);
-            absPosition = 1-absPosition; //flip value.. so 1 is max
+            if (item.getId() != R.id.submit_button_view) {
+                float absPosition = Math.abs(position);
+                absPosition = 1 - absPosition; //flip value.. so 1 is max
 
-            float output = 0.7f * (absPosition) + 0.2f; //in between 100% and 20% output
+                float output = 0.7f * (absPosition) + 0.2f; //in between 100% and 20% output
 
-            item.setAlpha(output);
+                item.setAlpha(output);
+            }
         }
     }
 

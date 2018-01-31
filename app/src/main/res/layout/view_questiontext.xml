@@ -4,13 +4,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
         android:paddingVertical="60dp"
-        android:background="@color/survey_lightyellow"
         android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/background_question"
+        android:id="@+id/tv_questionall_title"
         tools:text="What is your name?"
         android:textSize="48sp"
         android:paddingStart="56dp"
@@ -28,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/answer_text_field"
+                android:id="@+id/et_questiontext_answer"
                 android:hint="Your Name"
                 android:textSize="48sp"
                 android:textColor="#333333"/>
@@ -37,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:id="@+id/btn_questionall_next"
                 android:layout_centerInParent="true"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
@@ -45,7 +45,7 @@
                 android:text="Next"
                 android:textSize="36sp"
                 android:background="#333333"
-                android:textColor="#E5BE45"/>
+                android:textColor="@color/survey_whitebackground"/>
     </RelativeLayout>
 
 </LinearLayout>

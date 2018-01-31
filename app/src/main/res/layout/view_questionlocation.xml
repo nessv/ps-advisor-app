@@ -2,15 +2,16 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/item_questionlocation"
         android:paddingVertical="60dp"
-        android:id="@+id/item_textquestion"
         android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addfamily_textquestion"
+        android:id="@+id/tv_questionall_title"
         tools:text="What is your name?"
         android:textSize="48sp"
         android:paddingStart="56dp"
@@ -28,17 +29,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/entry_text_field"
-                android:hint="Your Name"
+                android:id="@+id/entry_location_field"
                 android:textSize="48sp"
                 android:textColor="#333333"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/next_button"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
+                android:id="@+id/btn_questionall_next"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:paddingTop="4dp"

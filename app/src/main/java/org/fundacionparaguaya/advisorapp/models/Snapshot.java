@@ -8,8 +8,11 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
+import android.text.format.DateFormat;
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
+import org.ocpsoft.prettytime.PrettyTime;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +60,9 @@ public class Snapshot {
     @ColumnInfo(name = "created_at")
     private Date createdAt;
 
+
+    @Ignore
+    boolean mIsLatest;
 
     @Ignore
     public Snapshot(Family family, Survey survey) {
@@ -152,6 +158,30 @@ public class Snapshot {
      */
     public void response(IndicatorQuestion question, IndicatorOption response) {
         indicatorResponses.put(question, response);
+    }
+
+    @Override
+    public String toString() {
+
+        PrettyTime prettyTime = new PrettyTime();
+
+        if(createdAt ==null) createdAt = new Date();
+
+        if(mIsLatest)
+        {
+            return "Latest: " + prettyTime.format(createdAt);
+        }
+        else return DateFormat.format("MM/dd/yyyy", createdAt).toString();
+    }
+
+    /**Kinda hacky fix to the fact that it's easiest for spinners to hold objects
+     * with a toString... and we want the toString to report "Latest" when the snapshot is the latest
+     * (instead of the date)
+     * //TODO someday implement this on the mapper side (or custom adapter for spinner) @krconv
+     */
+    public void setIsLatest(boolean isLatest)
+    {
+        mIsLatest = isLatest;
     }
 
     @Override

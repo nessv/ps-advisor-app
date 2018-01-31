@@ -22,7 +22,7 @@ public class QuestionTextView extends LinearLayout implements View.OnClickListen
         super(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.view_questiontext, this);
+        inflater.inflate(R.layout.view_bkgquestion_text, this);
 
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswer = (EditText) findViewById(R.id.answer_text_field);

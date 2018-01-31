@@ -43,7 +43,7 @@
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
-    <string name="survey_summary_questionsleft">Questions Left</string>
+    <string name="survey_summary_questionsleft">Questions Unanswered</string>
 
     <!--Other-->
     <string name="all_continue">Continue</string>

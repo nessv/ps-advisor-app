@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/indicatorsurvey_buttons"
-        android:background="@color/float_transparent"/>
+        android:background="@android:color/transparent"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/indicatorsurvey_buttons"
@@ -23,7 +23,7 @@
         android:paddingStart="20dp"
         android:paddingEnd = "20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/float_transparent">
+        android:background="@android:color/transparent">
 
         <LinearLayout
             android:id="@+id/indicatorsurvey_backbutton"

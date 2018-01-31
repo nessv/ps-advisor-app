@@ -21,7 +21,7 @@ public class QuestionDropdownView extends LinearLayout implements View.OnClickLi
         super(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.view_questiondropdown, this);
+        inflater.inflate(R.layout.view_bkgquestion_dropdown, this);
 
         mQuestionTextView = (TextView) findViewById(R.id.background_question);
         mAnswerSpinner = (Spinner) findViewById(R.id.dropdown_field);

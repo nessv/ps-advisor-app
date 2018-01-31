@@ -77,6 +77,8 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         saveButton = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_nextbutton);
         saveButtonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_nextbuttontext);
 
+        saveButton.setVisibility(View.GONE);
+
         question = mSurveyViewModel.getFocusedQuestion();
 
         for (IndicatorOption option : question.getOptions()) {
@@ -168,11 +170,13 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
             indicatorCard.setSelected(false);
             mSurveyViewModel.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
+            saveButton.setVisibility(View.GONE);
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
             selectedIndicatorCard = indicatorCard;
+            saveButton.setVisibility(View.VISIBLE);
         }
 
     }

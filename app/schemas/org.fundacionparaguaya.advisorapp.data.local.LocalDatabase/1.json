@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9a5f35775f7454e1f629426ff867b05c",
+    "identityHash": "b58f655081c24442660243035a1f4a37",
     "entities": [
       {
         "tableName": "families",
@@ -143,14 +143,6 @@
               "remote_id"
             ],
             "createSql": "CREATE UNIQUE INDEX `index_families_remote_id` ON `${TABLE_NAME}` (`remote_id`)"
-          },
-          {
-            "name": "index_families_code",
-            "unique": true,
-            "columnNames": [
-              "code"
-            ],
-            "createSql": "CREATE UNIQUE INDEX `index_families_code` ON `${TABLE_NAME}` (`code`)"
           }
         ],
         "foreignKeys": []
@@ -313,7 +305,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9a5f35775f7454e1f629426ff867b05c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b58f655081c24442660243035a1f4a37\")"
     ]
   }
 }

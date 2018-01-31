@@ -24,6 +24,14 @@ public abstract class StackedFrag extends Fragment
         mNavigateCallback.onNavigateNext(fragment);
     }
 
+    /**
+     * Goes back to the previous fragment
+     */
+    public void navigateBack()
+    {
+        mNavigateCallback.onNavigateBack();
+    }
+
     @Override
     public void onAttach(Context context)
     {

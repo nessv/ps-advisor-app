@@ -5,12 +5,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import android.os.AsyncTask;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Location;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,6 +94,11 @@ public class AddFamilyViewModel extends ViewModel {
             familyCreated.setLocation(location);
         }
 
+    }
+
+    public void saveFamily()
+    {
+        mFamilyRepository.saveFamily(familyCreated);
     }
 
     public int getFamilyId(){

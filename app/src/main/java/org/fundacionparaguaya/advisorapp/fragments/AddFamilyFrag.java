@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,8 +20,10 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionC
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
+import java.lang.ref.WeakReference;
 
 public class AddFamilyFrag extends StackedFrag implements BackgroundQuestionCallback {
 
@@ -100,7 +103,31 @@ public class AddFamilyFrag extends StackedFrag implements BackgroundQuestionCall
 
     @Override
     public void onFinish() {
+        new SaveFamilyAsyncTask(this).execute();
         //get family from view model
         //save it
+    }
+
+    static class SaveFamilyAsyncTask extends AsyncTask<Void, Void, Void>
+    {
+        private WeakReference<AddFamilyFrag> fragReference;
+
+        SaveFamilyAsyncTask(AddFamilyFrag frag)
+        {
+            fragReference = new WeakReference<AddFamilyFrag>(frag);
+        }
+
+        @Override
+        protected Void doInBackground (Void ... voids) {
+            fragReference.get().mAddFamilyViewModel.saveFamily();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            fragReference.get().navigateBack();
+            super.onPostExecute(aVoid);
+        }
     }
 }

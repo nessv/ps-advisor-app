@@ -40,7 +40,7 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         mMapTab = (DashboardTab) findViewById(R.id.map_tab);
         mArchiveTab = (DashboardTab) findViewById(R.id.archive_tab);
         mSettingsTab = (DashboardTab) findViewById(R.id.settings_tab);
-        mBugButton = (ImageButton) findViewById(R.id.bug_button);
+       // mBugButton = (ImageButton) findViewById(R.id.bug_button);
 
         mFamilyTab.initTab(TabType.FAMILY, this);
         mMapTab.initTab(TabType.MAP, this);
@@ -118,21 +118,18 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         switch (view.getId()){
             case R.id.family_tab:
                 selectTab(TabType.FAMILY);
-
                 break;
+
             case R.id.map_tab:
                 selectTab(TabType.MAP);
-
                 break;
+
             case R.id.archive_tab:
                 selectTab(TabType.ARCHIVE);
-
                 break;
+
             case R.id.settings_tab:
                 selectTab(TabType.SETTINGS);
-
-                break;
-            case R.id.bug_button:
                 break;
         }
     }

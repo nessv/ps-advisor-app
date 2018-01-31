@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -28,6 +29,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     TextView mSyncLabel;
     ImageButton mSyncButton;
     RelativeTimeTextView mLastSyncTextView;
+
+    LinearLayout mBackButton;
 
     @Inject
     SyncManager mSyncManager;
@@ -82,8 +85,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
 
-	mSyncLabel = findViewById(R.id.topbar_synclabel);
-	mLastSyncTextView = findViewById(R.id.last_sync_textview);
+        mSyncLabel = findViewById(R.id.topbar_synclabel);
+        mLastSyncTextView = findViewById(R.id.last_sync_textview);
 
         mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
@@ -110,6 +113,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             switchToFrag(FamilyTabbedFragment.class);
         }
 
+        mBackButton = findViewById(R.id.linearlayout_dashactivity_back);
+        mBackButton.setVisibility(View.GONE);
+        mBackButton.setOnClickListener((event)-> onBackPressed());
+
         tabBarView.addTabSelectedHandler(handler);
     }
 
@@ -119,12 +126,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     @Override
     public void onShowBackNav() {
-        Toast.makeText(getApplicationContext(), "Show Back Nav", Toast.LENGTH_SHORT).show();
+       mBackButton.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onHideBackNav() {
-        Toast.makeText(getApplicationContext(), "Hide Back Nav", Toast.LENGTH_SHORT).show();
+        mBackButton.setVisibility(View.GONE);
     }
 
     private class SyncRepositoryTask extends AsyncTask<Void, Void, Boolean> {

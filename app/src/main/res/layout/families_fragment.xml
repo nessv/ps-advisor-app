@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#F7F7F7"
         >
@@ -23,8 +23,8 @@
                 android:textAppearance="@style/BigHero.Black"
                 android:layout_marginLeft="40dp"
                 android:paddingRight="24dp"
-                android:textSize="48sp"
-                />
+                android:textSize="48sp"/>
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -32,10 +32,8 @@
                 android:src="@mipmap/plusbutton"
                 android:layout_marginTop="15dp"
                 android:layout_toRightOf="@+id/families_label"
-                android:background="@null"
-                />
+                android:background="@null"/>
         </RelativeLayout>
-
 
         <View android:layout_width="match_parent"
             android:layout_height="160dp"
@@ -59,10 +57,11 @@
             app:spanCount ='3'
             android:id="@+id/all_families_view"
             android:layout_width="match_parent"
+            android:nestedScrollingEnabled="false"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="28dp"
             tools:listitem="@layout/item_allfamilies"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

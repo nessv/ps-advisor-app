@@ -9,4 +9,6 @@ import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
 public interface NavigationListener
 {
     void onNavigateNext(StackedFrag frag);
+
+    void onNavigateBack();
 }

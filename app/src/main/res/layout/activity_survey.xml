@@ -30,7 +30,7 @@
                  android:layout_marginTop="12dp"
                  android:contentDescription="@string/surveyacivity_exit_cd"
                  android:layout_marginEnd="12dp"
-                 android:background="@color/float_transparent"
+                 android:background="@android:color/transparent"
                  android:id="@+id/btn_surveyactivity_close"
                  android:src="@drawable/ic_circleclose"
     />

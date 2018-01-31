@@ -30,7 +30,7 @@
                      android:id="@+id/btn_familyindicators_newsnapshot"
                      android:scaleType="fitXY"
                      android:layout_alignParentEnd="true"
-                     android:background="@color/float_transparent"
+                     android:background="@android:color/transparent"
                      android:src="@drawable/ic_familydetailtabs_mainaction"/>
     </RelativeLayout>
 

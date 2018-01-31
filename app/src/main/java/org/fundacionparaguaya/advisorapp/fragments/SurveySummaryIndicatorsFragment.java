@@ -124,14 +124,14 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mGreenCard.isSelected() || mYellowCard.isSelected() || mRedCard.isSelected()) {
+                if (selectedIndicatorCard != null) {
                     try {
                         mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
+                        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
                     } catch (NullPointerException e) {
                         mSurveyViewModel.addSkippedIndicator(question);
                     }
                 }
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         });
         super.onResume();
@@ -153,7 +153,6 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
     public void onClick(View view) {
         if (view instanceof IndicatorCard) {
             IndicatorCard card = (IndicatorCard) view;
-
             onCardSelected(card);
         }
     }
@@ -173,8 +172,6 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
-
-            mSurveyViewModel.addIndicatorResponse(question, indicatorCard.getOption());
             selectedIndicatorCard = indicatorCard;
         }
 

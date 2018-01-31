@@ -27,6 +27,7 @@ public interface ApplicationComponent {
     void inject(FamilyDetailFrag familyDetailFrag);
     void inject(FamilyIndicatorsListFrag familIndicatorsFrag);
 
+    void inject(AddFamilyFrag frag);
 
     void inject(SurveyActivity surveyActivity);
     void inject(SurveyIntroFragment surveyIntroFragment);

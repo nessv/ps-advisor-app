@@ -19,14 +19,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/dashboardtopbar"
             android:layout_width="0dp"
-
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
             android:layout_marginStart="8dp"
+            android:layout_height="68dp"
             android:background="@color/topbarBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/dashboardTabView"
@@ -34,17 +31,19 @@
             android:baselineAligned="false">
 
         <LinearLayout
-            android:id="@+id/dashboardtopbar_backbutton"
-            android:layout_width="0dp"
-            android:layout_height="68dp"
-            android:gravity="start"
-            android:layout_weight="1">
+            android:id="@+id/linearlayout_dashactivity_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="start">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/backbutton_desc"
                 android:src="@drawable/dashtopbar_chevronright"/>
@@ -52,8 +51,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginTop="17dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="2dp"
                 android:text="@string/topbar_backbutton"
                 android:textSize="24sp"
                 android:textColor="@color/topbarBackButton"/>
@@ -61,10 +60,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="225dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true">
 
             <ImageButton
                 android:id="@+id/dashboardtopbar_syncbutton"
@@ -116,7 +117,7 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout android:layout_width="0dp" android:layout_height="0dp"
                   android:id="@+id/dash_content"

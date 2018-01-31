@@ -38,6 +38,7 @@
     <color name="survey_whitebackground">#F2F2F2</color>
     <color name="survey_grey">#26828282</color>
     <color name="survey_navbuttons">#4F4F4F</color>
+    <color name="surveyindicators_background">@color/survey_whitebackground</color>
 
     <!--Indicator Survey Colors-->
     <color name="indicator_card_red">#EB5757</color>

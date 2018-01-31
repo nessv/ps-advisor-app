@@ -59,9 +59,9 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setHeaderColor(R.color.float_transparent);
+        setFooterColor(R.color.surveysummary_background);
+        setHeaderColor(R.color.surveysummary_background);
         setShowFooter(false);
-
         setTitle(getString(R.string.survey_summary_title));
     }
 

@@ -28,7 +28,6 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
     public FamiliesAdapter(){
         mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
-
     }
 
     public void addFamilySelectedHandler(FamilySelectedHandler h){
@@ -82,7 +81,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
 
     public void setFamilyList(final List<? extends Family> families){
-        if(mFamilyList == null){
+        if(mFamilyList == null || mFamilyList.size() == 0){
             mFamilyList = families;
             notifyDataSetChanged();
         } else {
@@ -136,7 +135,6 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
             familyCard = (CardView) itemView.findViewById(R.id.card_view);
             familyName = (TextView) itemView.findViewById(R.id.family_name);
             imageView = (SimpleDraweeView)itemView.findViewById(R.id.family_image);
-
 //            nextVisitLabel = (TextView) itemView.findViewById(R.id.next_visit);
 //            nextVisitDate = (TextView) itemView.findViewById(R.id.next_visit_time);
 //            lastVisitLabel = (TextView) itemView.findViewById(R.id.last_visit);

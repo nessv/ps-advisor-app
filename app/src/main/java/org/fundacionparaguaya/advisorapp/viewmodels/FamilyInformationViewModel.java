@@ -23,7 +23,6 @@ public class FamilyInformationViewModel extends ViewModel {
 
     private LiveData<Family> currentFamily;
 
-
     final private MutableLiveData<Snapshot> mSelectedSnapshot = new MutableLiveData<>();
 
     private LiveData<List<Snapshot>> mSnapshots;
@@ -34,12 +33,12 @@ public class FamilyInformationViewModel extends ViewModel {
 
     }
 
-    //LiveData object of the indicators in a snapshot
-
+    //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when
+    //the selected snapshot changes
     final private LiveData<SortedMap<IndicatorQuestion, IndicatorOption>> mIndicatorsForSelected = Transformations.map(mSelectedSnapshot, selected ->
     {
-
-        if(selected==null) {
+        if(selected==null)
+        {
             return null;
         }
         else
@@ -49,9 +48,6 @@ public class FamilyInformationViewModel extends ViewModel {
             return sortedMap;
         }
     });
-
-
-
 
     /**
      * Sets the current family for this view model and returns the LiveData representation
@@ -71,8 +67,6 @@ public class FamilyInformationViewModel extends ViewModel {
 
         return currentFamily;
     }
-
-
 
     /**
      * Returns the indicators for the selected snapshot. Will update when the selected snapshot is changed

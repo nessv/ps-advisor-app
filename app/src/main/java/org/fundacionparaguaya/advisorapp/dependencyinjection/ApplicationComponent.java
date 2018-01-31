@@ -25,6 +25,9 @@ public interface ApplicationComponent {
     void inject(DashActivity dashActivity);
     void inject(AllFamiliesStackedFrag allFamiliesFragment);
     void inject(FamilyDetailFrag familyDetailFrag);
+    void inject(FamilyIndicatorsListFrag familIndicatorsFrag);
+
+    void inject(AddFamilyFrag frag);
 
     void inject(SurveyActivity surveyActivity);
     void inject(SurveyIntroFragment surveyIntroFragment);
@@ -32,5 +35,6 @@ public interface ApplicationComponent {
     void inject(SurveyQuestionsFrag backgroundQuestionsFrag);
     void inject(SurveyIndicatorsFragment surveyIndicatorsFragment);
 
-    void inject(AddFamilyFrag addFamilyFrag);
+    void inject(SurveySummaryFragment surveySummaryFragment);
+    void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 }

@@ -3,7 +3,6 @@ package org.fundacionparaguaya.advisorapp.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -13,7 +12,7 @@ import android.support.annotation.NonNull;
  */
 
 @Entity(tableName = "families",
-        indices={@Index(value="remote_id", unique=true), @Index(value="code", unique=true)})
+        indices={@Index(value="remote_id", unique=true)})
 public class Family {
     @PrimaryKey(autoGenerate = true)
     private int id;

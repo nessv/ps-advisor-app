@@ -53,7 +53,10 @@ public class SnapshotRepository {
     }
 
     public void saveSnapshot(Snapshot snapshot) {
-        snapshotDao.insertSnapshot(snapshot);
+        long rows = snapshotDao.updateSnapshot(snapshot);
+        if (rows == 0) { // now row was updated
+            snapshotDao.insertSnapshot(snapshot);
+        }
     }
 
     private boolean pushSnapshots() {
@@ -73,12 +76,13 @@ public class SnapshotRepository {
                     // overwrite the pending snapshot with the snapshot from remote db
                     Snapshot remoteSnapshot = IrMapper.mapSnapshot(response.body(), family, survey);
                     remoteSnapshot.setId(snapshot.getId());
-                    snapshotDao.updateSnapshot(remoteSnapshot);
+                    saveSnapshot(remoteSnapshot);
                 } else {
+                    Log.w(TAG, format("pushSnapshots: Could not push snapshot with id %d! %s", snapshot.getId(), response.errorBody()));
                     success = false;
                 }
             } catch (IOException e) {
-                Log.e(TAG, String.format("pushFamilies: Could not push snapshot \"%d\"!", snapshot.getId()), e);
+                Log.e(TAG, format("pushSnapshots: Could not push snapshot with id %d!", snapshot.getId()), e);
                 success = false;
             }
         }
@@ -89,22 +93,36 @@ public class SnapshotRepository {
         boolean success = true;
         for (Family family : familyRepository.getFamiliesNow()) {
             for (Survey survey : surveyRepository.getSurveysNow()) {
-                try {
-                    Response<List<SnapshotIr>> response = snapshotService
-                            .getSnapshots(authManager.getAuthenticationString(), survey.getRemoteId(), family.getRemoteId())
-                            .execute();
-
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Snapshot> snapshots = IrMapper.mapSnapshots(response.body(), family, survey);
-                        snapshotDao.insertSnapshots(snapshots.toArray(new Snapshot[snapshots.size()]));
-                    }
-                } catch (IOException e) {
-                    Log.e(TAG, format("pullSnapshots: Could not pull snapshots for family \"%s\"!", family.getName()), e);
-                    success = false;
-                }
+                success &= pullSnapshots(family, survey);
             }
         }
         return success;
+    }
+
+    private boolean pullSnapshots(Family family, Survey survey) {
+        try {
+            Response<List<SnapshotIr>> response = snapshotService
+                    .getSnapshots(authManager.getAuthenticationString(), survey.getRemoteId(), family.getRemoteId())
+                    .execute();
+
+            if (!response.isSuccessful() || response.body() == null) {
+                Log.w(TAG, format("pullSnapshots: Could not pull snapshots for family %d! %s", family.getRemoteId(), response.errorBody()));
+                return false;
+            }
+
+            List<Snapshot> snapshots = IrMapper.mapSnapshots(response.body(), family, survey);
+            for (Snapshot snapshot : snapshots) {
+                Snapshot old = snapshotDao.queryRemoteSnapshotNow(snapshot.getRemoteId());
+                if (old != null) {
+                    snapshot.setId(old.getId());
+                }
+                saveSnapshot(snapshot);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, format("pullSnapshots: Could not pull snapshots for family %d!", family.getRemoteId()), e);
+            return false;
+        }
+        return true;
     }
 
     /**

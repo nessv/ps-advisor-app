@@ -4,9 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -15,12 +13,13 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
+
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -58,13 +57,14 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
 
         setFooterColor(R.color.survey_grey);
         setHeaderColor(R.color.survey_grey);
+        setTitle(getString(R.string.survey_indicators_title));
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_surveyindicatorsurvey, container, false);
+        View view = inflater.inflate(R.layout.fragment_surveyindicators, container, false);
 
         mAdapter = new IndicatorAdapter(getFragmentManager(), mSurveyViewModel, this);
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
@@ -87,10 +87,9 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
             @Override
             public void onClick(View v) {
                 if (mPager.getCurrentItem() == mAdapter.getCount() - 1){
-                    //TODO: Close the survey activity
-
+                    mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
                 } else {
-                    mSurveyViewModel.addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                    addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
                     nextQuestion();
                 }
             }
@@ -125,6 +124,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
         mSurveyViewModel.addSkippedIndicator(question);
     }
 
+    public Set<IndicatorQuestion> getSkippedIndicators(){
+        return mSurveyViewModel.getSkippedIndicators();
+    }
+
     public void removeIndicatorResponse(IndicatorQuestion question){
         mSurveyViewModel.removeIndicatorResponse(question);
     }
@@ -136,11 +139,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment{
             skipButtonText.setText(R.string.survey_finish);
         } else if (mPager.getCurrentItem() == 0){
             skipButtonText.setText(R.string.survey_skip);
-            backButton.setVisibility(getView().VISIBLE); //change to gone when you get the selecting to work
-            skipButton.setVisibility(getView().VISIBLE);
-        } else if (mPager.getCurrentItem() == mAdapter.getCount() - 2) {
-            skipButtonText.setText(R.string.survey_skip);
-            backButton.setVisibility(getView().VISIBLE);
+            backButton.setVisibility(getView().GONE); //change to gone when you get the selecting to work
             skipButton.setVisibility(getView().VISIBLE);
         } else {
             skipButtonText.setText(R.string.survey_skip);

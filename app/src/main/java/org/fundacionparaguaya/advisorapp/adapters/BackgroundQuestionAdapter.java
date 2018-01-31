@@ -152,6 +152,9 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
                 case INTEGER:
                     familyInfoEntry.setInputType(InputType.TYPE_CLASS_NUMBER);
                     break;
+
+                default:
+                    familyInfoEntry.setInputType(InputType.TYPE_NULL);
             }
 
         }

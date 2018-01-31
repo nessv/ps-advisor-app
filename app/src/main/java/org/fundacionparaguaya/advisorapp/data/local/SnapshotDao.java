@@ -11,7 +11,7 @@ import org.fundacionparaguaya.advisorapp.models.Snapshot;
 
 import java.util.List;
 
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+import static android.arch.persistence.room.OnConflictStrategy.FAIL;
 
 /**
  * The access utility for retrieving snapshots from the local database.
@@ -42,11 +42,12 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE remote_id IS NULL")
     List<Snapshot> queryPendingSnapshots();
 
-    @Insert(onConflict = REPLACE)
-    long insertSnapshot(Snapshot snapshot);
 
-    @Insert(onConflict = REPLACE)
-    void insertSnapshots(Snapshot ... snapshots);
+    @Query("SELECT * FROM snapshots WHERE remote_id = :remoteId")
+    Snapshot queryRemoteSnapshotNow(long remoteId);
+
+    @Insert(onConflict = FAIL)
+    long insertSnapshot(Snapshot snapshot);
 
     @Update
     int updateSnapshot(Snapshot snapshot);

@@ -121,7 +121,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
         {
             indicatorCard.setSelected(false);
             parentFragment.removeIndicatorResponse(question);
-
             selectedIndicatorCard = null;
         }
         else
@@ -151,7 +150,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    parentFragment.nextQuestion();
+                    if (selectedIndicatorCard != null) {
+                        parentFragment.nextQuestion();
+                    } else {
+                        parentFragment.removeIndicatorResponse(question);
+                    }
                 }
             }, 500); // Millisecond 1000 = 1 sec
         }

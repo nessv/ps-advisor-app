@@ -43,8 +43,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
 
     SharedSurveyViewModel mSurveyViewModel;
 
-    int lastItem;
-
     @Override
     public void onCreate(@Nullable Bundle savedInsanceState) {
         super.onCreate(savedInsanceState);
@@ -59,7 +57,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
         setFooterColor(R.color.survey_grey);
         setHeaderColor(R.color.survey_grey);
         setTitle(getString(R.string.survey_indicators_title));
-        lastItem = 0;
     }
 
     @Nullable
@@ -68,7 +65,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveyindicators, container, false);
 
-        mAdapter = new IndicatorAdapter(getFragmentManager(), mSurveyViewModel, this);
+        mAdapter = new IndicatorAdapter(getChildFragmentManager(), mSurveyViewModel, this);
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
 
         mPager.setAdapter(mAdapter);
@@ -98,17 +95,14 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
 
     @Override
     public void onResume() {
-        mPager.setCurrentItem(lastItem);
         super.onResume();
     }
 
     public void nextQuestion() {
         if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
             mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
-            lastItem = mPager.getCurrentItem();
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-            lastItem = mPager.getCurrentItem();
             checkConditions();
         }
     }
@@ -119,7 +113,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
             mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.BACKGROUND_QUESTIONS);
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-            lastItem = mPager.getCurrentItem();
             checkConditions();
         }
     }

@@ -34,6 +34,9 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
     //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
 
+    static String HAS_BEEN_INIT_KEY = "HAS_BEEN_INITIALIZED";
+    boolean mHasBeenInitialized = false;
+
     public TabbedFrag()
     {
 
@@ -121,6 +124,19 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(getChildFragmentManager().getFragments().size()==0)
+        {
+            this.setInitialFragment(this.getInitialFragment());
+            mHasBeenInitialized = true;
+        }
+    }
+
+    protected abstract StackedFrag getInitialFragment();
+
+    @Override
     public void onAttach(Context context)
     {
         super.onAttach(context);
@@ -142,5 +158,16 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
         {
             throw new ClassCastException("Parent activity or fragment must implement ShowBackNavCallback");
         }
+    }
+
+    /**Saves whether or not this tab has already been initialized (and had first fragment set)
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(HAS_BEEN_INIT_KEY, mHasBeenInitialized);
+
+        super.onSaveInstanceState(outState);
     }
 }

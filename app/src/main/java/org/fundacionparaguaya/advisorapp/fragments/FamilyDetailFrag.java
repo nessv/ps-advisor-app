@@ -1,7 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.app.Fragment;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -14,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -67,7 +64,7 @@ public class FamilyDetailFrag extends StackedFrag implements Observer<Family>, S
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.family_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_familydetail, container, false);
 
         return view;
     }

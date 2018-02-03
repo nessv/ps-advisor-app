@@ -12,26 +12,8 @@ import android.view.View;
 
 public class ExampleTabbedFragment extends TabbedFrag
 {
-    ExampleStackedFragment mFrag1;
-
-    boolean mHasBeenInitialized = false;
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        mFrag1 = ExampleStackedFragment.build(1);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if(!mHasBeenInitialized)
-        {
-            this.setInitialFragment(mFrag1);
-            mHasBeenInitialized = true;
-        }
+    protected StackedFrag getInitialFragment() {
+        return ExampleStackedFragment.build(1);
     }
 }

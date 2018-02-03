@@ -1,9 +1,11 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,11 +49,11 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             case FAMILY:
                 return FamilyTabbedFragment.class;
             case MAP:
-                return ExampleTabbedFragment.class;
+                return MapTabFrag.class;
             case ARCHIVE:
-                return ExampleTabbedFragment.class;
+                return ArchiveTabFrag.class;
             case SETTINGS:
-                return ExampleTabbedFragment.class;
+                return SettingsTabFrag.class;
         }
 
         return null;
@@ -60,8 +62,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     private DashboardTabBarView.TabSelectedHandler handler = (event) ->
     {
         switchToFrag(getClassForType(event.getSelectedTab()));
-
-        Toast.makeText(getApplicationContext(), event.getSelectedTab().name(), Toast.LENGTH_SHORT).show();
     };
 
     @Override
@@ -78,6 +78,12 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         ((AdvisorApplication) this.getApplication())
                 .getApplicationComponent()
                 .inject(this);
+
+        //only supported after Lollipop
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.fp_green, this.getTheme()));
+        }
 
         setContentView(R.layout.activity_main);
 

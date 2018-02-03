@@ -25,7 +25,7 @@ import javax.inject.Inject;
  *
  */
 
-public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment implements View.OnClickListener{
+public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment implements View.OnClickListener {
 
     IndicatorCard mGreenCard;
     IndicatorCard mYellowCard;
@@ -49,7 +49,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
     IndicatorCard selectedIndicatorCard;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -77,6 +77,8 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         saveButton = (LinearLayout) getView().findViewById(R.id.surveysummary_indicator_nextbutton);
         saveButtonText = (TextView) getView().findViewById(R.id.surveysummary_indicator_nextbuttontext);
 
+        saveButton.setVisibility(View.GONE);
+
         question = mSurveyViewModel.getFocusedQuestion();
 
         for (IndicatorOption option : question.getOptions()) {
@@ -95,10 +97,8 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
 
         IndicatorOption existingResponse = mSurveyViewModel.getResponseForIndicator(question);
 
-        if(existingResponse!=null)
-        {
-            switch (existingResponse.getLevel())
-            {
+        if (existingResponse != null) {
+            switch (existingResponse.getLevel()) {
                 case Green:
                     mGreenCard.setSelected(true);
                     break;
@@ -126,12 +126,14 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
-                } catch (NullPointerException e) {
-                    mSurveyViewModel.addSkippedIndicator(question);
+                if (selectedIndicatorCard != null) {
+                    try {
+                        mSurveyViewModel.addIndicatorResponse(question, selectedIndicatorCard.getOption());
+                        mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
+                    } catch (NullPointerException e) {
+                        mSurveyViewModel.addSkippedIndicator(question);
+                    }
                 }
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             }
         });
         super.onResume();
@@ -146,14 +148,13 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
 
     /**
      * When one of the cards is selected...
+     *
      * @param view IndicatorCard
      */
     @Override
     public void onClick(View view) {
-        if(view instanceof IndicatorCard)
-        {
-            IndicatorCard card = (IndicatorCard)view;
-
+        if (view instanceof IndicatorCard) {
+            IndicatorCard card = (IndicatorCard) view;
             onCardSelected(card);
         }
     }
@@ -165,20 +166,17 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
      */
     private void onCardSelected(@Nullable IndicatorCard indicatorCard) {
 
-        if(indicatorCard.equals(selectedIndicatorCard))
-        {
+        if (indicatorCard.equals(selectedIndicatorCard)) {
             indicatorCard.setSelected(false);
             mSurveyViewModel.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
-        }
-        else
-        {
+            saveButton.setVisibility(View.GONE);
+        } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
-
-            mSurveyViewModel.addIndicatorResponse(question, indicatorCard.getOption());
             selectedIndicatorCard = indicatorCard;
+            saveButton.setVisibility(View.VISIBLE);
         }
 
     }

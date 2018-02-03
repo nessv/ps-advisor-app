@@ -38,6 +38,7 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
     ArrayList<String> indicatorNames = new ArrayList<>();
 
     Button mSubmitButton;
+    Button mBackButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -89,12 +90,18 @@ public class SurveySummaryFragment extends AbstractSurveyFragment implements Sur
 
         backgroundQs = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_background);
         mSubmitButton = view.findViewById(R.id.btn_surveysummary_submit);
+        mBackButton = view.findViewById(R.id.btn_surveysummary_back);
 
         mSubmitButton.setOnClickListener((event)->
         {
             //TODO add a confirmation dialog here, warning the user that they can't go back.
             mSurveyViewModel.saveSnapshotAsync();
             //will switch states when finished... should show a loading dialog here in the meantime...
+        });
+
+        mBackButton.setOnClickListener((event)->
+        {
+            mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
         });
 
         indicators = (SurveySummaryComponent) view.findViewById(R.id.surveysummary_indicators);

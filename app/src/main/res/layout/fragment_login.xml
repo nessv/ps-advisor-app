@@ -39,7 +39,6 @@
                 android:layout_width="102dp"
                 android:layout_height="102dp"
                 android:layout_marginTop="100dp"
-                android:contentDescription="fp logo"
                 android:src="@drawable/dashtabview_fplogo" />
 
             <TextView

@@ -14,6 +14,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +62,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -128,7 +129,6 @@ public class LoginFragment extends Fragment {
                 //getActivity().finish();
             }
         });
-
 
         if (mAuthManager.hasRefreshToken()) {
             new RefreshTokenLoginTask(this).execute();

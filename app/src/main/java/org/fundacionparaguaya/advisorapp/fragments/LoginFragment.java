@@ -109,17 +109,21 @@ public class LoginFragment extends Fragment {
         mEmailView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
 
+        //Hide for later implementation
+        mPasswordReset.setVisibility(View.GONE);
+        mHelpButton.setVisibility(View.GONE);
+
         mPasswordReset.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: Implement password reset
+                //TODO: Implement password reset (set visible above when ready to implement)
             }
         });
 
         mHelpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: Implement Help button
+                //TODO: Implement Help button (set visible above when ready to implement)
                 //using this as a temporary login method
                 //getActivity().finish();
             }

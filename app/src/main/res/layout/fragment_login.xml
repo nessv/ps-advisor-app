@@ -65,7 +65,7 @@
                 android:layout_marginBottom="12dp"
                 android:paddingLeft="20dp"
                 android:singleLine="true"
-                android:drawableLeft="@drawable/login_mailicon"
+                android:drawableLeft="@drawable/login_username_icon"
                 android:drawablePadding="27dp"/>
 
             <EditText

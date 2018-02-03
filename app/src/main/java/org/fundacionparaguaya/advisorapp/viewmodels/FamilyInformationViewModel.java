@@ -30,6 +30,7 @@ public class FamilyInformationViewModel extends ViewModel {
     public  FamilyInformationViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
         mFamilyRepository = familyRepository;
         mSnapshotRespository = snapshotRespository;
+
     }
 
     //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when

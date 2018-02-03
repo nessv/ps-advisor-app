@@ -77,15 +77,16 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
         mSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
-            Survey survey = surveys.get(0);
+            if(surveys.size()>0) {
+                Survey survey = surveys.get(0);
 
-            mSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
+                mSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
 
-            /**when snapshot is made**/
-            mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
-                mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
-            }));
-
+                /**when snapshot is made**/
+                mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
+                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
+                }));
+            }
             //create snapshot with family and
         });
     }

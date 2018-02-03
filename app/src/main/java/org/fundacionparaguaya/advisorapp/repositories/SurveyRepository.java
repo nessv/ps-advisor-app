@@ -17,6 +17,8 @@ import javax.inject.Inject;
 
 import retrofit2.Response;
 
+import static java.lang.String.format;
+
 /**
  * The utility for the storage of surveys and snapshots.
  */
@@ -60,19 +62,33 @@ public class SurveyRepository {
         return surveyDao.querySurveyNow(id);
     }
 
+    private void saveSurvey(Survey survey) {
+        long rows = surveyDao.updateSurvey(survey);
+        if (rows == 0) { // no row was updated
+            surveyDao.insertSurvey(survey);
+        }
+    }
+
     private boolean pullSurveys() {
         try {
             Response<List<SurveyIr>> response =
                     surveyService.getSurveys(authManager.getAuthenticationString()).execute();
 
             if (!response.isSuccessful() || response.body() == null) {
+                Log.w(TAG, format("pullSurveys: Could not pull surveys! %s", response.errorBody()));
                 return false;
             }
 
             List<Survey> surveys = IrMapper.mapSurveys(response.body());
-            surveyDao.insertSurveys(surveys.toArray(new Survey[surveys.size()]));
+            for (Survey survey : surveys) {
+                Survey old = surveyDao.queryRemoteSurveyNow(survey.getRemoteId());
+                if (old != null) {
+                    survey.setId(old.getId());
+                }
+                saveSurvey(survey);
+            }
         } catch (IOException e) {
-            Log.e(TAG, "pullSurveys: Could not sync the survey repository!", e);
+            Log.e(TAG, "pullSurveys: Could not pull surveys!", e);
             return false;
         }
         return true;

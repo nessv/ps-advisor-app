@@ -43,7 +43,14 @@
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
-    <string name="survey_summary_questionsleft">Questions Left</string>
+    <string name="survey_summary_questionsleft">Questions Unanswered</string>
+
+    <!-- Adding a Family -->
+
+    <string name="family_name_question">Family\'s Name</string>
+    <string name="family_location_question">Family\'s Location</string>
+    <string name="family_UID">Family\'s ID</string>
+    <string name="family_picture_question">Family\'s picture</string>
 
     <!--Other-->
     <string name="all_continue">Continue</string>

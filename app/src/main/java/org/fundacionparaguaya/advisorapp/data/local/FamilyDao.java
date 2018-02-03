@@ -12,7 +12,7 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.util.List;
 
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+import static android.arch.persistence.room.OnConflictStrategy.FAIL;
 
 /**
  * The access utility for retrieving families from the local database.
@@ -37,13 +37,13 @@ public interface FamilyDao {
      * @return The pending families.
      */
     @Query("SELECT * FROM families WHERE remote_id IS NULL")
-    List<Family> queryPendingFamilies();
+    List<Family> queryPendingFamiliesNow();
 
-    @Insert(onConflict = REPLACE)
+    @Query("SELECT * FROM families WHERE remote_id = :remoteId")
+    Family queryRemoteFamilyNow(long remoteId);
+
+    @Insert(onConflict = FAIL)
     long insertFamily(Family family);
-
-    @Insert(onConflict = REPLACE)
-    long[] insertFamilies(Family ... families);
 
     @Update
     int updateFamily(Family family);

@@ -17,6 +17,8 @@ import javax.inject.Inject;
 
 import retrofit2.Response;
 
+import static java.lang.String.format;
+
 /**
  * The utility for the storage of families and their members.
  */
@@ -60,7 +62,10 @@ public class FamilyRepository {
     }
 
     public void saveFamily(Family family) {
-        familyDao.insertFamily(family);
+        long rows = familyDao.updateFamily(family);
+        if (rows == 0) { // no row was updated
+            familyDao.insertFamily(family);
+        }
     }
 
     public void deleteFamily(Family family) {
@@ -81,7 +86,7 @@ public class FamilyRepository {
     }
 
     private boolean pushFamilies() {
-        List<Family> pending = familyDao.queryPendingFamilies();
+        List<Family> pending = familyDao.queryPendingFamiliesNow();
         boolean success = true;
 
         // attempt to push each of the pending families
@@ -95,12 +100,13 @@ public class FamilyRepository {
                     // overwrite the pending family with the family from remote db
                     Family remoteFamily = IrMapper.mapFamily(response.body());
                     remoteFamily.setId(family.getId());
-                    familyDao.updateFamily(remoteFamily);
+                    saveFamily(remoteFamily);
                 } else {
+                    Log.w(TAG, format("pushFamilies: Could not push family with id %d! %s", family.getId(), response.errorBody()));
                     success = false;
                 }
             } catch (IOException e) {
-                Log.e(TAG, String.format("pushFamilies: Could not push family \"%s\"!", family.getName()), e);
+                Log.e(TAG, format("pushFamilies: Could not push family with id %d!", family.getId()), e);
                 success = false;
             }
         }
@@ -113,11 +119,18 @@ public class FamilyRepository {
                     familyService.getFamilies(authManager.getAuthenticationString()).execute();
 
             if (!response.isSuccessful() || response.body() == null) {
+                Log.w(TAG, format("pullFamilies: Could not pull families! %s", response.errorBody()));
                 return false;
             }
 
             List<Family> families = IrMapper.mapFamilies(response.body());
-            familyDao.insertFamilies(families.toArray(new Family[families.size()]));
+            for (Family family : families) {
+                Family old = familyDao.queryRemoteFamilyNow(family.getRemoteId());
+                if (old != null) {
+                    family.setId(old.getId());
+                }
+                saveFamily(family);
+            }
         } catch (IOException e) {
             Log.e(TAG, "pullFamilies: Could not pull families!", e);
             return false;

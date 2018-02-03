@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -46,7 +49,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     ImageButton mExitButton;
 
     ProgressBar mProgressBar;
-    ObjectAnimator mProgressAnimator;
 
     SurveyIndicatorsFragment surveyIndicatorsFragment;
 
@@ -81,7 +83,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mHeader = (LinearLayout) findViewById(R.id.survey_activity_header);
         mFooter = (RelativeLayout) findViewById(R.id.survey_activity_footer);
 
-   	mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+   	    mTvTitle = findViewById(R.id.tv_surveyactivity_title);
         mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
         mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 

@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,6 +65,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveyindicators, container, false);
+
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
         mAdapter = new IndicatorAdapter(getChildFragmentManager(), mSurveyViewModel, this);
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);

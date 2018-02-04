@@ -1,7 +1,11 @@
 package org.fundacionparaguaya.advisorapp;
 
+import android.app.Activity;
 import android.app.Application;
 
+import android.os.Build;
+import android.view.Window;
+import android.view.WindowManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;

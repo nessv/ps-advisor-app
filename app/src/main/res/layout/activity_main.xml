@@ -54,7 +54,7 @@
                 android:paddingBottom="2dp"
                 android:text="@string/topbar_backbutton"
                 android:textSize="24sp"
-                android:textColor="@color/topbarBackButton"/>
+                android:textColor="@color/topbar_backbutton"/>
 
         </LinearLayout>
 

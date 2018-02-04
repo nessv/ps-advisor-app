@@ -1,163 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_margin="20dp"
-              xmlns:fresco="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-              android:background="#F7F7F7"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/families_background"
+    android:padding="16dp">
+
     <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <android.support.v7.widget.CardView
-                app:cardCornerRadius="8dp"
-                android:layout_width="400dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:padding="16dp"
-                android:id="@+id/name_card">
+            android:id="@+id/name_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:padding="16dp"
+            app:cardCornerRadius="8dp">
 
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:weightSum="2"
-                          android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                        android:layout_width="match_parent"
-                        android:id="@+id/family_image_2"
-                        android:layout_height="160dp"
-                        fresco:placeholderImage="@color/colorAccent"/>
+                    android:id="@+id/family_image_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    fresco:placeholderImage="@color/colorAccent" />
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
                         android:id="@+id/family_view_name"
-                        android:textAppearance="@style/BigHero.Black"
-                        android:textSize="36sp"
-                        android:paddingLeft="10dp"
-                        android:layout_gravity="bottom"
-
-                        tools:text="Gonzalez-Rodriguez"
-                        android:textColor="#313131"/>
-
-                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:padding="10dp"
+                        android:textAppearance="@style/BigHero.Black"
+                        android:textColor="#313131"
+                        android:textSize="36sp"
+                        tools:text="Gonzalez-Rodriguez" />
+
+                    <TextView
                         android:id="@+id/phone_number"
-                        android:paddingLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:paddingBottom="8dp"
-                        android:textSize="20sp"
+                        android:padding="10dp"
                         android:text="Phone number"
-                        android:textColor="#757478"/>
+                        android:textColor="#757478"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:layout_marginTop="20dp"
-                android:layout_height="320dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
-                    android:id="@+id/home_card"
+                android:id="@+id/home_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="8dp"
-                    android:layout_height="match_parent">
-                <TextView
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/home_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/home_label"
-                        android:textSize="22sp"
                         android:text="Home"
                         android:textAppearance="@style/Heading"
-                        android:paddingLeft="10dp"
-                        android:textColor="#313131"/>
+                        android:textColor="#313131"
+                        android:textSize="22sp" />
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
+                    <TextView
                         android:id="@+id/location_label"
-                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Location"
-                        android:paddingLeft="10dp"
-                        android:textColor="#757478"/>
+                        android:textColor="#757478"
+                        android:textSize="18sp" />
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="140dp"
-                        android:id="@+id/description_label"
-                        android:textSize="18sp"
-                        android:text="Description"
-                        android:paddingLeft="10dp"
-                        android:textColor="#757478"/>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="170dp"
-                        android:id="@+id/description_content"
-                        android:textSize="18sp"
-                        android:text="Description goes here"
-                        android:paddingLeft="10dp"
-                        android:textColor="#333333"/>
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="75dp"
+                    <TextView
                         android:id="@+id/location_content"
-                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Address goes here"
-                        android:paddingLeft="10dp"
-                        android:textColor="#333333"/>
+                        android:textColor="#333333"
+                        android:textSize="18sp" />
 
+                    <TextView
+                        android:id="@+id/description_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:textColor="#757478"
+                        android:textSize="18sp" />
 
+                    <TextView
+                        android:id="@+id/description_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description goes here"
+                        android:textColor="#333333"
+                        android:textSize="18sp" />
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                    android:id="@+id/priorities_card"
-                    android:layout_weight="1"
+                android:id="@+id/priorities_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="36dp"
-                    app:cardCornerRadius="8dp">
-
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="match_parent"
-                              android:orientation="vertical"
-                              android:adjustViewBounds="true">
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:id="@+id/priorities_label"
-                            android:text="Priorities"
-                            android:textAppearance="@style/CardHeading"
-                            android:layout_marginStart="10dp"/>
-
-                    <ImageView android:layout_width="wrap_content"
-                               android:layout_height="wrap_content"
-                               android:adjustViewBounds="true"
-                               android:layout_marginTop="8dp"
-                               android:layout_gravity="center"
-                               android:src="@drawable/ic_all_construction"
-                               android:maxHeight="120dp"/>
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:orientation="vertical">
 
                     <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_gravity="center_horizontal"
-                            android:textAppearance="@style/Body.Small"
-                            android:text="@string/construction_underconstruction"/>
+                        android:id="@+id/priorities_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Priorities"
+                        android:textAppearance="@style/CardHeading" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="120dp"
+                        android:src="@drawable/ic_all_construction" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/construction_underconstruction"
+                        android:textAppearance="@style/Body.Small" />
 
                 </LinearLayout>
 
@@ -167,12 +176,20 @@
 
     </LinearLayout>
 
-    <fragment
-             android:layout_marginStart="16dp"
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="-4dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="8dp">
+
+        <fragment
+            android:id="@+id/fragment_indicatorsubtab"
             android:name="org.fundacionparaguaya.advisorapp.fragments.FamilyIndicatorsListFrag"
             android:layout_width="wrap_content"
-            tools:layout="@layout/fragment_familydetail_indicators"
             android:layout_height="match_parent"
-            android:id="@+id/fragment_indicatorsubtab"/>
+            tools:layout="@layout/fragment_familydetail_indicators" />
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

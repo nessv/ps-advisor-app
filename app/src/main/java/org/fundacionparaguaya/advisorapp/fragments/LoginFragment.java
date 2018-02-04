@@ -14,6 +14,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +62,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -109,22 +110,25 @@ public class LoginFragment extends Fragment {
         mEmailView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
 
+        //Hide for later implementation
+        mPasswordReset.setVisibility(View.GONE);
+        mHelpButton.setVisibility(View.GONE);
+
         mPasswordReset.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: Implement password reset
+                //TODO: Implement password reset (set visible above when ready to implement)
             }
         });
 
         mHelpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: Implement Help button
+                //TODO: Implement Help button (set visible above when ready to implement)
                 //using this as a temporary login method
                 //getActivity().finish();
             }
         });
-
 
         if (mAuthManager.hasRefreshToken()) {
             new RefreshTokenLoginTask(this).execute();

@@ -30,7 +30,7 @@ public class SyncManager {
     private SnapshotRepository mSnapshotRepository;
     private SharedPreferences mPreferences;
 
-    private MutableLiveData<Long> mLastSyncedTime;
+    private MutableLiveData<SyncState> mState;
 
     @Inject
     SyncManager(Application application,
@@ -44,8 +44,12 @@ public class SyncManager {
         mPreferences = application.getApplicationContext()
                 .getSharedPreferences(PREFS_SYNC, MODE_PRIVATE);
 
-        mLastSyncedTime = new MutableLiveData<>();
-        mLastSyncedTime.setValue(mPreferences.getLong(KEY_LAST_SYNC_TIME, -1));
+        mState = new MutableLiveData<>();
+        mState.setValue(new SyncState(false, mPreferences.getLong(KEY_LAST_SYNC_TIME, -1), null));
+    }
+
+    public LiveData<SyncState> getState() {
+        return mState;
     }
 
     /**
@@ -54,6 +58,7 @@ public class SyncManager {
      */
     public boolean sync() {
         Log.d(TAG, "sync: Synchronizing the database...");
+        updateIsSyncing(true);
         boolean result;
         result = mFamilyRepository.sync();
         result &= mSurveyRepository.sync();
@@ -62,6 +67,7 @@ public class SyncManager {
         Log.d(TAG, String.format("sync: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 
+        updateIsSyncing(false);
         if (result) {
             updateLastSyncedTime();
         }
@@ -69,19 +75,21 @@ public class SyncManager {
     }
 
     private void updateLastSyncedTime() {
-        //post because this is run on a background thread
-        mLastSyncedTime.postValue(new Date().getTime());
+        SyncState state = mState.getValue();
+        long lastSync = new Date().getTime();
+        mState.postValue(new SyncState(state.isSyncing(), lastSync, state.getErrorMessage()));
 
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putLong(KEY_LAST_SYNC_TIME, mLastSyncedTime.getValue());
+        editor.putLong(KEY_LAST_SYNC_TIME, lastSync);
         editor.apply();
     }
 
-    public LiveData<Long> getLastSyncedTime() {
-        return mLastSyncedTime;
+    private void updateIsSyncing(boolean isSyncing) {
+        SyncState state = mState.getValue();
+        mState.postValue(new SyncState(isSyncing, state.getLastSyncedTime(), state.getErrorMessage()));
     }
-    
-    public static void schedulePeriodic() {
+
+    public static void start() {
         new JobRequest.Builder(TAG)
                 .setPeriodic(900000)
                 .setRequiresDeviceIdle(false)
@@ -89,5 +97,29 @@ public class SyncManager {
                 .setUpdateCurrent(true)
                 .build()
                 .schedule();
+    }
+
+    public class SyncState {
+        private boolean mIsSyncing;
+        private long mLastSyncedTime;
+        private String mErrorMessage;
+
+        SyncState(boolean isSyncing, long lastSyncedTime, String errorMessage) {
+            this.mIsSyncing = isSyncing;
+            this.mLastSyncedTime = lastSyncedTime;
+            this.mErrorMessage = errorMessage;
+        }
+
+        public long getLastSyncedTime() {
+            return mLastSyncedTime;
+        }
+
+        public String getErrorMessage() {
+            return mErrorMessage;
+        }
+
+        public boolean isSyncing() {
+            return mIsSyncing;
+        }
     }
 }

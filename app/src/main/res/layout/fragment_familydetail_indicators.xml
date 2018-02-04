@@ -44,31 +44,46 @@
         android:elevation="2dp"
         android:orientation="vertical">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/linearLayout_familyindicators_spinnertouchtarget"
+                    android:layout_height="wrap_content">
 
             <Spinner
                 android:id="@+id/spinner_familyindicators_snapshot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="16dp"
+                android:minWidth="50dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginVertical="16dp"
-                android:background="@drawable/spinner_background"
-                android:minHeight="24dp"
-                android:minWidth="100dp"/>
+                android:layout_gravity="end|center_vertical"
+                android:background="@color/float_transparent"
+                android:minHeight="24dp"/>
+            <ImageView android:layout_width="20dp"
+                       android:layout_marginEnd="16dp"
+                       android:layout_gravity="center_vertical"
+                       android:id="@+id/imageview_spinner_chevron"
+                       android:src="@drawable/spinner_background"
+                       android:adjustViewBounds="true"
+                       android:layout_height="wrap_content"/>
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_familyindicators_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:listitem="@layout/item_familydetailindicator" />
+            android:id="@+id/rv_familyindicators_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:listitem="@layout/item_familydetailindicator" android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"/>
 
 </LinearLayout>

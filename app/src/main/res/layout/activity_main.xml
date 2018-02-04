@@ -59,7 +59,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/dashboardtopbar_syncbutton"
+            android:id="@+id/dashboardtopbar_sync"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -67,11 +67,12 @@
             android:layout_marginEnd="20dp"
             android:layout_alignParentEnd="true">
 
-            <ImageButton
-                android:id="@+id/dashboardtopbar_syncbutton_button"
+            <ImageView
+                android:id="@+id/dashboardtopbar_syncbutton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/dashtopbar_sync"
+                android:scaleType="center"
                 android:background="@drawable/dashtopbar_synccircle"
                 android:layout_marginEnd="10dp"/>
 

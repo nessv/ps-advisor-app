@@ -101,7 +101,7 @@ public abstract class AbstractTabbedFrag extends Fragment implements NavigationL
 
         ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
                 R.anim.enter_from_left, R.anim.exit_to_right);
-
+        
         ft.replace(mContainerId, frag);
 
         return ft;

@@ -26,7 +26,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 {
     DashboardTabBarView tabBarView;
     TextView mSyncLabel;
-    ImageButton mSyncButton;
+    LinearLayout mSyncButton;
     RelativeTimeTextView mLastSyncTextView;
 
     LinearLayout mBackButton;
@@ -85,7 +85,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSyncLabel = findViewById(R.id.topbar_synclabel);
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
 
-        mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
+        mSyncButton = (LinearLayout) findViewById(R.id.dashboardtopbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
 
         //update last sync label when the sync manager updates

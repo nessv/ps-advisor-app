@@ -60,6 +60,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/dashboardtopbar_syncbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -68,7 +69,7 @@
             android:layout_alignParentEnd="true">
 
             <ImageButton
-                android:id="@+id/dashboardtopbar_syncbutton"
+                android:id="@+id/dashboardtopbar_syncbutton_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/dashtopbar_sync"

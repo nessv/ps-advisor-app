@@ -108,14 +108,26 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-               // mSpinnerAdapter.setSelected(-1);
+                //mSpinnerAdapter.setSelected(-1);
             }
         });
 
-        initViewModelObservers();
+        addViewModelObservers();
     }
 
-    public void initViewModelObservers()
+
+    public void removeViewModelObservers()
+    {
+        mFamilyInformationViewModel.getSnapshots().removeObservers(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeViewModelObservers();
+    }
+
+    public void addViewModelObservers()
     {
         mFamilyInformationViewModel.getSnapshots().observe(this, (snapshots) -> {
                 if(snapshots==null)
@@ -123,6 +135,11 @@ public class FamilyIndicatorsListFrag extends Fragment {
                     mSpinnerAdapter.setSnapshotList(null);
                 }
                 else mSpinnerAdapter.setSnapshotList(snapshots.toArray(new Snapshot[snapshots.size()]));
+        });
+
+        mFamilyInformationViewModel.getSelectedSnapshot().observe(this, (selectedSnapshot)->
+        {
+            mSpinnerAdapter.setSelected(selectedSnapshot);
         });
 
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
@@ -323,7 +340,15 @@ public class FamilyIndicatorsListFrag extends Fragment {
             this.context = context;
         }
 
-        public void setSelected(int spinnerIndex)
+        void setSelected(Snapshot s)
+        {
+            for(int i=0; i<values.length; i++)
+            {
+                if(values[i].equals(s)) mSelectedArrayIndex = i;
+            }
+        }
+
+        void setSelected(int spinnerIndex)
         {
             //Array
             //// [   0   ]

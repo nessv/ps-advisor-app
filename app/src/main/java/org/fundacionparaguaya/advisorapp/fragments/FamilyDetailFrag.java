@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
 
-    int mFamilyId;
+    int mFamilyId = -1;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -54,11 +55,19 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(FamilyInformationViewModel.class);
 
-        Bundle args = getArguments();
-        mFamilyId = args.getInt(SELECTED_FAMILY_KEY);
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            mFamilyId = args.getInt(SELECTED_FAMILY_KEY);
 
-        mFamilyInformationViewModel.setFamily(mFamilyId).observe(this, this);
-        //TODO -- load until we have a value
+
+            mFamilyInformationViewModel.setFamily(mFamilyId);
+            //wait for family to load here
+        }
+        else
+        {
+            throw new IllegalArgumentException(FamilyDetailFrag.class.getName() + " requires the family id to be displayed" +
+                    "to be passed in as an argument.");
+        }
     }
 
     @Override
@@ -78,8 +87,25 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
+        try{
+            //observer is added onViewCreated so the LiveData will renotify the observers when the view is
+            // destoryed/recreated
+            mFamilyInformationViewModel.getCurrentFamily().observe(this, this);
+        }
+        catch (IllegalStateException e)
+        {
+            Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
+        }
+
         Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
         mFamilyImage.setImageURI(uri);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        mFamilyInformationViewModel.getCurrentFamily().removeObserver(this);
     }
 
     @Override

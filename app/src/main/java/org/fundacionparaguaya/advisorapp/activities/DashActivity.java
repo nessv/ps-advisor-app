@@ -76,12 +76,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 .getApplicationComponent()
                 .inject(this);
 
-        //only supported after Lollipop
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.fp_green, this.getTheme()));
-        }
-
         setContentView(R.layout.activity_main);
 
         setFragmentContainer(R.id.dash_content);

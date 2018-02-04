@@ -21,11 +21,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //only supported after Lollipop
+       /* //only supported after Lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(getResources().getColor(R.color.fp_green, this.getTheme()));
-        }
+        }*/
 
         FragmentManager manager = getSupportFragmentManager();
         LoginFragment loginFragment = (LoginFragment) manager.findFragmentByTag(LOGIN_FRAG_TAG);

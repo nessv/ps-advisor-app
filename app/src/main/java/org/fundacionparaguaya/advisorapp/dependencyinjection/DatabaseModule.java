@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
-import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Room;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
@@ -13,7 +12,6 @@ import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
-import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;

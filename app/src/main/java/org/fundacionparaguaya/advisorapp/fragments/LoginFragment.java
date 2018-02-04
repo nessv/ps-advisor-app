@@ -29,6 +29,7 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.User;
+import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
@@ -175,6 +176,7 @@ public class LoginFragment extends Fragment {
     }
 
     void launchMainActivity(Context context) {
+        SyncManager.schedulePeriodic();
         Intent dashboard = new Intent(context, DashActivity.class);
         context.startActivity(dashboard);
         getActivity().finish();

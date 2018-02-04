@@ -15,7 +15,6 @@ import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.data.SyncJob;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
@@ -99,9 +98,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 mLastSyncTextView.setReferenceTime(value);
             }
         });
-
-        //force a sync
-        SyncJob.schedule();
 
         if (savedInstanceState != null) {
             String selectTypeName = savedInstanceState.getString(SELECTED_TAB_KEY);

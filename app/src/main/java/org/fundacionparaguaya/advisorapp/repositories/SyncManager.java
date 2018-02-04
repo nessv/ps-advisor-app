@@ -6,6 +6,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.evernote.android.job.JobRequest;
+
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -77,5 +79,15 @@ public class SyncManager {
 
     public LiveData<Long> getLastSyncedTime() {
         return mLastSyncedTime;
+    }
+    
+    public static void schedulePeriodic() {
+        new JobRequest.Builder(TAG)
+                .setPeriodic(900000)
+                .setRequiresDeviceIdle(false)
+                .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
+                .setUpdateCurrent(true)
+                .build()
+                .schedule();
     }
 }

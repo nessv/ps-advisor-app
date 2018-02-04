@@ -135,11 +135,9 @@ public class FamilyIndicatorsListFrag extends Fragment {
                     mSpinnerAdapter.setSnapshotList(null);
                 }
                 else mSpinnerAdapter.setSnapshotList(snapshots.toArray(new Snapshot[snapshots.size()]));
-        });
 
-        mFamilyInformationViewModel.getSelectedSnapshot().observe(this, (selectedSnapshot)->
-        {
-            mSpinnerAdapter.setSelected(selectedSnapshot);
+                //has to be called after getSnapshots
+                mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
 
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
@@ -342,9 +340,11 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         void setSelected(Snapshot s)
         {
-            for(int i=0; i<values.length; i++)
-            {
-                if(values[i].equals(s)) mSelectedArrayIndex = i;
+            if(s==null) mSelectedArrayIndex = 0;
+            else {
+                for (int i = 0; i < values.length; i++) {
+                    if (values[i].equals(s)) mSelectedArrayIndex = i;
+                }
             }
         }
 

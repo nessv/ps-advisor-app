@@ -1,10 +1,13 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.animation.ObjectAnimator;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +36,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     @Inject
     SyncManager mSyncManager;
+
+    ObjectAnimator mSyncRotateAnimation;
 
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
 
@@ -135,6 +140,16 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         @Override
         protected void onPreExecute() {
             mSyncLabel.setText(R.string.topbar_synclabel_syncing);
+
+
+            mSyncRotateAnimation= ObjectAnimator.ofFloat(mSyncButton,
+                    "rotation", 0f, 360f);
+            mSyncRotateAnimation.setRepeatCount(ObjectAnimator.INFINITE);
+            mSyncRotateAnimation.setRepeatMode(ObjectAnimator.RESTART);
+            mSyncRotateAnimation.setDuration(1000);
+            mSyncRotateAnimation.setInterpolator(new LinearInterpolator());
+            mSyncRotateAnimation.start();
+
             mSyncButton.setEnabled(false);
         }
 
@@ -146,6 +161,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             mSyncButton.setEnabled(true);
+            mSyncRotateAnimation.cancel();
             mSyncLabel.setText(R.string.topbar_synclabel);
         }
     }

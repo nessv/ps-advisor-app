@@ -7,10 +7,10 @@
     <string name="backbutton_desc">Regresa</string>
 
     <!--Tab Captions -->
-    <string name="family_tab">Familias</string>
-    <string name="map_tab">Mapa</string>
-    <string name="archive_tab">Archivo</string>
-    <string name="settings_tab">Ajustes</string>
+    <string name="familytab_title">Familias</string>
+    <string name="maptab_title">Mapa</string>
+    <string name="archivetab_title">Archivo</string>
+    <string name="settingstab_title">Ajustes</string>
 
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Regresa</string>
@@ -23,7 +23,7 @@
     <!-- Login Activity -->
     <string name="login_success">El login fue correcta.</string>
     <string name="activity_login">Registrarse</string>
-    <string name="login_emailprompt">Email</string>
+    <string name="login_emailprompt">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Ese email o clave no funcionó. Inténtalo de nuevo</string>
@@ -64,5 +64,6 @@
     <!-- Other -->
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>
     <string name="contentDescription_profile_picture">Foto de perfil</string>
+    <string name="construction_underconstruction">En construcción</string>
 
 </resources>

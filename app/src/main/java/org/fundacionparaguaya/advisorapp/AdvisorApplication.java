@@ -13,8 +13,6 @@ import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DaggerApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DatabaseModule;
 
-import javax.inject.Inject;
-
 /**
  * The advisor application.
  */

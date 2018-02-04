@@ -93,7 +93,7 @@ public abstract class AbstractFragSwitcherActivity extends AppCompatActivity
         }
 
         Fragment f = getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
-        getSupportFragmentManager().beginTransaction().attach(f).replace(mFragmentContainer, f).commit();
+        getSupportFragmentManager().beginTransaction().replace(mFragmentContainer, f).attach(f).commit();
 
         mLastFrag = f;
     }

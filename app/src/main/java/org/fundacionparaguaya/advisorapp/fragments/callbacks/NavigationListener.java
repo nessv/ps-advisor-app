@@ -1,6 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments.callbacks;
 
-import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.AbstractStackedFrag;
 
 /**
  * Call back for fragments that want their parent fragment/activity to navigate
@@ -8,7 +8,7 @@ import org.fundacionparaguaya.advisorapp.fragments.StackedFrag;
 
 public interface NavigationListener
 {
-    void onNavigateNext(StackedFrag frag);
+    void onNavigateNext(AbstractStackedFrag frag);
 
     void onNavigateBack();
 }

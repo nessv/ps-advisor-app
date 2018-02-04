@@ -13,7 +13,7 @@ import org.fundacionparaguaya.advisorapp.R;
  * Page that just says under construction
  */
 
-public class UnderConstructionFragment extends StackedFrag
+public class UnderConstructionFragment extends AbstractStackedFrag
 {
 
     private static String PAGE_NAME_KEY = "PAGE_NAME";

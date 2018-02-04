@@ -11,12 +11,12 @@ import android.widget.TextView;
 import org.fundacionparaguaya.advisorapp.R;
 
 /**
- * An Example of the StackedFrag class
+ * An Example of the AbstractStackedFrag class
  *
- * The only important thing in this entire class is the navigateTo(StackedFrag) function called in onCreate()
+ * The only important thing in this entire class is the navigateTo(AbstractStackedFrag) function called in onCreate()
  */
 
-public class ExampleStackedFragment extends StackedFrag
+public class ExampleStackedFragment extends AbstractStackedFrag
 {
     public static String BUNDLE_ID_TEXT_TO_DISPLAY = "TEXT_TO_DISPLAY";
 

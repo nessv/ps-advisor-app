@@ -20,12 +20,11 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionC
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
 
-public class AddFamilyFrag extends StackedFrag implements BackgroundQuestionCallback {
+public class AddFamilyFrag extends AbstractStackedFrag implements BackgroundQuestionCallback {
 
     private BackgroundQuestionAdapter mBackgroundQuestionAdapter;
 

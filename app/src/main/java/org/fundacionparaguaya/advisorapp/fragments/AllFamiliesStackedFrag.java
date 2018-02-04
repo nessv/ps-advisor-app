@@ -26,7 +26,7 @@ import javax.inject.Inject;
  *  on the family cards.
  */
 
-public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickListener {
+public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.OnClickListener {
 
     private FamiliesAdapter mFamiliesAdapter;
 
@@ -89,7 +89,7 @@ public class AllFamiliesStackedFrag extends StackedFrag implements View.OnClickL
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StackedFrag addFamily = new AddFamilyFrag();
+                AbstractStackedFrag addFamily = new AddFamilyFrag();
                 navigateTo(addFamily);
             }
         });

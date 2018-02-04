@@ -27,7 +27,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import javax.inject.Inject;
 
 
-public class FamilyDetailFrag extends StackedFrag implements Observer<Family>, SubTabFragmentCallback {
+public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Family>, SubTabFragmentCallback {
 
     private static String SELECTED_FAMILY_KEY = "SELECTED_FAMILY";
 

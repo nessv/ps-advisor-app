@@ -24,11 +24,7 @@
         custom:tabCaption="@string/familytab_title"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+        android:layout_height="wrap_content"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/map_tab"
@@ -37,11 +33,7 @@
         custom:tabCaption="@string/maptab_title"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+        android:layout_height="wrap_content"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/archive_tab"
@@ -50,11 +42,7 @@
         custom:tabCaption="@string/archivetab_title"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+        android:layout_height="wrap_content" />
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/settings_tab"
@@ -63,11 +51,8 @@
         custom:tabCaption="@string/settingstab_title"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
+        android:layout_height="wrap_content" />
 
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
     <!-- not needed
     <ImageButton
         android:id="@+id/bug_button"

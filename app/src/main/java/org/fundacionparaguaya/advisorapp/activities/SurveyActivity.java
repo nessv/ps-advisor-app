@@ -4,11 +4,13 @@ import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import android.support.v4.app.Fragment;
@@ -89,6 +91,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         mProgressBar = findViewById(R.id.progressbar_surveyactivity);
         mExitButton = findViewById(R.id.btn_surveyactivity_close);
+
+        //only supported after Lollipop
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.survey_darkyellow, this.getTheme()));
+        }
 
         mExitButton.setOnClickListener((event)->
         {

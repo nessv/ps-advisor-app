@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "92a311aa55273c1fbf2625582980e572",
+    "identityHash": "b58f655081c24442660243035a1f4a37",
     "entities": [
       {
         "tableName": "families",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `address` TEXT, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_profile_url` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `name` TEXT, `code` TEXT, `address` TEXT, `is_active` INTEGER NOT NULL, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_birthdate` TEXT, `family_member_phone_number` TEXT, `family_member_identification_type` TEXT, `family_member_identification_number` TEXT, `family_member_gender` TEXT, `family_member_profile_url` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,8 +15,20 @@
             "notNull": true
           },
           {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
             "fieldPath": "name",
             "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -25,6 +37,12 @@
             "columnName": "address",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "is_active",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "location.longitude",
@@ -75,6 +93,36 @@
             "notNull": false
           },
           {
+            "fieldPath": "member.birthdate",
+            "columnName": "family_member_birthdate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "member.phoneNumber",
+            "columnName": "family_member_phone_number",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "member.identificationType",
+            "columnName": "family_member_identification_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "member.identificationNumber",
+            "columnName": "family_member_identification_number",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "member.gender",
+            "columnName": "family_member_gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "member.profileUrl",
             "columnName": "family_member_profile_url",
             "affinity": "TEXT",
@@ -87,18 +135,33 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_families_remote_id",
+            "unique": true,
+            "columnNames": [
+              "remote_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_families_remote_id` ON `${TABLE_NAME}` (`remote_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
         "tableName": "surveys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `personal_questions` TEXT, `economic_questions` TEXT, `indicator_questions` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "personalQuestions",
@@ -123,20 +186,35 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_surveys_remote_id",
+            "unique": true,
+            "columnNames": [
+              "remote_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_surveys_remote_id` ON `${TABLE_NAME}` (`remote_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
         "tableName": "snapshots",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `family_id` INTEGER NOT NULL, `survey_id` INTEGER NOT NULL, `personalResponses` TEXT, `economicResponses` TEXT, `indicatorResponses` TEXT, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER NOT NULL, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "remoteId",
+            "columnName": "remote_id",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "familyId",
@@ -152,20 +230,26 @@
           },
           {
             "fieldPath": "personalResponses",
-            "columnName": "personalResponses",
+            "columnName": "personal_responses",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "economicResponses",
-            "columnName": "economicResponses",
+            "columnName": "economic_responses",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "indicatorResponses",
-            "columnName": "indicatorResponses",
+            "columnName": "indicator_responses",
             "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -221,7 +305,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"92a311aa55273c1fbf2625582980e572\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b58f655081c24442660243035a1f4a37\")"
     ]
   }
 }

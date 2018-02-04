@@ -9,10 +9,10 @@ import android.support.v4.app.Fragment;
 
 public abstract class AbstractSurveyFragment extends Fragment{
 
-    private boolean mShowHeader;
+    private boolean mShowHeader = true;
     private int mHeaderColor;
 
-    private boolean mShowFooter;
+    private boolean mShowFooter = true;
     private int mFooterColor;
 
     private String mTitle;

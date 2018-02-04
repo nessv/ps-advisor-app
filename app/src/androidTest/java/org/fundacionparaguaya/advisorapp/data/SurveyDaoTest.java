@@ -6,11 +6,10 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
-import org.fundacionparaguaya.advisorapp.models.EconomicQuestion;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
-import org.fundacionparaguaya.advisorapp.models.PersonalQuestion;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.junit.After;
 import org.junit.Before;
@@ -23,9 +22,12 @@ import java.util.List;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertEquals;
 import static org.fundacionparaguaya.advisorapp.data.LiveDataTestUtil.waitForValue;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.ECONOMIC;
+import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.QuestionType.PERSONAL;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Green;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Red;
 import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Yellow;
+import static org.fundacionparaguaya.advisorapp.models.ResponseType.STRING;
 
 /**
  * The tests for the survey data access object.
@@ -58,16 +60,17 @@ public class SurveyDaoTest {
         Indicator indicator = new Indicator("properKitchen", "Home", indicatorOptions);
         indicatorQuestions.add(new IndicatorQuestion(indicator));
 
-        List<EconomicQuestion> economicQuestions = new ArrayList<>();
+        List<BackgroundQuestion> economicQuestions = new ArrayList<>();
         List<String> economicOptions = new ArrayList<>();
         economicOptions.add("Employed");
         economicOptions.add("Not Employed");
-        economicQuestions.add(new EconomicQuestion("employmentStatus", "Employment status.", economicOptions));
+        economicQuestions.add(new BackgroundQuestion(
+                "employmentStatus", "Employment status.", STRING, ECONOMIC, economicOptions));
 
-        List<PersonalQuestion> personalQuestions = new ArrayList<>();
-        personalQuestions.add(new PersonalQuestion("firstName", "First name."));
+        List<BackgroundQuestion> personalQuestions = new ArrayList<>();
+        personalQuestions.add(new BackgroundQuestion("firstName", "First name.", STRING, PERSONAL));
 
-        Survey survey = new Survey(1,personalQuestions, economicQuestions, indicatorQuestions);
+        Survey survey = new Survey(1, 1L,personalQuestions, economicQuestions, indicatorQuestions);
 
         surveyDao.insertSurvey(survey);
 

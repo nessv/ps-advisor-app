@@ -11,7 +11,7 @@ import org.fundacionparaguaya.advisorapp.models.Snapshot;
 
 import java.util.List;
 
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+import static android.arch.persistence.room.OnConflictStrategy.FAIL;
 
 /**
  * The access utility for retrieving snapshots from the local database.
@@ -22,6 +22,9 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
     LiveData<List<Snapshot>> querySnapshots(int surveyId);
 
+    @Query("SELECT * FROM snapshots WHERE survey_id = :surveyId")
+    List<Snapshot> querySnapshotsNow(int surveyId);
+
     @Query("SELECT * FROM snapshots WHERE family_id = :familyId")
     LiveData<List<Snapshot>> querySnapshotsForFamily(int familyId);
 
@@ -31,11 +34,20 @@ public interface SnapshotDao {
     @Query("SELECT * FROM snapshots WHERE id = :id")
     LiveData<Snapshot> querySnapshot(int id);
 
-    @Insert(onConflict = REPLACE)
-    long insertSnapshot(Snapshot snapshot);
+    /**
+     * Queries for all snapshots that only exist locally, which haven't been pushed to the
+     * remote database and do not have a remote ID.
+     * @return The pending snapshots.
+     */
+    @Query("SELECT * FROM snapshots WHERE remote_id IS NULL")
+    List<Snapshot> queryPendingSnapshots();
 
-    @Insert(onConflict = REPLACE)
-    void insertSnapshots(Snapshot ... snapshots);
+
+    @Query("SELECT * FROM snapshots WHERE remote_id = :remoteId")
+    Snapshot queryRemoteSnapshotNow(long remoteId);
+
+    @Insert(onConflict = FAIL)
+    long insertSnapshot(Snapshot snapshot);
 
     @Update
     int updateSnapshot(Snapshot snapshot);

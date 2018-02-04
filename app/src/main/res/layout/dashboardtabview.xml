@@ -68,7 +68,7 @@
         android:layout_marginTop="12dp">
 
     </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
-
+    <!-- not needed
     <ImageButton
         android:id="@+id/bug_button"
         android:layout_width="match_parent"
@@ -77,6 +77,5 @@
         android:background="@android:color/transparent"
         android:layout_gravity="center"
         android:contentDescription="@string/bugbutton_desc"
-        android:src="@drawable/dashtabview_bugicon"/>
-
+        android:src="@drawable/dashtabview_bugicon"/>-->
 </LinearLayout>

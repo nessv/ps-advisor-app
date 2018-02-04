@@ -6,12 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import android.support.v4.app.Fragment;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -19,13 +24,14 @@ import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
 import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
+import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
 
 import javax.inject.Inject;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Activity for surveying a family's situation. Displays the fragments that record background info and allows
@@ -43,7 +49,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     ImageButton mExitButton;
 
     ProgressBar mProgressBar;
-    ObjectAnimator mProgressAnimator;
 
     SurveyIndicatorsFragment surveyIndicatorsFragment;
 
@@ -78,7 +83,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mHeader = (LinearLayout) findViewById(R.id.survey_activity_header);
         mFooter = (RelativeLayout) findViewById(R.id.survey_activity_footer);
 
-   	mTvTitle = findViewById(R.id.tv_surveyactivity_title);
+   	    mTvTitle = findViewById(R.id.tv_surveyactivity_title);
         mTvNextUp = findViewById(R.id.tv_surveyactivity_nextup);
         mTvQuestionsLeft = findViewById(R.id.tv_surveyactivity_questionsleft);
 
@@ -158,6 +163,15 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case INDICATORS:
                     nextFragment = SurveyIndicatorsFragment.class;
                     break;
+                case SUMMARY:
+                    nextFragment = SurveySummaryFragment.class;
+                    break;
+                case REVIEWINDICATORS:
+                    nextFragment = SurveySummaryIndicatorsFragment.class;
+                    break;
+
+                case COMPLETE:
+                    this.finish();
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);
@@ -169,14 +183,17 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
+        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(), this.getTheme()));
+        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(), this.getTheme()));
 
-        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(),
-                this.getTheme()));
-
-        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(),
-                this.getTheme()));
-
-        this.mTvTitle.setText(fragment.getTitle());
+        if(!fragment.isShowFooter())
+        {
+            mFooter.setVisibility(View.GONE);
+        }
+        else
+        {
+            mFooter.setVisibility(View.VISIBLE);
+        }
     }
 
 

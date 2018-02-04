@@ -35,7 +35,22 @@
     <string name="survey_next">Next</string>
     <string name="survey_finish">Finish</string>
     <string name="survey_skip">Skip</string>
+    <string name="survey_save">Save</string>
     <string name="bkgquestions_title">Background Information</string>
+    <string name="survey_indicators_title"></string>
+    <string name="survey_summary_title">Submit Snapshot</string>
+
+    <!-- Survey Summary -->
+    <string name="survey_summary_backgroundtitle">Background Questions</string>
+    <string name="survey_summary_indicatortitle">Indicators</string>
+    <string name="survey_summary_questionsleft">Questions Unanswered</string>
+
+    <!-- Adding a Family -->
+
+    <string name="family_name_question">Family\'s Name</string>
+    <string name="family_location_question">Family\'s Location</string>
+    <string name="family_UID">Family\'s ID</string>
+    <string name="family_picture_question">Family\'s picture</string>
 
     <!--Other-->
     <string name="all_continue">Continue</string>
@@ -49,4 +64,7 @@
 
     <!-- Not Translated -->
     <string name="family_imagePlaceholder" translatable="false">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
+
+    <string name="surveysummary_defaulttitle" translatable="false">Title</string>
+
 </resources>

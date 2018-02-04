@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/indicatorsurvey"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/surveyindicators_background">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/indicatorsurvey_buttons"/>
+        app:layout_constraintBottom_toTopOf="@id/indicatorsurvey_buttons"
+        android:background="@android:color/transparent"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/indicatorsurvey_buttons"
@@ -20,7 +22,8 @@
         android:paddingBottom="10dp"
         android:paddingStart="20dp"
         android:paddingEnd = "20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@android:color/transparent">
 
         <LinearLayout
             android:id="@+id/indicatorsurvey_backbutton"

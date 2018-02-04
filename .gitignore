@@ -9,3 +9,5 @@
 /captures
 .externalNativeBuild
 *.json
+*.json
+app/schemas/org.fundacionparaguaya.advisorapp.data.local.LocalDatabase/1.json

@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/surveysummary_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/surveysummary_background">
+
+    <org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent
+        android:id="@+id/surveysummary_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="38dp"
+        app:surveysummary_title="@string/survey_summary_backgroundtitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/surveysummary_indicators"
+        app:layout_constraintBottom_toTopOf="@id/btn_surveysummary_submit"/>
+
+    <org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent
+        android:id="@+id/surveysummary_indicators"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingEnd="36dp"
+        app:surveysummary_title="@string/survey_summary_indicatortitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/surveysummary_background"
+        app:layout_constraintBottom_toTopOf="@id/btn_surveysummary_back"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_surveysummary_submit"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_surveysummary_back"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

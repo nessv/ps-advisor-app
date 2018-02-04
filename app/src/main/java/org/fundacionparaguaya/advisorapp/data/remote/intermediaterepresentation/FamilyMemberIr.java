@@ -10,17 +10,21 @@ import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 
 public class FamilyMemberIr {
     @SerializedName("personId")
-    int id;
+    long id;
     @SerializedName("firstName")
     String firstName;
     @SerializedName("lastName")
     String lastName;
+    @SerializedName("birthdate")
+    String birthdate;
+    @SerializedName("phoneNumber")
+    String phoneNumber;
+    @SerializedName("identificationType")
+    String identificationType;
+    @SerializedName("identificationNumber")
+    String identificationNumber;
     @SerializedName("gender")
     String gender;
     @SerializedName("profileUrl")
     String profileUrl;
-
-    public FamilyMember familyMember() {
-        return new FamilyMember(firstName, lastName, profileUrl);
-    }
 }

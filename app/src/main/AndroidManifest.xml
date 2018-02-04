@@ -16,7 +16,9 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
-        <activity android:name=".activities.DashActivity" />
+        <activity android:name=".activities.DashActivity"
+            android:windowSoftInputMode="adjustNothing">
+        </activity>
         <activity android:name=".activities.LoginActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

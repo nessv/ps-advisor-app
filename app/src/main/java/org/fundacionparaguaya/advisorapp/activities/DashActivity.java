@@ -1,11 +1,9 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,7 +24,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 {
     DashboardTabBarView tabBarView;
     TextView mSyncLabel;
-    ImageButton mSyncButton;
+    LinearLayout mSyncButton;
+    ImageView mSyncButtonIcon;
     RelativeTimeTextView mLastSyncTextView;
 
     LinearLayout mBackButton;
@@ -85,8 +84,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSyncLabel = findViewById(R.id.topbar_synclabel);
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
 
-        mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
+        mSyncButton = (LinearLayout) findViewById(R.id.dashboardtopbar_sync);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
+
+        mSyncButtonIcon = findViewById(R.id.dashboardtopbar_syncbutton);
 
         //update last sync label when the sync manager updates
         mSyncManager.getLastSyncedTime().observe(this, (value)->

@@ -95,23 +95,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //only supported after Lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.survey_darkyellow, this.getTheme()));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black, this.getTheme()));
         }
 
         mExitButton.setOnClickListener((event)->
         {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
-                    .setContentText(getString(R.string.surveyactivity_exit_explanation))
-                    .setCancelText(getString(R.string.all_cancel))
-                    .setConfirmText(getString(R.string.surveyactivity_discard_snapshot))
-                    .showCancelButton(true)
-                    .setConfirmClickListener((dialog)->
-                    {
-                        this.finish();
-                    })
-                    .setCancelClickListener(SweetAlertDialog::cancel)
-                    .show();
+            //someday save here
+            makeExitDialog().setConfirmClickListener((dialog)->this.finish()).show();
         });
 
 
@@ -119,6 +109,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         initViewModel();
     }
 
+    SweetAlertDialog makeExitDialog()
+    {
+       return new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
+                .setContentText(getString(R.string.surveyactivity_exit_explanation))
+                .setCancelText(getString(R.string.all_cancel))
+                .setConfirmText(getString(R.string.surveyactivity_discard_snapshot))
+                .showCancelButton(true)
+                .setCancelClickListener(SweetAlertDialog::cancel);
+    }
 
     public void initViewModel()
     {
@@ -184,6 +184,43 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mSurveyViewModel.getSurveyState().getValue()!=null) {
+            switch (mSurveyViewModel.getSurveyState().getValue()) {
+                case INTRO:
+                case NONE:
+                {
+                    super.onBackPressed();
+                    break;
+                }
+                case BACKGROUND_QUESTIONS: {
+                    makeExitDialog().
+                            setConfirmClickListener((dialog) ->
+                            {
+                                mSurveyViewModel.setSurveyState(SurveyState.INTRO);
+                                dialog.dismiss();
+                            })
+                            .show();
+                    break;
+                }
+                case INDICATORS: {
+                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
+                    break;
+                }
+                case SUMMARY: {
+                    mSurveyViewModel.setSurveyState(SurveyState.INDICATORS);
+                    break;
+                }
+                case REVIEWINDICATORS:
+                case REVIEWBACKGROUND: {
+                    mSurveyViewModel.setSurveyState(SurveyState.SUMMARY);
+                    break;
+                }
+            }
+        }
     }
 
     void switchToSurveyFrag(Class<? extends AbstractSurveyFragment> fragmentClass)

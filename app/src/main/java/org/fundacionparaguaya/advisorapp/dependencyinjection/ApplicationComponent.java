@@ -2,8 +2,10 @@ package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
 
+import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
+import org.fundacionparaguaya.advisorapp.data.JobCreator;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 
 import javax.inject.Singleton;
@@ -37,4 +39,6 @@ public interface ApplicationComponent {
 
     void inject(SurveySummaryFragment surveySummaryFragment);
     void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
+
+    void inject(JobCreator jobCreator);
 }

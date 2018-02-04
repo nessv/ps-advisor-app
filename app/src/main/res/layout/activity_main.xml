@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         tools:context="org.fundacionparaguaya.advisorapp.activities.DashActivity">
 
-    <!--Added for testing-->
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView
             android:id="@+id/dashboardTabView"
             android:background="@color/colorPrimaryDark"
@@ -22,9 +21,9 @@
     <RelativeLayout
             android:id="@+id/dashboardtopbar"
             android:layout_width="0dp"
-            android:layout_marginStart="8dp"
             android:layout_height="68dp"
-            android:background="@color/topbarBackground"
+            android:layout_marginStart="-2dp"
+            android:background="@drawable/dashbar_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/dashboardTabView"
             app:layout_constraintTop_toTopOf="parent"

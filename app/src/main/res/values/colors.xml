@@ -19,7 +19,7 @@
     <color name="tabViewBorder">#E0E0E0</color>
 
     <!--Dashboard TopBar Colors-->
-    <color name="topbarBackground">#FDFDFD</color>
+    <color name="topbarBackground">@color/tabViewBackground</color>
     <color name="topbarBackButton">#313131</color>
     <color name="topbarSyncButton">#A1A1A1</color>
   

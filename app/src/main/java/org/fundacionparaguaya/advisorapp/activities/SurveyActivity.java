@@ -202,6 +202,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         {
             mFooter.setVisibility(View.VISIBLE);
         }
+
+        if(!fragment.isShowHeader())
+        {
+            mHeader.setVisibility(View.GONE);
+        }
+        else {
+            mHeader.setVisibility(View.VISIBLE);
+        }
     }
 
 

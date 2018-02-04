@@ -23,7 +23,7 @@
     <!-- Login Activity -->
     <string name="login_success">El login fue correcta.</string>
     <string name="activity_login">Registrarse</string>
-    <string name="login_emailprompt">Email</string>
+    <string name="login_emailprompt">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Ese email o clave no funcionó. Inténtalo de nuevo</string>

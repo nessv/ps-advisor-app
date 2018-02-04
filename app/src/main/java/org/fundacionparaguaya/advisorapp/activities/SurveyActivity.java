@@ -22,12 +22,7 @@ import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -127,12 +122,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         if(familyId == -1)
         {
-            throw new IllegalArgumentException(this.getLocalClassName() + ": Found family id of -1. Family id is either not set" +
+            mSurveyViewModel.setSurveyState(SurveyState.ADD_FAMILY);
+            /**
+            throw new IllegalArgumentException(this.getLocalClassName() + ": Found family id of -1. Family id is either not set " +
                     "or has been set innappropriately. To launch this activity with the family id properly set, use the " +
-                    "build(int) function");
+                    "build(int) function");**/
         }
-
-        mSurveyViewModel.setFamily(familyId);
+        else
+        {
+            mSurveyViewModel.setFamily(familyId);
+        }
 
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
@@ -160,6 +159,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
             switch (surveyState)
             {
+                case ADD_FAMILY:
+                    nextFragment = AddFamilyFrag.class;
+                    break;
+
                 case INTRO:
                     nextFragment = SurveyIntroFragment.class;
                     break;
@@ -196,6 +199,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     super.onBackPressed();
                     break;
                 }
+                case ADD_FAMILY:
                 case BACKGROUND_QUESTIONS: {
                     makeExitDialog().
                             setConfirmClickListener((dialog) ->

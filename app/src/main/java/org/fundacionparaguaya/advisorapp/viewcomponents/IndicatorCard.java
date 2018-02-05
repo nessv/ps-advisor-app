@@ -77,7 +77,8 @@ public class IndicatorCard extends LinearLayout{
     }
 
     public void resize(){
-        mText.setMaxHeight(mIndicatorCard.getHeight() - convertDpToPixel(17)*3 - convertDpToPixel(150));
+        int picWidth = mImage.getWidth();
+        mText.setMaxHeight(mIndicatorCard.getHeight() - convertDpToPixel(17)*3 - picWidth*9/16); //Min 16x9 aspect ratio for the image
     }
 
     public void setOption(IndicatorOption option)

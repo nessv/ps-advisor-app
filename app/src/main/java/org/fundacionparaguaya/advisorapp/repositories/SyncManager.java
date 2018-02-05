@@ -6,14 +6,16 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.evernote.android.job.JobRequest;
-
 import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import static android.content.Context.MODE_PRIVATE;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_OTHER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCED;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
 
 /**
  * A utility that manages the synchronization of the local databases.
@@ -30,7 +32,7 @@ public class SyncManager {
     private SnapshotRepository mSnapshotRepository;
     private SharedPreferences mPreferences;
 
-    private MutableLiveData<SyncState> mState;
+    private MutableLiveData<SyncProgress> mProgress;
 
     @Inject
     SyncManager(Application application,
@@ -44,21 +46,23 @@ public class SyncManager {
         mPreferences = application.getApplicationContext()
                 .getSharedPreferences(PREFS_SYNC, MODE_PRIVATE);
 
-        mState = new MutableLiveData<>();
-        mState.setValue(new SyncState(false, mPreferences.getLong(KEY_LAST_SYNC_TIME, -1), null));
+        mProgress = new MutableLiveData<>();
+
+        long lastSyncTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
+        updateProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime);
     }
 
-    public LiveData<SyncState> getState() {
-        return mState;
+    public LiveData<SyncProgress> getProgress() {
+        return mProgress;
     }
 
     /**
      * Synchronizes the local database with the remote one.
      * @return Whether the sync was successful.
      */
-    public boolean sync() {
+    public boolean syncNow() {
         Log.d(TAG, "sync: Synchronizing the database...");
-        updateIsSyncing(true);
+        updateProgress(SYNCING);
         boolean result;
         result = mFamilyRepository.sync();
         result &= mSurveyRepository.sync();
@@ -67,59 +71,65 @@ public class SyncManager {
         Log.d(TAG, String.format("sync: Finished the synchronization %s.",
                 result ? "successfully" : "with errors"));
 
-        updateIsSyncing(false);
         if (result) {
-            updateLastSyncedTime();
+            updateProgress(SYNCED, new Date().getTime());
+        } else {
+            updateProgress(ERROR_OTHER);
         }
         return result;
     }
 
-    private void updateLastSyncedTime() {
-        SyncState state = mState.getValue();
-        long lastSync = new Date().getTime();
-        mState.postValue(new SyncState(state.isSyncing(), lastSync, state.getErrorMessage()));
+    private void updateProgress(SyncState state) {
+        SyncProgress progress = mProgress.getValue();
+        if (progress == null) {
+            progress = new SyncProgress(state);
+        } else {
+            progress = new SyncProgress(state, progress.getLastSyncedTime());
+        }
+        mProgress.postValue(progress);
+    }
+
+    private void updateProgress(SyncState state, long lastSyncTime) {
+        mProgress.postValue(new SyncProgress(state, lastSyncTime));
 
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putLong(KEY_LAST_SYNC_TIME, lastSync);
+        editor.putLong(KEY_LAST_SYNC_TIME, lastSyncTime);
         editor.apply();
     }
 
-    private void updateIsSyncing(boolean isSyncing) {
-        SyncState state = mState.getValue();
-        mState.postValue(new SyncState(isSyncing, state.getLastSyncedTime(), state.getErrorMessage()));
+    /**
+     * The states that a sync can be in.
+     */
+    public enum SyncState {
+        NEVER,
+        SYNCING,
+        SYNCED,
+        ERROR_NOT_CONNECTED,
+        ERROR_OTHER
     }
 
-    public static void start() {
-        new JobRequest.Builder(TAG)
-                .setPeriodic(900000)
-                .setRequiresDeviceIdle(false)
-                .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
-                .setUpdateCurrent(true)
-                .build()
-                .schedule();
-    }
-
-    public class SyncState {
-        private boolean mIsSyncing;
+    /**
+     * The progress of a sync.
+     */
+    public class SyncProgress {
+        private SyncState mState;
         private long mLastSyncedTime;
-        private String mErrorMessage;
 
-        SyncState(boolean isSyncing, long lastSyncedTime, String errorMessage) {
-            this.mIsSyncing = isSyncing;
-            this.mLastSyncedTime = lastSyncedTime;
-            this.mErrorMessage = errorMessage;
+        SyncProgress(SyncState syncState) {
+            this(syncState, -1);
+        }
+
+        SyncProgress(SyncState syncState, long lastSyncedTime) {
+            mState = syncState;
+            mLastSyncedTime = lastSyncedTime;
+        }
+
+        public SyncState getSyncState() {
+            return mState;
         }
 
         public long getLastSyncedTime() {
             return mLastSyncedTime;
-        }
-
-        public String getErrorMessage() {
-            return mErrorMessage;
-        }
-
-        public boolean isSyncing() {
-            return mIsSyncing;
         }
     }
 }

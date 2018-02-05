@@ -7,11 +7,11 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 
-import org.fundacionparaguaya.advisorapp.data.JobCreator;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.ApplicationModule;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DaggerApplicationComponent;
 import org.fundacionparaguaya.advisorapp.dependencyinjection.DatabaseModule;
+import org.fundacionparaguaya.advisorapp.jobs.JobCreator;
 
 /**
  * The advisor application.

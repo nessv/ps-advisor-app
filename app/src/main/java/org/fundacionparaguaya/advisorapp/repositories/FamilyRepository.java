@@ -102,7 +102,7 @@ public class FamilyRepository {
                     remoteFamily.setId(family.getId());
                     saveFamily(remoteFamily);
                 } else {
-                    Log.w(TAG, format("pushFamilies: Could not push family with id %d! %s", family.getId(), response.errorBody()));
+                    Log.w(TAG, format("pushFamilies: Could not push family with id %d! %s", family.getId(), response.errorBody().string()));
                     success = false;
                 }
             } catch (IOException e) {

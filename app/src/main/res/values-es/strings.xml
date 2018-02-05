@@ -10,7 +10,7 @@
     <string name="familytab_title">Familias</string>
     <string name="maptab_title">Mapa</string>
     <string name="archivetab_title">Archivo</string>
-    <string name="settingstab_title">Ajustes</string>
+    <string name="settingstab_title">Ajustes</string>\
 
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Regresa</string>

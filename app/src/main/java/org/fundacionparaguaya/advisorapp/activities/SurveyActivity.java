@@ -96,7 +96,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mExitButton.setOnClickListener((event)->
         {
             //someday save here
-            makeExitDialog().setConfirmClickListener((dialog)->this.finish()).show();
+            if(mSurveyViewModel.getSurveyState().getValue()!=SurveyState.INTRO) {
+                makeExitDialog().setConfirmClickListener((dialog) -> this.finish()).show();
+            }
+            else
+            {
+                this.finish();
+            }
         });
 
 

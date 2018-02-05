@@ -76,6 +76,9 @@ public class IndicatorCard extends LinearLayout{
         }
     }
 
+    /**
+     * Sets maxHeight for the textview based on the size of the indicator card and the picture
+     */
     public void resize(){
         int picWidth = mImage.getWidth();
         mText.setMaxHeight(mIndicatorCard.getHeight() - convertDpToPixel(17)*3 - picWidth*9/16); //Min 16x9 aspect ratio for the image

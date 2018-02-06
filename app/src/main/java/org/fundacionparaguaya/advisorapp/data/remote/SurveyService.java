@@ -6,7 +6,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 
 /**
  * The service used to retrieve surveys from the remote database.
@@ -14,6 +13,6 @@ import retrofit2.http.Header;
 
 public interface SurveyService {
 
-    @GET("api/v1/surveys")
-    Call<List<SurveyIr>> getSurveys(@Header("Authorization") String authorization);
+    @GET("surveys")
+    Call<List<SurveyIr>> getSurveys();
 }

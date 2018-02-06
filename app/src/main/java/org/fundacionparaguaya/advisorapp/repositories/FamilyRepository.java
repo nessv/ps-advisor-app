@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
-import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.FamilyIr;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
@@ -27,15 +26,12 @@ public class FamilyRepository {
 
     private final FamilyDao familyDao;
     private final FamilyService familyService;
-    private final AuthenticationManager authManager;
 
     @Inject
     public FamilyRepository(FamilyDao familyDao,
-                            FamilyService familyService,
-                            AuthenticationManager authManager) {
+                            FamilyService familyService) {
         this.familyDao = familyDao;
         this.familyService = familyService;
-        this.authManager = authManager;
     }
 
     //region Family
@@ -93,7 +89,7 @@ public class FamilyRepository {
         for (Family family : pending) {
             try {
                 Response<FamilyIr> response = familyService
-                        .postFamily(authManager.getAuthenticationString(), IrMapper.mapFamily(family))
+                        .postFamily(IrMapper.mapFamily(family))
                         .execute();
 
                 if (response.isSuccessful() || response.body() != null) {
@@ -116,10 +112,10 @@ public class FamilyRepository {
     private boolean pullFamilies() {
         try {
             Response<List<FamilyIr>> response =
-                    familyService.getFamilies(authManager.getAuthenticationString()).execute();
+                    familyService.getFamilies().execute();
 
             if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("pullFamilies: Could not pull families! %s", response.errorBody()));
+                Log.w(TAG, format("pullFamilies: Could not pull families! %s", response.errorBody().string()));
                 return false;
             }
 

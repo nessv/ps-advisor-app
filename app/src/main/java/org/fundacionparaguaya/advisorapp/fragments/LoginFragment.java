@@ -10,12 +10,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,6 @@ import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.
 import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.User;
-import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
@@ -187,6 +185,7 @@ public class LoginFragment extends Fragment {
     }
 }
 abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
+    private static final String TAG = "AbstractLoginTask";
     protected static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
 
     LoginFragment mLoginFragment;
@@ -221,7 +220,7 @@ abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
             user.setEnabled(true);
             mAuthManager.saveRefreshToken();
         } catch (IOException e) {
-            return false;
+            Log.e(TAG, "doInBackground: Couldn't attempt to log the user in!", e);
         }
         return true;
     }

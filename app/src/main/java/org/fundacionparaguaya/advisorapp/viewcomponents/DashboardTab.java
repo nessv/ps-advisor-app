@@ -52,7 +52,7 @@ public class DashboardTab extends LinearLayout {
         try {
             mImageIcon.setImageResource(attrs.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
             mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.familytab_title));                //set caption text
-            mTabLayout.setBackgroundResource(R.color.tabNotSelected);                                                     //set default background
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabnotselected);                                                     //set default background
         } finally {
             attrs.recycle();
         }
@@ -104,14 +104,14 @@ public class DashboardTab extends LinearLayout {
      */
     public void setSelected(boolean isSelected){
         if (isSelected) {
-            mTabLayout.setBackgroundResource(R.color.tabSelected);//Change DashTabType Background
-            mImageIcon.setColorFilter(new PorterDuffColorFilter(context.getColor(R.color.iconSelected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabSelected);//Change DashTabType Background
+            mImageIcon.setColorFilter(new PorterDuffColorFilter(context.getColor(R.color.dashboardtab_iconselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
 
-            mTextViewCaption.setTextColor(context.getColor(R.color.captionSelected));//Change Text Color
+            mTextViewCaption.setTextColor(context.getColor(R.color.dashbaordtab_captionselected));//Change Text Color
         } else {
-            mTabLayout.setBackgroundResource(R.color.tabNotSelected);//Change DashTabType Background
-            mImageIcon.setColorFilter(R.color.iconNotSelected);//Change Icon Color
-            mTextViewCaption.setTextColor(getResources().getColor(R.color.captionNotSelected));//Change Text Color
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabnotselected);//Change DashTabType Background
+            mImageIcon.setColorFilter(R.color.dashboardtab_iconnotselected);//Change Icon Color
+            mTextViewCaption.setTextColor(getResources().getColor(R.color.dashboardtab__captionnotselected));//Change Text Color
         }
     }
 

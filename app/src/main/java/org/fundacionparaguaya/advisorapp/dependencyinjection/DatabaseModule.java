@@ -97,24 +97,23 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService, AuthenticationManager authManager) {
-        return new FamilyRepository(familyDao, familyService, authManager);
+    FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService) {
+        return new FamilyRepository(familyDao, familyService);
     }
 
     @Provides
     @Singleton
-    SurveyRepository provideSurveyRepository(SurveyDao surveyDao, SurveyService surveyService, AuthenticationManager authManager) {
-        return new SurveyRepository(surveyDao, surveyService, authManager);
+    SurveyRepository provideSurveyRepository(SurveyDao surveyDao, SurveyService surveyService) {
+        return new SurveyRepository(surveyDao, surveyService);
     }
 
     @Provides
     @Singleton
     SnapshotRepository provideSnapshotRepository(SnapshotDao snapshotDao,
                                                  SnapshotService snapshotService,
-                                                 AuthenticationManager authManager,
                                                  FamilyRepository familyRepository,
                                                  SurveyRepository surveyRepository) {
-        return new SnapshotRepository(snapshotDao, snapshotService, authManager, familyRepository, surveyRepository);
+        return new SnapshotRepository(snapshotDao, snapshotService, familyRepository, surveyRepository);
     }
 
     @Provides

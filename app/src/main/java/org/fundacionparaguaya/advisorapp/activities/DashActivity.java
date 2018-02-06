@@ -3,12 +3,14 @@ package org.fundacionparaguaya.advisorapp.activities;
 import android.animation.ObjectAnimator;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,6 +43,14 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
 
+
+    //if display back button = false
+    ///display title if it has a title
+
+    //if display back button = true
+    //display title, if it has a title
+    //else display "Back"
+
     @Override
     public void onBackPressed() {
         ((AbstractTabbedFrag) getFragment(getClassForType(tabBarView.getSelected()))).onNavigateBack();
@@ -70,6 +80,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     protected void onSaveInstanceState(Bundle outState) {
         //save selected tab
         outState.putString(SELECTED_TAB_KEY, tabBarView.getSelected().name());
+
         super.onSaveInstanceState(outState);
     }
 
@@ -120,6 +131,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setOnClickListener((event)-> onBackPressed());
 
         tabBarView.addTabSelectedHandler(handler);
+
+        ImageView fpLogo = findViewById(R.id.fp_logo);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        if(metrics.ydpi < 600 && fpLogo !=null)
+        {
+            fpLogo.setVisibility(View.GONE);
+        }
     }
 
     private void onSyncButtonPress(View view) {

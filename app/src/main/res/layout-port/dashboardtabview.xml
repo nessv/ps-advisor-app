@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:custom="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="100dp"
+              android:layout_height="wrap_content"
               android:layout_gravity="center"
               android:orientation="horizontal"
               android:background="@color/tabViewBackground">
@@ -13,6 +13,7 @@
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_friendsicon"
             custom:tabCaption="@string/familytab_title"
+            custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -24,6 +25,7 @@
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_mapicon"
             custom:tabCaption="@string/maptab_title"
+            custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -35,6 +37,7 @@
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_archiveicon"
             custom:tabCaption="@string/archivetab_title"
+            custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -46,6 +49,7 @@
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_settingsicon"
             custom:tabCaption="@string/settingstab_title"
+            custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

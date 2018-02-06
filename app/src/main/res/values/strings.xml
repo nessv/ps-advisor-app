@@ -46,8 +46,19 @@
     <string name="survey_summary_indicatortitle">Indicators</string>
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
 
-    <!-- Adding a Family -->
+    <!-- Family Details -->
+    <string name="familydetails_phonenumberdefault">No Phone Number</string>
+    <string name="familydetails_hometitle">Home</string>
+    <string name="familydetails_locationlabel">Location</string>
+    <string name="familydetails_locationdefault">No Location</string>
+    <string name="familydetails_descriptionlabel">Description</string>
+    <string name="familydetails_descriptiondefault">No Description</string>
+    <string name="familydetails_prioritytitle">Prioritites</string>
 
+    <!--Family Details Tabs-->
+    <string name="familydetails_tabs_indicatorstitle">Indicators</string>
+
+    <!-- Adding a Family -->
     <string name="family_name_question">Family\'s Name</string>
     <string name="family_location_question">Family\'s Location</string>
     <string name="family_UID">Family\'s ID</string>

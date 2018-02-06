@@ -383,24 +383,24 @@ public class FamilyIndicatorsListFrag extends Fragment {
             }
         }
 
-        public void setSnapshotList( Snapshot[] values)
+        public void setSnapshotList(Snapshot[] values)
         {
-            Snapshot latestSnapshot = null;
+            if(values!=null) {
+                Snapshot latestSnapshot = null;
 
-            for(Snapshot snapshot: values)
-            {
-                //reset any flags that we have on a snapshot
-                snapshot.setIsLatest(false);
+                for (Snapshot snapshot : values) {
 
-                if(latestSnapshot==null || latestSnapshot.getCreatedAt().after(latestSnapshot.getCreatedAt()))
-                {
-                    latestSnapshot = snapshot;
+                    //reset any flags that we have on a snapshot
+                    snapshot.setIsLatest(false);
+
+                    if (latestSnapshot == null || snapshot.getCreatedAt().after(latestSnapshot.getCreatedAt())) {
+                        latestSnapshot = snapshot;
+                    }
                 }
-            }
 
-            if(latestSnapshot!=null)
-            {
-                latestSnapshot.setIsLatest(true);
+                if (latestSnapshot != null) {
+                    latestSnapshot.setIsLatest(true);
+                }
             }
 
             this.values = values;

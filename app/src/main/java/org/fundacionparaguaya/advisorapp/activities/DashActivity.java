@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -24,6 +26,7 @@ import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListe
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
+import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
@@ -33,6 +36,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     TextView mSyncLabel;
     ImageButton mSyncButton;
     RelativeTimeTextView mLastSyncTextView;
+    TextView mTvTabTitle;
+    TextView mTvBackLabel;
 
     LinearLayout mBackButton;
 
@@ -85,6 +90,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     @Override
+    protected void switchToFrag(Class fragmentClass) {
+        super.switchToFrag(fragmentClass);
+
+        String title = ((AbstractTabbedFrag)getFragment(fragmentClass)).getTabTitle();
+
+        mTvTabTitle.setText(title);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -100,6 +114,9 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         mSyncLabel = findViewById(R.id.topbar_synclabel);
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
+
+        mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
+        mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
 
         mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
@@ -136,7 +153,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
 
-        if(metrics.ydpi < 600 && fpLogo !=null)
+        if(convertPixelsToDp(metrics.heightPixels, getApplicationContext())<600 && fpLogo !=null)
         {
             fpLogo.setVisibility(View.GONE);
         }
@@ -149,11 +166,14 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Override
     public void onShowBackNav() {
        mBackButton.setVisibility(View.VISIBLE);
+       mTvBackLabel.setText(mTvTabTitle.getText());
+       mTvTabTitle.setVisibility(View.GONE);
     }
 
     @Override
     public void onHideBackNav() {
         mBackButton.setVisibility(View.GONE);
+        mTvTabTitle.setVisibility(View.VISIBLE);
     }
 
     private class SyncRepositoryTask extends AsyncTask<Void, Void, Boolean> {
@@ -185,5 +205,20 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             mSyncLabel.setText(R.string.topbar_synclabel);
         }
     }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static float convertPixelsToDp(float px, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
+    }
+
 }
 

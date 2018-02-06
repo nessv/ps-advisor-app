@@ -7,6 +7,13 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 public class FamilyTabbedFragment extends AbstractTabbedFrag
 {
+    public FamilyTabbedFragment()
+    {
+        super();
+
+        setTabTitle("Familias");
+    }
+
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
         return new AllFamiliesStackedFrag();

@@ -69,24 +69,6 @@ public class AddFamilyFrag extends SurveyQuestionsFrag {
     }
 
     @Override
-    public void onNext(View v) {
-        int currentIndex = mDsvQuestionList.getCurrentItem();
-        currentIndex++;
-
-        View currentFocus;
-
-        if(getActivity()!=null && (currentFocus=getActivity().getCurrentFocus())!=null)
-        {
-            currentFocus.clearFocus();
-        }
-
-        if(currentIndex< mQuestionAdapter.getItemCount())
-        {
-            mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }
-    }
-
-    @Override
     public void onFinish() {
         new SaveFamilyAsyncTask(this).execute();
         //set family in survey view model..

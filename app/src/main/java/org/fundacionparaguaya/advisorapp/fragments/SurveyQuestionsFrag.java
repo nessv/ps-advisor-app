@@ -154,13 +154,20 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
 
     @Override
     public void onNext(View v) {
-       /* int currentIndex = mDsvQuestionList.getCurrentItem();
+        int currentIndex = mDsvQuestionList.getCurrentItem();
         currentIndex++;
 
-        if(currentIndex<mQuestionAdapter.getItemCount())
+        View currentFocus;
+
+        if(getActivity()!=null && (currentFocus=getActivity().getCurrentFocus())!=null)
+        {
+            currentFocus.clearFocus();
+        }
+
+        if(currentIndex< mQuestionAdapter.getItemCount())
         {
             mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }*/
+        }
     }
 
     @Override

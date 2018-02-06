@@ -94,7 +94,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         super.switchToFrag(fragmentClass);
 
         String title = ((AbstractTabbedFrag)getFragment(fragmentClass)).getTabTitle();
-
         mTvTabTitle.setText(title);
     }
 

@@ -139,11 +139,9 @@ public class FamilyIndicatorsListFrag extends Fragment {
                     mSpinnerAdapter.setSnapshotList(null);
                 }
                 else mSpinnerAdapter.setSnapshotList(snapshots.toArray(new Snapshot[snapshots.size()]));
-        });
 
-        mFamilyInformationViewModel.getSelectedSnapshot().observe(this, (selectedSnapshot)->
-        {
-            mSpinnerAdapter.setSelected(selectedSnapshot);
+                //has to be called after getSnapshots
+                mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
 
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
@@ -346,9 +344,11 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         void setSelected(Snapshot s)
         {
-            for(int i=0; i<values.length; i++)
-            {
-                if(values[i].equals(s)) mSelectedArrayIndex = i;
+            if(s==null) mSelectedArrayIndex = 0;
+            else {
+                for (int i = 0; i < values.length; i++) {
+                    if (values[i].equals(s)) mSelectedArrayIndex = i;
+                }
             }
         }
 
@@ -387,24 +387,26 @@ public class FamilyIndicatorsListFrag extends Fragment {
             }
         }
 
-        public void setSnapshotList( Snapshot[] values)
+        public void setSnapshotList(Snapshot[] values)
         {
-            Snapshot latestSnapshot = null;
+            if(values!=null) {
+                Snapshot latestSnapshot = null;
 
-            for(Snapshot snapshot: values)
-            {
-                //reset any flags that we have on a snapshot
-                snapshot.setIsLatest(false);
+                for (Snapshot snapshot : values) {
 
-                if(latestSnapshot==null || latestSnapshot.getCreatedAt().after(latestSnapshot.getCreatedAt()))
-                {
-                    latestSnapshot = snapshot;
+                    //reset any flags that we have on a snapshot
+                    snapshot.setIsLatest(false);
+
+                    Date createdDate = snapshot.getCreatedAt();
+
+                    if (latestSnapshot == null || createdDate!=null && snapshot.getCreatedAt().after(latestSnapshot.getCreatedAt())) {
+                        latestSnapshot = snapshot;
+                    }
                 }
-            }
 
-            if(latestSnapshot!=null)
-            {
-                latestSnapshot.setIsLatest(true);
+                if (latestSnapshot != null) {
+                    latestSnapshot.setIsLatest(true);
+                }
             }
 
             this.values = values;

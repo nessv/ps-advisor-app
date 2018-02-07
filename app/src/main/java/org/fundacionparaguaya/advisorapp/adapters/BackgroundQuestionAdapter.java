@@ -213,6 +213,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
             });
         }
 
+
         @Override
         public void setQuestion(BackgroundQuestion question) {
             super.setQuestion(question);
@@ -248,8 +249,8 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
             familyInfoQuestion = (TextView) itemView.findViewById(R.id.tv_questionall_title);
             familyInfoEntry = (EditText) itemView.findViewById(R.id.entry_location_field);
             nextButton = (Button) itemView.findViewById(R.id.btn_questionall_next);
-
         }
+
 
         public String onResponse()
         {
@@ -289,7 +290,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
     }
 
-    abstract static class QuestionViewHolder extends RecyclerView.ViewHolder
+    abstract public static class QuestionViewHolder extends RecyclerView.ViewHolder
     {
         protected BackgroundQuestion mQuestion;
         BackgroundQuestionCallback mBackgroundQuestionCallback;

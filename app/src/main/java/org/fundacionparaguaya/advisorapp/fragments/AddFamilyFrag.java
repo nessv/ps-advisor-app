@@ -1,11 +1,12 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.Activity;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,72 +17,50 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.BackgroundQuestionAdapter;
-import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AddFamilyFrag extends AbstractStackedFrag implements BackgroundQuestionCallback {
-
-    private BackgroundQuestionAdapter mBackgroundQuestionAdapter;
-
-    private static String NEW_FAMILY_KEY = "SELECTED_FAMILY";
-
-    private static float MIN_QUESTION_OPACITY = 0.3f;
+public class AddFamilyFrag extends SurveyQuestionsFrag {
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
+    SharedSurveyViewModel mSurveyViewModel;
+
     AddFamilyViewModel mAddFamilyViewModel;
-    DiscreteScrollView mDsvQuestionList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
+
         super.onCreate(savedInstanceState);
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 
+        mSurveyViewModel = ViewModelProviders
+                .of(getActivity(), mViewModelFactory)
+                .get(SharedSurveyViewModel.class);
+
         mAddFamilyViewModel = ViewModelProviders
-                .of((FragmentActivity) getActivity(), mViewModelFactory)
+                .of(getActivity(), mViewModelFactory)
                 .get(AddFamilyViewModel.class);
 
-        mBackgroundQuestionAdapter = new BackgroundQuestionAdapter(this);
-
-        mAddFamilyViewModel.getQuestions().observe(this, (questions) ->
-        {
-            mBackgroundQuestionAdapter.setQuestionsList(questions);
-        });
+        setFooterColor(R.color.survey_grey);
+        setHeaderColor(R.color.survey_grey);
+        setTitle("New Family");
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState){
-
-        View view = inflater.inflate(R.layout.addfamily_frag, container, false);
-
-        mDsvQuestionList = (DiscreteScrollView) view.findViewById(R.id.addfaily_questions);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        recyclerView.setLayoutManager(layoutManager);
-        mDsvQuestionList.setHasFixedSize(true);
-
-        mDsvQuestionList.setAdapter(mBackgroundQuestionAdapter);
-
-        mDsvQuestionList.setSlideOnFling(true);
-        mDsvQuestionList.setSlideOnFlingThreshold(1800);
-
-        mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void initQuestionList() {
+        mAddFamilyViewModel.getQuestions().observe(this,
+            mQuestionAdapter::setQuestionsList);
     }
 
     @Override
@@ -90,21 +69,10 @@ public class AddFamilyFrag extends AbstractStackedFrag implements BackgroundQues
     }
 
     @Override
-    public void onNext(View v) {
-        int currentIndex = mDsvQuestionList.getCurrentItem();
-        currentIndex++;
-
-        if(currentIndex<mBackgroundQuestionAdapter.getItemCount())
-        {
-            mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }
-    }
-
-    @Override
     public void onFinish() {
         new SaveFamilyAsyncTask(this).execute();
-        //get family from view model
-        //save it
+        //set family in survey view model..
+        //change state
     }
 
     static class SaveFamilyAsyncTask extends AsyncTask<Void, Void, Void>
@@ -125,7 +93,10 @@ public class AddFamilyFrag extends AbstractStackedFrag implements BackgroundQues
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            fragReference.get().navigateBack();
+       //     fragReference.get().navigateBack();
+
+            //CHANGE STATE HERE
+
             super.onPostExecute(aVoid);
         }
     }

@@ -14,11 +14,15 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
+import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
 import javax.inject.Inject;
+
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
 
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
@@ -90,10 +94,21 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSyncButtonIcon = findViewById(R.id.dashboardtopbar_syncbutton);
 
         //update last sync label when the sync manager updates
-        mSyncManager.getLastSyncedTime().observe(this, (value)->
-        {
-            if(value != -1) {
-                mLastSyncTextView.setReferenceTime(value);
+        mSyncManager.getProgress().observe(this, (value) -> {
+            if (value != null) {
+                if (value.getSyncState() == NEVER) {
+                    mLastSyncTextView.setText(R.string.topbar_lastsync_never);
+                } else {
+                    mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
+                }
+
+                if (value.getSyncState() == SYNCING) {
+                    mSyncLabel.setText(R.string.topbar_synclabel_syncing);
+                    mSyncButton.setEnabled(false);
+                } else {
+                    mSyncButton.setEnabled(true);
+                    mSyncLabel.setText(R.string.topbar_synclabel);
+                }
             }
         });
 
@@ -119,7 +134,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     private void onSyncButtonPress(View view) {
-        new SyncRepositoryTask().execute();
+        SyncJob.sync();
     }
 
     @Override
@@ -130,25 +145,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Override
     public void onHideBackNav() {
         mBackButton.setVisibility(View.GONE);
-    }
-
-    private class SyncRepositoryTask extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected void onPreExecute() {
-            mSyncLabel.setText(R.string.topbar_synclabel_syncing);
-            mSyncButton.setEnabled(false);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... Void) {
-            return mSyncManager.sync();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            mSyncButton.setEnabled(true);
-            mSyncLabel.setText(R.string.topbar_synclabel);
-        }
     }
 }
 

@@ -1,19 +1,19 @@
 package org.fundacionparaguaya.advisorapp.dependencyinjection;
 
 import android.app.Application;
-import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Room;
 
 import org.fundacionparaguaya.advisorapp.data.local.FamilyDao;
 import org.fundacionparaguaya.advisorapp.data.local.LocalDatabase;
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationInterceptor;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationService;
 import org.fundacionparaguaya.advisorapp.data.remote.FamilyService;
 import org.fundacionparaguaya.advisorapp.data.remote.RemoteDatabase;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
-import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
@@ -23,6 +23,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -33,11 +34,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class DatabaseModule {
-    private static final String URL_REST_API = "http://povertystoplightiqp.org:8080/";
+    private static final String URL_API = "http://povertystoplightiqp.org:8080/";
+    private static final String URL_API_ENDPOINT = URL_API + "api/v1/";
+    private static final String URL_AUTH_ENDPOINT = URL_API + "oauth/";
 
-    private final AuthenticationManager authManager;
     private final LocalDatabase local;
-    private final RemoteDatabase remote;
 
     public DatabaseModule(Application application) {
         this.local = Room.databaseBuilder(
@@ -45,13 +46,47 @@ public class DatabaseModule {
                 LocalDatabase.class,
                 "Advisor.db"
         ).build();
+    }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL_REST_API)
+
+    @Provides
+    @Singleton
+    AuthenticationManager provideAuthManager(Application application) {
+        Retrofit authRetrofit = new Retrofit.Builder()
+                .baseUrl(URL_AUTH_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        this.remote = new RemoteDatabase(retrofit);
-        this.authManager = new AuthenticationManager(application, remote.authService());
+        return new AuthenticationManager(application, authRetrofit.create(AuthenticationService.class));
+    }
+
+    @Provides
+    @Singleton
+    AuthenticationInterceptor provideAuthInterceptor(AuthenticationManager authManager) {
+        return new AuthenticationInterceptor(authManager);
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideHttpClient(AuthenticationInterceptor authInterceptor) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl(URL_API_ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    RemoteDatabase provideRemoteDatabase(Retrofit retrofit) {
+        return new RemoteDatabase(retrofit);
     }
 
     @Provides
@@ -62,36 +97,23 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    RemoteDatabase provideRemoteDatabase() {
-        return this.remote;
+    FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService) {
+        return new FamilyRepository(familyDao, familyService);
     }
 
     @Provides
     @Singleton
-    AuthenticationManager provideAuthManager() {
-        return this.authManager;
-    }
-
-    @Provides
-    @Singleton
-    FamilyRepository provideFamilyRepository(FamilyDao familyDao, FamilyService familyService, AuthenticationManager authManager) {
-        return new FamilyRepository(familyDao, familyService, authManager);
-    }
-
-    @Provides
-    @Singleton
-    SurveyRepository provideSurveyRepository(SurveyDao surveyDao, SurveyService surveyService, AuthenticationManager authManager) {
-        return new SurveyRepository(surveyDao, surveyService, authManager);
+    SurveyRepository provideSurveyRepository(SurveyDao surveyDao, SurveyService surveyService) {
+        return new SurveyRepository(surveyDao, surveyService);
     }
 
     @Provides
     @Singleton
     SnapshotRepository provideSnapshotRepository(SnapshotDao snapshotDao,
                                                  SnapshotService snapshotService,
-                                                 AuthenticationManager authManager,
                                                  FamilyRepository familyRepository,
                                                  SurveyRepository surveyRepository) {
-        return new SnapshotRepository(snapshotDao, snapshotService, authManager, familyRepository, surveyRepository);
+        return new SnapshotRepository(snapshotDao, snapshotService, familyRepository, surveyRepository);
     }
 
     @Provides

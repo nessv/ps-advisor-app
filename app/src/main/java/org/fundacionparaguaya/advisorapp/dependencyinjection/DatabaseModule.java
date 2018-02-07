@@ -53,7 +53,9 @@ public class DatabaseModule {
     @Provides
     @Singleton
     Merlin provideMerlin(Application application) {
-        return new Merlin.Builder().withAllCallbacks().build(application);
+        Merlin merlin = new Merlin.Builder().withAllCallbacks().build(application);
+        merlin.bind();
+        return merlin;
     }
 
     @Provides

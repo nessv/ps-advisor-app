@@ -235,17 +235,5 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mNetworkWatcher.bind();
-    }
-
-    @Override
-    protected void onPause() {
-        mNetworkWatcher.unbind();
-        super.onPause();
-    }
 }
 

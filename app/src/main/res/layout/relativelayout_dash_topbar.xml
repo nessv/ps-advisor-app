@@ -46,7 +46,7 @@
             android:id="@+id/tv_topbar_backlabel"
             android:text="@string/topbar_backbutton"
             android:textSize="24sp"
-            android:textColor="@color/topbar_backbutton"/>
+            android:textColor="#313131"/>
 
 </LinearLayout>
 

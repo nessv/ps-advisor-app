@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -86,12 +87,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         mProgressBar = findViewById(R.id.progressbar_surveyactivity);
         mExitButton = findViewById(R.id.btn_surveyactivity_close);
-
-        //only supported after Lollipop
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.black, this.getTheme()));
-        }
 
         mExitButton.setOnClickListener((event)->
         {
@@ -242,8 +237,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
-        mHeader.setBackgroundColor(getResources().getColor(fragment.getHeaderColor(), this.getTheme()));
-        mFooter.setBackgroundColor(getResources().getColor(fragment.getFooterColor(), this.getTheme()));
+        mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
+        mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
 
         if(!fragment.isShowFooter())
         {

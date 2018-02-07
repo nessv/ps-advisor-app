@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -113,9 +114,9 @@ public class DashboardTab extends LinearLayout {
     public void setSelected(boolean isSelected){
         if (isSelected) {
             mTabLayout.setBackgroundResource(R.color.dashboardtab_tabSelected);//Change DashTabType Background
-            mImageIcon.setColorFilter(new PorterDuffColorFilter(context.getColor(R.color.dashboardtab_iconselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
+            mImageIcon.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.dashboardtab_iconselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
 
-            mTextViewCaption.setTextColor(context.getColor(R.color.dashbaordtab_captionselected));//Change Text Color
+            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.dashbaordtab_captionselected));//Change Text Color
         } else {
             mTabLayout.setBackgroundResource(R.color.dashboardtab_tabnotselected);//Change DashTabType Background
             mImageIcon.setColorFilter(R.color.dashboardtab_iconnotselected);//Change Icon Color

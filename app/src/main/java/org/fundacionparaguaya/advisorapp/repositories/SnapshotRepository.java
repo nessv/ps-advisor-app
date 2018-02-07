@@ -134,4 +134,8 @@ public class SnapshotRepository {
 
         return successful;
     }
+
+    void clean() {
+        snapshotDao.deleteAll();
+    }
 }

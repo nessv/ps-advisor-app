@@ -1,18 +1,22 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.*;
+import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.fragments.AbstractTabbedFrag;
+import org.fundacionparaguaya.advisorapp.fragments.ArchiveTabFrag;
+import org.fundacionparaguaya.advisorapp.fragments.FamilyTabbedFragment;
+import org.fundacionparaguaya.advisorapp.fragments.MapTabFrag;
+import org.fundacionparaguaya.advisorapp.fragments.SettingsTabFrag;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
@@ -21,6 +25,7 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 
 import javax.inject.Inject;
 
+import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
 
@@ -36,6 +41,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
     @Inject
     SyncManager mSyncManager;
+    @Inject
+    AuthenticationManager mAuthManager;
 
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
 
@@ -109,6 +116,14 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     mSyncButton.setEnabled(true);
                     mSyncLabel.setText(R.string.topbar_synclabel);
                 }
+            }
+        });
+
+        mAuthManager.getStatus().observe(this, (value) -> {
+            if (value == UNAUTHENTICATED) {
+                Intent dashboard = new Intent(this, LoginActivity.class);
+                startActivity(dashboard);
+                finish();
             }
         });
 

@@ -104,7 +104,7 @@ public class SyncManager {
         NEVER,
         SYNCING,
         SYNCED,
-        ERROR_NOT_CONNECTED,
+        ERROR_NO_INTERNET,
         ERROR_OTHER
     }
 

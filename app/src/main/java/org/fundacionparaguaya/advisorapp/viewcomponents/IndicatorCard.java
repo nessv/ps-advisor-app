@@ -36,6 +36,9 @@ public class IndicatorCard extends LinearLayout{
 
     private ViewTreeObserver observer;
 
+    private int height;
+    private int width;
+
     private IndicatorOption mIndicatorOption;
 
     public enum CardColor {
@@ -82,6 +85,14 @@ public class IndicatorCard extends LinearLayout{
     public void resize(){
        // int picWidth = mImage.getWidth();
      //   mText.setMaxHeight(mIndicatorCard.getHeight() - convertDpToPixel(17)*3 - picWidth*9/16); //Min 16x9 aspect ratio for the image
+    }
+
+    public int getIndicatorWidth(){
+        return mIndicatorCard.getWidth();
+    }
+
+    public int getIndicatorHeight(){
+        return mIndicatorCard.getHeight();
     }
 
     public void setOption(IndicatorOption option)
@@ -145,5 +156,16 @@ public class IndicatorCard extends LinearLayout{
         float px = dp * (metrics.densityDpi / 160f);
         return (int) Math.round(px);
     }
+
+//    public void notifyHandlers(){}
+//
+//    public interface IndicatorSelectedHadler{
+//
+//    }
+//
+//    public class indicatorSelectedEvent{
+//        private
+//
+//    }
 
 }

@@ -344,7 +344,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
         void setSelected(Snapshot s)
         {
             if(s==null) mSelectedArrayIndex = 0;
-            else {
+            else if(values!=null){
                 for (int i = 0; i < values.length; i++) {
                     if (values[i].equals(s)) mSelectedArrayIndex = i;
                 }
@@ -406,11 +406,13 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 if (latestSnapshot != null) {
                     latestSnapshot.setIsLatest(true);
                 }
+
+
+                this.values = values;
+
+                notifyDataSetChanged();
             }
 
-            this.values = values;
-
-            notifyDataSetChanged();
         }
 
         @Nullable

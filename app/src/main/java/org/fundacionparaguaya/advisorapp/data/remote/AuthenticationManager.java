@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 
 import static android.content.Context.MODE_PRIVATE;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
-import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNKNOWN;
 
@@ -96,7 +95,6 @@ public class AuthenticationManager {
      * Attempts to refresh the login using a saved refresh token.
      */
     public void refreshLogin() {
-        updateStatus(PENDING);
         try {
             retrofit2.Response<LoginIr> response = mAuthService
                         .loginWithRefreshToken(
@@ -111,7 +109,6 @@ public class AuthenticationManager {
     }
 
     private void getToken(User user) {
-        updateStatus(PENDING);
         try {
             retrofit2.Response<LoginIr> response = mAuthService
                     .loginWithPassword(

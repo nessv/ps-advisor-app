@@ -35,9 +35,21 @@ public abstract class AbstractTabbedFrag extends Fragment implements NavigationL
     static String HAS_BEEN_INIT_KEY = "HAS_BEEN_INITIALIZED";
     boolean mHasBeenInitialized = false;
 
+    private String mTabTitle = "";
+
     public AbstractTabbedFrag()
     {
 
+    }
+
+    public void setTabTitle(String title)
+    {
+        mTabTitle = title;
+    }
+
+    public String getTabTitle()
+    {
+        return mTabTitle;
     }
 
     @Override

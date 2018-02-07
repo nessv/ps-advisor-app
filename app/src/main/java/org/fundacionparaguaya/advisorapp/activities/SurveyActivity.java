@@ -22,12 +22,7 @@ import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.fragments.AbstractSurveyFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIndicatorsFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyQuestionsFrag;
-import org.fundacionparaguaya.advisorapp.fragments.SurveyIntroFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryFragment;
-import org.fundacionparaguaya.advisorapp.fragments.SurveySummaryIndicatorsFragment;
+import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -95,23 +90,23 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //only supported after Lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.survey_darkyellow, this.getTheme()));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black, this.getTheme()));
         }
 
         mExitButton.setOnClickListener((event)->
         {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
-                    .setContentText(getString(R.string.surveyactivity_exit_explanation))
-                    .setCancelText(getString(R.string.all_cancel))
-                    .setConfirmText(getString(R.string.surveyactivity_discard_snapshot))
-                    .showCancelButton(true)
-                    .setConfirmClickListener((dialog)->
-                    {
-                        this.finish();
-                    })
-                    .setCancelClickListener(SweetAlertDialog::cancel)
-                    .show();
+            //someday save here
+            if(mSurveyViewModel.getSurveyState().getValue()!=SurveyState.INTRO) {
+                makeExitDialog().setConfirmClickListener((dialog) ->
+                {
+                    this.finish();
+                    dialog.dismissWithAnimation();
+                }).show();
+            }
+            else
+            {
+                this.finish();
+            }
         });
 
 
@@ -119,6 +114,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         initViewModel();
     }
 
+    SweetAlertDialog makeExitDialog()
+    {
+       return new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.surveyactivity_exit_confirmation))
+                .setContentText(getString(R.string.surveyactivity_exit_explanation))
+                .setCancelText(getString(R.string.all_cancel))
+                .setConfirmText(getString(R.string.surveyactivity_discard_snapshot))
+                .showCancelButton(true)
+                .setCancelClickListener(SweetAlertDialog::cancel);
+    }
 
     public void initViewModel()
     {
@@ -127,12 +132,16 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         if(familyId == -1)
         {
-            throw new IllegalArgumentException(this.getLocalClassName() + ": Found family id of -1. Family id is either not set" +
+            mSurveyViewModel.setSurveyState(SurveyState.ADD_FAMILY);
+            /**
+            throw new IllegalArgumentException(this.getLocalClassName() + ": Found family id of -1. Family id is either not set " +
                     "or has been set innappropriately. To launch this activity with the family id properly set, use the " +
-                    "build(int) function");
+                    "build(int) function");**/
         }
-
-        mSurveyViewModel.setFamily(familyId);
+        else
+        {
+            mSurveyViewModel.setFamily(familyId);
+        }
 
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
@@ -160,6 +169,10 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
             switch (surveyState)
             {
+                case ADD_FAMILY:
+                    nextFragment = AddFamilyFrag.class;
+                    break;
+
                 case INTRO:
                     nextFragment = SurveyIntroFragment.class;
                     break;
@@ -186,6 +199,44 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if(mSurveyViewModel.getSurveyState().getValue()!=null) {
+            switch (mSurveyViewModel.getSurveyState().getValue()) {
+                case INTRO:
+                case NONE:
+                {
+                    super.onBackPressed();
+                    break;
+                }
+                case ADD_FAMILY:
+                case BACKGROUND_QUESTIONS: {
+                    makeExitDialog().
+                            setConfirmClickListener((dialog) ->
+                            {
+                                mSurveyViewModel.setSurveyState(SurveyState.INTRO);
+                                dialog.dismiss();
+                            })
+                            .show();
+                    break;
+                }
+                case INDICATORS: {
+                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
+                    break;
+                }
+                case SUMMARY: {
+                    mSurveyViewModel.setSurveyState(SurveyState.INDICATORS);
+                    break;
+                }
+                case REVIEWINDICATORS:
+                case REVIEWBACKGROUND: {
+                    mSurveyViewModel.setSurveyState(SurveyState.SUMMARY);
+                    break;
+                }
+            }
+        }
+    }
+
     void switchToSurveyFrag(Class<? extends AbstractSurveyFragment> fragmentClass)
     {
         super.switchToFrag(fragmentClass);
@@ -201,6 +252,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         else
         {
             mFooter.setVisibility(View.VISIBLE);
+        }
+
+        if(!fragment.isShowHeader())
+        {
+            mHeader.setVisibility(View.GONE);
+        }
+        else {
+            mHeader.setVisibility(View.VISIBLE);
         }
     }
 

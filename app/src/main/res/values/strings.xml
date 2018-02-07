@@ -41,6 +41,11 @@
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Submit Snapshot</string>
 
+    <string name="survey_error_no_surveys_title">No Surveys Available</string>
+    <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
+        and try again.
+    </string>
+
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
@@ -79,6 +84,8 @@
     <!-- Not Translated -->
     <string name="family_imagePlaceholder" translatable="false">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
+
+    <string name="all_okay">Okay</string>
 
 
 </resources>

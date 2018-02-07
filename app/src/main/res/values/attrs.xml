@@ -3,6 +3,7 @@
     <declare-styleable name="DashboardTab">
         <attr name="tabImage" format="reference"/>
         <attr name="tabCaption" format="reference"/>
+        <attr name="showCaption" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="IndicatorCard">

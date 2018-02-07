@@ -92,8 +92,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
         mRedCard.setOnClickListener(this);
 
         return rootView;
-
-
     }
 
     /**

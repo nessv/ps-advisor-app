@@ -393,7 +393,9 @@ public class FamilyIndicatorsListFrag extends Fragment {
                     //reset any flags that we have on a snapshot
                     snapshot.setIsLatest(false);
 
-                    if (latestSnapshot == null || snapshot.getCreatedAt().after(latestSnapshot.getCreatedAt())) {
+                    Date createdDate = snapshot.getCreatedAt();
+
+                    if (latestSnapshot == null || createdDate!=null && snapshot.getCreatedAt().after(latestSnapshot.getCreatedAt())) {
                         latestSnapshot = snapshot;
                     }
                 }

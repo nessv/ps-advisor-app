@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddFamilyFrag extends SurveyQuestionsFrag {
 
@@ -56,11 +59,8 @@ public class AddFamilyFrag extends SurveyQuestionsFrag {
 
     @Override
     protected void initQuestionList() {
-        mAddFamilyViewModel.getQuestions().observe(this, (questions) ->
-        {
-            mQuestionAdapter.setQuestionsList(questions);
-            //TODO fill in background questions
-        });
+        mAddFamilyViewModel.getQuestions().observe(this,
+            mQuestionAdapter::setQuestionsList);
     }
 
     @Override

@@ -13,8 +13,6 @@ import android.view.View;
 
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.EditText;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -90,18 +88,18 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.addfamily_frag, container, false);
+        View view = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
 
-        mDsvQuestionList = (DiscreteScrollView) view.findViewById(R.id.addfaily_questions);
+        mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        recyclerView.setLayoutManager(layoutManager);
+//      ,recyclerView.setLayoutManager(layoutManager);
         mDsvQuestionList.setHasFixedSize(true);
 
         mDsvQuestionList.setAdapter(mQuestionAdapter);
 
-        mDsvQuestionList.setSlideOnFling(true);
-        mDsvQuestionList.setSlideOnFlingThreshold(1800);
+      //  mDsvQuestionList.setSlideOnFling(true);
+      //  mDsvQuestionList.setSlideOnFlingThreshold(1800);
 
         mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
 

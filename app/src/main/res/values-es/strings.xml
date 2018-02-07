@@ -72,6 +72,12 @@
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>
     <string name="contentDescription_profile_picture">Foto de perfil</string>
     <string name="construction_underconstruction">En construcción</string>
+
+    <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
+    <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
+        la aplicación y vuelva a intentarlo.</string>
+    <string name="all_okay">Comprendo</string>
+
     <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
     <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
     <string name="all_cancel">Cancelar</string>

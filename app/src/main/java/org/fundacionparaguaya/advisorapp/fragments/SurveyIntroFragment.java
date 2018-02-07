@@ -1,16 +1,14 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.Survey;
@@ -86,6 +84,18 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
                 mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
                     mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
                 }));
+            }
+            else
+            {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText(getString(R.string.survey_error_no_surveys_title))
+                        .setContentText(getString(R.string.survey_error_no_surveys_description))
+                        .setConfirmText(getString(R.string.all_okay))
+                        .setConfirmClickListener((dialog)->
+                        {
+                            getActivity().finish();
+                        })
+                        .show();
             }
             //create snapshot with family and
         });

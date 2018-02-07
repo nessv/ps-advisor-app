@@ -8,11 +8,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageButton;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +25,6 @@ import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
-import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
@@ -124,10 +119,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
         mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
 
-        mSyncButton = (LinearLayout) findViewById(R.id.dashboardtopbar_sync);
+        mSyncButton = (LinearLayout) findViewById(R.id.linearLayout_topbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
 
-        mSyncButtonIcon = findViewById(R.id.dashboardtopbar_syncbutton);
+        mSyncButtonIcon = findViewById(R.id.iv_topbar_syncimage);
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
@@ -193,36 +188,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     public void onHideBackNav() {
         mBackButton.setVisibility(View.GONE);
         mTvTabTitle.setVisibility(View.VISIBLE);
-    }
-
-    private class SyncRepositoryTask extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected void onPreExecute() {
-            mSyncLabel.setText(R.string.topbar_synclabel_syncing);
-
-
-            mSyncRotateAnimation= ObjectAnimator.ofFloat(mSyncButtonIcon,
-                    "rotation", 0f, 360f);
-            mSyncRotateAnimation.setRepeatCount(ObjectAnimator.INFINITE);
-            mSyncRotateAnimation.setRepeatMode(ObjectAnimator.RESTART);
-            mSyncRotateAnimation.setDuration(1000);
-            mSyncRotateAnimation.setInterpolator(new LinearInterpolator());
-            mSyncRotateAnimation.start();
-
-            mSyncButton.setEnabled(false);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... Void) {
-            return mSyncManager.sync();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            mSyncButton.setEnabled(true);
-            mSyncRotateAnimation.cancel();
-            mSyncLabel.setText(R.string.topbar_synclabel);
-        }
     }
 
     /**

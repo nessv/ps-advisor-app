@@ -3,7 +3,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/dashboardtopbar"
                 android:layout_width="match_parent"
-                android:background="@color/topbarBackground"
+                android:background="@color/topbar_background"
                 tools:showIn="@layout/activity_main"
                 android:paddingStart="28dp"
                 android:paddingEnd="0dp"
@@ -46,20 +46,21 @@
             android:id="@+id/tv_topbar_backlabel"
             android:text="@string/topbar_backbutton"
             android:textSize="24sp"
-            android:textColor="@color/topbarBackButton"/>
+            android:textColor="@color/topbar_backbutton"/>
 
 </LinearLayout>
 
 <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/linearLayout_topbar_syncbutton"
         android:layout_centerVertical="true"
         android:orientation="horizontal"
         android:layout_marginEnd="20dp"
         android:layout_alignParentEnd="true">
 
-    <ImageButton
-            android:id="@+id/dashboardtopbar_syncbutton"
+    <ImageView
+            android:id="@+id/iv_topbar_syncimage"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:scaleType="fitCenter"

@@ -52,7 +52,7 @@ public class DashboardTab extends LinearLayout {
         try {
             mImageIcon.setImageResource(attrs.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
             mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.familytab_title));                //set caption text
-            mTabLayout.setBackgroundResource(R.color.tabNotSelected);
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_iconnotselected);
 
             boolean showCaption = attrs.getBoolean(R.styleable.DashboardTab_showCaption, true);
 

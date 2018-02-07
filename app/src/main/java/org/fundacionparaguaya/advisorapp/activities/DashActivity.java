@@ -1,21 +1,19 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
-import android.content.Intent;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-
-import android.view.animation.LinearInterpolator;
-
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.curioustechizen.ago.RelativeTimeTextView;
+import com.novoda.merlin.Merlin;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -34,14 +32,14 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
 import javax.inject.Inject;
 
 import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
-import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
 import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
 
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
     DashboardTabBarView tabBarView;
     TextView mSyncLabel;
-    LinearLayout mSyncButton;
+    LinearLayout mSyncArea;
     ImageView mSyncButtonIcon;
     RelativeTimeTextView mLastSyncTextView;
     TextView mTvTabTitle;
@@ -53,6 +51,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     SyncManager mSyncManager;
     @Inject
     AuthenticationManager mAuthManager;
+    @Inject
+    Merlin mNetworkWatcher;
 
     ObjectAnimator mSyncRotateAnimation;
 
@@ -127,15 +127,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
         mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
 
-        mSyncButton = (LinearLayout) findViewById(R.id.linearLayout_topbar_syncbutton);
-        mSyncButton.setOnClickListener(this::onSyncButtonPress);
+        mSyncArea = (LinearLayout) findViewById(R.id.linearLayout_topbar_syncbutton);
+        mSyncArea.setOnClickListener(this::onSyncButtonPress);
 
         mSyncButtonIcon = findViewById(R.id.iv_topbar_syncimage);
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
             if (value != null) {
-                if (value.getSyncState() == NEVER) {
+                if (value.getLastSyncedTime() == -1) {
                     mLastSyncTextView.setText(R.string.topbar_lastsync_never);
                 } else {
                     mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
@@ -143,9 +143,25 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
                 if (value.getSyncState() == SYNCING) {
                     mSyncLabel.setText(R.string.topbar_synclabel_syncing);
-                    mSyncButton.setEnabled(false);
+                    mSyncArea.setEnabled(false);
+                    mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
+                    mSyncButtonIcon.setBackgroundResource(R.drawable.dashtopbar_synccircle);
+
+                    mSyncButtonIcon.startAnimation(
+                            AnimationUtils.loadAnimation(this, R.anim.spin_forever));
+
+                } else if (value.getSyncState() == ERROR_NO_INTERNET) {
+                    mSyncLabel.setText(R.string.topbar_synclabel_offline);
+                    mSyncArea.setEnabled(false);
+                    mSyncButtonIcon.clearAnimation();
+                    mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_offline);
+                    mSyncButtonIcon.setBackgroundResource(android.R.color.transparent);
+
                 } else {
-                    mSyncButton.setEnabled(true);
+                    mSyncArea.setEnabled(true);
+                    mSyncButtonIcon.clearAnimation();
+                    mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
+                    mSyncButtonIcon.setBackgroundResource(R.drawable.dashtopbar_synccircle);
                     mSyncLabel.setText(R.string.topbar_synclabel);
                 }
             }

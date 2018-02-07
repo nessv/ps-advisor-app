@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +36,7 @@ import java.util.*;
 
 public class FamilyIndicatorsListFrag extends Fragment {
 
-    Spinner mSnapshotSpinner;
+    AppCompatSpinner mSnapshotSpinner;
     SnapshotSpinAdapter mSpinnerAdapter;
 
     @Inject
@@ -267,7 +270,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         static class FamilyIndicatorViewHolder extends SectioningAdapter.ItemViewHolder
         {
-            View mLevelIndicator;
+            AppCompatImageView mLevelIndicator;
             TextView mTitle;
             TextView mLevelDescription;
 
@@ -313,7 +316,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
                 if(color!=-1)
                 {
-                    mLevelIndicator.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), color));
+                    ViewCompat.setBackgroundTintList(mLevelIndicator, ContextCompat.getColorStateList(itemView.getContext(), color));
                 }
             }
         }

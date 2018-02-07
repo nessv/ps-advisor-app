@@ -11,10 +11,4 @@
         </shape>
     </item>
 
-    <item
-                android:gravity="center_vertical|right"
-                android:width="17dp"
-                android:height="10dp"
-                android:right="8dp"
-                android:drawable="@drawable/ic_all_downchevron"/>
 </layer-list>

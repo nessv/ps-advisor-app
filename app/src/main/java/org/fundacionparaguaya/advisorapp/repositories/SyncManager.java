@@ -12,6 +12,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import static android.content.Context.MODE_PRIVATE;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.ERROR_OTHER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCED;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
 
 /**
  * A utility that manages the synchronization of the local databases.
@@ -28,7 +32,7 @@ public class SyncManager {
     private SnapshotRepository mSnapshotRepository;
     private SharedPreferences mPreferences;
 
-    private MutableLiveData<Long> mLastSyncedTime;
+    private MutableLiveData<SyncProgress> mProgress;
 
     @Inject
     SyncManager(Application application,
@@ -42,16 +46,23 @@ public class SyncManager {
         mPreferences = application.getApplicationContext()
                 .getSharedPreferences(PREFS_SYNC, MODE_PRIVATE);
 
-        mLastSyncedTime = new MutableLiveData<>();
-        mLastSyncedTime.setValue(mPreferences.getLong(KEY_LAST_SYNC_TIME, -1));
+        mProgress = new MutableLiveData<>();
+
+        long lastSyncTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
+        updateProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime);
+    }
+
+    public LiveData<SyncProgress> getProgress() {
+        return mProgress;
     }
 
     /**
      * Synchronizes the local database with the remote one.
      * @return Whether the sync was successful.
      */
-    public boolean sync() {
+    public boolean syncNow() {
         Log.d(TAG, "sync: Synchronizing the database...");
+        updateProgress(SYNCING);
         boolean result;
         result = mFamilyRepository.sync();
         result &= mSurveyRepository.sync();
@@ -61,21 +72,64 @@ public class SyncManager {
                 result ? "successfully" : "with errors"));
 
         if (result) {
-            updateLastSyncedTime();
+            updateProgress(SYNCED, new Date().getTime());
+        } else {
+            updateProgress(ERROR_OTHER);
         }
         return result;
     }
 
-    private void updateLastSyncedTime() {
-        //post because this is run on a background thread
-        mLastSyncedTime.postValue(new Date().getTime());
+    private void updateProgress(SyncState state) {
+        SyncProgress progress = mProgress.getValue();
+        if (progress == null) {
+            progress = new SyncProgress(state);
+        } else {
+            progress = new SyncProgress(state, progress.getLastSyncedTime());
+        }
+        mProgress.postValue(progress);
+    }
+
+    private void updateProgress(SyncState state, long lastSyncTime) {
+        mProgress.postValue(new SyncProgress(state, lastSyncTime));
 
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putLong(KEY_LAST_SYNC_TIME, mLastSyncedTime.getValue());
+        editor.putLong(KEY_LAST_SYNC_TIME, lastSyncTime);
         editor.apply();
     }
 
-    public LiveData<Long> getLastSyncedTime() {
-        return mLastSyncedTime;
+    /**
+     * The states that a sync can be in.
+     */
+    public enum SyncState {
+        NEVER,
+        SYNCING,
+        SYNCED,
+        ERROR_NO_INTERNET,
+        ERROR_OTHER
+    }
+
+    /**
+     * The progress of a sync.
+     */
+    public class SyncProgress {
+        private SyncState mState;
+        private long mLastSyncedTime;
+
+        SyncProgress(SyncState syncState) {
+            this(syncState, -1);
+        }
+
+        SyncProgress(SyncState syncState, long lastSyncedTime) {
+            mState = syncState;
+            mLastSyncedTime = lastSyncedTime;
+        }
+
+        public SyncState getSyncState() {
+            return mState;
+        }
+
+        public long getLastSyncedTime() {
+            return mLastSyncedTime;
+        }
     }
 }

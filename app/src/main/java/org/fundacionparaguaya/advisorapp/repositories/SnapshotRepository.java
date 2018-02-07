@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
-import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotIr;
@@ -30,7 +29,6 @@ public class SnapshotRepository {
 
     private final SnapshotDao snapshotDao;
     private final SnapshotService snapshotService;
-    private final AuthenticationManager authManager;
 
     private final FamilyRepository familyRepository;
     private final SurveyRepository surveyRepository;
@@ -38,12 +36,10 @@ public class SnapshotRepository {
     @Inject
     public SnapshotRepository(SnapshotDao snapshotDao,
                               SnapshotService snapshotService,
-                              AuthenticationManager authManager,
                               FamilyRepository familyRepository,
                               SurveyRepository surveyRepository) {
         this.snapshotDao = snapshotDao;
         this.snapshotService = snapshotService;
-        this.authManager = authManager;
         this.familyRepository = familyRepository;
         this.surveyRepository = surveyRepository;
     }
@@ -69,7 +65,7 @@ public class SnapshotRepository {
                 Family family = familyRepository.getFamilyNow(snapshot.getFamilyId());
                 Survey survey = surveyRepository.getSurveyNow(snapshot.getSurveyId());
                 Response<SnapshotIr> response = snapshotService
-                        .postSnapshot(authManager.getAuthenticationString(), IrMapper.mapSnapshot(snapshot, survey))
+                        .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
                         .execute();
 
                 if (response.isSuccessful() && response.body() != null) {
@@ -78,7 +74,7 @@ public class SnapshotRepository {
                     remoteSnapshot.setId(snapshot.getId());
                     saveSnapshot(remoteSnapshot);
                 } else {
-                    Log.w(TAG, format("pushSnapshots: Could not push snapshot with id %d! %s", snapshot.getId(), response.errorBody()));
+                    Log.w(TAG, format("pushSnapshots: Could not push snapshot with id %d! %s", snapshot.getId(), response.errorBody().string()));
                     success = false;
                 }
             } catch (IOException e) {
@@ -102,11 +98,11 @@ public class SnapshotRepository {
     private boolean pullSnapshots(Family family, Survey survey) {
         try {
             Response<List<SnapshotIr>> response = snapshotService
-                    .getSnapshots(authManager.getAuthenticationString(), survey.getRemoteId(), family.getRemoteId())
+                    .getSnapshots(survey.getRemoteId(), family.getRemoteId())
                     .execute();
 
             if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("pullSnapshots: Could not pull snapshots for family %d! %s", family.getRemoteId(), response.errorBody()));
+                Log.w(TAG, format("pullSnapshots: Could not pull snapshots for family %d! %s", family.getRemoteId(), response.errorBody().string()));
                 return false;
             }
 

@@ -2,12 +2,16 @@ package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +34,11 @@ public class IndicatorCard extends LinearLayout{
     private SimpleDraweeView mImage;
     private TextView mText;
 
+    private ViewTreeObserver observer;
+
+    private int height;
+    private int width;
+
     private IndicatorOption mIndicatorOption;
 
     public enum CardColor {
@@ -48,9 +57,18 @@ public class IndicatorCard extends LinearLayout{
         mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
 
-        this.setElevation(0);
+        mText.setMovementMethod(new ScrollingMovementMethod());
 
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.IndicatorCard, 0, 0);
+
+        //When view is created, resize the textview
+        observer = mText.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                resize();
+            }
+        });
 
         try{
             setColor(attrs.getResourceId(R.styleable.IndicatorCard_indicator_color, Color.TRANSPARENT));
@@ -59,7 +77,22 @@ public class IndicatorCard extends LinearLayout{
         } finally {
             attrs.recycle();
         }
+    }
 
+    /**
+     * Sets maxHeight for the textview based on the size of the indicator card and the picture
+     */
+    public void resize(){
+       // int picWidth = mImage.getWidth();
+     //   mText.setMaxHeight(mIndicatorCard.getHeight() - convertDpToPixel(17)*3 - picWidth*9/16); //Min 16x9 aspect ratio for the image
+    }
+
+    public int getIndicatorWidth(){
+        return mIndicatorCard.getWidth();
+    }
+
+    public int getIndicatorHeight(){
+        return mIndicatorCard.getHeight();
     }
 
     public void setOption(IndicatorOption option)
@@ -117,5 +150,22 @@ public class IndicatorCard extends LinearLayout{
     public void setText(String text){
         mText.setText(text);
     }
+
+    public static int convertDpToPixel(int dp){
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return (int) Math.round(px);
+    }
+
+//    public void notifyHandlers(){}
+//
+//    public interface IndicatorSelectedHadler{
+//
+//    }
+//
+//    public class indicatorSelectedEvent{
+//        private
+//
+//    }
 
 }

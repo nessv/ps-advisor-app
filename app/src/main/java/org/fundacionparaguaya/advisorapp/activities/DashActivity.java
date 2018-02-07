@@ -7,11 +7,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
+import org.fundacionparaguaya.advisorapp.jobs.SyncJob;
 import org.fundacionparaguaya.advisorapp.repositories.SyncManager;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab;
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTabBarView;
@@ -30,11 +33,15 @@ import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.NEVER;
+import static org.fundacionparaguaya.advisorapp.repositories.SyncManager.SyncState.SYNCING;
+
 public class DashActivity extends AbstractFragSwitcherActivity implements DisplayBackNavListener
 {
     DashboardTabBarView tabBarView;
     TextView mSyncLabel;
-    ImageButton mSyncButton;
+    LinearLayout mSyncButton;
+    ImageView mSyncButtonIcon;
     RelativeTimeTextView mLastSyncTextView;
     TextView mTvTabTitle;
     TextView mTvBackLabel;
@@ -117,14 +124,27 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
         mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
 
-        mSyncButton = findViewById(R.id.dashboardtopbar_syncbutton);
+        mSyncButton = (LinearLayout) findViewById(R.id.dashboardtopbar_sync);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
 
+        mSyncButtonIcon = findViewById(R.id.dashboardtopbar_syncbutton);
+
         //update last sync label when the sync manager updates
-        mSyncManager.getLastSyncedTime().observe(this, (value)->
-        {
-            if(value != -1) {
-                mLastSyncTextView.setReferenceTime(value);
+        mSyncManager.getProgress().observe(this, (value) -> {
+            if (value != null) {
+                if (value.getSyncState() == NEVER) {
+                    mLastSyncTextView.setText(R.string.topbar_lastsync_never);
+                } else {
+                    mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
+                }
+
+                if (value.getSyncState() == SYNCING) {
+                    mSyncLabel.setText(R.string.topbar_synclabel_syncing);
+                    mSyncButton.setEnabled(false);
+                } else {
+                    mSyncButton.setEnabled(true);
+                    mSyncLabel.setText(R.string.topbar_synclabel);
+                }
             }
         });
 
@@ -159,7 +179,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     }
 
     private void onSyncButtonPress(View view) {
-        new SyncRepositoryTask().execute();
+        SyncJob.sync();
     }
 
     @Override
@@ -181,7 +201,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
             mSyncLabel.setText(R.string.topbar_synclabel_syncing);
 
 
-            mSyncRotateAnimation= ObjectAnimator.ofFloat(mSyncButton,
+            mSyncRotateAnimation= ObjectAnimator.ofFloat(mSyncButtonIcon,
                     "rotation", 0f, 360f);
             mSyncRotateAnimation.setRepeatCount(ObjectAnimator.INFINITE);
             mSyncRotateAnimation.setRepeatMode(ObjectAnimator.RESTART);
@@ -218,6 +238,5 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
-
 }
 

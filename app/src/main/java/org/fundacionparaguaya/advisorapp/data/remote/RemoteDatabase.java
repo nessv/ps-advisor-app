@@ -7,19 +7,16 @@ import retrofit2.Retrofit;
  */
 
 public class RemoteDatabase {
-    private AuthenticationService authService;
     private FamilyService familyService;
     private SurveyService surveyService;
     private SnapshotService snapshotService;
 
     public RemoteDatabase(Retrofit retrofit) {
-        authService = retrofit.create(AuthenticationService.class);
         familyService = retrofit.create(FamilyService.class);
         surveyService = retrofit.create(SurveyService.class);
         snapshotService = retrofit.create(SnapshotService.class);
     }
 
-    public AuthenticationService authService() { return authService; }
     public FamilyService familyService() {
         return familyService;
     }

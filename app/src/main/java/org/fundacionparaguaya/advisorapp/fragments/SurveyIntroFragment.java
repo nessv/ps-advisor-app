@@ -33,6 +33,12 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
     //need the family name
 
+    public SurveyIntroFragment()
+    {
+        setShowFooter(false);
+        setShowHeader(false);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {

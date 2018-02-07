@@ -1,8 +1,15 @@
 package org.fundacionparaguaya.advisorapp.activities;
 
+import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+
+import android.view.animation.LinearInterpolator;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,13 +38,25 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     LinearLayout mSyncButton;
     ImageView mSyncButtonIcon;
     RelativeTimeTextView mLastSyncTextView;
+    TextView mTvTabTitle;
+    TextView mTvBackLabel;
 
     LinearLayout mBackButton;
 
     @Inject
     SyncManager mSyncManager;
 
+    ObjectAnimator mSyncRotateAnimation;
+
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
+
+
+    //if display back button = false
+    ///display title if it has a title
+
+    //if display back button = true
+    //display title, if it has a title
+    //else display "Back"
 
     @Override
     public void onBackPressed() {
@@ -68,7 +87,16 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     protected void onSaveInstanceState(Bundle outState) {
         //save selected tab
         outState.putString(SELECTED_TAB_KEY, tabBarView.getSelected().name());
+
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void switchToFrag(Class fragmentClass) {
+        super.switchToFrag(fragmentClass);
+
+        String title = ((AbstractTabbedFrag)getFragment(fragmentClass)).getTabTitle();
+        mTvTabTitle.setText(title);
     }
 
     @Override
@@ -88,10 +116,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSyncLabel = findViewById(R.id.topbar_synclabel);
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
 
-        mSyncButton = (LinearLayout) findViewById(R.id.dashboardtopbar_sync);
+        mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
+        mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
+
+        mSyncButton = (LinearLayout) findViewById(R.id.linearLayout_topbar_syncbutton);
         mSyncButton.setOnClickListener(this::onSyncButtonPress);
 
-        mSyncButtonIcon = findViewById(R.id.dashboardtopbar_syncbutton);
+        mSyncButtonIcon = findViewById(R.id.iv_topbar_syncimage);
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
@@ -131,6 +162,15 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mBackButton.setOnClickListener((event)-> onBackPressed());
 
         tabBarView.addTabSelectedHandler(handler);
+
+        ImageView fpLogo = findViewById(R.id.fp_logo);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        if(convertPixelsToDp(metrics.heightPixels, getApplicationContext())<600 && fpLogo !=null)
+        {
+            fpLogo.setVisibility(View.GONE);
+        }
     }
 
     private void onSyncButtonPress(View view) {
@@ -140,11 +180,28 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Override
     public void onShowBackNav() {
        mBackButton.setVisibility(View.VISIBLE);
+       mTvBackLabel.setText(mTvTabTitle.getText());
+       mTvTabTitle.setVisibility(View.GONE);
     }
 
     @Override
     public void onHideBackNav() {
         mBackButton.setVisibility(View.GONE);
+        mTvTabTitle.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static float convertPixelsToDp(float px, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
     }
 }
 

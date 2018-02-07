@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 
 /**
- * Created by alex on 1/23/2018.
+ * Enables user to go through each of the indicators, skip indicators, select a red, yellow, green color etc.
  */
 
 public class SurveyIndicatorsFragment extends AbstractSurveyFragment {

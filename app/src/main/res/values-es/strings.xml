@@ -7,26 +7,28 @@
     <string name="backbutton_desc">Regresa</string>
 
     <!--Tab Captions -->
-    <string name="family_tab">Familias</string>
-    <string name="map_tab">Mapa</string>
-    <string name="archive_tab">Archivo</string>
-    <string name="settings_tab">Ajustes</string>
+    <string name="familytab_title">Familias</string>
+    <string name="maptab_title">Mapa</string>
+    <string name="archivetab_title">Archivo</string>
+    <string name="settingstab_title">Ajustes</string>\
 
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Regresa</string>
     <string name="topbar_synclabel">Sincronizar</string>
+    <string name="topbar_synclabel_offline">Desconectado</string>
     <string name="topbar_synclabel_syncing">Sincronizando…</string>
     <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
-    <string name="topbar_lastsync_never">nada</string>
+    <string name="topbar_lastsync_never">Nunca sincronizado</string>
 
 
     <!-- Login Activity -->
     <string name="login_success">El login fue correcta.</string>
     <string name="activity_login">Registrarse</string>
-    <string name="login_emailprompt">Email</string>
+    <string name="login_emailprompt">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
     <string name="login_action_signin">Login</string>
     <string name="login_incorrectcredentials">Ese email o clave no funcionó. Inténtalo de nuevo</string>
+    <string name="login_error">No pude entrar a la cuenta. ¿Estás fuera de línea?</string>
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
 
@@ -40,7 +42,6 @@
     <string name="survey_skip">Omitir</string>
     <string name="survey_save">Salvar</string>
     <string name="bkgquestions_title">Información de Fondo</string>
-
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Enviar Instantánea</string>
 
@@ -49,13 +50,20 @@
     <string name="survey_summary_indicatortitle">Indicadores</string>
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
 
-    <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
-    <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
-    <string name="all_cancel">Cancelar</string>
-    <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
+
+    <!-- Family Details -->
+    <string name="familydetails_phonenumberdefault">No Número de Teléfono</string>
+    <string name="familydetails_hometitle">Casa</string>
+    <string name="familydetails_locationlabel">Dirección</string>
+    <string name="familydetails_locationdefault">Sin Dirección</string>
+    <string name="familydetails_descriptionlabel">Descripción</string>
+    <string name="familydetails_descriptiondefault">Sin Descripción</string>
+    <string name="familydetails_prioritytitle">Prioridades</string>
+
+    <!--Family Details Tabs-->
+    <string name="familydetails_tabs_indicatorstitle">Indicadores</string>
 
     <!-- Adding a Family -->
-
     <string name="family_name_question">Nombre de la familia</string>
     <string name="family_location_question">Ubicación de la familia</string>
     <string name="family_UID">ID de la familia</string>
@@ -64,5 +72,17 @@
     <!-- Other -->
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>
     <string name="contentDescription_profile_picture">Foto de perfil</string>
+    <string name="construction_underconstruction">En construcción</string>
+
+    <string name="survey_error_no_surveys_title">No hay encuestas disponibles</string>
+    <string name="survey_error_no_surveys_description">Actualmente no hay encuestas disponibles. Vuelva a sincronizar
+        la aplicación y vuelva a intentarlo.</string>
+    <string name="all_okay">Comprendo</string>
+
+    <string name="surveyactivity_exit_confirmation">¿Seguro que quieres salir?</string>
+    <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
+    <string name="all_cancel">Cancelar</string>
+    <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
+    <string name="your_response">Tu Respuesta</string>
 
 </resources>

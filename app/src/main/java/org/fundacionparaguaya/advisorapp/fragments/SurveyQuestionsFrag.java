@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -38,8 +40,8 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
     InjectionViewModelFactory mViewModelFactory;
     SharedSurveyViewModel mSharedSurveyViewModel;
 
-    RecyclerView mDsvQuestionList;
-    BackgroundQuestionAdapter mAdapter;
+    protected DiscreteScrollView mDsvQuestionList;
+    protected BackgroundQuestionAdapter mQuestionAdapter;
 
     public SurveyQuestionsFrag()
     {
@@ -69,28 +71,71 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        initQuestionList();
+    }
+
+    protected void initQuestionList()
+    {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
         List<BackgroundQuestion> questions = new ArrayList<>(
                 survey.getPersonalQuestions().size() + survey.getEconomicQuestions().size());
         questions.addAll(survey.getPersonalQuestions());
         questions.addAll(survey.getEconomicQuestions());
 
-        mAdapter.setQuestionsList(questions);
-
+        mQuestionAdapter.setQuestionsList(questions);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
+        View view = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
 
-        mDsvQuestionList = v.findViewById(R.id.dsv_surveyquestions_list);
-        mAdapter = new BackgroundQuestionAdapter(this);
-        mDsvQuestionList.setAdapter(mAdapter);
-        //mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
+        mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
 
-        mDsvQuestionList.setLayoutManager(new LinearLayoutManager(getContext()));
-        return v;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+//      ,recyclerView.setLayoutManager(layoutManager);
+        mDsvQuestionList.setHasFixedSize(true);
+
+        mDsvQuestionList.setAdapter(mQuestionAdapter);
+
+      //  mDsvQuestionList.setSlideOnFling(true);
+      //  mDsvQuestionList.setSlideOnFlingThreshold(1800);
+
+        mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
+
+        mDsvQuestionList.setRecyclerListener(new RecyclerView.RecyclerListener() {
+            @Override
+            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+                if(holder instanceof BackgroundQuestionAdapter.QuestionViewHolder)
+                {
+                   BackgroundQuestionAdapter.QuestionViewHolder questionHolder=
+                           (BackgroundQuestionAdapter.QuestionViewHolder)holder;
+
+                    if(questionHolder.itemView.hasFocus())
+                    {
+                        questionHolder.itemView.clearFocus(); //we can put it inside the second if as well, but it makes sense to do it to all scraped views
+                        //Optional: also hide keyboard in that case
+                        if ( questionHolder instanceof BackgroundQuestionAdapter.TextQuestionViewHolder) {
+                            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                    }
+                }
+            }
+        });
+
+
+        mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
+            if(viewHolder!=null)
+            {
+                viewHolder.itemView.requestFocus();
+            }
+        });
+
+        mQuestionAdapter = new BackgroundQuestionAdapter(this);
+        mDsvQuestionList.setAdapter(mQuestionAdapter);
+
+        return view;
     }
 
     @Override
@@ -107,13 +152,20 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
 
     @Override
     public void onNext(View v) {
-       /* int currentIndex = mDsvQuestionList.getCurrentItem();
+        int currentIndex = mDsvQuestionList.getCurrentItem();
         currentIndex++;
 
-        if(currentIndex<mAdapter.getItemCount())
+        View currentFocus;
+
+        if(getActivity()!=null && (currentFocus=getActivity().getCurrentFocus())!=null)
+        {
+            currentFocus.clearFocus();
+        }
+
+        if(currentIndex< mQuestionAdapter.getItemCount())
         {
             mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }*/
+        }
     }
 
     @Override

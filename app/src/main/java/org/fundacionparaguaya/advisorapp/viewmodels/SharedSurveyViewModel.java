@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, COMPLETE}
+    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, ADD_FAMILY, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -49,6 +49,8 @@ public class SharedSurveyViewModel extends ViewModel
         mSurveyRepository = surveyRepository;
         mFamilyRepository = familyRepository;
         mSnapshotRespository = snapshotRepository;
+
+        mFamily = new MutableLiveData<>();
 
         mSurveyState = new MutableLiveData<>();
 

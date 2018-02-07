@@ -7,7 +7,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -16,9 +15,9 @@ import retrofit2.http.POST;
 
 public interface FamilyService {
 
-    @GET("api/v1/families")
-    Call<List<FamilyIr>> getFamilies(@Header("Authorization") String authorization);
+    @GET("families")
+    Call<List<FamilyIr>> getFamilies();
 
-    @POST("api/v1/families")
-    Call<FamilyIr> postFamily(@Header("Authorization") String authorization, @Body FamilyIr family);
+    @POST("families")
+    Call<FamilyIr> postFamily(@Body FamilyIr family);
 }

@@ -30,7 +30,6 @@ public class FamilyInformationViewModel extends ViewModel {
     public  FamilyInformationViewModel(FamilyRepository familyRepository, SnapshotRepository snapshotRespository){
         mFamilyRepository = familyRepository;
         mSnapshotRespository = snapshotRespository;
-
     }
 
     //Maps the selected snapshot to a list of indicators. This livedata object will notify it's observers when
@@ -85,6 +84,11 @@ public class FamilyInformationViewModel extends ViewModel {
             throw new IllegalStateException("setFamily must be called in ViewModel before getCurrentFamily");
         }
         else return currentFamily;
+    }
+
+    public LiveData<Snapshot> getSelectedSnapshot()
+    {
+        return mSelectedSnapshot;
     }
 
     public LiveData<List<Snapshot>> getSnapshots()

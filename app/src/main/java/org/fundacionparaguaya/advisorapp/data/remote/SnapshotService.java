@@ -7,7 +7,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -17,14 +16,12 @@ import retrofit2.http.Query;
 
 public interface SnapshotService {
 
-    @GET("api/v1/snapshots")
+    @GET("snapshots")
     Call<List<SnapshotIr>> getSnapshots(
-            @Header("Authorization") String authorization,
             @Query("survey_id") long surveyId,
             @Query("family_id") long familyId);
 
-    @POST("api/v1/snapshots")
+    @POST("snapshots")
     Call<SnapshotIr> postSnapshot(
-            @Header("Authorization") String authorization,
             @Body SnapshotIr snapshotIr);
 }

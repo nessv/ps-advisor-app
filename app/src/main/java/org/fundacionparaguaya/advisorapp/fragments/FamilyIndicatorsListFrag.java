@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +36,8 @@ import java.util.*;
 
 public class FamilyIndicatorsListFrag extends Fragment {
 
-    Spinner mSnapshotSpinner;
-    SpinnerAdapter mSpinnerAdapter;
+    AppCompatSpinner mSnapshotSpinner;
+    SnapshotSpinAdapter mSpinnerAdapter;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -95,31 +98,49 @@ public class FamilyIndicatorsListFrag extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
+        mSnapshotSpinner.setAdapter(mSpinnerAdapter);
+
         mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               Snapshot s = (Snapshot) mSpinnerAdapter.getItem(i);
-               mFamilyInformationViewModel.setSelectedSnapshot(s);
+                Snapshot s = (Snapshot) mSpinnerAdapter.getItem(i);
+                mFamilyInformationViewModel.setSelectedSnapshot(s);
+                mSpinnerAdapter.setSelected(i);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                //nothing
+                //mSpinnerAdapter.setSelected(-1);
             }
         });
 
-        initViewModelObservers();
+        addViewModelObservers();
     }
 
-    public void initViewModelObservers()
+
+    public void removeViewModelObservers()
+    {
+        mFamilyInformationViewModel.getSnapshots().removeObservers(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeViewModelObservers();
+    }
+
+    public void addViewModelObservers()
     {
         mFamilyInformationViewModel.getSnapshots().observe(this, (snapshots) -> {
-            if(snapshots!=null) {
-                mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), android.R.layout.simple_spinner_item,
-                        snapshots.toArray(new Snapshot[snapshots.size()]));
+                if(snapshots==null)
+                {
+                    mSpinnerAdapter.setSnapshotList(null);
+                }
+                else mSpinnerAdapter.setSnapshotList(snapshots.toArray(new Snapshot[snapshots.size()]));
 
-                mSnapshotSpinner.setAdapter(mSpinnerAdapter);
-            }
+                //has to be called after getSnapshots
+                mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
         });
 
         mFamilyInformationViewModel.getSnapshotIndicators().observe(this, mIndicatorAdapter::setIndicators);
@@ -128,7 +149,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
     static class FamilyIndicatorAdapter extends SectioningAdapter
     {
         SortedMap<IndicatorQuestion, IndicatorOption> mIndicatorOptionMap;
-        List<Map.Entry<IndicatorQuestion, IndicatorOption>> mIndicatorMapEntries;
 
         private static class Section {
             IndicatorOption.Level mLevel;
@@ -250,7 +270,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         static class FamilyIndicatorViewHolder extends SectioningAdapter.ItemViewHolder
         {
-            View mLevelIndicator;
+            AppCompatImageView mLevelIndicator;
             TextView mTitle;
             TextView mLevelDescription;
 
@@ -296,7 +316,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
                 if(color!=-1)
                 {
-                    mLevelIndicator.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), color));
+                    ViewCompat.setBackgroundTintList(mLevelIndicator, ContextCompat.getColorStateList(itemView.getContext(), color));
                 }
             }
         }
@@ -312,32 +332,123 @@ public class FamilyIndicatorsListFrag extends Fragment {
         // Your custom values for the spinner (User)
         private Snapshot[] values;
 
-        SnapshotSpinAdapter(Context context, int textViewResourceId,
-                           Snapshot[] values) {
+        //the currently selected item. -1 -> no selection
+        private int mSelectedArrayIndex = -1;
 
-            super(context, textViewResourceId, values);
+        SnapshotSpinAdapter(Context context, int textViewResourceId) {
 
-            Snapshot latestSnapshot = null;
+            super(context, textViewResourceId);
+            this.context = context;
+        }
 
-            for(Snapshot snapshot: values)
-            {
-                //reset any flags that we have on a snapshot
-
-                snapshot.setIsLatest(false);
-
-                if(latestSnapshot==null || latestSnapshot.getCreatedAt().after(latestSnapshot.getCreatedAt()))
-                {
-                    latestSnapshot = snapshot;
+        void setSelected(Snapshot s)
+        {
+            if(s==null) mSelectedArrayIndex = 0;
+            else if(values!=null){
+                for (int i = 0; i < values.length; i++) {
+                    if (values[i].equals(s)) mSelectedArrayIndex = i;
                 }
             }
+        }
 
-            if(latestSnapshot!=null)
+        void setSelected(int spinnerIndex)
+        {
+            //Array
+            //// [   0   ]
+            //// [   1   ]   <- selected array index = 1, loc = 0
+            //// [   2   ]
+            //// [   3   ]
+
+            //Spinner
+            ////Index 0: [   1   ] <- currently selected
+            ////Index 1: [   0   ]
+            ////Index 2: [   2   ]
+            ////Index 3: [   3   ]
+
+            //so if index 0 is clicked, that's our currently selected
+            //if index 1 is clicked that's actually the value -1
+            if(mSelectedArrayIndex !=-1) {
+                if (spinnerIndex == 0) {
+                    //reselected current selection
+                }
+                else if(spinnerIndex <= mSelectedArrayIndex)
+                {
+                    mSelectedArrayIndex = spinnerIndex-1;
+                }
+                else if(spinnerIndex > mSelectedArrayIndex)
+                {
+                    mSelectedArrayIndex = spinnerIndex;
+                }
+            }
+            else
             {
-                latestSnapshot.setIsLatest(true);
+                mSelectedArrayIndex = spinnerIndex;
+            }
+        }
+
+        public void setSnapshotList(Snapshot[] values)
+        {
+            if(values!=null) {
+                Snapshot latestSnapshot = null;
+
+                for (Snapshot snapshot : values) {
+
+                    //reset any flags that we have on a snapshot
+                    snapshot.setIsLatest(false);
+
+                    Date createdDate = snapshot.getCreatedAt();
+
+                    if (latestSnapshot == null || createdDate!=null && snapshot.getCreatedAt().after(latestSnapshot.getCreatedAt())) {
+                        latestSnapshot = snapshot;
+                    }
+                }
+
+                if (latestSnapshot != null) {
+                    latestSnapshot.setIsLatest(true);
+                }
+
+
+                this.values = values;
+
+                notifyDataSetChanged();
             }
 
-            this.context = context;
-            this.values = values;
+        }
+
+        @Nullable
+        @Override
+        public Snapshot getItem(int position) {
+            //pretend 4 is selected
+
+            //if position = 0
+            //return 4
+
+            //if 1, return 0. if 2, return 1, if 3 return 2, if 4, return 3, if 5, return 5, if 6 return 6
+            if(mSelectedArrayIndex !=-1) {
+                if (position == 0) {
+                    return values[mSelectedArrayIndex];
+                }
+                else if(position<= mSelectedArrayIndex)
+                {
+                    return values[position-1];
+                }
+                else if(position> mSelectedArrayIndex)
+                {
+                    return values[position];
+                }
+            }
+            else return this.values[position];
+
+            throw new IndexOutOfBoundsException();
+        }
+
+        @Override
+        public int getCount() {
+            if(this.values==null)
+            {
+                return 0;
+            }
+            else return this.values.length;
         }
     }
 }

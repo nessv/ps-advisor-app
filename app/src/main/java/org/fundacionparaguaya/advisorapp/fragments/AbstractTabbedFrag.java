@@ -15,16 +15,14 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.NavigationListener;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.DisplayBackNavListener;
 
-import java.util.ArrayList;
-
 /**
  * This is a fragment that lives inside of a tab
  */
 
-public abstract class TabbedFrag extends Fragment implements NavigationListener
+public abstract class AbstractTabbedFrag extends Fragment implements NavigationListener
 {
     //for logging
-    private static final String TAG = "TabbedFrag";
+    private static final String TAG = "AbstractTabbedFrag";
 
     private DisplayBackNavListener mDisplayBackNavListener;
 
@@ -34,9 +32,24 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
     //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
 
-    public TabbedFrag()
+    static String HAS_BEEN_INIT_KEY = "HAS_BEEN_INITIALIZED";
+    boolean mHasBeenInitialized = false;
+
+    private String mTabTitle = "";
+
+    public AbstractTabbedFrag()
     {
 
+    }
+
+    public void setTabTitle(String title)
+    {
+        mTabTitle = title;
+    }
+
+    public String getTabTitle()
+    {
+        return mTabTitle;
     }
 
     @Override
@@ -77,7 +90,7 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
      * Sets the initial stacked frag for this tabbed frag
      * @param frag Fragment to set
      */
-    public void setInitialFragment(StackedFrag frag) {
+    public void setInitialFragment(AbstractStackedFrag frag) {
        makeFragmentTransaction(frag).commit();
     }
 
@@ -86,7 +99,7 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
      *
      * @param frag Fragment to navigate to
      */
-    public void onNavigateNext(StackedFrag frag) {
+    public void onNavigateNext(AbstractStackedFrag frag) {
         makeFragmentTransaction(frag).addToBackStack(null).commit();
     }
 
@@ -94,9 +107,13 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
      * Muscle behind setInitialFragment and onNavigateNext
      * @param frag
      */
-    private FragmentTransaction makeFragmentTransaction(StackedFrag frag) {
+    private FragmentTransaction makeFragmentTransaction(AbstractStackedFrag frag) {
 
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
+        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                R.anim.enter_from_left, R.anim.exit_to_right);
+        
         ft.replace(mContainerId, frag);
 
         return ft;
@@ -121,6 +138,19 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(getChildFragmentManager().getFragments().size()==0)
+        {
+            this.setInitialFragment(this.makeInitialFragment());
+            mHasBeenInitialized = true;
+        }
+    }
+
+    protected abstract AbstractStackedFrag makeInitialFragment();
+
+    @Override
     public void onAttach(Context context)
     {
         super.onAttach(context);
@@ -142,5 +172,16 @@ public abstract class TabbedFrag extends Fragment implements NavigationListener
         {
             throw new ClassCastException("Parent activity or fragment must implement ShowBackNavCallback");
         }
+    }
+
+    /**Saves whether or not this tab has already been initialized (and had first fragment set)
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(HAS_BEEN_INIT_KEY, mHasBeenInitialized);
+
+        super.onSaveInstanceState(outState);
     }
 }

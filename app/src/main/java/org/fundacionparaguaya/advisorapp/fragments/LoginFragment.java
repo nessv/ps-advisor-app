@@ -19,24 +19,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
-import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
-import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.LoginIr;
-import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.User;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
-import retrofit2.Response;
+import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
 
 /**
  * The fragment for the login page.
@@ -52,15 +46,13 @@ public class LoginFragment extends Fragment {
 
     AuthenticationManager mAuthManager;
 
-    @Inject
-    InjectionViewModelFactory mViewModelFactory;
+    @Inject InjectionViewModelFactory mViewModelFactory;
 
     LoginViewModel mLoginViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         ((AdvisorApplication) getActivity().getApplication())
                 .getApplicationComponent()
@@ -109,26 +101,31 @@ public class LoginFragment extends Fragment {
         mEmailView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
 
+        //Hide for later implementation
+        mPasswordReset.setVisibility(View.GONE);
+        mHelpButton.setVisibility(View.GONE);
+
         mPasswordReset.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: Implement password reset
+                //TODO: Implement password reset (set visible above when ready to implement)
             }
         });
 
         mHelpButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: Implement Help button
+                //TODO: Implement Help button (set visible above when ready to implement)
                 //using this as a temporary login method
                 //getActivity().finish();
             }
         });
 
-
-        if (mAuthManager.hasRefreshToken()) {
-            new RefreshTokenLoginTask(this).execute();
-        }
+        mAuthManager.getStatus().observe(this, (value) -> {
+            if (value == AUTHENTICATED) {
+                launchMainActivity(getActivity());
+            }
+        });
         return view;
     }
 
@@ -168,9 +165,7 @@ public class LoginFragment extends Fragment {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            mAuthManager.getUser().setUsername(email);
-            mAuthManager.getUser().setPassword(password);
-            new PasswordLoginTask(this).execute();
+            new LoginTask(this).execute(new User(email, password, true));
         }
     }
 
@@ -180,13 +175,13 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 }
-abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
-    protected static final String AUTH_KEY = "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=";
+class LoginTask extends AsyncTask<User, Void, AuthenticationManager.AuthenticationStatus> {
+    private static final String TAG = "LoginTask";
 
     LoginFragment mLoginFragment;
     AuthenticationManager mAuthManager;
 
-    AbstractLoginTask(LoginFragment loginFragment) {
+    LoginTask(LoginFragment loginFragment) {
         this.mLoginFragment = loginFragment;
         this.mAuthManager = mLoginFragment.mAuthManager;
     }
@@ -201,88 +196,32 @@ abstract class AbstractLoginTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
-        try {
-            User user = mAuthManager.getUser();
-            Response<LoginIr> response = login(user);
+    protected AuthenticationManager.AuthenticationStatus doInBackground(User... user) {
+        mAuthManager.login(user[0]);
 
-            if (!wasSuccessful(response)) {
-                return false;
-            }
-
-            Login login = IrMapper.mapLogin(response.body());
-            user.setLogin(login);
-            user.setEnabled(true);
-            mAuthManager.saveRefreshToken();
-        } catch (IOException e) {
-            return false;
-        }
-        return true;
+        return mAuthManager.getStatus().getValue();
     }
 
-    protected abstract Response<LoginIr> login(User user) throws IOException;
-
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(AuthenticationManager.AuthenticationStatus result) {
         super.onPostExecute(result);
-        mLoginFragment.mEmailView.setEnabled(true);
-        mLoginFragment.mPasswordView.setEnabled(true);
-        mLoginFragment.mSubmitButton.setEnabled(true);
 
-        if (result) {
-            Context context = mLoginFragment.getActivity();
-            Toast.makeText(context, R.string.login_success, Toast.LENGTH_SHORT).show();
-            mLoginFragment.launchMainActivity(context);
-        } else {
-            onLoginFailure();
+        switch (result) {
+            case UNAUTHENTICATED:
+                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
+                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+                mLoginFragment.mPasswordView.setText("");
+                mLoginFragment.mEmailView.setEnabled(true);
+                mLoginFragment.mPasswordView.setEnabled(true);
+                mLoginFragment.mSubmitButton.setEnabled(true);
+                break;
+            case UNKNOWN:
+                mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
+                mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+                mLoginFragment.mEmailView.setEnabled(true);
+                mLoginFragment.mPasswordView.setEnabled(true);
+                mLoginFragment.mSubmitButton.setEnabled(true);
+                break;
         }
     }
-
-    protected abstract void onLoginFailure();
-
-    private <T> boolean wasSuccessful(Response<T> response) {
-        return response != null && response.isSuccessful() && response.body() != null;
-    }
 }
-
-class PasswordLoginTask extends AbstractLoginTask {
-
-    PasswordLoginTask(LoginFragment loginFragment) {
-        super(loginFragment);
-    }
-
-    @Override
-    protected Response<LoginIr> login(User user) throws IOException {
-        return mAuthManager.getAuthService()
-                .loginWithPassword(
-                        AUTH_KEY,
-                        user.getUsername(), user.getPassword()).execute();
-    }
-
-    @Override
-    protected void onLoginFailure() {
-        mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
-        mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
-        mLoginFragment.mPasswordView.setText(""); //erase the password field if incorrect
-    }
-}
-
-class RefreshTokenLoginTask extends AbstractLoginTask {
-
-    RefreshTokenLoginTask(LoginFragment loginFragment) {
-        super(loginFragment);
-    }
-    @Override
-    protected Response<LoginIr> login(User user) throws IOException {
-        return mAuthManager.getAuthService()
-                .loginWithRefreshToken(
-                        AUTH_KEY,
-                        user.getLogin().getRefreshToken()).execute();
-    }
-
-    @Override
-    protected void onLoginFailure() { }
-}
-
-
-

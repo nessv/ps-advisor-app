@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
 import org.fundacionparaguaya.advisorapp.data.local.SurveyDao;
-import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.data.remote.SurveyService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SurveyIr;
@@ -28,15 +27,12 @@ public class SurveyRepository {
 
     private final SurveyDao surveyDao;
     private final SurveyService surveyService;
-    private final AuthenticationManager authManager;
 
     @Inject
     public SurveyRepository(SurveyDao surveyDao,
-                            SurveyService surveyService,
-                            AuthenticationManager authManager) {
+                            SurveyService surveyService) {
         this.surveyDao = surveyDao;
         this.surveyService = surveyService;
-        this.authManager = authManager;
     }
 
     //region Survey
@@ -72,10 +68,10 @@ public class SurveyRepository {
     private boolean pullSurveys() {
         try {
             Response<List<SurveyIr>> response =
-                    surveyService.getSurveys(authManager.getAuthenticationString()).execute();
+                    surveyService.getSurveys().execute();
 
             if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("pullSurveys: Could not pull surveys! %s", response.errorBody()));
+                Log.w(TAG, format("pullSurveys: Could not pull surveys! %s", response.errorBody().string()));
                 return false;
             }
 
@@ -101,5 +97,9 @@ public class SurveyRepository {
      */
     boolean sync() {
         return pullSurveys();
+    }
+
+    void clean() {
+        surveyDao.deleteAll();
     }
 }

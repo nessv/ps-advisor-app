@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "org.fundacionparaguaya.advisorapp"
-        minSdkVersion 23
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -22,6 +22,11 @@ android {
             }
         }
     }
+
+    dexOptions{
+        jumboMode true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -63,7 +68,7 @@ dependencies {
     implementation ('com.instabug.library:instabug:4.9.0')
 
     // Recycler view for background questions
-    implementation 'com.yarolegovich:discrete-scrollview:1.3.2'
+    implementation 'com.yarolegovich:discrete-scrollview:1.4.4'
 
     //sticky header
     implementation 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
@@ -96,4 +101,11 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.14'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14'
+
+    // Internet Connectivity Monitor
+    implementation 'com.novoda:merlin:1.1.5'
+
+    // Jobs
+    implementation 'com.evernote:android-job:1.2.2'
+    implementation "com.google.android.gms:play-services-gcm:10.2.1"
 }

@@ -9,19 +9,20 @@
     <color name="white">#FDFDFD</color>
 
     <!--DashboardTab Colors-->
-    <color name="tabSelected">@color/fp_green</color>
-    <color name="captionSelected">#FFFFFF</color>
-    <color name="iconSelected">#FFFFFE</color>
-    <color name="tabNotSelected">@android:color/transparent</color>
-    <color name="captionNotSelected">#A1A1A1</color>
-    <color name="iconNotSelected">#A1A1A1</color>
-    <color name="tabViewBackground">#FDFDFD</color>
-    <color name="tabViewBorder">#E0E0E0</color>
+    <color name="dashboardtab_tabSelected">@color/fp_green</color>
+    <color name="dashbaordtab_captionselected">#FFFFFF</color>
+    <color name="dashboardtab_iconselected">#FFFFFF</color>
+    <color name="dashboardtab_tabnotselected">@android:color/transparent</color>
+    <color name="dashboardtab__captionnotselected">#A1A1A1</color>
+    <color name="dashboardtab_iconnotselected">#A1A1A1</color>
+    <color name="dashboardtab_background">#FDFDFD</color>
+    <color name="dashboardtab_border">#E0E0E0</color>
+
+    <!--Families View Colors-->
+    <color name="families_background">#F7F7F7</color>
 
     <!--Dashboard TopBar Colors-->
-    <color name="topbarBackground">#FDFDFD</color>
-    <color name="topbarBackButton">#313131</color>
-    <color name="topbarSyncButton">#A1A1A1</color>
+    <color name="topbar_background">@color/dashboardtab_background</color>
   
     <!--Login Page Colors-->
     <color name="login_background">#F7F7F7</color>

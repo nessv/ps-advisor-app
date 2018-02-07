@@ -70,6 +70,10 @@ public class FamilyIndicatorsListFrag extends Fragment {
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
         mBtnNewSnapshot = view.findViewById(R.id.btn_familyindicators_newsnapshot);
 
+        LinearLayout spinnerTouchTarget = view.findViewById(R.id.linearLayout_familyindicators_spinnertouchtarget);
+
+        spinnerTouchTarget.setOnClickListener((clickedView)-> mSnapshotSpinner.performClick());
+
         mBtnNewSnapshot.setOnClickListener(l->
         {
           try

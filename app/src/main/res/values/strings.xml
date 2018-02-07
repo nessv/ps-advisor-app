@@ -86,6 +86,7 @@
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
 
     <string name="all_okay">Okay</string>
+    <string name="your_response">Your Response</string>
 
 
 </resources>

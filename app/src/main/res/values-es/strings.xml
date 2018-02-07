@@ -82,5 +82,6 @@
     <string name="surveyactivity_exit_explanation">No podrá recuperar la instantánea en progreso.</string>
     <string name="all_cancel">Cancelar</string>
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
+    <string name="your_response">Tu Respuesta</string>
 
 </resources>

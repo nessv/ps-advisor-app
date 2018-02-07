@@ -153,8 +153,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
 
         mAuthManager.getStatus().observe(this, (value) -> {
             if (value == UNAUTHENTICATED) {
-                Intent dashboard = new Intent(this, LoginActivity.class);
-                startActivity(dashboard);
+                Intent login = new Intent(this, LoginActivity.class);
+                startActivity(login);
                 finish();
             }
         });

@@ -15,6 +15,7 @@
     <!--Top Bar Strings-->
     <string name="topbar_backbutton">Regresa</string>
     <string name="topbar_synclabel">Sincronizar</string>
+    <string name="topbar_synclabel_offline">Desconectado</string>
     <string name="topbar_synclabel_syncing">Sincronizando…</string>
     <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
     <string name="topbar_lastsync_never">Nunca sincronizado</string>

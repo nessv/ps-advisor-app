@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -11,6 +10,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +19,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+
+import java.util.ArrayList;
 
 /**
  * Default class for a SurveyCard inside of the survey
@@ -26,6 +30,16 @@ import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
  */
 
 public class IndicatorCard extends LinearLayout{
+
+    /**
+     * Max allowed duration for a "click", in milliseconds.
+     */
+    private static final int MAX_CLICK_DURATION = 1000;
+
+    /**
+     * Max allowed distance to move during a "click", in DP.
+     */
+    private static final int MAX_CLICK_DISTANCE = 15;
 
     private Context context;
 
@@ -39,11 +53,18 @@ public class IndicatorCard extends LinearLayout{
     private int height;
     private int width;
 
+    private ArrayList<IndicatorSelectedHandler> indicatorHandlers = new ArrayList<>();
+
     private IndicatorOption mIndicatorOption;
 
     public enum CardColor {
         RED, YELLOW, GREEN
     }
+
+    private long pressStartTime;
+    private float pressedX;
+    private float pressedY;
+    private boolean stayedWithinClickDistance;
 
     public IndicatorCard(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -68,6 +89,19 @@ public class IndicatorCard extends LinearLayout{
             public void onGlobalLayout() {
                 resize();
             }
+        });
+
+        //TODO add performClick to this
+        mText.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (onTouchEvent(event)){
+                } else {
+                    mText.onTouchEvent(event);
+                }
+                return true;
+            }
+
         });
 
         try{
@@ -157,15 +191,57 @@ public class IndicatorCard extends LinearLayout{
         return (int) Math.round(px);
     }
 
-//    public void notifyHandlers(){}
-//
-//    public interface IndicatorSelectedHadler{
-//
-//    }
-//
-//    public class indicatorSelectedEvent{
-//        private
-//
-//    }
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                pressStartTime = System.currentTimeMillis();
+                pressedX = e.getX();
+                pressedY = e.getY();
+                stayedWithinClickDistance = true;
+                break;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                if (stayedWithinClickDistance && distance(pressedX, pressedY, e.getX(), e.getY()) > MAX_CLICK_DISTANCE) {
+                    stayedWithinClickDistance = false;
+                    return false;
+                }
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                long pressDuration = System.currentTimeMillis() - pressStartTime;
+                if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
+                    notifyHandlers(this);
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+
+    private float distance(float x1, float y1, float x2, float y2) {
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        float distanceInPx = (float) Math.sqrt(dx * dx + dy * dy);
+        return pxToDp(distanceInPx);
+    }
+
+    private float pxToDp(float px) {
+        return px / getResources().getDisplayMetrics().density;
+    }
+
+    public void addIndicatorSelectedHandler(IndicatorSelectedHandler handler){
+        indicatorHandlers.add(handler);
+    }
+
+    private void notifyHandlers(IndicatorCard card){
+        for (IndicatorSelectedHandler handler : indicatorHandlers){
+            handler.onIndicatorSelection(card);
+        }
+    }
+
+    public interface IndicatorSelectedHandler {
+        void onIndicatorSelection(IndicatorCard card);
+    }
 
 }

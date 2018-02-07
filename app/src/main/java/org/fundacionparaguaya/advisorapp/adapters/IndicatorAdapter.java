@@ -67,10 +67,10 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
         for(int counter = 0; counter < indicatorQuestionList.size(); counter++){
             tempFrag = new ChooseIndicatorFragment();
 
-           tempFrag.newInstance(this, indicatorQuestionList.get(counter));
+            tempFrag.newInstance(this, indicatorQuestionList.get(counter));
 
-           fragmentList.add(counter, tempFrag);
-           chooseIndicatorFragments.add(tempFrag);
+            fragmentList.add(counter, tempFrag);
+            chooseIndicatorFragments.add(tempFrag);
         }
     }
 

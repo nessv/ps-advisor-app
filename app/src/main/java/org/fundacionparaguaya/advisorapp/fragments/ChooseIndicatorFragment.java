@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  */
 
-public class ChooseIndicatorFragment extends AbstractSurveyFragment implements View.OnClickListener{
+public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     IndicatorCard mGreenCard;
     IndicatorCard mYellowCard;
@@ -87,26 +87,31 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
             }
         }
 
-        mGreenCard.setOnClickListener(this);
-        mYellowCard.setOnClickListener(this);
-        mRedCard.setOnClickListener(this);
+        mGreenCard.addIndicatorSelectedHandler(handler);
+        mYellowCard.addIndicatorSelectedHandler(handler);
+        mRedCard.addIndicatorSelectedHandler(handler);
 
         return rootView;
     }
 
-    /**
-     * When one of the cards is selected...
-     * @param view IndicatorCard
-     */
-    @Override
-    public void onClick(View view) {
-        if(view instanceof IndicatorCard)
-        {
-            IndicatorCard card = (IndicatorCard)view;
+//    /**
+//     * When one of the cards is selected...
+//     * @param view IndicatorCard
+//     */
+//    @Override
+//    public void onClick(View view) {
+//        if(view instanceof IndicatorCard)
+//        {
+//            IndicatorCard card = (IndicatorCard)view;
+//
+//            onCardSelected(card);
+//        }
+//    }
 
-            onCardSelected(card);
-        }
-    }
+    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
+    {
+        onCardSelected(card);
+    };
 
     /**
      * Sets the desired selected indicator option

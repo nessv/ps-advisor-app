@@ -22,6 +22,11 @@ android {
             }
         }
     }
+
+    dexOptions{
+        jumboMode true
+    }
+
     buildTypes {
         release {
             minifyEnabled false

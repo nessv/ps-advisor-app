@@ -44,7 +44,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
     FamilyInformationViewModel mFamilyInformationViewModel;
 
     ImageButton mBtnNewSnapshot;
-
     RecyclerView mRvIndicatorList;
 
     final FamilyIndicatorAdapter mIndicatorAdapter = new FamilyIndicatorAdapter();
@@ -89,6 +88,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
         });
 
         mRvIndicatorList.setLayoutManager(new StickyHeaderLayoutManager());
+        mRvIndicatorList.setHasFixedSize(true);
         mRvIndicatorList.setAdapter(mIndicatorAdapter);
 
         return view;

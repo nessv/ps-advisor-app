@@ -79,6 +79,19 @@ public class SyncManager {
         return result;
     }
 
+    /**
+      * Cleans all of the repositories, removing all entries. Useful for when a user logs out.
+      */
+    public void cleanNow() {
+        Log.d(TAG, "clean: Cleaning the database...");
+        updateProgress(SYNCING);
+        mFamilyRepository.clean();
+        mSurveyRepository.clean();
+        mSnapshotRepository.clean();
+        updateProgress(NEVER, -1);
+        Log.d(TAG, "clean: Finished the database clean");
+    }
+
     private void updateProgress(SyncState state) {
         SyncProgress progress = mProgress.getValue();
         if (progress == null) {

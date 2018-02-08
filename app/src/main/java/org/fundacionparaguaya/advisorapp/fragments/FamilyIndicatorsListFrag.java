@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +36,7 @@ import java.util.*;
 
 public class FamilyIndicatorsListFrag extends Fragment {
 
-    Spinner mSnapshotSpinner;
+    AppCompatSpinner mSnapshotSpinner;
     SnapshotSpinAdapter mSpinnerAdapter;
 
     @Inject
@@ -41,7 +44,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
     FamilyInformationViewModel mFamilyInformationViewModel;
 
     ImageButton mBtnNewSnapshot;
-
     RecyclerView mRvIndicatorList;
 
     final FamilyIndicatorAdapter mIndicatorAdapter = new FamilyIndicatorAdapter();
@@ -70,10 +72,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
         mBtnNewSnapshot = view.findViewById(R.id.btn_familyindicators_newsnapshot);
 
-        LinearLayout spinnerTouchTarget = view.findViewById(R.id.linearLayout_familyindicators_spinnertouchtarget);
-
-        spinnerTouchTarget.setOnClickListener((clickedView)-> mSnapshotSpinner.performClick());
-
         mBtnNewSnapshot.setOnClickListener(l->
         {
           try
@@ -90,6 +88,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
         });
 
         mRvIndicatorList.setLayoutManager(new StickyHeaderLayoutManager());
+        mRvIndicatorList.setHasFixedSize(true);
         mRvIndicatorList.setAdapter(mIndicatorAdapter);
 
         return view;
@@ -99,7 +98,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), android.R.layout.simple_spinner_item);
+        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
         mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -271,7 +270,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         static class FamilyIndicatorViewHolder extends SectioningAdapter.ItemViewHolder
         {
-            View mLevelIndicator;
+            AppCompatImageView mLevelIndicator;
             TextView mTitle;
             TextView mLevelDescription;
 
@@ -317,7 +316,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
                 if(color!=-1)
                 {
-                    mLevelIndicator.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), color));
+                    ViewCompat.setBackgroundTintList(mLevelIndicator, ContextCompat.getColorStateList(itemView.getContext(), color));
                 }
             }
         }
@@ -345,7 +344,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
         void setSelected(Snapshot s)
         {
             if(s==null) mSelectedArrayIndex = 0;
-            else {
+            else if(values!=null){
                 for (int i = 0; i < values.length; i++) {
                     if (values[i].equals(s)) mSelectedArrayIndex = i;
                 }
@@ -407,11 +406,13 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 if (latestSnapshot != null) {
                     latestSnapshot.setIsLatest(true);
                 }
+
+
+                this.values = values;
+
+                notifyDataSetChanged();
             }
 
-            this.values = values;
-
-            notifyDataSetChanged();
         }
 
         @Nullable

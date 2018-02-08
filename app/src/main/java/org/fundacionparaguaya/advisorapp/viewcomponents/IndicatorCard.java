@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
@@ -167,9 +168,9 @@ public class IndicatorCard extends LinearLayout{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-              mIndicatorBackground.setCardBackgroundColor(context.getColor(R.color.indicator_card_selected));
+              mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, R.color.indicator_card_selected));
         } else {
-              mIndicatorBackground.setCardBackgroundColor(context.getColor(android.R.color.transparent));
+              mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
         }
     }
 
@@ -188,7 +189,7 @@ public class IndicatorCard extends LinearLayout{
     }
 
     public void setColor(int color){
-        mIndicatorCard.setCardBackgroundColor(context.getColor(color));
+        mIndicatorCard.setCardBackgroundColor(ContextCompat.getColor(context, color));
     }
 
     public void setImage(Uri uri){

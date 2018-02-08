@@ -46,12 +46,12 @@
             android:id="@+id/tv_topbar_backlabel"
             android:text="@string/topbar_backbutton"
             android:textSize="24sp"
-            android:textColor="@color/topbar_backbutton"/>
+            android:textColor="#313131"/>
 
 </LinearLayout>
 
 <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout_topbar_syncbutton"
         android:layout_centerVertical="true"

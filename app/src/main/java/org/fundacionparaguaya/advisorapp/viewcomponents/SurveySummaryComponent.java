@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.viewcomponents;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -73,11 +74,11 @@ public class SurveySummaryComponent extends ConstraintLayout {
         this.state = state;
         switch (state){
             case COMPLETE:
-                layoutIcon.setImageDrawable(context.getDrawable(R.drawable.surveysummary_complete));
+                layoutIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.surveysummary_complete));
                 numSkipped.setText(" ");
                 break;
             case INCOMPLETE:
-                layoutIcon.setImageDrawable(context.getDrawable(R.drawable.surveysummary_incomplete));
+                layoutIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.surveysummary_incomplete));
                 break;
             default:
                 //do nothing

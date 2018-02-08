@@ -12,10 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:contentDescription="@string/fpicon_desc"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:layout_marginBottom="12dp"
         android:src="@drawable/dashtabview_fplogo" />
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
@@ -24,8 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
         custom:tabCaption="@string/familytab_title"
         custom:tabImage="@drawable/dashtab_friendsicon" />
 
@@ -35,8 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
         custom:tabCaption="@string/maptab_title"
         custom:tabImage="@drawable/dashtab_mapicon" />
 
@@ -45,13 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
         android:layout_weight="1"
         custom:tabCaption="@string/archivetab_title"
-        custom:tabImage="@drawable/dashtab_archiveicon">
-
-    </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
+        custom:tabImage="@drawable/dashtab_archiveicon"/>
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
         android:id="@+id/settings_tab"
@@ -59,7 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_marginTop="12dp"
         custom:tabCaption="@string/settingstab_title"
         custom:tabImage="@drawable/dashtab_settingsicon" />
 

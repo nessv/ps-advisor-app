@@ -88,7 +88,9 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                if (!mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()){
+                    addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                }
                 nextQuestion();
             }
         });
@@ -143,12 +145,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
     private void checkConditions() {
         if (mPager.getCurrentItem() == 0) {
             skipButtonText.setText(R.string.survey_skip);
-            backButton.setVisibility(getView().VISIBLE);
-            skipButton.setVisibility(getView().VISIBLE);
-        } else {
+        } else if(mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+            skipButtonText.setText(R.string.survey_next);
+        }else {
             skipButtonText.setText(R.string.survey_skip);
-            backButton.setVisibility(getView().VISIBLE);
-            skipButton.setVisibility(getView().VISIBLE);
         }
     }
 

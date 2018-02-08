@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -91,13 +92,35 @@ public class IndicatorCard extends LinearLayout{
             }
         });
 
+        mText.setMovementMethod(new ScrollingMovementMethod());
+
         //TODO add performClick to this
         mText.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (onTouchEvent(event)){
-                } else {
-                    mText.onTouchEvent(event);
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        pressStartTime = System.currentTimeMillis();
+                        pressedX = event.getX();
+                        pressedY = event.getY();
+                        stayedWithinClickDistance = true;
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        float x = event.getX();
+                        float y = event.getY();
+                        float distance = distance(pressedX, pressedY, x, y);
+                        if (stayedWithinClickDistance && distance > MAX_CLICK_DISTANCE) {
+                            stayedWithinClickDistance = false;
+                        }
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        long pressDuration = System.currentTimeMillis() - pressStartTime;
+                        if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
+                            notifyHandlers();
+                        }
+                    }
                 }
                 return true;
             }
@@ -211,7 +234,7 @@ public class IndicatorCard extends LinearLayout{
             case MotionEvent.ACTION_UP: {
                 long pressDuration = System.currentTimeMillis() - pressStartTime;
                 if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
-                    notifyHandlers(this);
+                    notifyHandlers();
                     return true;
                 }
             }
@@ -234,9 +257,9 @@ public class IndicatorCard extends LinearLayout{
         indicatorHandlers.add(handler);
     }
 
-    private void notifyHandlers(IndicatorCard card){
+    private void notifyHandlers(){
         for (IndicatorSelectedHandler handler : indicatorHandlers){
-            handler.onIndicatorSelection(card);
+            handler.onIndicatorSelection(this);
         }
     }
 

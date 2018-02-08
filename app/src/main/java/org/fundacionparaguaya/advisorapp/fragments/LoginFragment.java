@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,10 +15,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -43,12 +47,19 @@ public class LoginFragment extends Fragment {
     TextView mIncorrectCredentialsView;
     TextView mPasswordReset;
     ImageView mHelpButton;
+    ImageView mFPLogo;
+
+    LinearLayout mLoginForm;
+    ScrollView mLoginFormScrollView;
 
     AuthenticationManager mAuthManager;
 
     @Inject InjectionViewModelFactory mViewModelFactory;
 
     LoginViewModel mLoginViewModel;
+
+    // Threshold for minimal keyboard height.
+    final int MIN_KEYBOARD_HEIGHT_PX = 150;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +83,9 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         setRetainInstance(true);
 
+        mLoginForm = (LinearLayout) view.findViewById(R.id.email_login_form);
+        mLoginFormScrollView = (ScrollView) view.findViewById(R.id.login_form);
+
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
         mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
 
@@ -79,6 +93,7 @@ public class LoginFragment extends Fragment {
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
 
         mHelpButton = (ImageView) view.findViewById(R.id.login_help);
+        mFPLogo = (ImageView) view.findViewById(R.id.login_fplogo);
 
         mSubmitButton = (Button) view.findViewById(R.id.login_loginbutton);
         mSubmitButton.setOnClickListener((event) -> attemptLogin());
@@ -91,6 +106,37 @@ public class LoginFragment extends Fragment {
                     return false;
                 }
                 return true;
+            }
+        });
+
+        // Top-level window decor view.
+        final View decorView = this.getActivity().getWindow().getDecorView();
+
+        // Look for Keyboard show
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            private final Rect windowVisibleDisplayFrame = new Rect();
+            private int lastVisibleDecorViewHeight;
+
+            @Override
+            public void onGlobalLayout() {
+                // Retrieve visible rectangle inside window.
+                decorView.getWindowVisibleDisplayFrame(windowVisibleDisplayFrame);
+                final int visibleDecorViewHeight = windowVisibleDisplayFrame.height();
+
+                // Decide whether keyboard is visible from changing decor view height.
+                if (lastVisibleDecorViewHeight != 0) {
+                    if (lastVisibleDecorViewHeight > visibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX) {
+                        // Calculate current keyboard height (this includes also navigation bar height when in fullscreen mode).
+                        int currentKeyboardHeight = decorView.getHeight() - windowVisibleDisplayFrame.bottom;
+                        // Keyboard is showing, move to show everything
+                        mFPLogo.setVisibility(View.GONE);
+                    } else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX < visibleDecorViewHeight) {
+                        //Keyboard is not showing, center view
+                        mFPLogo.setVisibility(View.VISIBLE);
+                    }
+                }
+                // Save current decor view height for the next call.
+                lastVisibleDecorViewHeight = visibleDecorViewHeight;
             }
         });
 
@@ -175,6 +221,7 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 }
+
 class LoginTask extends AsyncTask<User, Void, AuthenticationManager.AuthenticationStatus> {
     private static final String TAG = "LoginTask";
 

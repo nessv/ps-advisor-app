@@ -93,7 +93,7 @@ public class IndicatorCard extends LinearLayout{
         });
 
 
-        //TODO add performClick to this
+        //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
         mText.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -103,6 +103,7 @@ public class IndicatorCard extends LinearLayout{
                         pressedX = event.getX();
                         pressedY = event.getY();
                         stayedWithinClickDistance = true;
+                        v.performClick();
                         break;
                     }
                     case MotionEvent.ACTION_MOVE: {
@@ -213,6 +214,7 @@ public class IndicatorCard extends LinearLayout{
         return (int) Math.round(px);
     }
 
+    //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {
@@ -221,6 +223,7 @@ public class IndicatorCard extends LinearLayout{
                 pressedX = e.getX();
                 pressedY = e.getY();
                 stayedWithinClickDistance = true;
+                performClick();
                 break;
             }
             case MotionEvent.ACTION_MOVE: {

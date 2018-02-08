@@ -92,39 +92,19 @@ public class IndicatorCard extends LinearLayout{
             }
         });
 
-        mText.setMovementMethod(new ScrollingMovementMethod());
-
-        //TODO add performClick to this
-        mText.setOnTouchListener(new OnTouchListener() {
+        //To ignore scrolls
+        mText.setOnLongClickListener(new OnLongClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        pressStartTime = System.currentTimeMillis();
-                        pressedX = event.getX();
-                        pressedY = event.getY();
-                        stayedWithinClickDistance = true;
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        float x = event.getX();
-                        float y = event.getY();
-                        float distance = distance(pressedX, pressedY, x, y);
-                        if (stayedWithinClickDistance && distance > MAX_CLICK_DISTANCE) {
-                            stayedWithinClickDistance = false;
-                        }
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        long pressDuration = System.currentTimeMillis() - pressStartTime;
-                        if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
-                            notifyHandlers();
-                        }
-                    }
-                }
+            public boolean onLongClick(View v) {
                 return true;
             }
+        });
 
+        mText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyHandlers();
+            }
         });
 
         try{

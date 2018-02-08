@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -92,10 +91,21 @@ public class IndicatorCard extends LinearLayout{
             }
         });
 
+<<<<<<< HEAD
         //To ignore scrolls
         mText.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+=======
+        //TODO add performClick to this
+        mText.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (onTouchEvent(event)){
+                } else {
+                    mText.onTouchEvent(event);
+                }
+>>>>>>> parent of 48c73df... add more complex system for onTouch
                 return true;
             }
         });
@@ -214,7 +224,7 @@ public class IndicatorCard extends LinearLayout{
             case MotionEvent.ACTION_UP: {
                 long pressDuration = System.currentTimeMillis() - pressStartTime;
                 if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
-                    notifyHandlers();
+                    notifyHandlers(this);
                     return true;
                 }
             }
@@ -237,9 +247,9 @@ public class IndicatorCard extends LinearLayout{
         indicatorHandlers.add(handler);
     }
 
-    private void notifyHandlers(){
+    private void notifyHandlers(IndicatorCard card){
         for (IndicatorSelectedHandler handler : indicatorHandlers){
-            handler.onIndicatorSelection(this);
+            handler.onIndicatorSelection(card);
         }
     }
 

@@ -63,6 +63,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         setFooterColor(R.color.survey_grey);
         setHeaderColor(R.color.survey_grey);
         setTitle(getString(R.string.survey_indicators_title));
+        setShowFooter(false);
     }
 
     @Nullable

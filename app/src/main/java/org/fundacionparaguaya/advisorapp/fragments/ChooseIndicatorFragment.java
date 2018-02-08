@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     @Nullable
     IndicatorCard selectedIndicatorCard;
+    private CountDownTimer nextPageTimer;
 
     public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question) {
 
@@ -69,10 +71,8 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
         IndicatorOption existingResponse = parentFragment.getResponses(question);
 
-        if(existingResponse!=null)
-        {
-            switch (existingResponse.getLevel())
-            {
+        if (existingResponse != null) {
+            switch (existingResponse.getLevel()) {
                 case Green:
                     mGreenCard.setSelected(true);
                     break;
@@ -90,7 +90,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mGreenCard.addIndicatorSelectedHandler(handler);
         mYellowCard.addIndicatorSelectedHandler(handler);
         mRedCard.addIndicatorSelectedHandler(handler);
-
         return rootView;
     }
 
@@ -108,14 +107,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
      */
     private void onCardSelected(@Nullable IndicatorCard indicatorCard) {
 
-        if(indicatorCard.equals(selectedIndicatorCard))
-        {
+        if (indicatorCard.equals(selectedIndicatorCard)) {
             indicatorCard.setSelected(false);
             parentFragment.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
-        }
-        else
-        {
+        } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
@@ -136,18 +132,25 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     }
 
     private void updateParent() {
-
-        if (parentFragment != null) {
-            new Handler().postDelayed(new Runnable() {
+        if (nextPageTimer !=null){
+            nextPageTimer.cancel();
+            nextPageTimer = null;
+        } else {
+            nextPageTimer = new CountDownTimer(500, 100) {
                 @Override
-                public void run() {
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
                     if (selectedIndicatorCard != null) {
                         parentFragment.nextQuestion();
                     } else {
                         parentFragment.removeIndicatorResponse(question);
                     }
                 }
-            }, 500); // Millisecond 1000 = 1 sec
+            }.start();
         }
     }
 

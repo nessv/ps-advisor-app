@@ -3,6 +3,8 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -75,7 +77,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
 
         mPager.setAdapter(mAdapter);
-
         mPager.addOnPageChangeListener(this);
 
         backButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
@@ -93,7 +94,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()){
+                if (!mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
                     addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
                 }
                 nextQuestion();
@@ -109,7 +110,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     public void nextQuestion() {
-        if(isPageChanged) {
+        if (isPageChanged) {
             if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
                 mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
             } else {
@@ -154,9 +155,9 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     private void checkConditions() {
         if (mPager.getCurrentItem() == 0) {
             skipButtonText.setText(R.string.survey_skip);
-        } else if(mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+        } else if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
             skipButtonText.setText(R.string.survey_next);
-        }else {
+        } else {
             skipButtonText.setText(R.string.survey_skip);
         }
     }
@@ -166,7 +167,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         return fragment;
     }
 
-    public boolean isPageChanged(){
+    public boolean isPageChanged() {
         return isPageChanged;
     }
 
@@ -182,7 +183,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        switch (state){
+        switch (state) {
             case ViewPager.SCROLL_STATE_IDLE:
                 isPageChanged = true;
                 break;

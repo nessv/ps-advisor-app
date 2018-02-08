@@ -94,23 +94,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         return rootView;
     }
 
-//    /**
-//     * When one of the cards is selected...
-//     * @param view IndicatorCard
-//     */
-//    @Override
-//    public void onClick(View view) {
-//        if(view instanceof IndicatorCard)
-//        {
-//            IndicatorCard card = (IndicatorCard)view;
-//
-//            onCardSelected(card);
-//        }
-//    }
-
     private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
     {
-        onCardSelected(card);
+        if (parentFragment.isPageChanged()) {
+            onCardSelected(card);
+        }
     };
 
     /**

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import javax.inject.Inject;
  * Enables user to go through each of the indicators, skip indicators, select a red, yellow, green color etc.
  */
 
-public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
+public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener {
 
     IndicatorAdapter mAdapter;
     NonSwipeableViewPager mPager;
@@ -38,6 +39,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
     TextView backButtonText;
     LinearLayout skipButton;
     TextView skipButtonText;
+
+    private boolean isPageChanged = true;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -73,6 +76,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
 
         mPager.setAdapter(mAdapter);
 
+        mPager.addOnPageChangeListener(this);
+
         backButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
         backButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
         skipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
@@ -104,21 +109,25 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
     }
 
     public void nextQuestion() {
-        if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
-            mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
-        } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-            checkConditions();
+        if(isPageChanged) {
+            if (mPager.getCurrentItem() == mAdapter.getCount() - 1) {
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.SUMMARY);
+            } else {
+                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+                checkConditions();
+            }
         }
     }
 
     public void previousQuestion() {
-        if (mPager.getCurrentItem() < 1) {
-            //Goes back when on the first survey question
-            mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.BACKGROUND_QUESTIONS);
-        } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-            checkConditions();
+        if (isPageChanged) {
+            if (mPager.getCurrentItem() < 1) {
+                //Goes back when on the first survey question
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.BACKGROUND_QUESTIONS);
+            } else {
+                mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+                checkConditions();
+            }
         }
     }
 
@@ -157,5 +166,33 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
         return fragment;
     }
 
+    public boolean isPageChanged(){
+        return isPageChanged;
+    }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        switch (state){
+            case ViewPager.SCROLL_STATE_IDLE:
+                isPageChanged = true;
+                break;
+            case ViewPager.SCROLL_STATE_DRAGGING:
+                isPageChanged = false;
+                break;
+            case ViewPager.SCROLL_STATE_SETTLING:
+                isPageChanged = false;
+                break;
+        }
+
+    }
 }

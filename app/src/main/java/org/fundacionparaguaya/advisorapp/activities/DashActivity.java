@@ -3,7 +3,6 @@ package org.fundacionparaguaya.advisorapp.activities;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;

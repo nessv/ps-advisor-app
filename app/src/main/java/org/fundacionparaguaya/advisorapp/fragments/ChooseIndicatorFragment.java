@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,8 +13,6 @@ import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -36,6 +33,13 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     @Nullable
     IndicatorCard selectedIndicatorCard;
     private CountDownTimer nextPageTimer;
+
+    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
+    {
+        if (parentFragment.isPageChanged()) {
+            onCardSelected(card);
+        }
+    };
 
     public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question) {
 
@@ -85,6 +89,8 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
                 case Red:
                     mRedCard.setSelected(true);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -93,13 +99,6 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mRedCard.addIndicatorSelectedHandler(handler);
         return rootView;
     }
-
-    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
-    {
-        if (parentFragment.isPageChanged()) {
-            onCardSelected(card);
-        }
-    };
 
     /**
      * Sets the desired selected indicator option
@@ -140,7 +139,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             nextPageTimer = new CountDownTimer(500, 100) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-
+                    //For future implementation if needed
                 }
 
                 @Override

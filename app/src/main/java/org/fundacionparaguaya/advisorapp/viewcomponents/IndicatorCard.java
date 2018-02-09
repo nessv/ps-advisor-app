@@ -15,13 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 
 import java.util.ArrayList;
@@ -123,6 +121,8 @@ public class IndicatorCard extends LinearLayout{
                             return true;
                         }
                     }
+                    default:
+                        break;
                 }
                 return false;
             }
@@ -241,6 +241,8 @@ public class IndicatorCard extends LinearLayout{
                     return true;
                 }
             }
+            default:
+                break;
         }
         return true;
     }

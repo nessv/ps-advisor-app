@@ -3,8 +3,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -174,12 +172,12 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+        //For future implementation
     }
 
     @Override
     public void onPageSelected(int position) {
-
+        //For future implementation
     }
 
     @Override
@@ -192,6 +190,9 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                 isPageChanged = false;
                 break;
             case ViewPager.SCROLL_STATE_SETTLING:
+                isPageChanged = false;
+                break;
+            default:
                 isPageChanged = false;
                 break;
         }

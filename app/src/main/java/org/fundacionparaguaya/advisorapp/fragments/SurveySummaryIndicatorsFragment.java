@@ -2,7 +2,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
@@ -59,8 +57,8 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setFooterColor(R.color.surveysummary_background);
-        setHeaderColor(R.color.surveysummary_background);
+        setFooterColor(R.color.survey_summarybackground);
+        setHeaderColor(R.color.survey_summarybackground);
         setShowFooter(false);
         setTitle(getString(R.string.survey_summary_title));
     }
@@ -141,7 +139,7 @@ public class SurveySummaryIndicatorsFragment extends AbstractSurveyFragment impl
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_surveysummary_chooseindicator, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_surveysummaryindicator, container, false);
 
         return rootView;
     }

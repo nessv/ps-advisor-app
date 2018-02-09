@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -41,8 +40,6 @@ public class LoginFragment extends Fragment {
     EditText mPasswordView;
     Button mSubmitButton;
     TextView mIncorrectCredentialsView;
-    TextView mPasswordReset;
-    ImageView mHelpButton;
 
     AuthenticationManager mAuthManager;
 
@@ -73,12 +70,9 @@ public class LoginFragment extends Fragment {
         setRetainInstance(true);
 
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
-        mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
 
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
-
-        mHelpButton = (ImageView) view.findViewById(R.id.login_help);
 
         mSubmitButton = (Button) view.findViewById(R.id.login_loginbutton);
         mSubmitButton.setOnClickListener((event) -> attemptLogin());
@@ -100,26 +94,6 @@ public class LoginFragment extends Fragment {
 
         mEmailView.setOnClickListener(hideIncorrectCredentials);
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
-
-        //Hide for later implementation
-        mPasswordReset.setVisibility(View.GONE);
-        mHelpButton.setVisibility(View.GONE);
-
-        mPasswordReset.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //TODO: Implement password reset (set visible above when ready to implement)
-            }
-        });
-
-        mHelpButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //TODO: Implement Help button (set visible above when ready to implement)
-                //using this as a temporary login method
-                //getActivity().finish();
-            }
-        });
 
         mAuthManager.getStatus().observe(this, (value) -> {
             if (value == AUTHENTICATED) {

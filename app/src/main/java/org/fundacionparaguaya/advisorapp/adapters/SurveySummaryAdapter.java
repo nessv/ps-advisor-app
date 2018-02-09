@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class SurveySummaryAdapter extends RecyclerView.Adapter<SurveySummaryAdap
 
     @Override
     public IndicatorViewHolder onCreateViewHolder(ViewGroup viewGroup, int position){
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.surveysummary_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_surveysummaryrow, viewGroup, false);
         return new IndicatorViewHolder(v);
     }
 

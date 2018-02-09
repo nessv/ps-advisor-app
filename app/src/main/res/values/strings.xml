@@ -1,24 +1,23 @@
 <resources>
-    <string name="app_name">Advisor App</string>
-    <string name="fpicon_desc">FP Icon</string>
+    <string name="all_appname">Advisor App</string>
+    <string name="all_logodescription">FP Icon</string>
 
     <!--Bug Reporting-->
-    <string name="bugbutton_desc">Bug Button</string>
-    <string name="backbutton_desc">Back Button</string>
 
     <!--Tab Captions -->
-    <string name="familytab_title">Families</string>
-    <string name="maptab_title">Map</string>
-    <string name="archivetab_title">Archive</string>
-    <string name="settingstab_title">Settings</string>
+    <string name="dashboardtabbar_familytitle">Families</string>
+    <string name="dashboardtabbar_maptitle">Map</string>
+    <string name="dashboardtabbar_archivetitle">Archive</string>
+    <string name="dashboardtabbar_settingstitle">Settings</string>
 
     <!--Top Bar Strings-->
-    <string name="topbar_backbutton">Back</string>
-    <string name="topbar_synclabel">Sync Now</string>
-    <string name="topbar_synclabel_syncing">Syncing…</string>
-    <string name="topbar_synclabel_offline">Offline</string>
-    <string name="topbar_lastsync_prefix">Last Sync:\u0020</string>
-    <string name="topbar_lastsync_never">Not synced yet</string>
+    <string name="dashboardtopbar_backbuttonlabel">Back</string>
+    <string name="dashboardtopbar_backbuttondescription">Back Button</string>
+    <string name="dashboardtopbar_syncbuttonlabel">Sync Now</string>
+    <string name="dashboardtopbar_syncbuttonlabelinprogress">Syncing…</string>
+    <string name="dashboardtopbar_syncbuttonlabeloffline">Offline</string>
+    <string name="dashboardtopbar_lastsynctextlabelprefix">Last Sync:\u0020</string>
+    <string name="dashboardtopbar_lastsynctextlabelnever">Not synced yet</string>
 
     <!-- Login Activity -->
     <string name="login_success">Logged in successfully.</string>

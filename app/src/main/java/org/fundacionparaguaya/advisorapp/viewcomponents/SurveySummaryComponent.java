@@ -43,7 +43,7 @@ public class SurveySummaryComponent extends ConstraintLayout {
         this.attributeSet = attrs;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.component_review_surveysummary, this);
+        inflater.inflate(R.layout.view_surveyreview, this);
 
         layoutIcon = (ImageView) findViewById(R.id.surveysummary_icon);
         layoutTitle = (TextView) findViewById(R.id.surveysummary_layout_title);

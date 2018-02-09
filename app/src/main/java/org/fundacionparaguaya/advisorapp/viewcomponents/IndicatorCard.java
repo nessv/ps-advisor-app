@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -51,7 +50,7 @@ public class IndicatorCard extends LinearLayout{
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.indicator_card, this, true);
+        inflater.inflate(R.layout.fragment_indicatorcard, this, true);
 
         mIndicatorBackground = findViewById(R.id.survey_card_selected);
         mIndicatorCard = (CardView) findViewById(R.id.survey_card_background);
@@ -111,7 +110,7 @@ public class IndicatorCard extends LinearLayout{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-              mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, R.color.indicator_card_selected));
+              mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, R.color.survey_indicatorsselected));
         } else {
               mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
         }
@@ -120,13 +119,13 @@ public class IndicatorCard extends LinearLayout{
     public void setColor(CardColor color){
         switch(color) {
             case RED:
-                setColor(R.color.indicator_card_red);
+                setColor(R.color.indicator_red);
                 break;
             case YELLOW:
-                setColor(R.color.indicator_card_yellow);
+                setColor(R.color.indicator_yellow);
                 break;
             case GREEN:
-                setColor(R.color.indicator_card_green);
+                setColor(R.color.indicator_green);
                 break;
         }
     }

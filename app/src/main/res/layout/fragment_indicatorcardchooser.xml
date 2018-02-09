@@ -17,7 +17,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
-            app:indicator_color="@color/indicator_card_green"
+            app:indicator_color="@color/indicator_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:indicator_color="@color/indicator_card_yellow"
+            app:indicator_color="@color/indicator_yellow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/indicatorcard_red"
             app:layout_constraintStart_toEndOf="@id/indicatorcard_green"
@@ -44,7 +44,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
-            app:indicator_color="@color/indicator_card_red"
+            app:indicator_color="@color/indicator_red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">

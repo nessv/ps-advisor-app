@@ -73,7 +73,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_familydetail, container, false);
+        View view = inflater.inflate(R.layout.fragment_familyreport, container, false);
 
         return view;
     }

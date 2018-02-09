@@ -1,31 +1,19 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.app.Activity;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.BackgroundQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
-import javax.inject.Inject;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.inject.Inject;
 
 public class AddFamilyFrag extends SurveyQuestionsFrag {
 
@@ -51,9 +39,6 @@ public class AddFamilyFrag extends SurveyQuestionsFrag {
         mAddFamilyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(AddFamilyViewModel.class);
-
-        setFooterColor(R.color.survey_grey);
-        setHeaderColor(R.color.survey_grey);
         setTitle("New Family");
     }
 

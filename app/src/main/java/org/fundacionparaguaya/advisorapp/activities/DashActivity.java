@@ -115,11 +115,11 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 .getApplicationComponent()
                 .inject(this);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
 
         setFragmentContainer(R.id.dash_content);
 
-        tabBarView = (DashboardTabBarView) findViewById(R.id.dashboardTabView);
+        tabBarView = (DashboardTabBarView) findViewById(R.id.tabbarview_dashboard_tabbar);
 
         mSyncLabel = findViewById(R.id.topbar_synclabel);
         mLastSyncTextView = findViewById(R.id.last_sync_textview);
@@ -136,13 +136,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mSyncManager.getProgress().observe(this, (value) -> {
             if (value != null) {
                 if (value.getLastSyncedTime() == -1) {
-                    mLastSyncTextView.setText(R.string.topbar_lastsync_never);
+                    mLastSyncTextView.setText(R.string.dashboardtopbar_lastsynctextlabelnever);
                 } else {
                     mLastSyncTextView.setReferenceTime(value.getLastSyncedTime());
                 }
 
                 if (value.getSyncState() == SYNCING) {
-                    mSyncLabel.setText(R.string.topbar_synclabel_syncing);
+                    mSyncLabel.setText(R.string.dashboardtopbar_syncbuttonlabelinprogress);
                     mSyncArea.setEnabled(false);
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
                     mSyncButtonIcon.setBackgroundResource(R.drawable.dashtopbar_synccircle);
@@ -151,7 +151,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                             AnimationUtils.loadAnimation(this, R.anim.spin_forever));
 
                 } else if (value.getSyncState() == ERROR_NO_INTERNET) {
-                    mSyncLabel.setText(R.string.topbar_synclabel_offline);
+                    mSyncLabel.setText(R.string.dashboardtopbar_syncbuttonlabeloffline);
                     mSyncArea.setEnabled(false);
                     mSyncButtonIcon.clearAnimation();
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_offline);
@@ -162,7 +162,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     mSyncButtonIcon.clearAnimation();
                     mSyncButtonIcon.setImageResource(R.drawable.ic_dashtopbar_sync);
                     mSyncButtonIcon.setBackgroundResource(R.drawable.dashtopbar_synccircle);
-                    mSyncLabel.setText(R.string.topbar_synclabel);
+                    mSyncLabel.setText(R.string.dashboardtopbar_syncbuttonlabel);
                 }
             }
         });

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/surveysummary_defaulttitle"
             android:textSize="36sp"
-            android:textColor="@color/surveysummary_textcolor"/>
+            android:textColor="@color/survey_summarytext"/>
 
         <TextView
             android:id="@+id/surveysummary_layout_numskipped"

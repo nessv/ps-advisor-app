@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="40dp"
-        tools:listitem="@layout/item_allfamilies"/>
+        tools:listitem="@layout/item_allfamiliescard"/>
 
     <ImageButton
             android:layout_width="70dp"

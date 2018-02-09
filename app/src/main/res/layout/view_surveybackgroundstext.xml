@@ -33,14 +33,15 @@
 
 
         <android.support.v7.widget.AppCompatEditText android:layout_width="wrap_content"
-                                                     android:layout_height="wrap_content"
-                                                     android:layout_marginTop="20dp"
-                                                     android:id="@+id/et_questiontext_answer"
-                                                     android:minWidth="250dp"
-                                                     android:textAppearance="@style/Heading"
-                                                     android:textCursorDrawable="@drawable/dark_cursor"
-                                                     android:backgroundTint="@color/black"
-                                                     android:hint="@string/your_response"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:id="@+id/et_questiontext_answer"
+                  android:minWidth="250dp"
+                  android:textAppearance="@style/Heading"
+                  android:textCursorDrawable="@drawable/dark_cursor"
+                  android:backgroundTint="@color/all_black"
+                  android:hint="Your Response"
+                  android:textSize="40sp"
         />
     </LinearLayout>
 

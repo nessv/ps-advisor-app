@@ -3,8 +3,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/dashboardtopbar"
                 android:layout_width="match_parent"
-                android:background="@color/topbar_background"
-                tools:showIn="@layout/activity_main"
+                android:background="@color/dashboardtopbar_background"
+                tools:showIn="@layout/activity_dashboard"
                 android:paddingStart="28dp"
                 android:paddingEnd="0dp"
                 android:layout_height="84dp">
@@ -35,7 +35,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/backbutton_desc"
+            android:contentDescription="@string/dashboardtopbar_backbuttondescription"
             android:src="@drawable/dashtopbar_chevronright"/>
 
     <TextView
@@ -44,7 +44,7 @@
             android:layout_gravity="center"
             android:paddingBottom="2dp"
             android:id="@+id/tv_topbar_backlabel"
-            android:text="@string/topbar_backbutton"
+            android:text="@string/dashboardtopbar_backbuttonlabel"
             android:textSize="24sp"
             android:textColor="#313131"/>
 
@@ -79,7 +79,7 @@
                 android:id="@+id/topbar_synclabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/topbar_synclabel"
+                android:text="@string/dashboardtopbar_syncbuttonlabel"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 
@@ -87,7 +87,7 @@
                 android:id="@+id/last_sync_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:relative_time_prefix="@string/topbar_lastsync_prefix"
+                app:relative_time_prefix="@string/dashboardtopbar_lastsynctextlabelprefix"
                 android:textSize="14sp"/>
     </LinearLayout>
 

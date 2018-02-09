@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#313131</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/all_primary</item>
+        <item name="colorPrimaryDark">@color/all_primarydark</item>
+        <item name="colorAccent">@color/all_accent_2</item>
 
         <!-- For the resting Spinner style -->
         <item name="android:spinnerItemStyle">
@@ -36,7 +36,7 @@
     </style>
 
     <style name="BigHero.Black">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/all_black</item>
     </style>
 
     <style name="SmallHero" parent="@android:style/TextAppearance">
@@ -45,13 +45,13 @@
     </style>
 
     <style name="SmallHero.White">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/all_white</item>
     </style>
 
     <style name="Heading" parent="@android:style/TextAppearance">
         <item name="android:textSize">36sp</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/all_black</item>
     </style>
 
     <style name="Heading.Large">

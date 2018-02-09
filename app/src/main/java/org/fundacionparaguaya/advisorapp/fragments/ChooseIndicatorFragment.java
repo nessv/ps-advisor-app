@@ -14,8 +14,6 @@ import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 
-import java.util.ArrayList;
-
 /**
  *
  */
@@ -48,7 +46,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_chooseindicator, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_indicatorcardchooser, container, false);
 
         mGreenCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_green);
         mYellowCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_yellow);

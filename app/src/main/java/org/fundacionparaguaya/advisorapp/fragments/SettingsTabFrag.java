@@ -10,6 +10,6 @@ public class SettingsTabFrag extends AbstractTabbedFrag
 {
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
-        return UnderConstructionFragment.build(getResources().getString(R.string.settingstab_title));
+        return UnderConstructionFragment.build(getResources().getString(R.string.dashboardtabbar_settingstitle));
     }
 }

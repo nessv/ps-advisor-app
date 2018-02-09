@@ -4,7 +4,7 @@
     android:id="@+id/surveysummary_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surveysummary_background">
+    android:background="@color/survey_summarybackground">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.SurveySummaryComponent
         android:id="@+id/surveysummary_background"

@@ -22,7 +22,7 @@ public class UnderConstructionFragment extends AbstractStackedFrag
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_under_construction, container, false);
+        View view = inflater.inflate(R.layout.fragment_underconstruction, container, false);
 
         TextView tv_title = view.findViewById(R.id.tv_construction_title);
 

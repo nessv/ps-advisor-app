@@ -56,8 +56,8 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
         setTitle("");
 
-        setFooterColor(R.color.survey_darkyellow);
-        setHeaderColor(R.color.survey_darkyellow);
+        setFooterColor(R.color.survey_secondary);
+        setHeaderColor(R.color.survey_secondary);
     }
 
     @Nullable

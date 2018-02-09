@@ -80,9 +80,9 @@ public abstract class AbstractTabbedFrag extends Fragment implements NavigationL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_tabbed, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboardtabbar, container, false);
 
-        mContainerId = R.id.fragment_container;
+        mContainerId = R.id.contraintlayout_dashboard_fragmentcontainer;
         return view;
     }
 

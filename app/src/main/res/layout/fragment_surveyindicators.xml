@@ -4,7 +4,7 @@
     android:id="@+id/indicatorsurvey"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surveyindicators_background">
+    android:background="@color/survey_background">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"

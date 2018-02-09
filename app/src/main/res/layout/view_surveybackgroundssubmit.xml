@@ -19,5 +19,5 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:textAppearance="@style/Heading"
-        android:textColor="@color/indicator_card_yellow"/>
+        android:textColor="@color/indicator_yellow"/>
 </LinearLayout>

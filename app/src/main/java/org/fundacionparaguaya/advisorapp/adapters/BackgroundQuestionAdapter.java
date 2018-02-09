@@ -82,27 +82,27 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         switch (viewType)
         {
             case STRING_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questiontext, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_surveybackgroundstext, parent, false);
                 vh = new TextQuestionViewHolder(itemView);
                 break;
 
             case LOCATION_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questionlocation, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_surveybackgroundslocation, parent, false);
                 vh = new LocationViewHolder(itemView);
                 break;
 
             case PHOTO_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questionphoto, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_surveybackgroundsphoto, parent, false);
                 vh = new PictureViewHolder(itemView);
                 break;
 
             case DROPDOWN_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questiondropdown, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_surveybackgroundsdropdown, parent, false);
                 vh = new DropdownViewHolder(itemView);
                 break;
 
             case SUBMIT_BUTTON:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_backgroundquestion_submit, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_surveybackgroundssubmit, parent, false);
                 vh = new SubmitViewHolder(itemView);
                 break;
         }
@@ -229,7 +229,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         private void createAdapter(List<String> options)
         {
             mSpinnerAdapter =
-                    new ArrayAdapter<String>(itemView.getContext(), R.layout.item_tv_spinner, options);
+                    new ArrayAdapter<String>(itemView.getContext(), R.layout.item_spinner, options);
 
             mSpinnerOptions.setAdapter(mSpinnerAdapter);
         }

@@ -48,8 +48,8 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
         super();
 
         //sets colors for parent activity (set by parent activity in SurveyActivity.switchSurveyFrag)
-        setFooterColor(R.color.survey_darkyellow);
-        setHeaderColor(R.color.survey_darkyellow);
+        setFooterColor(R.color.survey_secondary);
+        setHeaderColor(R.color.survey_secondary);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
+        View view = inflater.inflate(R.layout.fragment_surveybackgrounds, container, false);
 
         mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
 

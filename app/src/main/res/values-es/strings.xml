@@ -1,24 +1,24 @@
 <resources>
-    <string name="app_name">App de Asesora</string>
-    <string name="fpicon_desc">Fundacion Paraguaya Logo</string>
+    <string name="all_appname">App de Asesora</string>
+    <string name="all_logodescription">Fundacion Paraguaya Logo</string>
 
     <!-- Bug Reporting -->
     <string name="bugbutton_desc">Reportar un Error</string>
-    <string name="backbutton_desc">Regresa</string>
+    <string name="dashboardtopbar_backbuttondescription">Regresa</string>
 
     <!--Tab Captions -->
-    <string name="familytab_title">Familias</string>
-    <string name="maptab_title">Mapa</string>
-    <string name="archivetab_title">Archivo</string>
-    <string name="settingstab_title">Ajustes</string>\
+    <string name="dashboardtabbar_familytitle">Familias</string>
+    <string name="dashboardtabbar_maptitle">Mapa</string>
+    <string name="dashboardtabbar_archivetitle">Archivo</string>
+    <string name="dashboardtabbar_settingstitle">Ajustes</string>\
 
     <!--Top Bar Strings-->
-    <string name="topbar_backbutton">Regresa</string>
-    <string name="topbar_synclabel">Sincronizar</string>
-    <string name="topbar_synclabel_offline">Desconectado</string>
-    <string name="topbar_synclabel_syncing">Sincronizando…</string>
-    <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
-    <string name="topbar_lastsync_never">Nunca sincronizado</string>
+    <string name="dashboardtopbar_backbuttonlabel">Regresa</string>
+    <string name="dashboardtopbar_syncbuttonlabel">Sincronizar</string>
+    <string name="dashboardtopbar_syncbuttonlabeloffline">Desconectado</string>
+    <string name="dashboardtopbar_syncbuttonlabelinprogress">Sincronizando…</string>
+    <string name="dashboardtopbar_lastsynctextlabelprefix">Última sincronización:\u0020</string>
+    <string name="dashboardtopbar_lastsynctextlabelnever">Nunca sincronizado</string>
 
 
     <!-- Login Activity -->

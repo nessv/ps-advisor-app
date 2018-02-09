@@ -1,55 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="fp_green">#49A34B</color>
+    <color name="all_primary">#3F51B5</color>
+    <color name="all_primarydark">#303F9F</color>
+    <color name="all_accent_1">#49A34B</color>
+    <color name="all_accent_2">#FF4081</color>
 
-    <color name="black">#313131</color>
-    <color name="white">#FDFDFD</color>
+    <color name="all_black">#313131</color>
+    <color name="all_white">#FDFDFD</color>
 
     <!--DashboardTab Colors-->
-    <color name="dashboardtab_tabSelected">@color/fp_green</color>
-    <color name="dashbaordtab_captionselected">#FFFFFF</color>
-    <color name="dashboardtab_iconselected">#FFFFFF</color>
-    <color name="dashboardtab_tabnotselected">@android:color/transparent</color>
-    <color name="dashboardtab__captionnotselected">#A1A1A1</color>
-    <color name="dashboardtab_iconnotselected">#A1A1A1</color>
-    <color name="dashboardtab_background">#FDFDFD</color>
-    <color name="dashboardtab_border">#E0E0E0</color>
+    <color name="dashboardtabbar_tabselected">@color/all_accent_1</color>
+    <color name="dashbaordtabbar_captionselected">#FFFFFF</color>
+    <color name="dashboardtabbar_iconselected">#FFFFFF</color>
+    <color name="dashboardtabbar_tab">@android:color/transparent</color>
+    <color name="dashboardtabbar_caption">#A1A1A1</color>
+    <color name="dashboardtabbar_icon">#A1A1A1</color>
+    <color name="dashboardtabbar_background">#FDFDFD</color>
+    <color name="dashboardtabbar_border">#E0E0E0</color>
 
     <!--Families View Colors-->
-    <color name="families_background">#F7F7F7</color>
+    <color name="allfamilies_background">#F7F7F7</color>
 
     <!--Dashboard TopBar Colors-->
-    <color name="topbar_background">@color/dashboardtab_background</color>
+    <color name="dashboardtopbar_background">@color/dashboardtabbar_background</color>
   
     <!--Login Page Colors-->
     <color name="login_background">#F7F7F7</color>
-    <color name="login_textfield">#FDFDFD</color>
-    <color name="login_incorrectcredentials">#EB5757</color>
-    <color name="login_passwordreset">#757478</color>
-    <color name="login_button">@color/fp_green</color>
-    <color name="login_buttontext">#FDFDFD</color>
+    <color name="login_text">#FDFDFD</color>
+    <color name="login_error">#EB5757</color>
+    <color name="login_button">@color/all_accent_1</color>
     <color name="login_helpbutton">#757478</color>
 
     <!--Survey Colors-->
-    <color name="survey_darkyellow">#D6B03A</color>
-    <color name="survey_lightyellow">#E5BE45</color>
-    <color name="survey_whitebackground">#F2F2F2</color>
-    <color name="survey_grey">#E6E6E6</color>
+    <color name="survey_primary">#E5BE45</color>
+    <color name="survey_secondary">#D6B03A</color>
+    <color name="survey_background">#F2F2F2</color>
     <color name="survey_navbuttons">#4F4F4F</color>
-    <color name="surveyindicators_background">@color/survey_whitebackground</color>
+    <color name="survey_indicatorsselected">#4F4F4F</color>
+    <color name="survey_summarytext">#313131</color>
+    <color name="survey_summarybackground">#F2F2F2</color>
 
-    <!--Indicator Survey Colors-->
-    <color name="indicator_card_red">#EB5757</color>
-    <color name="indicator_card_yellow">#F2C94C</color>
-    <color name="indicator_card_green">#49A34B</color>
-    <color name="indicator_card_selected">#4F4F4F</color>
-    <color name="indicator_card_background">@color/survey_whitebackground</color>
-
-    <!--Survey Summary Colors-->
-    <color name="surveysummary_textcolor">#313131</color>
-    <color name="surveysummary_background">#F2F2F2</color>
-
+    <!--Indicator Colors-->
+    <color name="indicator_red">#EB5757</color>
+    <color name="indicator_yellow">#F2C94C</color>
+    <color name="indicator_green">#49A34B</color>
 </resources>

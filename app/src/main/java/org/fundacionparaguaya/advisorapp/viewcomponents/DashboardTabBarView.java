@@ -1,14 +1,12 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
 import android.content.Context;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab.TabType;
 import org.fundacionparaguaya.advisorapp.R;
 
@@ -34,7 +32,7 @@ public class DashboardTabBarView extends LinearLayout implements View.OnClickLis
         super(context, attributeSet);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.dashboardtabview, this);
+        inflater.inflate(R.layout.view_dashboardtabbar, this);
 
         mFamilyTab = (DashboardTab) findViewById(R.id.family_tab);
         mMapTab = (DashboardTab) findViewById(R.id.map_tab);

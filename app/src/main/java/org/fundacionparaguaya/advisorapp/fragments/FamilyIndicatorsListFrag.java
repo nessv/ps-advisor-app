@@ -15,7 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
@@ -27,8 +31,12 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.zakariya.stickyheaders.SectioningAdapter;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+import java.util.SortedMap;
+
 import javax.inject.Inject;
-import java.util.*;
 
 /**
  * List of all the indicators a family has
@@ -66,7 +74,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_familydetail_indicators, container, false);
+        View view = inflater.inflate(R.layout.fragment_familyreportshapshots, container, false);
 
         mSnapshotSpinner = view.findViewById(R.id.spinner_familyindicators_snapshot);
         mRvIndicatorList = view.findViewById(R.id.rv_familyindicators_list);
@@ -98,7 +106,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_tv_spinner);
+        mSpinnerAdapter = new SnapshotSpinAdapter(this.getContext(), R.layout.item_spinner);
         mSnapshotSpinner.setAdapter(mSpinnerAdapter);
 
         mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -231,7 +239,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
         @Override
         public ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.
-                    from(parent.getContext()).inflate(R.layout.item_familydetailindicator, parent, false);
+                    from(parent.getContext()).inflate(R.layout.item_familyreportindicatoritem, parent, false);
 
             return new FamilyIndicatorViewHolder(itemView);
         }
@@ -240,7 +248,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
         @Override
         public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int headerType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View v = inflater.inflate(R.layout.item_familydetail_indicatoritem_header, parent, false);
+            View v = inflater.inflate(R.layout.item_familyreportindicatoritemheader, parent, false);
             return new HeaderViewHolder(v);
         }
 
@@ -298,15 +306,15 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 switch (mIndicatorOption.getLevel())
                 {
                     case Red:
-                        color = R.color.indicator_card_red;
+                        color = R.color.indicator_red;
                         break;
 
                     case Yellow:
-                        color = R.color.indicator_card_yellow;
+                        color = R.color.indicator_yellow;
                         break;
 
                     case Green:
-                        color = R.color.indicator_card_green;
+                        color = R.color.indicator_green;
                         break;
 
                     case None:

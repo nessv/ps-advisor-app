@@ -54,9 +54,6 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment {
         mSurveyViewModel = ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
-
-        setFooterColor(R.color.survey_grey);
-        setHeaderColor(R.color.survey_grey);
         setTitle(getString(R.string.survey_indicators_title));
     }
 

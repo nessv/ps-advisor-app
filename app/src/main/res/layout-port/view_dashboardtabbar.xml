@@ -5,14 +5,13 @@
               android:layout_height="76dp"
               android:layout_gravity="center"
               android:orientation="horizontal"
-              android:background="@color/dashboardtab_background">
-    <!--TODO Add border to linear layout-->
+              android:background="@color/dashboardtabbar_background">
 
     <org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab
             android:id="@+id/family_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_friendsicon"
-            custom:tabCaption="@string/familytab_title"
+            custom:tabCaption="@string/dashboardtabbar_familytitle"
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -24,7 +23,7 @@
             android:id="@+id/map_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_mapicon"
-            custom:tabCaption="@string/maptab_title"
+            custom:tabCaption="@string/dashboardtabbar_maptitle"
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -36,7 +35,7 @@
             android:id="@+id/archive_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_archiveicon"
-            custom:tabCaption="@string/archivetab_title"
+            custom:tabCaption="@string/dashboardtabbar_archivetitle"
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -48,21 +47,11 @@
             android:id="@+id/settings_tab"
             android:layout_weight="1"
             custom:tabImage="@drawable/dashtab_settingsicon"
-            custom:tabCaption="@string/settingstab_title"
+            custom:tabCaption="@string/dashboardtabbar_settingstitle"
             custom:showCaption="false"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
     </org.fundacionparaguaya.advisorapp.viewcomponents.DashboardTab>
-    <!-- not needed
-    <ImageButton
-        android:id="@+id/bug_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:background="@android:color/transparent"
-        android:layout_gravity="center"
-        android:contentDescription="@string/bugbutton_desc"
-        android:src="@drawable/dashtabview_bugicon"/>-->
 </LinearLayout>

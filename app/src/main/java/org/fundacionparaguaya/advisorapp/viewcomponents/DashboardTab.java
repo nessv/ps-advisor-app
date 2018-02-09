@@ -42,7 +42,7 @@ public class DashboardTab extends LinearLayout {
         this.context = context;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.dashboardtab, this);
+        inflater.inflate(R.layout.fragment_dashboardtabbarbutton, this);
 
         mImageIcon = (ImageView) findViewById(R.id.imageView_icon);
         mTextViewCaption = (TextView) findViewById(R.id.textView_caption);
@@ -52,8 +52,8 @@ public class DashboardTab extends LinearLayout {
         TypedArray attrs = context.getTheme().obtainStyledAttributes(attr, R.styleable.DashboardTab,0, 0);
         try {
             mImageIcon.setImageResource(attrs.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
-            mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.familytab_title));                //set caption text
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_iconnotselected);
+            mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.dashboardtabbar_familytitle));                //set caption text
+            mTabLayout.setBackgroundResource(R.color.dashboardtabbar_icon);
 
             boolean showCaption = attrs.getBoolean(R.styleable.DashboardTab_showCaption, true);
 
@@ -113,14 +113,14 @@ public class DashboardTab extends LinearLayout {
      */
     public void setSelected(boolean isSelected){
         if (isSelected) {
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabSelected);//Change DashTabType Background
-            mImageIcon.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.dashboardtab_iconselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
+            mTabLayout.setBackgroundResource(R.color.dashboardtabbar_tabselected);//Change DashTabType Background
+            mImageIcon.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.dashboardtabbar_iconselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
 
-            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.dashbaordtab_captionselected));//Change Text Color
+            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.dashbaordtabbar_captionselected));//Change Text Color
         } else {
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabnotselected);//Change DashTabType Background
-            mImageIcon.setColorFilter(R.color.dashboardtab_iconnotselected);//Change Icon Color
-            mTextViewCaption.setTextColor(getResources().getColor(R.color.dashboardtab__captionnotselected));//Change Text Color
+            mTabLayout.setBackgroundResource(R.color.dashboardtabbar_tab);//Change DashTabType Background
+            mImageIcon.setColorFilter(R.color.dashboardtabbar_icon);//Change Icon Color
+            mTextViewCaption.setTextColor(getResources().getColor(R.color.dashboardtabbar_caption));//Change Text Color
         }
     }
 

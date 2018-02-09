@@ -1,9 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container"
+    android:id="@+id/contraintlayout_dashboard_fragmentcontainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.fundacionparaguaya.advisorapp.fragments.AbstractTabbedFrag">
+    tools:context=".fragments.AbstractTabbedFrag">
 
 
 </FrameLayout>

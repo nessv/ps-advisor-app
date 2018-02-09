@@ -9,6 +9,6 @@ import org.fundacionparaguaya.advisorapp.R;
 public class MapTabFrag extends AbstractTabbedFrag {
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
-        return UnderConstructionFragment.build(getResources().getString(R.string.maptab_title));
+        return UnderConstructionFragment.build(getResources().getString(R.string.dashboardtabbar_maptitle));
     }
 }

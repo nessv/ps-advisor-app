@@ -46,7 +46,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
     @Override
     public FamilyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_allfamilies, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_allfamiliescard, parent, false);
         return new FamilyViewHolder(v);
     }
 

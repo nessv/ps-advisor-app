@@ -47,10 +47,10 @@ public class LoginFragment extends Fragment {
     TextView mIncorrectCredentialsView;
     TextView mPasswordReset;
     ImageView mHelpButton;
-    ImageView mFPLogo;
+    private ImageView mFPLogo;
 
-    LinearLayout mLoginForm;
-    ScrollView mLoginFormScrollView;
+    protected LinearLayout mLoginForm;
+    protected ScrollView mLoginFormScrollView;
 
     AuthenticationManager mAuthManager;
 
@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment {
     LoginViewModel mLoginViewModel;
 
     // Threshold for minimal keyboard height.
-    final int MIN_KEYBOARD_HEIGHT_PX = 150;
+    public final int MIN_KEYBOARD_HEIGHT_PX = 150;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,8 +126,9 @@ public class LoginFragment extends Fragment {
                 // Decide whether keyboard is visible from changing decor view height.
                 if (lastVisibleDecorViewHeight != 0) {
                     if (lastVisibleDecorViewHeight > visibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX) {
-                        // Calculate current keyboard height (this includes also navigation bar height when in fullscreen mode).
-                        int currentKeyboardHeight = decorView.getHeight() - windowVisibleDisplayFrame.bottom;
+                        // Calculate current keyboard height (this includes also navigation bar height when in fullscreen mode). (Uncomment to use)
+                        //int currentKeyboardHeight = decorView.getHeight() - windowVisibleDisplayFrame.bottom;
+
                         // Keyboard is showing, move to show everything
                         mFPLogo.setVisibility(View.GONE);
                     } else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX < visibleDecorViewHeight) {

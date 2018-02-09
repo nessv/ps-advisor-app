@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
@@ -14,17 +13,12 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
-
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**

@@ -30,6 +30,9 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     IndicatorAdapter adapter;
 
+    private static int clickDelay = 500;
+    private static int clickDelayInterval = 100;
+
     @Nullable
     IndicatorCard selectedIndicatorCard;
     private CountDownTimer nextPageTimer;
@@ -136,7 +139,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             nextPageTimer.cancel();
             nextPageTimer = null;
         } else {
-            nextPageTimer = new CountDownTimer(500, 100) {
+            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     //For future implementation if needed

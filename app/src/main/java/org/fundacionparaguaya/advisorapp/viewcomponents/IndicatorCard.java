@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.viewcomponents;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -66,6 +67,7 @@ public class IndicatorCard extends LinearLayout{
     private float pressedY;
     private boolean stayedWithinClickDistance;
 
+    @SuppressLint("ClickableViewAccessibility")
     public IndicatorCard(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         this.context = context;
@@ -91,41 +93,37 @@ public class IndicatorCard extends LinearLayout{
             }
         });
 
-
         //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
-        mText.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        pressStartTime = System.currentTimeMillis();
-                        pressedX = event.getX();
-                        pressedY = event.getY();
-                        stayedWithinClickDistance = true;
-                        v.performClick();
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        float x = event.getX();
-                        float y = event.getY();
-                        float distance = distance(pressedX, pressedY, x, y);
-                        if (stayedWithinClickDistance && distance > MAX_CLICK_DISTANCE) {
-                            stayedWithinClickDistance = false;
-                        }
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        long pressDuration = System.currentTimeMillis() - pressStartTime;
-                        if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
-                            notifyHandlers();
-                            return true;
-                        }
-                    }
-                    default:
-                        break;
+        mText.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    pressStartTime = System.currentTimeMillis();
+                    pressedX = event.getX();
+                    pressedY = event.getY();
+                    stayedWithinClickDistance = true;
+                    mText.performClick();
+                    break;
                 }
-                return false;
+                case MotionEvent.ACTION_MOVE: {
+                    float x = event.getX();
+                    float y = event.getY();
+                    float distance = distance(pressedX, pressedY, x, y);
+                    if (stayedWithinClickDistance && distance > MAX_CLICK_DISTANCE) {
+                        stayedWithinClickDistance = false;
+                    }
+                    break;
+                }
+                case MotionEvent.ACTION_UP: {
+                    long pressDuration = System.currentTimeMillis() - pressStartTime;
+                    if (pressDuration < MAX_CLICK_DURATION && stayedWithinClickDistance) {
+                        notifyHandlers();
+                        return true;
+                    }
+                }
+                default:
+                    break;
             }
+            return false;
         });
 
         try{
@@ -216,6 +214,7 @@ public class IndicatorCard extends LinearLayout{
     }
 
     //performClick is added, the fact that the function is still highlighted is a bug in Android Studio
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction()) {

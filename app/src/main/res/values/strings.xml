@@ -60,6 +60,8 @@
     <string name="familydetails_descriptionlabel">Description</string>
     <string name="familydetails_descriptiondefault">No Description</string>
     <string name="familydetails_prioritytitle">Prioritites</string>
+    <string name="addfamily_new_family_title">New Family</string>
+
 
     <!--Family Details Tabs-->
     <string name="familydetails_tabs_indicatorstitle">Indicators</string>
@@ -88,6 +90,7 @@
 
     <string name="all_okay">Okay</string>
     <string name="your_response">Your Response</string>
+    <string name="surveyquestions_economic_title">Economic Questions</string>
 
 
 </resources>

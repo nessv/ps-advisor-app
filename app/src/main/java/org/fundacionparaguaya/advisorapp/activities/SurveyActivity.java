@@ -254,6 +254,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
         mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
 
+        mTvTitle.setText(fragment.getTitle());
+
         if(mIs7Inch || !fragment.isShowFooter())
         {
             mFooter.setVisibility(View.GONE);

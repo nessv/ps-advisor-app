@@ -32,6 +32,9 @@
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
 
+    <!-- Indicator Card -->
+    <string name="indicator_selected">Seleccionado</string>
+
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="all_continue">Continuar</string>

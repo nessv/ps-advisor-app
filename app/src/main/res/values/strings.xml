@@ -30,7 +30,10 @@
     <string name="login_error">Could not log in. Are you offline?</string>
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
-    
+
+    <!-- Indicator Card -->
+    <string name="indicator_selected">Selected</string>
+
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="survey_back">Back</string>

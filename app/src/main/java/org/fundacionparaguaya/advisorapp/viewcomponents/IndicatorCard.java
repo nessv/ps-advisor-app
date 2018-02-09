@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
@@ -22,6 +23,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -44,10 +46,12 @@ public class IndicatorCard extends LinearLayout{
 
     private Context context;
 
-    private CardView mIndicatorBackground;
+    private LinearLayout mIndicatorBackground;
     private CardView mIndicatorCard;
     private SimpleDraweeView mImage;
     private TextView mText;
+
+    private TextView mSelectedText;
 
     private ViewTreeObserver observer;
 
@@ -75,10 +79,11 @@ public class IndicatorCard extends LinearLayout{
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.indicator_card, this, true);
 
-        mIndicatorBackground = findViewById(R.id.survey_card_selected);
+        mIndicatorBackground = (LinearLayout) findViewById(R.id.survey_card_selected);
         mIndicatorCard = (CardView) findViewById(R.id.survey_card_background);
         mImage = (SimpleDraweeView) findViewById(R.id.survey_card_image);
         mText = (TextView) findViewById(R.id.survey_card_text);
+        mSelectedText = (TextView) findViewById(R.id.indicatorcard_selectedtext);
 
         mText.setMovementMethod(new ScrollingMovementMethod());
 
@@ -166,9 +171,11 @@ public class IndicatorCard extends LinearLayout{
 
     public void setSelected(boolean isSelected){
         if (isSelected){
-              mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, R.color.indicator_card_selected));
+              mIndicatorBackground.setBackground(ContextCompat.getDrawable(context, R.drawable.survey_card_selected));
+              mSelectedText.setVisibility(VISIBLE);
         } else {
-              mIndicatorBackground.setCardBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+              mIndicatorBackground.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+              mSelectedText.setVisibility(INVISIBLE);
         }
     }
 

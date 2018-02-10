@@ -28,7 +28,7 @@ public class UnderConstructionFragment extends AbstractStackedFrag
 
         if(this.getArguments()!=null) {
             String pageName = this.getArguments().getString(PAGE_NAME_KEY);
-            tv_title.setText(pageName);
+//            tv_title.setText(pageName);
         }
 
         return view;

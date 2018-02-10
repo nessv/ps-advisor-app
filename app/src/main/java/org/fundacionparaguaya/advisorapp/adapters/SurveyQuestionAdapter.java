@@ -19,7 +19,7 @@ import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
 import java.util.List;
 
-public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
+public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
     final static int STRING_INPUT = 1;
     final static int LOCATION_INPUT = 2;
@@ -30,7 +30,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
     List<BackgroundQuestion> mQuestionsList;
     BackgroundQuestionCallback mBackgroundQuestionCallback;
 
-    public BackgroundQuestionAdapter(BackgroundQuestionCallback listener){
+    public SurveyQuestionAdapter(BackgroundQuestionCallback listener){
         mBackgroundQuestionCallback = listener;
     }
 
@@ -192,7 +192,7 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
         LinearLayout familyInfoItem;
         Spinner mSpinnerOptions;
-        ArrayAdapter<String> mSpinnerAdapter;
+        SurveyQuestionSpinnerAdapter mSpinnerAdapter;
 
 
         public DropdownViewHolder(View itemView) {
@@ -203,8 +203,10 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
             mSpinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String s = (String)adapterView.getItemAtPosition(i);
-                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, s);
+                    String selectedOption = mSpinnerAdapter.getDataAt(i);
+                    mSpinnerAdapter.setSelected(i);
+
+                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, selectedOption);
                 }
 
                 @Override
@@ -220,20 +222,18 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
             super.setQuestion(question);
 
             if(question.getOptions() != null){
-                createAdapter(question.getOptions());
+
+                mSpinnerAdapter =
+                        new SurveyQuestionSpinnerAdapter(itemView.getContext(), R.layout.item_tv_spinner);
+
+
+                mSpinnerAdapter.setValues(question.getOptions().toArray(
+                        new String[question.getOptions().size()]));
+                mSpinnerOptions.setAdapter(mSpinnerAdapter);
             } else {
                 throw new IllegalArgumentException("This question has no options");
             }
         }
-
-        private void createAdapter(List<String> options)
-        {
-            mSpinnerAdapter =
-                    new ArrayAdapter<String>(itemView.getContext(), R.layout.item_tv_spinner, options);
-
-            mSpinnerOptions.setAdapter(mSpinnerAdapter);
-        }
-
     }
 
 
@@ -322,15 +322,12 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
 
     public class SubmitViewHolder extends RecyclerView.ViewHolder{
 
-        LinearLayout submitButtonContainer;
         Button submitButton;
 
         public SubmitViewHolder(View itemView) {
             super(itemView);
 
-            submitButtonContainer = (LinearLayout) itemView.findViewById(R.id.submit_button_view);
             submitButton = (Button) itemView.findViewById(R.id.btn_surveyquestions_submit);
-
             submitButton.setOnClickListener((view)-> mBackgroundQuestionCallback.onSubmit());
         }
     }

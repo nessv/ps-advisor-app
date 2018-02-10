@@ -72,4 +72,9 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
         //set family in survey view model..
         //change state
     }
+
+    @Override
+    public String getResponseFor(BackgroundQuestion q) {
+       return mSharedSurveyViewModel.getBackgroundResponse(q);
+    }
 }

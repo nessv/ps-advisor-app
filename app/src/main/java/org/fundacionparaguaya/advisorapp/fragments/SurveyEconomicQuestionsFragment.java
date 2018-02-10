@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
@@ -47,5 +48,10 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     public void onSubmit() {
         mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
+    }
+
+    @Override
+    public String getResponseFor(BackgroundQuestion q) {
+        return mSharedSurveyViewModel.getBackgroundResponse(q);
     }
 }

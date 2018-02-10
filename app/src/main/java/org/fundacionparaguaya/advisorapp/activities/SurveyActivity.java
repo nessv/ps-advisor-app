@@ -182,7 +182,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     break;
 
                 case ECONOMIC_QUESTIONS:
-                    nextFragment = SurveyQuestionsFrag.class;
+                    nextFragment = SurveyEconomicQuestionsFragment.class;
                     break;
 
                 case INDICATORS:

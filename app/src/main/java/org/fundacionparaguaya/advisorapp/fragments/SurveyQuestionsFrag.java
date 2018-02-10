@@ -1,13 +1,9 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.BackgroundQuestionAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Survey;
-import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * Questions about Personal and Economic questions that are asked before the survey
@@ -38,7 +26,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     static String FRAGMENT_TAG = "SurveyQuestionsFrag";
 
     protected DiscreteScrollView mDsvQuestionList;
-    protected BackgroundQuestionAdapter mQuestionAdapter;
+    protected SurveyQuestionAdapter mQuestionAdapter;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
 
     public SurveyQuestionsFrag()
@@ -78,20 +66,20 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
       //  mDsvQuestionList.setSlideOnFling(true);
       //  mDsvQuestionList.setSlideOnFlingThreshold(1800);
 
-        mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
+        mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
 
         mDsvQuestionList.setRecyclerListener((holder) ->
         {
-                if(holder instanceof BackgroundQuestionAdapter.QuestionViewHolder)
+                if(holder instanceof SurveyQuestionAdapter.QuestionViewHolder)
                 {
-                   BackgroundQuestionAdapter.QuestionViewHolder questionHolder=
-                           (BackgroundQuestionAdapter.QuestionViewHolder)holder;
+                   SurveyQuestionAdapter.QuestionViewHolder questionHolder=
+                           (SurveyQuestionAdapter.QuestionViewHolder)holder;
 
                     if(questionHolder.itemView.hasFocus())
                     {
                         questionHolder.itemView.clearFocus(); //we can put it inside the second if as well, but it makes sense to do it to all scraped views
                         //Optional: also hide keyboard in that case
-                        if ( questionHolder instanceof BackgroundQuestionAdapter.TextQuestionViewHolder) {
+                        if ( questionHolder instanceof SurveyQuestionAdapter.TextQuestionViewHolder) {
                             InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         }
@@ -107,7 +95,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             }
         });
 
-        mQuestionAdapter = new BackgroundQuestionAdapter(this);
+        mQuestionAdapter = new SurveyQuestionAdapter(this);
         mDsvQuestionList.setAdapter(mQuestionAdapter);
 
         return view;

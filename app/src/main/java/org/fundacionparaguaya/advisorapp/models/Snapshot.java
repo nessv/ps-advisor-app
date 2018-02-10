@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
 import org.fundacionparaguaya.advisorapp.data.local.Converters;
@@ -41,7 +42,7 @@ import static org.fundacionparaguaya.advisorapp.models.BackgroundQuestion.Questi
                     onUpdate = CASCADE,
                     onDelete = CASCADE)})
 @TypeConverters(Converters.class)
-public class Snapshot {
+public class Snapshot implements Comparable<Snapshot>{
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "remote_id")
@@ -227,5 +228,10 @@ public class Snapshot {
         result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
         result = 31 * result + (getCreatedAt() != null ? getCreatedAt().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull Snapshot snapshot) {
+        return this.getCreatedAt().compareTo(snapshot.getCreatedAt());
     }
 }

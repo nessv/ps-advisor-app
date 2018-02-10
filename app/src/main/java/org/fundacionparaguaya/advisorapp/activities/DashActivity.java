@@ -102,18 +102,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     protected void switchToFrag(Class fragmentClass) {
         super.switchToFrag(fragmentClass);
         String title = ((AbstractTabbedFrag)getFragment(fragmentClass)).getTabTitle();
-
-        if (title.equals("Family")){
-            mTvTabTitle.setText(getText(R.string.familytab_title));
-        } else if (title.equals("Map")){
-            mTvTabTitle.setText(getText(R.string.maptab_title));
-        } else if (title.equals("Archive")){
-            mTvTabTitle.setText(getText(R.string.archivetab_title));
-        } else if (title.equals("Settings")){
-            mTvTabTitle.setText(getText(R.string.settingstab_title));
-        } else {
-            mTvTabTitle.setText(title);
-        }
+        mTvTabTitle.setText(title);
     }
 
     @Override

@@ -10,11 +10,10 @@ import org.fundacionparaguaya.advisorapp.R;
 public class FamilyTabbedFragment extends AbstractTabbedFrag
 {
 
-    String title = "Family";
     public FamilyTabbedFragment()
     {
         super();
-        setTabTitle(title);
+        setTabTitle("Family");
     }
 
     @Override

@@ -8,11 +8,6 @@ import org.fundacionparaguaya.advisorapp.R;
 
 public class SettingsTabFrag extends AbstractTabbedFrag
 {
-    private String title = "Settings";
-    public SettingsTabFrag(){
-        super();
-        setTabTitle(title);
-    }
 
     @Override
     protected AbstractStackedFrag makeInitialFragment() {

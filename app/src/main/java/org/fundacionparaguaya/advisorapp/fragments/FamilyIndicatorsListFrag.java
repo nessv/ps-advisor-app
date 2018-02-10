@@ -107,7 +107,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Snapshot s = (Snapshot) mSpinnerAdapter.getDataAt(i);
                 mFamilyInformationViewModel.setSelectedSnapshot(s);
-                mSpinnerAdapter.setSelected(i);
+                mSpinnerAdapter.setSelected(s);
             }
 
             @Override
@@ -118,7 +118,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         addViewModelObservers();
     }
-
 
     public void removeViewModelObservers()
     {
@@ -343,7 +342,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
             }
 
             super.setValues(values);
-            notifyDataSetChanged();
         }
     }
 }

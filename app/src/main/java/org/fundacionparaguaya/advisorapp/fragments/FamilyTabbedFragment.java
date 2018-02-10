@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import org.fundacionparaguaya.advisorapp.R;
 
 /**
  * Tab for a family

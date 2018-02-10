@@ -72,14 +72,13 @@ public class SharedSurveyViewModel extends ViewModel
     }
     private void saveSnapshot()
     {
-        if(mSnapshot.getValue()!=null) {
-
-            mSnapshotRespository.saveSnapshot(mSnapshot.getValue());
-        }
-        else
-        {
+        Snapshot snapshot = mSnapshot.getValue();
+        if (snapshot == null) {
             throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
         }
+
+        mSnapshotRespository.saveSnapshot(snapshot);
+        setFamily(snapshot.getFamilyId()); // update the family, in case a new one was created
     }
     /**
      * Sets the family that is taking the survey
@@ -103,7 +102,7 @@ public class SharedSurveyViewModel extends ViewModel
     {
         mSurvey = survey;
 
-        mSnapshot.setValue(new Snapshot(mFamily.getValue(), mSurvey));
+        mSnapshot.setValue(new Snapshot(mSurvey));
     }
 
     public LiveData<Snapshot> getSnapshot()

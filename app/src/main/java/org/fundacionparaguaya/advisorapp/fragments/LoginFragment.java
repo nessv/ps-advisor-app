@@ -43,27 +43,23 @@ import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManage
  */
 
 public class LoginFragment extends Fragment {
-    EditText mEmailView;
-    EditText mPasswordView;
-    Button mSubmitButton;
-    TextView mIncorrectCredentialsView;
-    TextView mPasswordReset;
-    ImageView mHelpButton;
-    private ImageView mFPLogo;
-
-    protected LinearLayout mLoginForm;
-    protected ScrollView mLoginFormScrollView;
-
-    AuthenticationManager mAuthManager;
-
-    @Inject InjectionViewModelFactory mViewModelFactory;
-
-    LoginViewModel mLoginViewModel;
-
-    MixpanelAPI mMixpanel;
 
     // Threshold for minimal keyboard height.
-    public final int MIN_KEYBOARD_HEIGHT_PX = 150;
+    private static final int MIN_KEYBOARD_HEIGHT_PX = 150;
+
+    protected EditText mEmailView;
+    protected EditText mPasswordView;
+    protected Button mSubmitButton;
+    protected TextView mIncorrectCredentialsView;
+    protected TextView mPasswordReset;
+    protected AuthenticationManager mAuthManager;
+
+    @Inject protected InjectionViewModelFactory mViewModelFactory;
+
+    private LoginViewModel mLoginViewModel;
+    private ImageView mHelpButton;
+    private ImageView mFPLogo;
+    private MixpanelAPI mMixpanel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,9 +90,6 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         setRetainInstance(true);
-
-        mLoginForm = (LinearLayout) view.findViewById(R.id.email_login_form);
-        mLoginFormScrollView = (ScrollView) view.findViewById(R.id.login_form);
 
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
         mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);

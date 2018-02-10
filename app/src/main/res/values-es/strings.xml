@@ -32,6 +32,9 @@
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
 
+    <!-- Indicator Card -->
+    <string name="indicator_selected">Seleccionado</string>
+
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">Nueva Instantánea</string>
     <string name="all_continue">Continuar</string>
@@ -68,6 +71,8 @@
     <string name="family_location_question">Ubicación de la familia</string>
     <string name="family_UID">ID de la familia</string>
     <string name="family_picture_question">La imagen de la familia</string>
+    <string name="addfamily_new_family_title">Familia Nueva</string>
+
 
     <!-- Other -->
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>
@@ -84,5 +89,7 @@
     <string name="all_cancel">Cancelar</string>
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
+
+    <string name="surveyquestions_economic_title">Economic Questions</string>
 
 </resources>

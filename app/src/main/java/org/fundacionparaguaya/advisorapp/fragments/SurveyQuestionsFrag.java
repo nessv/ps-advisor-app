@@ -64,7 +64,7 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
                  of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setTitle("Background Questions");
+        setTitle(getString(R.string.surveyquestions_economic_title));
     }
 
     @Override

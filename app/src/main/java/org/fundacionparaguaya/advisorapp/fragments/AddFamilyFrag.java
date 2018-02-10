@@ -54,7 +54,8 @@ public class AddFamilyFrag extends SurveyQuestionsFrag {
 
         setFooterColor(R.color.survey_grey);
         setHeaderColor(R.color.survey_grey);
-        setTitle("New Family");
+
+        setTitle(getString(R.string.addfamily_new_family_title));
     }
 
     @Override

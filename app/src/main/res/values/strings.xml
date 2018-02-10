@@ -30,7 +30,10 @@
     <string name="login_error">Could not log in. Are you offline?</string>
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
-    
+
+    <!-- Indicator Card -->
+    <string name="indicator_selected">Selected</string>
+
     <!-- Survey Activity -->
     <string name="surveyintro_newsnapshot">New Snapshot</string>
     <string name="survey_back">Back</string>
@@ -60,6 +63,8 @@
     <string name="familydetails_descriptionlabel">Description</string>
     <string name="familydetails_descriptiondefault">No Description</string>
     <string name="familydetails_prioritytitle">Prioritites</string>
+    <string name="addfamily_new_family_title">New Family</string>
+
 
     <!--Family Details Tabs-->
     <string name="familydetails_tabs_indicatorstitle">Indicators</string>
@@ -88,6 +93,7 @@
 
     <string name="all_okay">Okay</string>
     <string name="your_response">Your Response</string>
+    <string name="surveyquestions_economic_title">Economic Questions</string>
 
 
 </resources>

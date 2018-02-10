@@ -25,6 +25,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
@@ -53,6 +54,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
     LinearLayout mHeader;
     RelativeLayout mFooter;
 
+    //whether or not the current tablet is 7 inches
+    private boolean mIs7Inch = false;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -104,6 +107,17 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             }
         });
 
+        if(ScreenCalculations.is7InchTablet(getApplicationContext()))
+        {
+            mFooter.setVisibility(View.GONE);
+            mIs7Inch = true;
+
+            /**Maybe do more here??**/
+        }
+        else
+        {
+            mIs7Inch = false;
+        }
 
         setFragmentContainer(R.id.survey_activity_fragment_container);
         initViewModel();
@@ -240,7 +254,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
         mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
 
-        if(!fragment.isShowFooter())
+        mTvTitle.setText(fragment.getTitle());
+
+        if(mIs7Inch || !fragment.isShowFooter())
         {
             mFooter.setVisibility(View.GONE);
         }

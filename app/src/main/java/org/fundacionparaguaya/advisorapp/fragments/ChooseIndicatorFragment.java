@@ -1,7 +1,7 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,13 +14,11 @@ import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 
-import java.util.ArrayList;
-
 /**
  *
  */
 
-public class ChooseIndicatorFragment extends AbstractSurveyFragment implements View.OnClickListener{
+public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     IndicatorCard mGreenCard;
     IndicatorCard mYellowCard;
@@ -32,8 +30,19 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
 
     IndicatorAdapter adapter;
 
+    private static int clickDelay = 500;
+    private static int clickDelayInterval = 100;
+
     @Nullable
     IndicatorCard selectedIndicatorCard;
+    private CountDownTimer nextPageTimer;
+
+    private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
+    {
+        if (parentFragment.isPageChanged()) {
+            onCardSelected(card);
+        }
+    };
 
     public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question) {
 
@@ -70,10 +79,8 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
 
         IndicatorOption existingResponse = parentFragment.getResponses(question);
 
-        if(existingResponse!=null)
-        {
-            switch (existingResponse.getLevel())
-            {
+        if (existingResponse != null) {
+            switch (existingResponse.getLevel()) {
                 case Green:
                     mGreenCard.setSelected(true);
                     break;
@@ -85,28 +92,15 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
                 case Red:
                     mRedCard.setSelected(true);
                     break;
+                default:
+                    break;
             }
         }
 
-        mGreenCard.setOnClickListener(this);
-        mYellowCard.setOnClickListener(this);
-        mRedCard.setOnClickListener(this);
-
+        mGreenCard.addIndicatorSelectedHandler(handler);
+        mYellowCard.addIndicatorSelectedHandler(handler);
+        mRedCard.addIndicatorSelectedHandler(handler);
         return rootView;
-    }
-
-    /**
-     * When one of the cards is selected...
-     * @param view IndicatorCard
-     */
-    @Override
-    public void onClick(View view) {
-        if(view instanceof IndicatorCard)
-        {
-            IndicatorCard card = (IndicatorCard)view;
-
-            onCardSelected(card);
-        }
     }
 
     /**
@@ -116,14 +110,11 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
      */
     private void onCardSelected(@Nullable IndicatorCard indicatorCard) {
 
-        if(indicatorCard.equals(selectedIndicatorCard))
-        {
+        if (indicatorCard.equals(selectedIndicatorCard)) {
             indicatorCard.setSelected(false);
             parentFragment.removeIndicatorResponse(question);
             selectedIndicatorCard = null;
-        }
-        else
-        {
+        } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
@@ -144,18 +135,25 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment implements V
     }
 
     private void updateParent() {
-
-        if (parentFragment != null) {
-            new Handler().postDelayed(new Runnable() {
+        if (nextPageTimer !=null){
+            nextPageTimer.cancel();
+            nextPageTimer = null;
+        } else {
+            nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
                 @Override
-                public void run() {
+                public void onTick(long millisUntilFinished) {
+                    //For future implementation if needed
+                }
+
+                @Override
+                public void onFinish() {
                     if (selectedIndicatorCard != null) {
                         parentFragment.nextQuestion();
                     } else {
                         parentFragment.removeIndicatorResponse(question);
                     }
                 }
-            }, 500); // Millisecond 1000 = 1 sec
+            }.start();
         }
     }
 

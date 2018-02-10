@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/addfamily_container"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:background="#E5BE45"
-              android:orientation="vertical">
-    <com.yarolegovich.discretescrollview.DiscreteScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
-            android:id="@+id/rv_survey_questions"
-            tools:listitem="@layout/view_questionlocation"/>
-
-</ScrollView>
+<com.yarolegovich.discretescrollview.DiscreteScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/indicator_card_yellow"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:id="@+id/rv_survey_questions"
+        tools:listitem="@layout/view_questionlocation"/>

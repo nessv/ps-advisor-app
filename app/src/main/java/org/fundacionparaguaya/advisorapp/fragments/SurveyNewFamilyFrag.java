@@ -1,33 +1,22 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.app.Activity;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.BackgroundQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
+import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
-public class AddFamilyFrag extends SurveyQuestionsFrag {
+public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -60,8 +49,16 @@ public class AddFamilyFrag extends SurveyQuestionsFrag {
 
     @Override
     protected void initQuestionList() {
-        mAddFamilyViewModel.getQuestions().observe(this,
-            mQuestionAdapter::setQuestionsList);
+        mSurveyViewModel.getSurveys().observe(this, (surveys) ->
+        {
+            if (surveys!=null && surveys.size() > 0) {
+                Survey survey = surveys.get(0);
+
+                mSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
+
+                mQuestionAdapter.setQuestionsList(mSurveyViewModel.getSurveyInProgress().getPersonalQuestions());
+            }
+        });
     }
 
     @Override
@@ -70,35 +67,9 @@ public class AddFamilyFrag extends SurveyQuestionsFrag {
     }
 
     @Override
-    public void onFinish() {
-        new SaveFamilyAsyncTask(this).execute();
+    public void onSubmit() {
+       mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
         //set family in survey view model..
         //change state
-    }
-
-    static class SaveFamilyAsyncTask extends AsyncTask<Void, Void, Void>
-    {
-        private WeakReference<AddFamilyFrag> fragReference;
-
-        SaveFamilyAsyncTask(AddFamilyFrag frag)
-        {
-            fragReference = new WeakReference<AddFamilyFrag>(frag);
-        }
-
-        @Override
-        protected Void doInBackground (Void ... voids) {
-            fragReference.get().mAddFamilyViewModel.saveFamily();
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-       //     fragReference.get().navigateBack();
-
-            //CHANGE STATE HERE
-
-            super.onPostExecute(aVoid);
-        }
     }
 }

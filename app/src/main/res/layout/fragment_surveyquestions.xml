@@ -8,4 +8,4 @@
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
         android:id="@+id/rv_survey_questions"
-        tools:listitem="@layout/view_questionlocation"/>
+        tools:listitem="@layout/item_questionlocation"/>

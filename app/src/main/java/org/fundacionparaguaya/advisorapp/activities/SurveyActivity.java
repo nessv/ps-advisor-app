@@ -4,22 +4,16 @@ import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import android.support.v4.app.Fragment;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -141,11 +135,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
         if(familyId == -1)
         {
-            mSurveyViewModel.setSurveyState(SurveyState.ADD_FAMILY);
-            /**
-            throw new IllegalArgumentException(this.getLocalClassName() + ": Found family id of -1. Family id is either not set " +
-                    "or has been set innappropriately. To launch this activity with the family id properly set, use the " +
-                    "build(int) function");**/
+            mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
         }
         else
         {
@@ -178,15 +168,20 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 
             switch (surveyState)
             {
-                case ADD_FAMILY:
-                    nextFragment = AddFamilyFrag.class;
+                case NEW_FAMILY:
+                    nextFragment = SurveyNewFamilyFrag.class;
+                    break;
+
+                case NEW_FAMILY_REVIEW:
+                    nextFragment = null;
+                    //TODO: add new family review page
                     break;
 
                 case INTRO:
                     nextFragment = SurveyIntroFragment.class;
                     break;
 
-                case BACKGROUND_QUESTIONS:
+                case ECONOMIC_QUESTIONS:
                     nextFragment = SurveyQuestionsFrag.class;
                     break;
 
@@ -218,8 +213,9 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     super.onBackPressed();
                     break;
                 }
-                case ADD_FAMILY:
-                case BACKGROUND_QUESTIONS: {
+
+                case NEW_FAMILY:
+                case ECONOMIC_QUESTIONS: {
                     makeExitDialog().
                             setConfirmClickListener((dialog) ->
                             {
@@ -229,8 +225,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                             .show();
                     break;
                 }
+
+                case NEW_FAMILY_REVIEW:
+                {
+                    mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
+                }
+
                 case INDICATORS: {
-                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
+                    mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
                     break;
                 }
                 case SUMMARY: {

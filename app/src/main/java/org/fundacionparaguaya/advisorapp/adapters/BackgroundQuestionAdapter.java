@@ -82,27 +82,27 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
         switch (viewType)
         {
             case STRING_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questiontext, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questiontext, parent, false);
                 vh = new TextQuestionViewHolder(itemView);
                 break;
 
             case LOCATION_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questionlocation, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questionlocation, parent, false);
                 vh = new LocationViewHolder(itemView);
                 break;
 
             case PHOTO_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questionphoto, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questionphoto, parent, false);
                 vh = new PictureViewHolder(itemView);
                 break;
 
             case DROPDOWN_INPUT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_questiondropdown, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questiondropdown, parent, false);
                 vh = new DropdownViewHolder(itemView);
                 break;
 
             case SUBMIT_BUTTON:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_backgroundquestion_submit, parent, false);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questionsreview, parent, false);
                 vh = new SubmitViewHolder(itemView);
                 break;
         }
@@ -329,9 +329,9 @@ public class BackgroundQuestionAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             submitButtonContainer = (LinearLayout) itemView.findViewById(R.id.submit_button_view);
-            submitButton = (Button) itemView.findViewById(R.id.submit_button);
+            submitButton = (Button) itemView.findViewById(R.id.btn_surveyquestions_submit);
 
-            submitButton.setOnClickListener((view)-> mBackgroundQuestionCallback.onFinish());
+            submitButton.setOnClickListener((view)-> mBackgroundQuestionCallback.onSubmit());
         }
     }
 

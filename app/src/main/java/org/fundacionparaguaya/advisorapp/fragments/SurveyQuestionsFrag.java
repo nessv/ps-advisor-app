@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,16 +33,13 @@ import javax.inject.Inject;
  * Questions about Personal and Economic questions that are asked before the survey
  */
 
-public class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
+public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
 
     static String FRAGMENT_TAG = "SurveyQuestionsFrag";
 
-    @Inject
-    InjectionViewModelFactory mViewModelFactory;
-    SharedSurveyViewModel mSharedSurveyViewModel;
-
     protected DiscreteScrollView mDsvQuestionList;
     protected BackgroundQuestionAdapter mQuestionAdapter;
+    protected SharedSurveyViewModel mSharedSurveyViewModel;
 
     public SurveyQuestionsFrag()
     {
@@ -55,16 +53,6 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((AdvisorApplication) getActivity().getApplication())
-                .getApplicationComponent()
-                .inject(this);
-
-        mSharedSurveyViewModel = ViewModelProviders.
-                 of((FragmentActivity) getActivity(), mViewModelFactory)
-                .get(SharedSurveyViewModel.class);
-
-        setTitle(getString(R.string.surveyquestions_economic_title));
     }
 
     @Override
@@ -74,26 +62,15 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
         initQuestionList();
     }
 
-    protected void initQuestionList()
-    {
-        Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
-        List<BackgroundQuestion> questions = new ArrayList<>(
-                survey.getPersonalQuestions().size() + survey.getEconomicQuestions().size());
-        questions.addAll(survey.getPersonalQuestions());
-        questions.addAll(survey.getEconomicQuestions());
+    abstract void initQuestionList();
 
-        mQuestionAdapter.setQuestionsList(questions);
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_surveyquestions, container, false);
 
         mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//      ,recyclerView.setLayoutManager(layoutManager);
         mDsvQuestionList.setHasFixedSize(true);
 
         mDsvQuestionList.setAdapter(mQuestionAdapter);
@@ -103,9 +80,8 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
 
         mDsvQuestionList.setItemTransformer(new BackgroundQuestionAdapter.QuestionFadeTransformer());
 
-        mDsvQuestionList.setRecyclerListener(new RecyclerView.RecyclerListener() {
-            @Override
-            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        mDsvQuestionList.setRecyclerListener((holder) ->
+        {
                 if(holder instanceof BackgroundQuestionAdapter.QuestionViewHolder)
                 {
                    BackgroundQuestionAdapter.QuestionViewHolder questionHolder=
@@ -122,8 +98,7 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
                     }
                 }
             }
-        });
-
+        );
 
         mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
             if(viewHolder!=null)
@@ -166,11 +141,5 @@ public class SurveyQuestionsFrag extends AbstractSurveyFragment implements Backg
         {
             mDsvQuestionList.smoothScrollToPosition(currentIndex);
         }
-    }
-
-    @Override
-    public void onFinish() {
-        //should check if all required questions have been answered before transitioning
-        mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.INDICATORS);
     }
 }

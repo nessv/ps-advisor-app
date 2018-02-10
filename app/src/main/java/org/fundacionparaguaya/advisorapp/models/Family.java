@@ -221,6 +221,8 @@ public class Family {
                     case "gender":
                         memberBuilder.gender(entry.getValue());
                         break;
+                    default:
+                        break;
                 }
             }
             member(memberBuilder.build());

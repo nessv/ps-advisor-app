@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
@@ -58,6 +61,8 @@ public class LoginFragment extends Fragment {
 
     LoginViewModel mLoginViewModel;
 
+    MixpanelAPI mMixpanel;
+
     // Threshold for minimal keyboard height.
     public final int MIN_KEYBOARD_HEIGHT_PX = 150;
 
@@ -73,6 +78,14 @@ public class LoginFragment extends Fragment {
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
         mAuthManager = mLoginViewModel.getAuthManager();
+
+        mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mMixpanel.flush();
+        super.onDestroyView();
     }
 
     @Nullable
@@ -183,6 +196,7 @@ public class LoginFragment extends Fragment {
      */
     private void attemptLogin() {
         // Reset errors.
+
         mEmailView.setError(null);
         mPasswordView.setError(null);
 

@@ -54,7 +54,7 @@
                         tools:text="Gonzalez-Rodriguez" />
 
                     <TextView
-                        android:id="@+id/phone_number"
+                        android:id="@+id/familyview_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"

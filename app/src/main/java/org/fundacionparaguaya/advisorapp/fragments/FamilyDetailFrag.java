@@ -36,6 +36,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     private TextView mAddress;
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
+    private TextView mPhoneNumber;
 
     int mFamilyId = -1;
 
@@ -83,6 +84,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         super.onViewCreated(view, savedInstanceState);
 
         mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
+        mPhoneNumber = (TextView) view.findViewById(R.id.familyview_phone);
         mAddress = (TextView) view.findViewById(R.id.location_content);
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
@@ -95,6 +97,19 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         catch (IllegalStateException e)
         {
             Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
+        }
+
+        try{
+            mAddress.setText(mFamilyInformationViewModel.getCurrentFamily().getValue().getAddress());
+        }catch (NullPointerException e){
+            mAddress.setText(getString(R.string.familydetails_locationdefault));
+        }
+
+        //Test to see if there is a family member
+        try {
+            mPhoneNumber.setText(mFamilyInformationViewModel.getCurrentFamily().getValue().getMember().getPhoneNumber());
+        } catch (NullPointerException e) {
+            mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
         }
 
         Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");

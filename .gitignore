@@ -13,3 +13,5 @@
 app/schemas/org.fundacionparaguaya.advisorapp.data.local.LocalDatabase/1.json
 app/release
 *.orig
+*.json
+app/schemas/org.fundacionparaguaya.advisorapp.data.local.LocalDatabase/1.json

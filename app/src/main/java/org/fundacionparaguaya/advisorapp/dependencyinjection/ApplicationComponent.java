@@ -40,4 +40,6 @@ public interface ApplicationComponent {
     void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 
     void inject(JobCreator jobCreator);
+
+    void inject(SettingsStackedFrag settingsFragment);
 }

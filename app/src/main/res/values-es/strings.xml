@@ -73,6 +73,8 @@
     <string name="family_picture_question">La imagen de la familia</string>
     <string name="addfamily_new_family_title">Familia Nueva</string>
 
+    <!--Settings-->
+    <string name="settings_logout">Cerrar Sesión</string>
 
     <!-- Other -->
     <string name="defaultindicatortext">Esto es malo. Este no debería ser el texto que se muestra</string>

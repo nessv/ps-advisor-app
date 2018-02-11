@@ -27,7 +27,7 @@
     <string name="login_emailprompt">Usuario</string>
     <string name="login_passwordprompt">Clave</string>
     <string name="login_action_signin">Login</string>
-    <string name="login_incorrectcredentials">Ese email o clave no funcionó. Inténtalo de nuevo</string>
+    <string name="login_incorrectcredentials">Ese email o clave no funcionó.</string>
     <string name="login_error">No pude entrar a la cuenta. ¿Estás fuera de línea?</string>
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>

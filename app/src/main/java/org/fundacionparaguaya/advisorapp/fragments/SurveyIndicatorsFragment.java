@@ -153,9 +153,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     private void checkConditions() {
-        if (mPager.getCurrentItem() == 0) {
-            skipButtonText.setText(R.string.survey_skip);
-        } else if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+        if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
             skipButtonText.setText(R.string.survey_next);
         } else {
             skipButtonText.setText(R.string.survey_skip);

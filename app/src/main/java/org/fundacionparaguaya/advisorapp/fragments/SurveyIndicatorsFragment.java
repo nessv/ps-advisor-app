@@ -124,7 +124,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         if (isPageChanged) {
             if (mPager.getCurrentItem() < 1) {
                 //Goes back when on the first survey question
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.BACKGROUND_QUESTIONS);
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
             } else {
                 mPager.setCurrentItem(mPager.getCurrentItem() - 1);
                 checkConditions();
@@ -153,9 +153,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     }
 
     private void checkConditions() {
-        if (mPager.getCurrentItem() == 0) {
-            skipButtonText.setText(R.string.survey_skip);
-        } else if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+        if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
             skipButtonText.setText(R.string.survey_next);
         } else {
             skipButtonText.setText(R.string.survey_skip);

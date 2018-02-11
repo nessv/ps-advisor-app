@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, ADD_FAMILY, COMPLETE}
+    public enum SurveyState {NONE, NEW_FAMILY, INTRO, ECONOMIC_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -72,14 +72,13 @@ public class SharedSurveyViewModel extends ViewModel
     }
     private void saveSnapshot()
     {
-        if(mSnapshot.getValue()!=null) {
-
-            mSnapshotRespository.saveSnapshot(mSnapshot.getValue());
-        }
-        else
-        {
+        Snapshot snapshot = mSnapshot.getValue();
+        if (snapshot == null) {
             throw new IllegalStateException("saveSnapshot was called, but there is no snapshot to be saved.");
         }
+
+        mSnapshotRespository.saveSnapshot(snapshot);
+        setFamily(snapshot.getFamilyId()); // update the family, in case a new one was created
     }
     /**
      * Sets the family that is taking the survey
@@ -103,7 +102,7 @@ public class SharedSurveyViewModel extends ViewModel
     {
         mSurvey = survey;
 
-        mSnapshot.setValue(new Snapshot(mFamily.getValue(), mSurvey));
+        mSnapshot.setValue(new Snapshot(mSurvey));
     }
 
     public LiveData<Snapshot> getSnapshot()
@@ -226,7 +225,7 @@ public class SharedSurveyViewModel extends ViewModel
             switch (mSurveyState.getValue())
             {
 
-                case BACKGROUND_QUESTIONS:
+                case ECONOMIC_QUESTIONS:
 
                     int totalQuestions = getSurveyInProgress().getEconomicQuestions().size() +
                             getSurveyInProgress().getPersonalQuestions().size();
@@ -255,9 +254,6 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
-    public static class IndicatorSurvey{
-
-    }
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception

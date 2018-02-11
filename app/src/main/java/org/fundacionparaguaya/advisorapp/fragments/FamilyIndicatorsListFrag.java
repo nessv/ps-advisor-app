@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
@@ -104,9 +105,9 @@ public class FamilyIndicatorsListFrag extends Fragment {
         mSnapshotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Snapshot s = (Snapshot) mSpinnerAdapter.getItem(i);
+                Snapshot s = (Snapshot) mSpinnerAdapter.getDataAt(i);
                 mFamilyInformationViewModel.setSelectedSnapshot(s);
-                mSpinnerAdapter.setSelected(i);
+                mSpinnerAdapter.setSelected(s);
             }
 
             @Override
@@ -117,7 +118,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
         addViewModelObservers();
     }
-
 
     public void removeViewModelObservers()
     {
@@ -135,9 +135,9 @@ public class FamilyIndicatorsListFrag extends Fragment {
         mFamilyInformationViewModel.getSnapshots().observe(this, (snapshots) -> {
                 if(snapshots==null)
                 {
-                    mSpinnerAdapter.setSnapshotList(null);
+                    mSpinnerAdapter.setValues(null);
                 }
-                else mSpinnerAdapter.setSnapshotList(snapshots.toArray(new Snapshot[snapshots.size()]));
+                else mSpinnerAdapter.setValues(snapshots.toArray(new Snapshot[snapshots.size()]));
 
                 //has to be called after getSnapshots
                 mFamilyInformationViewModel.getSelectedSnapshot().observe(this, mSpinnerAdapter::setSelected);
@@ -322,133 +322,23 @@ public class FamilyIndicatorsListFrag extends Fragment {
         }
     }
 
-    //The problem with creating a custom adapter (https://stackoverflow.com/a/8116756) is that the spinner
-    //has to be restyled.. it should be done eventually so we don't have to do the nonsense in this constructor
-    //TODO @blhylak clean up this mess
-    static class SnapshotSpinAdapter extends ArrayAdapter<Snapshot>
+    static class SnapshotSpinAdapter extends SelectedFirstSpinnerAdapter<Snapshot>
     {
-        // Your sent context
-        private Context context;
-        // Your custom values for the spinner (User)
-        private Snapshot[] values;
-
-        //the currently selected item. -1 -> no selection
-        private int mSelectedArrayIndex = -1;
-
         SnapshotSpinAdapter(Context context, int textViewResourceId) {
 
             super(context, textViewResourceId);
-            this.context = context;
-        }
-
-        void setSelected(Snapshot s)
-        {
-            if(s==null) mSelectedArrayIndex = 0;
-            else if(values!=null){
-                for (int i = 0; i < values.length; i++) {
-                    if (values[i].equals(s)) mSelectedArrayIndex = i;
-                }
-            }
-        }
-
-        void setSelected(int spinnerIndex)
-        {
-            //Array
-            //// [   0   ]
-            //// [   1   ]   <- selected array index = 1, loc = 0
-            //// [   2   ]
-            //// [   3   ]
-
-            //Spinner
-            ////Index 0: [   1   ] <- currently selected
-            ////Index 1: [   0   ]
-            ////Index 2: [   2   ]
-            ////Index 3: [   3   ]
-
-            //so if index 0 is clicked, that's our currently selected
-            //if index 1 is clicked that's actually the value -1
-            if(mSelectedArrayIndex !=-1) {
-                if (spinnerIndex == 0) {
-                    //reselected current selection
-                }
-                else if(spinnerIndex <= mSelectedArrayIndex)
-                {
-                    mSelectedArrayIndex = spinnerIndex-1;
-                }
-                else if(spinnerIndex > mSelectedArrayIndex)
-                {
-                    mSelectedArrayIndex = spinnerIndex;
-                }
-            }
-            else
-            {
-                mSelectedArrayIndex = spinnerIndex;
-            }
-        }
-
-        public void setSnapshotList(Snapshot[] values)
-        {
-            if(values!=null) {
-                Snapshot latestSnapshot = null;
-
-                for (Snapshot snapshot : values) {
-
-                    //reset any flags that we have on a snapshot
-                    snapshot.setIsLatest(false);
-
-                    Date createdDate = snapshot.getCreatedAt();
-
-                    if (latestSnapshot == null || createdDate!=null && snapshot.getCreatedAt().after(latestSnapshot.getCreatedAt())) {
-                        latestSnapshot = snapshot;
-                    }
-                }
-
-                if (latestSnapshot != null) {
-                    latestSnapshot.setIsLatest(true);
-                }
-
-
-                this.values = values;
-
-                notifyDataSetChanged();
-            }
-
-        }
-
-        @Nullable
-        @Override
-        public Snapshot getItem(int position) {
-            //pretend 4 is selected
-
-            //if position = 0
-            //return 4
-
-            //if 1, return 0. if 2, return 1, if 3 return 2, if 4, return 3, if 5, return 5, if 6 return 6
-            if(mSelectedArrayIndex !=-1) {
-                if (position == 0) {
-                    return values[mSelectedArrayIndex];
-                }
-                else if(position<= mSelectedArrayIndex)
-                {
-                    return values[position-1];
-                }
-                else if(position> mSelectedArrayIndex)
-                {
-                    return values[position];
-                }
-            }
-            else return this.values[position];
-
-            throw new IndexOutOfBoundsException();
         }
 
         @Override
-        public int getCount() {
-            if(this.values==null)
-            {
-                return 0;
+        public void setValues(Snapshot[] values)
+        {
+            if(values!=null && values.length>0) {
+
+                Arrays.sort(values, Collections.reverseOrder());
+                values[0].setIsLatest(true);
             }
-            else return this.values.length;
+
+            super.setValues(values);
         }
     }
 }

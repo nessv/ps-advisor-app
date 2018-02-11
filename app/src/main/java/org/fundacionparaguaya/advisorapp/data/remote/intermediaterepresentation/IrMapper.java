@@ -6,14 +6,17 @@ import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
+import java.text.CharacterIterator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -172,15 +175,31 @@ public class IrMapper {
     //endregion
 
     //region Snapshot
-    public static List<Snapshot> mapSnapshots(List<SnapshotIr> ir, Family family, Survey survey) {
+    public static List<Snapshot> mapSnapshots(List<SnapshotIr> ir,
+                                              List<SnapshotOverviewIr> overviewIrs,
+                                              Family family,
+                                              Survey survey) {
         List<Snapshot> snapshots = new ArrayList<>(ir.size());
         for (SnapshotIr snapshotIr : ir) {
-            snapshots.add(mapSnapshot(snapshotIr, family, survey));
+            SnapshotOverviewIr overviewIr = findOverview(snapshotIr, overviewIrs);
+            snapshots.add(mapSnapshot(snapshotIr, overviewIr.priorities, family, survey));
         }
         return snapshots;
     }
 
-    public static Snapshot mapSnapshot(SnapshotIr ir, Family family, Survey survey) {
+    private static SnapshotOverviewIr findOverview(SnapshotIr snapshotIr,
+                                            List<SnapshotOverviewIr> overviewIrs) {
+        for (SnapshotOverviewIr overviewIr : overviewIrs) {
+            if (overviewIr.snapshotId == snapshotIr.id) {
+                return overviewIr;
+            }
+        }
+        throw new IllegalStateException(
+                "Couldn't find the overview for snapshot " + snapshotIr.id + "!");
+    }
+
+    public static Snapshot mapSnapshot(SnapshotIr ir, List<PriorityIr> priorityIrs,
+                                       Family family, Survey survey) {
         return new Snapshot(
                 0,
                 ir.id,
@@ -189,7 +208,8 @@ public class IrMapper {
                 mapPersonalResponses(ir, survey),
                 mapEconomicResponses(ir, survey),
                 mapIndicatorResponses(ir, survey),
-                mapDate(ir.createdAt));
+                mapPriorities(priorityIrs, survey),
+                mapDateTime(ir.createdAt));
     }
 
     public static SnapshotIr mapSnapshot(Snapshot snapshot, Survey survey) {
@@ -199,6 +219,24 @@ public class IrMapper {
         ir.personalResponses = mapBackgroundResponses(snapshot.getPersonalResponses());
         ir.economicResponses = mapBackgroundResponses(snapshot.getEconomicResponses());
         ir.indicatorResponses = mapIndicatorResponses(snapshot.getIndicatorResponses());
+        return ir;
+    }
+
+    public static List<PriorityIr> mapPriorities(Snapshot snapshot) {
+        List<PriorityIr> ir = new ArrayList<>(snapshot.getPriorities().size());
+        for (LifeMapPriority priority : snapshot.getPriorities()) {
+            ir.add(mapPriority(priority, snapshot));
+        }
+        return ir;
+    }
+
+    private static PriorityIr mapPriority(LifeMapPriority priority, Snapshot snapshot) {
+        PriorityIr ir = new PriorityIr();
+        ir.indicatorTitle = mapIndicatorName(priority.getIndicator());
+        ir.snapshotId = snapshot.getRemoteId();
+        ir.reason = priority.getReason();
+        ir.action = priority.getAction();
+        ir.estimatedDate = mapDate(priority.getEstimatedDate());
         return ir;
     }
 
@@ -254,7 +292,25 @@ public class IrMapper {
                     getIndicatorOption(indicatorQuestion.getOptions(), mapIndicatorOptionLevel(ir.indicatorResponses.get(question))));
         }
         return responses;
+    }
 
+    private static List<LifeMapPriority> mapPriorities(List<PriorityIr> ir, Survey survey) {
+        List<LifeMapPriority> priorities = new ArrayList<>(ir.size());
+        for (PriorityIr priorityIr : ir) {
+            priorities.add(mapPriority(priorityIr, survey));
+        }
+        return priorities;
+    }
+
+    private static LifeMapPriority mapPriority(PriorityIr ir, Survey survey) {
+        IndicatorQuestion question = getIndicatorQuestion(survey.getIndicatorQuestions(),
+                mapIndicatorName(ir.indicatorTitle));
+        return LifeMapPriority.builder()
+                .indicator(question.getIndicator())
+                .reason(ir.reason)
+                .action(ir.action)
+                .estimatedDate(mapDate(ir.estimatedDate))
+                .build();
     }
 
     private static BackgroundQuestion getBackgroundQuestion(List<BackgroundQuestion> questions, String name) {
@@ -281,7 +337,7 @@ public class IrMapper {
         return null;
     }
 
-    private static Date mapDate(String ir) {
+    private static Date mapDateTime(String ir) {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
         df.setTimeZone(tz);
@@ -290,6 +346,24 @@ public class IrMapper {
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    private static Date mapDate(String ir) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        df.setTimeZone(tz);
+        try {
+            return df.parse(ir);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    private static String mapDate(Date date) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        df.setTimeZone(tz);
+        return df.format(date);
     }
 
     private static IndicatorOption.Level mapIndicatorOptionLevel(String level) {
@@ -308,14 +382,55 @@ public class IrMapper {
     private static String mapIndicatorOptionLevel(IndicatorOption.Level level) {
         switch (level) {
             case Red:
-                return "red";
+                return "RED";
             case Yellow:
-                return "yellow";
+                return "YELLOW";
             case Green:
-                return "green";
+                return "GREEN";
             default:
                 return "";
         }
+    }
+
+    /**
+     * Maps a "pretty" indicator name to it's referable value.
+     */
+    private static String mapIndicatorName(String title) {
+        String[] words = title.split(" ");
+        if (words.length == 0) {
+            throw new UnsupportedOperationException(
+                    "The given indicator title couldn't be converted! " + title);
+        }
+        // convert from words to camel case
+        StringBuilder result = new StringBuilder();
+        result.append(words[0].toLowerCase());
+        for (int i = 1; i < words.length; i++) {
+            String word = words[i];
+            result.append(word.substring(0, 1).toUpperCase());
+            result.append(word.substring(1).toLowerCase());
+        }
+        return result.toString();
+    }
+
+    /**
+     * Maps a indicator to a "pretty" name.
+     */
+    private static String mapIndicatorName(Indicator indicator) {
+        StringBuilder result = new StringBuilder();
+        CharacterIterator iter = new StringCharacterIterator(indicator.getName());
+        for (char c = iter.first(); c != CharacterIterator.DONE; c = iter.next()) {
+            if (result.length() > 0) {
+                result.append(" ");
+            }
+            result.append(Character.toUpperCase(c));
+            c = iter.next();
+            while (Character.isLowerCase(c)) {
+                result.append(c);
+                c = iter.next();
+            }
+            iter.previous();
+        }
+        return result.toString();
     }
     //endregion Snapshot
 }

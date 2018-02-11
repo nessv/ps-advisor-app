@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "693cf45e22b785423172df9b21293856",
+    "identityHash": "8853d197e617673b0581b6ecddd8fce0",
     "entities": [
       {
         "tableName": "families",
@@ -208,7 +208,7 @@
       },
       {
         "tableName": "snapshots",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `priorities` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -249,6 +249,12 @@
           {
             "fieldPath": "indicatorResponses",
             "columnName": "indicator_responses",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "priorities",
+            "columnName": "priorities",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -311,7 +317,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"693cf45e22b785423172df9b21293856\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8853d197e617673b0581b6ecddd8fce0\")"
     ]
   }
 }

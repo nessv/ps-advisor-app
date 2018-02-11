@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, ADD_FAMILY, COMPLETE}
+    public enum SurveyState {NONE, NEW_FAMILY, INTRO, ECONOMIC_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -225,7 +225,7 @@ public class SharedSurveyViewModel extends ViewModel
             switch (mSurveyState.getValue())
             {
 
-                case BACKGROUND_QUESTIONS:
+                case ECONOMIC_QUESTIONS:
 
                     int totalQuestions = getSurveyInProgress().getEconomicQuestions().size() +
                             getSurveyInProgress().getPersonalQuestions().size();
@@ -254,9 +254,6 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
-    public static class IndicatorSurvey{
-
-    }
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception

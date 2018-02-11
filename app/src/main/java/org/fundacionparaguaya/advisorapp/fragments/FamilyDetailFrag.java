@@ -85,7 +85,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
 
         mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
         mPhoneNumber = (TextView) view.findViewById(R.id.familyview_phone);
-        mAddress = (TextView) view.findViewById(R.id.location_content);
+        mAddress = (TextView) view.findViewById(R.id.familydetail_location_content);
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
@@ -99,18 +99,6 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
         }
 
-        try{
-            mAddress.setText(mFamilyInformationViewModel.getCurrentFamily().getValue().getAddress());
-        }catch (NullPointerException e){
-            mAddress.setText(getString(R.string.familydetails_locationdefault));
-        }
-
-        //Test to see if there is a family member
-        try {
-            mPhoneNumber.setText(mFamilyInformationViewModel.getCurrentFamily().getValue().getMember().getPhoneNumber());
-        } catch (NullPointerException e) {
-            mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
-        }
 
         Uri uri = Uri.parse("https://image.ibb.co/gf4qt7/Default_Family.jpg");
         mFamilyImage.setImageURI(uri);
@@ -128,6 +116,20 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyName.setText(family.getName());
         mAddress.setText(family.getAddress());
         mLocation.setText((CharSequence) family.getLocation());
+
+        try{
+            mAddress.setText(family.getAddress());
+        }catch (NullPointerException e){
+            mAddress.setText(getString(R.string.familydetails_locationdefault));
+        }
+
+        //Test to see if there is a family member
+        try {
+            mPhoneNumber.setText(family.getMember().getPhoneNumber());
+        } catch (NullPointerException e) {
+            mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
+        }
+
     }
 
     public static FamilyDetailFrag build(int familyId)

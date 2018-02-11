@@ -105,7 +105,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/location_content"
+                        android:id="@+id/familydetail_location_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/familydetails_locationdefault"

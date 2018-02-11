@@ -20,9 +20,6 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-    SharedSurveyViewModel mSurveyViewModel;
-
-    AddFamilyViewModel mAddFamilyViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -33,13 +30,9 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
                 .getApplicationComponent()
                 .inject(this);
 
-        mSurveyViewModel = ViewModelProviders
+        mSharedSurveyViewModel= ViewModelProviders
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
-
-        mAddFamilyViewModel = ViewModelProviders
-                .of(getActivity(), mViewModelFactory)
-                .get(AddFamilyViewModel.class);
 
         setFooterColor(R.color.survey_grey);
         setHeaderColor(R.color.survey_grey);
@@ -49,26 +42,22 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Override
     protected void initQuestionList() {
-        mSurveyViewModel.getSurveys().observe(this, (surveys) ->
+        mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
             if (surveys!=null && surveys.size() > 0) {
                 Survey survey = surveys.get(0);
 
-                mSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
+                mSharedSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
 
-                mQuestionAdapter.setQuestionsList(mSurveyViewModel.getSurveyInProgress().getPersonalQuestions());
+                mQuestionAdapter.setQuestionsList(mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions());
             }
         });
     }
 
-    @Override
-    public void onQuestionAnswered(BackgroundQuestion q, Object response) {
-        mAddFamilyViewModel.addFamilyResponse(q, response);
-    }
 
     @Override
     public void onSubmit() {
-       mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
+       mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
         //set family in survey view model..
         //change state
     }

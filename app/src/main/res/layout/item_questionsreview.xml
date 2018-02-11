@@ -22,6 +22,7 @@
 
         />
         <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_questionsreview"
                 android:layout_width="wrap_content"
                 android:background="@drawable/surveyquestions_reviewlistbackground"
                 android:paddingStart="16dp"

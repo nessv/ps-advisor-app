@@ -6,13 +6,17 @@
               android:layout_marginTop="20dp"
               xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView android:layout_width="wrap_content"
+    <TextView
+              android:id="@+id/tv_questionresponse_question"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:maxWidth="400dp"
               android:textAppearance="@style/CardHeading"
               tools:text="1. What is your family's name and there are amubasdf dasfdsafsdafddfdasfasdfas?"/>
 
-    <TextView android:layout_width="wrap_content"
+    <TextView
+              android:id="@+id/tv_questionresponse_response"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:maxWidth="400dp"
               android:layout_marginTop="8dp"

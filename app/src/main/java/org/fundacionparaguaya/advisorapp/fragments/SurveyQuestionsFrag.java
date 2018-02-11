@@ -13,6 +13,7 @@ import android.view.View;
 
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import okhttp3.internal.Util;
 import org.fundacionparaguaya.advisorapp.R;

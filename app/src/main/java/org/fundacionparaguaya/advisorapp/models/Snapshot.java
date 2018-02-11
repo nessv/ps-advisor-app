@@ -15,6 +15,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -57,6 +59,8 @@ public class Snapshot implements Comparable<Snapshot>{
     private Map<BackgroundQuestion, String> economicResponses;
     @ColumnInfo(name = "indicator_responses")
     private Map<IndicatorQuestion, IndicatorOption> indicatorResponses;
+    @ColumnInfo(name = "priorities")
+    private List<LifeMapPriority> priorities;
     @ColumnInfo(name = "created_at")
     private Date createdAt;
 
@@ -71,7 +75,8 @@ public class Snapshot implements Comparable<Snapshot>{
 
     @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, null, family == null ? null : family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(), new HashMap<>(), null);
+        this(0, null, family == null ? null : family.getId(), survey.getId(),
+                new HashMap<>(), new HashMap<>(), new HashMap<>(), new LinkedList<>(), null);
     }
 
     public Snapshot(int id,
@@ -81,6 +86,7 @@ public class Snapshot implements Comparable<Snapshot>{
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
                     Map<IndicatorQuestion, IndicatorOption> indicatorResponses,
+                    List<LifeMapPriority> priorities,
                     Date createdAt) {
         this.id = id;
         this.remoteId = remoteId;
@@ -89,6 +95,7 @@ public class Snapshot implements Comparable<Snapshot>{
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
+        this.priorities = priorities;
         this.createdAt = createdAt;
     }
 
@@ -102,6 +109,10 @@ public class Snapshot implements Comparable<Snapshot>{
 
     public Long getRemoteId() {
         return remoteId;
+    }
+
+    public void setRemoteId(Long remoteId) {
+        this.remoteId = remoteId;
     }
 
     /**
@@ -129,6 +140,10 @@ public class Snapshot implements Comparable<Snapshot>{
 
     public Map<BackgroundQuestion, String> getEconomicResponses() {
         return economicResponses;
+    }
+
+    public List<LifeMapPriority> getPriorities() {
+        return priorities;
     }
 
     /**
@@ -170,6 +185,13 @@ public class Snapshot implements Comparable<Snapshot>{
      */
     public void response(IndicatorQuestion question, IndicatorOption response) {
         indicatorResponses.put(question, response);
+    }
+
+    /**
+     * Record a priority for the snapshot. The priority order is the order that they are recorded.
+     */
+    public void priority(LifeMapPriority priority) {
+        priorities.add(priority);
     }
 
     @Override
@@ -214,6 +236,8 @@ public class Snapshot implements Comparable<Snapshot>{
             return false;
         if (getIndicatorResponses() != null ? !getIndicatorResponses().equals(snapshot.getIndicatorResponses()) : snapshot.getIndicatorResponses() != null)
             return false;
+        if (getPriorities() != null ? !getPriorities().equals(snapshot.getPriorities()) : snapshot.getPriorities() != null)
+            return false;
         return getCreatedAt() != null ? getCreatedAt().equals(snapshot.getCreatedAt()) : snapshot.getCreatedAt() == null;
     }
 
@@ -226,6 +250,7 @@ public class Snapshot implements Comparable<Snapshot>{
         result = 31 * result + (getPersonalResponses() != null ? getPersonalResponses().hashCode() : 0);
         result = 31 * result + (getEconomicResponses() != null ? getEconomicResponses().hashCode() : 0);
         result = 31 * result + (getIndicatorResponses() != null ? getIndicatorResponses().hashCode() : 0);
+        result = 31 * result + (getPriorities() != null ? getPriorities().hashCode() : 0);
         result = 31 * result + (getCreatedAt() != null ? getCreatedAt().hashCode() : 0);
         return result;
     }

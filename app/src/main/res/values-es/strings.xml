@@ -95,4 +95,6 @@
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
 
+    <string name="surveyreview_noresponse">No Response</string>
+
 </resources>

@@ -124,7 +124,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         if (isPageChanged) {
             if (mPager.getCurrentItem() < 1) {
                 //Goes back when on the first survey question
-                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.BACKGROUND_QUESTIONS);
+                mSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.ECONOMIC_QUESTIONS);
             } else {
                 mPager.setCurrentItem(mPager.getCurrentItem() - 1);
                 checkConditions();

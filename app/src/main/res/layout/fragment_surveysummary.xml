@@ -33,6 +33,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:id="@+id/btn_surveysummary_submit"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_surveysummary_back"
         android:text="Back"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

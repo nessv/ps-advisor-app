@@ -49,7 +49,7 @@ public class Snapshot {
     @ColumnInfo(name = "remote_id")
     private Long remoteId;
     @ColumnInfo(name = "family_id")
-    private int familyId;
+    private Integer familyId;
     @ColumnInfo(name = "survey_id")
     private int surveyId;
     @ColumnInfo(name = "personal_responses")
@@ -68,14 +68,19 @@ public class Snapshot {
     boolean mIsLatest;
 
     @Ignore
+    public Snapshot(Survey survey) {
+        this(null, survey);
+    }
+
+    @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, null, family.getId(), survey.getId(), new HashMap<>(), new HashMap<>(),
-                new HashMap<>(), new LinkedList<>(), null);
+        this(0, null, family == null ? null : family.getId(), survey.getId(),
+                new HashMap<>(), new HashMap<>(), new HashMap<>(), new LinkedList<>(), null);
     }
 
     public Snapshot(int id,
                     Long remoteId,
-                    int familyId,
+                    Integer familyId,
                     int surveyId,
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
@@ -109,8 +114,15 @@ public class Snapshot {
         this.remoteId = remoteId;
     }
 
-    public int getFamilyId() {
+    /**
+     * Gets the id of the family, or null if one hasn't been assigned yet.
+     */
+    public Integer getFamilyId() {
         return familyId;
+    }
+
+    public void setFamilyId(int id) {
+        familyId = id;
     }
 
     public int getSurveyId() {

@@ -50,10 +50,20 @@ public class SnapshotRepository {
         return snapshotDao.queryAllTEMPFIX();
     }
 
+    /**
+     * Saves a snapshot, relating a new family to it if one hasn't been created yet.
+     */
     public void saveSnapshot(Snapshot snapshot) {
+        if (snapshot.getFamilyId() == null) {
+            // need to create a family for the snapshot before saving
+            Family family = Family.builder().snapshot(snapshot).build();
+            familyRepository.saveFamily(family);
+            snapshot.setFamilyId(family.getId());
+        }
         long rows = snapshotDao.updateSnapshot(snapshot);
         if (rows == 0) { // now row was updated
-            snapshotDao.insertSnapshot(snapshot);
+            int id = (int) snapshotDao.insertSnapshot(snapshot);
+            snapshot.setId(id);
         }
     }
 

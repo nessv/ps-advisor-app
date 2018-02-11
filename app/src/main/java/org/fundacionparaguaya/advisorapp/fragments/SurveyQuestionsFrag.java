@@ -1,9 +1,12 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import okhttp3.internal.Util;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
@@ -23,11 +27,15 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
 
+    //TODO:disable scrolling in recycler view
+
     static String FRAGMENT_TAG = "SurveyQuestionsFrag";
 
-    protected DiscreteScrollView mDsvQuestionList;
+    protected RecyclerView mDsvQuestionList;
     protected SurveyQuestionAdapter mQuestionAdapter;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
+
+    int mCurrentIndex = 0;
 
     public SurveyQuestionsFrag()
     {
@@ -52,6 +60,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     abstract void initQuestionList();
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
@@ -66,7 +75,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
       //  mDsvQuestionList.setSlideOnFling(true);
       //  mDsvQuestionList.setSlideOnFlingThreshold(1800);
 
-        mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
+        mDsvQuestionList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mDsvQuestionList.setOnTouchListener((v, event)-> false);
+       // mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
 
         mDsvQuestionList.setRecyclerListener((holder) ->
         {
@@ -88,12 +99,12 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             }
         );
 
-        mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
+        /*mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
             if(viewHolder!=null)
             {
                 viewHolder.itemView.requestFocus();
             }
-        });
+        });*/
 
         mQuestionAdapter = new SurveyQuestionAdapter(this);
         mDsvQuestionList.setAdapter(mQuestionAdapter);
@@ -115,6 +126,10 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     @Override
     public void onNext(View v) {
+
+
+        mDsvQuestionList.smoothScrollToPosition(mCurrentIndex+=1);
+        /*
         int currentIndex = mDsvQuestionList.getCurrentItem();
         currentIndex++;
 
@@ -128,6 +143,6 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         if(currentIndex< mQuestionAdapter.getItemCount())
         {
             mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }
+        }*/
     }
 }

@@ -324,9 +324,6 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
     static class SnapshotSpinAdapter extends SelectedFirstSpinnerAdapter<Snapshot>
     {
-        //the currently selected item. -1 -> no selection
-        private int mSelectedArrayIndex = -1;
-
         SnapshotSpinAdapter(Context context, int textViewResourceId) {
 
             super(context, textViewResourceId);

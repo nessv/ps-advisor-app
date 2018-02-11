@@ -230,6 +230,9 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 mSpinnerAdapter.setValues(question.getOptions().toArray(
                         new String[question.getOptions().size()]));
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
+
+                mSpinnerAdapter.showEmptyPlaceholder();
+
             } else {
                 throw new IllegalArgumentException("This question has no options");
             }

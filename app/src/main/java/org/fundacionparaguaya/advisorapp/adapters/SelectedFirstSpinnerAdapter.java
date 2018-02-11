@@ -24,15 +24,16 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
     protected T[] values;
 
     //the currently selected item. -1 -> no selection
-    private int mSelectedArrayIndex = 0;
+    private int mSelectedArrayIndex = -1;
 
     public SelectedFirstSpinnerAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }
 
-    public void setHasEmptyPlaceholder(boolean hasEmptyPlaceholder)
+    public void showEmptyPlaceholder()
     {
-        mHasEmptyPlaceholder = hasEmptyPlaceholder;
+        mHasEmptyPlaceholder = true;
+        mSelectedArrayIndex = -1;
     }
 
     public void setSelected(T selectedData) {
@@ -118,16 +119,23 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
     {
         int adjustedPosition;
 
-        if (position == 0) {
-            adjustedPosition = mSelectedArrayIndex;
+        if(mSelectedArrayIndex== -1 && mHasEmptyPlaceholder) {
+            adjustedPosition=position-1;
         }
-        else if(position<= mSelectedArrayIndex)
-        {
-            adjustedPosition = position-1;
+        else if(mSelectedArrayIndex==-1) {
+            adjustedPosition=position;
         }
-        else //if(position> mSelectedArrayIndex)
-        {
-            adjustedPosition = position;
+        else {
+            if (position == 0) {
+                adjustedPosition = mSelectedArrayIndex;
+            }
+            else if (position <= mSelectedArrayIndex) {
+                adjustedPosition = position - 1;
+            }
+            else //if(position> mSelectedArrayIndex)
+            {
+                adjustedPosition = position;
+            }
         }
 
         return adjustedPosition;
@@ -141,7 +149,7 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
         {
             count = 0;
         }
-        else if(mHasEmptyPlaceholder)
+        else if(mSelectedArrayIndex== -1 && mHasEmptyPlaceholder)
         {
             count = values.length+1;
         }

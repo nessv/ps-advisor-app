@@ -17,10 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -54,8 +51,6 @@ public class LoginFragment extends Fragment {
 
     @Inject protected InjectionViewModelFactory mViewModelFactory;
 
-    private LoginViewModel mLoginViewModel;
-    private ImageView mHelpButton;
     private ImageView mFPLogo;
     private MixpanelAPI mMixpanel;
 
@@ -67,10 +62,11 @@ public class LoginFragment extends Fragment {
                 .getApplicationComponent()
                 .inject(this);
 
-        mLoginViewModel = ViewModelProviders
+        LoginViewModel viewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
-        mAuthManager = mLoginViewModel.getAuthManager();
+
+        mAuthManager = viewModel.getAuthManager();
 
         mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
     }
@@ -95,7 +91,7 @@ public class LoginFragment extends Fragment {
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
 
-        mHelpButton = (ImageView) view.findViewById(R.id.login_help);
+        ImageView mHelpButton = view.findViewById(R.id.login_help);
         mFPLogo = (ImageView) view.findViewById(R.id.login_fplogo);
 
         mSubmitButton = (Button) view.findViewById(R.id.login_loginbutton);

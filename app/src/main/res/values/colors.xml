@@ -10,7 +10,9 @@
 
     <!--DashboardTab Colors-->
     <color name="dashboardtab_tabselected">@color/fp_green</color>
-    <color name="dashboardtab_tabnotselected">#A1A1A1</color>
+    <color name="dashboardtab_tabnotselected">@android:color/transparent</color>
+    <color name="dashboardtab_insideselected">#FFFFFF</color>
+    <color name="dashboardtab_insidenotselected">#A1A1A1</color>
     <color name="dashboardtab_background">#FDFDFD</color>
     <color name="dashboardtab_border">#E0E0E0</color>
 

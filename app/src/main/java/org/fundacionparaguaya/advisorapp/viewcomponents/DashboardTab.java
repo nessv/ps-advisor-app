@@ -53,7 +53,7 @@ public class DashboardTab extends LinearLayout {
         try {
             mImageIcon.setImageResource(attrs.getResourceId(R.styleable.DashboardTab_tabImage, R.drawable.dashtab_friendsicon)); //set image to icon
             mTextViewCaption.setText(attrs.getResourceId(R.styleable.DashboardTab_tabCaption, R.string.familytab_title));                //set caption text
-            mTabLayout.setBackgroundResource(R.color.dashboardtab_background);
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_insidenotselected);
 
             boolean showCaption = attrs.getBoolean(R.styleable.DashboardTab_showCaption, true);
 
@@ -113,12 +113,13 @@ public class DashboardTab extends LinearLayout {
      */
     public void setSelected(boolean isSelected){
         if (isSelected) {
-
-            mImageIcon.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.dashboardtab_tabselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
-            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.dashboardtab_tabselected));//Change Text Color
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabselected);
+            mImageIcon.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.dashboardtab_insideselected), PorterDuff.Mode.MULTIPLY));//Change Icon Color
+            mTextViewCaption.setTextColor(ContextCompat.getColor(context, R.color.dashboardtab_insideselected));//Change Text Color
         } else {
-            mImageIcon.setColorFilter(R.color.dashboardtab_tabnotselected);//Change Icon Color
-            mTextViewCaption.setTextColor(getResources().getColor(R.color.dashboardtab_tabnotselected));//Change Text Color
+            mTabLayout.setBackgroundResource(R.color.dashboardtab_tabnotselected);
+            mImageIcon.setColorFilter(R.color.dashboardtab_insidenotselected);//Change Icon Color
+            mTextViewCaption.setTextColor(getResources().getColor(R.color.dashboardtab_insidenotselected));//Change Text Color
         }
     }
 

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter
 {
-    BackgroundQuestionCallback mCallback;
-    List<BackgroundQuestion> mQuestions;
+    private BackgroundQuestionCallback mCallback;
+    private List<BackgroundQuestion> mQuestions;
 
     SurveyQuestionReviewAdapter(List<BackgroundQuestion> questions, BackgroundQuestionCallback c)
     {
@@ -54,19 +54,19 @@ public class SurveyQuestionReviewAdapter extends RecyclerView.Adapter
         else return mQuestions.size();
     }
 
-    public static class QuestionResponseViewHolder extends RecyclerView.ViewHolder {
+    static class QuestionResponseViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mTvQuestion;
-        TextView mTvResponse;
+        private TextView mTvQuestion;
+        private TextView mTvResponse;
 
-        public QuestionResponseViewHolder(View itemView) {
+        QuestionResponseViewHolder(View itemView) {
             super(itemView);
 
             mTvResponse = itemView.findViewById(R.id.tv_questionresponse_response);
             mTvQuestion = itemView.findViewById(R.id.tv_questionresponse_question);
         }
 
-        public void setFields(BackgroundQuestion q, String response)
+        void setFields(BackgroundQuestion q, String response)
         {
             mTvQuestion.setText(q.getDescription());
 

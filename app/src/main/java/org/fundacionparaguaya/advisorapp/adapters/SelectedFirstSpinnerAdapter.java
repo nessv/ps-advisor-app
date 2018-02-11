@@ -5,10 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import org.fundacionparaguaya.advisorapp.models.Snapshot;
-
-import java.util.Date;
-
 /**
  * An adaptor for spinners that puts the selected item as the first in the list. Also includes an option to have an
  * empty first item
@@ -18,8 +14,6 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
 
     private boolean mHasEmptyPlaceholder = false;
 
-    // Your sent context
-    private Context context;
     // Your custom values for the spinner (User)
     protected T[] values;
 

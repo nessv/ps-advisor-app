@@ -25,10 +25,6 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment implements BackgroundQuestionCallback {
 
-    //TODO:disable scrolling in recycler view
-
-    static String FRAGMENT_TAG = "SurveyQuestionsFrag";
-
     protected DiscreteScrollView mDsvQuestionList;
     protected SurveyQuestionAdapter mQuestionAdapter;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
@@ -36,7 +32,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     private ImageButton mBackButton;
     private ImageButton mNextButton;
 
-    int mCurrentIndex = 0;
+    private int mCurrentIndex = 0;
 
     public SurveyQuestionsFrag()
     {
@@ -59,7 +55,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         initQuestionList();
     }
 
-    abstract void initQuestionList();
+    abstract protected void initQuestionList();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -141,7 +137,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         goToQuestion(mCurrentIndex-1);
     }
 
-    void goToQuestion(int index)
+    protected void goToQuestion(int index)
     {
         View currentFocus;
         mDsvQuestionList.stopScroll();

@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -9,17 +8,15 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 import org.fundacionparaguaya.advisorapp.models.Survey;
-import org.fundacionparaguaya.advisorapp.viewmodels.AddFamilyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import javax.inject.Inject;
-import java.lang.ref.WeakReference;
 
 public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
     @Inject
-    InjectionViewModelFactory mViewModelFactory;
+    protected InjectionViewModelFactory mViewModelFactory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){

@@ -22,17 +22,17 @@ import java.util.List;
 
 public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
-    final static int STRING_INPUT = 1;
-    final static int LOCATION_INPUT = 2;
-    final static int PHOTO_INPUT = 3;
-    final static int DROPDOWN_INPUT =4; //TODO: implement dropdowns
-    final static int REVIEW_PAGE = 5;
+    private final static int STRING_INPUT = 1;
+    private final static int LOCATION_INPUT = 2;
+    private final static int PHOTO_INPUT = 3;
+    private final static int DROPDOWN_INPUT =4; //TODO: implement dropdowns
+    private final static int REVIEW_PAGE = 5;
 
-    List<BackgroundQuestion> mQuestionsList;
-    BackgroundQuestionCallback mBackgroundQuestionCallback;
+    private List<BackgroundQuestion> mQuestionsList;
+    private BackgroundQuestionCallback mBackgroundQuestionCallback;
 
     //adapter for the review page
-    SurveyQuestionReviewAdapter mSurveyReviewAdapter;
+    private SurveyQuestionReviewAdapter mSurveyReviewAdapter;
 
     public SurveyQuestionAdapter(BackgroundQuestionCallback listener){
         mBackgroundQuestionCallback = listener;
@@ -70,21 +70,26 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 return DROPDOWN_INPUT;
             }
             else {
+                int viewHolderType;
+
                 switch (question.getResponseType()) {
                     case STRING:
                     case PHONE_NUMBER:
                     case INTEGER:
-                        return STRING_INPUT;
+                        viewHolderType = STRING_INPUT;
+                        break;
 
                     case PHOTO:
-                        return PHOTO_INPUT;
+                        viewHolderType = PHOTO_INPUT;
 
                     case LOCATION:
-                        return LOCATION_INPUT;
+                        viewHolderType = LOCATION_INPUT;
 
                     default:
-                        return -1;
+                        viewHolderType = -1;
                 }
+
+                return viewHolderType;
             }
         }
     }
@@ -209,8 +214,8 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
     public static class DropdownViewHolder extends QuestionViewHolder {
 
-        Spinner mSpinnerOptions;
-        SurveyQuestionSpinnerAdapter mSpinnerAdapter;
+        private Spinner mSpinnerOptions;
+        private SurveyQuestionSpinnerAdapter mSpinnerAdapter;
 
 
         public DropdownViewHolder(BackgroundQuestionCallback callback, View itemView) {
@@ -327,9 +332,9 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
     public static class ReviewPageViewHolder extends RecyclerView.ViewHolder{
 
-        Button mSubmitButton;
-        RecyclerView mRv;
-        BackgroundQuestionCallback mBackgroundQuestionCallback;
+        private Button mSubmitButton;
+        private RecyclerView mRv;
+        private BackgroundQuestionCallback mBackgroundQuestionCallback;
 
         public ReviewPageViewHolder(SurveyQuestionReviewAdapter adapter, BackgroundQuestionCallback callback, View itemView) {
             super(itemView);

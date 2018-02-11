@@ -3,7 +3,6 @@ package org.fundacionparaguaya.advisorapp.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
@@ -19,8 +18,7 @@ import javax.inject.Inject;
 
 public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
 
-    @Inject
-    InjectionViewModelFactory mViewModelFactory;
+    @Inject protected InjectionViewModelFactory mViewModelFactory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     }
 
     @Override
-    void initQuestionList() {
+    protected void initQuestionList() {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
         checkConditions();
 

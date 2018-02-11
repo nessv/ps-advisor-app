@@ -40,6 +40,7 @@ public class SurveyEconomicQuestionsFragment extends SurveyQuestionsFrag {
     @Override
     void initQuestionList() {
         Survey survey = mSharedSurveyViewModel.getSurveyInProgress();
+        checkConditions();
 
         mQuestionAdapter.setQuestionsList(survey.getEconomicQuestions());
     }

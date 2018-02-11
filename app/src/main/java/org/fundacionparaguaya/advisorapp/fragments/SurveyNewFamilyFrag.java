@@ -48,6 +48,8 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
 
                 mQuestionAdapter.setQuestionsList(mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions());
             }
+
+            checkConditions();
         });
     }
 

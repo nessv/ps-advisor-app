@@ -11,6 +11,7 @@ import android.view.View;
 
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
@@ -31,6 +32,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     protected DiscreteScrollView mDsvQuestionList;
     protected SurveyQuestionAdapter mQuestionAdapter;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
+
+    private ImageButton mBackButton;
+    private ImageButton mNextButton;
 
     int mCurrentIndex = 0;
 
@@ -92,18 +96,19 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             }
         );
 
+        mBackButton = view.findViewById(R.id.btn_questionall_back);
+        mBackButton.setOnClickListener(this::onBack);
+
+        mNextButton = view.findViewById(R.id.btn_questionall_next);
+        mNextButton.setOnClickListener(this::onNext);
+
         mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
+            mCurrentIndex = adapterPosition;
+            checkConditions();
+
             if(viewHolder!=null)
             {
-                if(viewHolder instanceof SurveyQuestionAdapter.DropdownViewHolder || viewHolder instanceof SurveyQuestionAdapter.ReviewPageViewHolder)
-                {
-                    InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-                else
-                {
-                    viewHolder.itemView.requestFocus();
-                }
+                viewHolder.itemView.requestFocus();
             }
         });
 
@@ -128,20 +133,18 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     @Override
     public void onNext(View v) {
-
-        int currentIndex = mDsvQuestionList.getCurrentItem();
-        goToQuestion(++currentIndex);
+        goToQuestion(mCurrentIndex+1);
     }
 
     @Override
     public void onBack(View v) {
-        int currentIndex = mDsvQuestionList.getCurrentItem();
-        goToQuestion(--currentIndex);
+        goToQuestion(mCurrentIndex-1);
     }
 
     void goToQuestion(int index)
     {
         View currentFocus;
+        mDsvQuestionList.stopScroll();
 
         if(getActivity()!=null && (currentFocus=getActivity().getCurrentFocus())!=null)
         {
@@ -150,6 +153,8 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         if(index >= 0 && index< mQuestionAdapter.getItemCount())
         {
+            mDsvQuestionList.stopScroll();
+            mDsvQuestionList.scrollToPosition(mCurrentIndex);
             mDsvQuestionList.smoothScrollToPosition(index);
 
             if(!mQuestionAdapter.shouldKeepKeyboardFor(index))
@@ -157,7 +162,37 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
+
+            mCurrentIndex = index;
+
+            checkConditions();
         }
     }
 
+    protected void checkConditions()
+    {
+        if(mCurrentIndex > 0 && mQuestionAdapter.getItemCount()>0 && !mQuestionAdapter.shouldKeepKeyboardFor(mCurrentIndex))
+        {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
+
+        if(mCurrentIndex==0)
+        {
+            mBackButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            mBackButton.setVisibility(View.VISIBLE);
+        }
+
+        if(mCurrentIndex==mQuestionAdapter.getItemCount()-1)
+        {
+            mNextButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            mNextButton.setVisibility(View.VISIBLE);
+        }
+    }
 }

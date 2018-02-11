@@ -6,14 +6,6 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                 android:background="@drawable/surveyquestions_arrow"
-                 android:rotation="-180"
-                 android:layout_marginStart="24dp"
-                 android:id="@+id/btn_questionall_back"
-                 android:layout_marginEnd="24dp"
-                 android:layout_gravity="center"/>
-
     <ScrollView android:layout_width="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
@@ -68,12 +60,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                 android:background="@drawable/surveyquestions_arrow"
-                 android:layout_marginEnd="24dp"
-                 android:id="@+id/btn_questionall_next"
-                 android:layout_marginStart="24dp"
-                 android:layout_gravity="center|end"/>
 </LinearLayout>
 
 

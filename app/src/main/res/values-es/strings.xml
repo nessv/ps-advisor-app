@@ -47,6 +47,9 @@
     <string name="bkgquestions_title">Información de Fondo</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Enviar Instantánea</string>
+    <string name="surveyquestions_economic_title">Preguntas Económicas</string>
+    <string name="survey_questionsremaining"> Restante</string>
+    <string name="survey_questionsskipped"> Salteado</string>
 
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Preguntas de Fondo</string>
@@ -89,7 +92,5 @@
     <string name="all_cancel">Cancelar</string>
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
-
-    <string name="surveyquestions_economic_title">Economic Questions</string>
 
 </resources>

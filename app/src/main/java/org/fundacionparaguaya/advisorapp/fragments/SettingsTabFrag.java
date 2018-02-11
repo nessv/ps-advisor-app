@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import org.fundacionparaguaya.advisorapp.R;
 
 /**
  * Fragment for settings tab

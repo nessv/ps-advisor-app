@@ -29,7 +29,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
-    SettingsViewModel mSettingsViewModel;
+    private SettingsViewModel mSettingsViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){

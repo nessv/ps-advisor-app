@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 public class SettingsStackedFrag extends AbstractStackedFrag {
 
     private Button mLogout;
+    private TextView mUsername;
     private AuthenticationManager mAuthManager;
 
     @Inject
@@ -51,14 +53,17 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settingsmain, container, false);
 
+        mLogout = (Button) view.findViewById(R.id.button_settingsmain_logout);
+        mUsername = (TextView) view.findViewById(R.id.settingsmain_username);
+
+        mUsername.setText(mAuthManager.getUser().getUsername());
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
-        mLogout = (Button) view.findViewById(R.id.button_settingsmain_logout);
 
         mLogout.setOnClickListener(new View.OnClickListener(){
             @Override

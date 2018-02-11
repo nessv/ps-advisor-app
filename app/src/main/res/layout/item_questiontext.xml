@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_gravity="center_vertical"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="28dp"
-            android:paddingBottom="28dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/item_picturequestion">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
     <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
                  android:background="@drawable/surveyquestions_arrow"
                  android:rotation="-180"
                  android:layout_marginStart="24dp"
+
                  android:layout_marginEnd="24dp"
                  android:layout_gravity="center"/>
 
-    <LinearLayout android:layout_width="0dp"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="2"
-                  android:orientation="vertical">
+    <ScrollView android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fillViewport="true">
 
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
         <TextView
                 android:layout_width="match_parent"
@@ -46,10 +47,13 @@
                   android:textCursorDrawable="@drawable/dark_cursor"
                   android:backgroundTint="@color/black"
                   android:hint="Your Response"
-                  android:textSize="40sp"
-        />
+                  android:textSize="40sp"/>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
     </LinearLayout>
-
+    </ScrollView>
 
     <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
                  android:background="@drawable/surveyquestions_arrow"
@@ -57,7 +61,5 @@
                  android:id="@+id/btn_questionall_next"
                  android:layout_marginStart="24dp"
                  android:layout_gravity="center|end"/>
-
-
 </LinearLayout>
-</ScrollView>
+

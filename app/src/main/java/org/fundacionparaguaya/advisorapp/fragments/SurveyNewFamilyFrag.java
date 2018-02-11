@@ -34,9 +34,6 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setFooterColor(R.color.survey_grey);
-        setHeaderColor(R.color.survey_grey);
-
         setTitle(getString(R.string.addfamily_new_family_title));
     }
 

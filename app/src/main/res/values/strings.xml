@@ -94,6 +94,7 @@
     <string name="all_okay">Okay</string>
     <string name="your_response">Your Response</string>
     <string name="surveyquestions_economic_title">Economic Questions</string>
+    <string name="surveyreview_noresponse">No Response</string>
 
 
 </resources>

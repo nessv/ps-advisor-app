@@ -5,17 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-import okhttp3.internal.Util;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyQuestionAdapter;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
@@ -32,7 +28,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
     static String FRAGMENT_TAG = "SurveyQuestionsFrag";
 
-    protected RecyclerView mDsvQuestionList;
+    protected DiscreteScrollView mDsvQuestionList;
     protected SurveyQuestionAdapter mQuestionAdapter;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
 
@@ -69,16 +65,12 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         mDsvQuestionList = view.findViewById(R.id.rv_survey_questions);
 
-        mDsvQuestionList.setHasFixedSize(true);
-
         mDsvQuestionList.setAdapter(mQuestionAdapter);
 
       //  mDsvQuestionList.setSlideOnFling(true);
       //  mDsvQuestionList.setSlideOnFlingThreshold(1800);
 
-        mDsvQuestionList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mDsvQuestionList.setOnTouchListener((v, event)-> false);
-       // mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
+       mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
 
         mDsvQuestionList.setRecyclerListener((holder) ->
         {
@@ -100,12 +92,20 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             }
         );
 
-        /*mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
+        mDsvQuestionList.addOnItemChangedListener((viewHolder, adapterPosition) -> {
             if(viewHolder!=null)
             {
-                viewHolder.itemView.requestFocus();
+                if(viewHolder instanceof SurveyQuestionAdapter.DropdownViewHolder || viewHolder instanceof SurveyQuestionAdapter.ReviewPageViewHolder)
+                {
+                    InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                else
+                {
+                    viewHolder.itemView.requestFocus();
+                }
             }
-        });*/
+        });
 
         mQuestionAdapter = new SurveyQuestionAdapter(this);
         mDsvQuestionList.setAdapter(mQuestionAdapter);
@@ -118,6 +118,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         try {
             //all responses to questions (for now) should be strings
             mSharedSurveyViewModel.addBackgroundResponse(q, (String)response);
+            mQuestionAdapter.updateReviewPage();
         }
         catch (ClassCastException e)
         {
@@ -128,9 +129,6 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     @Override
     public void onNext(View v) {
 
-
-        mDsvQuestionList.smoothScrollToPosition(mCurrentIndex+=1);
-        /*
         int currentIndex = mDsvQuestionList.getCurrentItem();
         currentIndex++;
 
@@ -144,6 +142,13 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
         if(currentIndex< mQuestionAdapter.getItemCount())
         {
             mDsvQuestionList.smoothScrollToPosition(currentIndex);
-        }*/
+
+            if(!mQuestionAdapter.shouldKeepKeyboardFor(currentIndex))
+            {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            }
+        }
+
     }
 }

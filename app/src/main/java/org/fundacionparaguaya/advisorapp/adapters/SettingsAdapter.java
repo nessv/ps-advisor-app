@@ -1,7 +1,7 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
 /**
- * Created by alex on 2/11/2018.
+ * Settings adapter for future use in settings
  */
 
 public class SettingsAdapter {

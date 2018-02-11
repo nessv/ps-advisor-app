@@ -19,7 +19,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SettingsViewModel;
 import javax.inject.Inject;
 
 /**
- * Created by alex on 2/10/2018.
+ * Main settings page
  */
 
 public class SettingsStackedFrag extends AbstractStackedFrag {

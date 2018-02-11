@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
@@ -28,8 +31,13 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.zakariya.stickyheaders.SectioningAdapter;
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.SortedMap;
+
 import javax.inject.Inject;
-import java.util.*;
 
 /**
  * List of all the indicators a family has
@@ -290,7 +298,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
                 mIndicatorQuestion = indicatorResponse.getKey();
                 mIndicatorOption = indicatorResponse.getValue();
 
-                mTitle.setText(mIndicatorQuestion.getDescription());
+                mTitle.setText(mIndicatorQuestion.getIndicator().getTitle());
                 mLevelDescription.setText(mIndicatorOption.getDescription());
 
                 int color = -1;

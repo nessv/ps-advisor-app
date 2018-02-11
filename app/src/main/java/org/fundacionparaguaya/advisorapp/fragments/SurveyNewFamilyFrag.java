@@ -32,6 +32,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
                 .get(SharedSurveyViewModel.class);
 
         setTitle(getString(R.string.addfamily_new_family_title));
+        setShowFooter(false);
     }
 
     @Override

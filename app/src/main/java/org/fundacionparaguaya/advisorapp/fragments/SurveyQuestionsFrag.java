@@ -102,6 +102,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             mCurrentIndex = adapterPosition;
             checkConditions();
 
+            mBackButton.setEnabled(true);
+            mNextButton.setEnabled(true);
+
             if(viewHolder!=null)
             {
                 viewHolder.itemView.requestFocus();
@@ -158,6 +161,9 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
+
+            mBackButton.setEnabled(false);
+            mNextButton.setEnabled(false);
 
             mCurrentIndex = index;
 

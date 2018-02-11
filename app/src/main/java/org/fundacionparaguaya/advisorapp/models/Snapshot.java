@@ -105,6 +105,10 @@ public class Snapshot {
         return remoteId;
     }
 
+    public void setRemoteId(Long remoteId) {
+        this.remoteId = remoteId;
+    }
+
     public int getFamilyId() {
         return familyId;
     }
@@ -168,6 +172,13 @@ public class Snapshot {
      */
     public void response(IndicatorQuestion question, IndicatorOption response) {
         indicatorResponses.put(question, response);
+    }
+
+    /**
+     * Record a priority for the snapshot. The priority order is the order that they are recorded.
+     */
+    public void priority(LifeMapPriority priority) {
+        priorities.add(priority);
     }
 
     @Override

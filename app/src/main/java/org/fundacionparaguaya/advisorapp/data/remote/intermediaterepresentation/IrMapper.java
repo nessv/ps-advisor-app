@@ -12,9 +12,11 @@ import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
+import java.text.CharacterIterator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -220,6 +222,24 @@ public class IrMapper {
         return ir;
     }
 
+    public static List<PriorityIr> mapPriorities(Snapshot snapshot) {
+        List<PriorityIr> ir = new ArrayList<>(snapshot.getPriorities().size());
+        for (LifeMapPriority priority : snapshot.getPriorities()) {
+            ir.add(mapPriority(priority, snapshot));
+        }
+        return ir;
+    }
+
+    private static PriorityIr mapPriority(LifeMapPriority priority, Snapshot snapshot) {
+        PriorityIr ir = new PriorityIr();
+        ir.indicatorTitle = mapIndicatorName(priority.getIndicator());
+        ir.snapshotId = snapshot.getRemoteId();
+        ir.reason = priority.getReason();
+        ir.action = priority.getAction();
+        ir.estimatedDate = mapDate(priority.getEstimatedDate());
+        return ir;
+    }
+
     private static Map<String, Object> mapBackgroundResponses(Map<BackgroundQuestion, String> responses) {
         Map<String, Object> ir = new HashMap<>();
         for (BackgroundQuestion question : responses.keySet()) {
@@ -339,6 +359,13 @@ public class IrMapper {
         }
     }
 
+    private static String mapDate(Date date) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        df.setTimeZone(tz);
+        return df.format(date);
+    }
+
     private static IndicatorOption.Level mapIndicatorOptionLevel(String level) {
         switch (level.toLowerCase()) {
             case "red":
@@ -355,11 +382,11 @@ public class IrMapper {
     private static String mapIndicatorOptionLevel(IndicatorOption.Level level) {
         switch (level) {
             case Red:
-                return "red";
+                return "RED";
             case Yellow:
-                return "yellow";
+                return "YELLOW";
             case Green:
-                return "green";
+                return "GREEN";
             default:
                 return "";
         }
@@ -383,7 +410,27 @@ public class IrMapper {
             result.append(word.substring(1).toLowerCase());
         }
         return result.toString();
+    }
 
+    /**
+     * Maps a indicator to a "pretty" name.
+     */
+    private static String mapIndicatorName(Indicator indicator) {
+        StringBuilder result = new StringBuilder();
+        CharacterIterator iter = new StringCharacterIterator(indicator.getName());
+        for (char c = iter.first(); c != CharacterIterator.DONE; c = iter.next()) {
+            if (result.length() > 0) {
+                result.append(" ");
+            }
+            result.append(Character.toUpperCase(c));
+            c = iter.next();
+            while (Character.isLowerCase(c)) {
+                result.append(c);
+                c = iter.next();
+            }
+            iter.previous();
+        }
+        return result.toString();
     }
     //endregion Snapshot
 }

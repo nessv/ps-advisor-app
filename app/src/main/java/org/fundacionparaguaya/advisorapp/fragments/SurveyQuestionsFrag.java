@@ -46,6 +46,7 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override

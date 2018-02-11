@@ -41,10 +41,11 @@
     <string name="survey_finish">Finish</string>
     <string name="survey_skip">Skip</string>
     <string name="survey_save">Save</string>
-    <string name="bkgquestions_title">Background Information</string>
+    <string name="survey_bkgquestions_title">Background Information</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Submit Snapshot</string>
-
+    <string name="survey_questionsremaining"> Remaining</string>
+    <string name="survey_questionsskipped"> Skipped</string>
     <string name="survey_error_no_surveys_title">No Surveys Available</string>
     <string name="survey_error_no_surveys_description">There are currently no surveys available. Resync the application
         and try again.
@@ -54,6 +55,8 @@
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
+    <string name="survey_summary_submit">Submit</string>
+    <string name="survey_summary_back">Back</string>
 
     <!-- Family Details -->
     <string name="familydetails_phonenumberdefault">No Phone Number</string>
@@ -95,7 +98,9 @@
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
 
     <string name="all_okay">Okay</string>
-    <string name="your_response">Your Response</string>
+
+    <string name="your_response">Tu Respuesta</string>
+
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="surveyreview_noresponse">No Response</string>
 

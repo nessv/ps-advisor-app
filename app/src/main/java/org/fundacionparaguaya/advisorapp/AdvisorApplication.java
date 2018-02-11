@@ -30,7 +30,7 @@ public class AdvisorApplication extends Application {
                 .databaseModule(new DatabaseModule(this))
                 .build();
 
-        new Instabug.Builder(this, "c66647f3c86b136c76d64c27f2a4bb12")
+        new Instabug.Builder(this, BuildConfig.INSTABUG_API_KEY_STRING)
                 .setInvocationEvent(InstabugInvocationEvent.FLOATING_BUTTON)
                 .build();
 

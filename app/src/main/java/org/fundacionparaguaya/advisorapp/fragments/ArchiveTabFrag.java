@@ -8,6 +8,7 @@ import org.fundacionparaguaya.advisorapp.R;
 
 public class ArchiveTabFrag extends AbstractTabbedFrag
 {
+
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
         return UnderConstructionFragment.build(getResources().getString(R.string.archivetab_title));

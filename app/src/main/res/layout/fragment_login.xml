@@ -23,12 +23,12 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="68dp"
         android:layout_marginEnd="68dp"
-        custom:layout_constraintTop_toBottomOf="@id/login_progress"
+        android:layout_marginStart="68dp"
         custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="@id/login_help"
         custom:layout_constraintStart_toStartOf="parent"
-        custom:layout_constraintEnd_toEndOf="parent">
+        custom:layout_constraintTop_toBottomOf="@id/login_progress">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -56,7 +56,7 @@
                 android:textColor="@color/login_incorrectcredentials"
                 android:textSize="18sp"
                 android:textStyle="normal"
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
 
             <EditText
                 android:id="@+id/login_email"
@@ -65,13 +65,13 @@
                 android:layout_margin="12dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_rounded_edittext"
-                android:drawableStart="@drawable/login_username_icon"
                 android:drawablePadding="27dp"
+                android:drawableStart="@drawable/login_username_icon"
                 android:hint="@string/login_emailprompt"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingEnd="12dp"
+                android:paddingStart="20dp"
                 android:singleLine="true"
                 android:textSize="18sp" />
 
@@ -82,15 +82,15 @@
                 android:layout_margin="12dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_rounded_edittext"
-                android:drawableStart="@drawable/login_passwordicon"
                 android:drawablePadding="27dp"
+                android:drawableStart="@drawable/login_passwordicon"
                 android:hint="@string/login_passwordprompt"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/login_action_signin"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingEnd="12dp"
+                android:paddingStart="20dp"
                 android:singleLine="true"
                 android:textSize="18sp" />
 
@@ -133,6 +133,7 @@
         android:src="@drawable/app_helpicon"
         android:tint="@color/login_helpbutton"
         custom:layout_constraintBottom_toBottomOf="parent"
-        custom:layout_constraintEnd_toEndOf="parent" />
+        custom:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

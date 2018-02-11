@@ -7,6 +7,7 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 public class SettingsTabFrag extends AbstractTabbedFrag
 {
+
     @Override
     protected AbstractStackedFrag makeInitialFragment() {
         return new SettingsStackedFrag();

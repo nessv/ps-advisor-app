@@ -55,6 +55,8 @@
     <string name="survey_summary_backgroundtitle">Preguntas de Fondo</string>
     <string name="survey_summary_indicatortitle">Indicadores</string>
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
+    <string name="survey_summary_submit">Enviar</string>
+    <string name="survey_summary_back">Regreso</string>
 
 
     <!-- Family Details -->

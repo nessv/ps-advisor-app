@@ -55,6 +55,8 @@
     <string name="survey_summary_backgroundtitle">Background Questions</string>
     <string name="survey_summary_indicatortitle">Indicators</string>
     <string name="survey_summary_questionsleft">Questions Unanswered</string>
+    <string name="survey_summary_submit">Submit</string>
+    <string name="survey_summary_back">Back</string>
 
     <!-- Family Details -->
     <string name="familydetails_phonenumberdefault">No Phone Number</string>

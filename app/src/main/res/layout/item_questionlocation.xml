@@ -19,6 +19,7 @@
                  android:background="@drawable/surveyquestions_arrow"
                  android:rotation="-180"
                  android:layout_marginStart="24dp"
+                 android:id="@+id/btn_questionall_back"
                  android:layout_marginEnd="24dp"
                  android:layout_gravity="center"/>
 

@@ -306,15 +306,19 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
         BackgroundQuestionCallback mBackgroundQuestionCallback;
         TextView mTvQuestionTitle;
         ImageButton mBtnNext;
+        ImageButton mBtnBack;
 
         public QuestionViewHolder(BackgroundQuestionCallback callback, View itemView) {
             super(itemView);
 
             mBtnNext = itemView.findViewById(R.id.btn_questionall_next);
+            mBtnBack = itemView.findViewById(R.id.btn_questionall_back);
+
             mTvQuestionTitle = itemView.findViewById(R.id.tv_questionall_title);
 
             mBackgroundQuestionCallback = callback;
             mBtnNext.setOnClickListener(mBackgroundQuestionCallback::onNext);
+            mBtnBack.setOnClickListener(mBackgroundQuestionCallback::onBack);
         }
 
         /**Stores the question that is being set and sets the title of the question
@@ -324,6 +328,16 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
         public void setQuestion(BackgroundQuestion question)
         {
             mQuestion = question;
+
+            if(getAdapterPosition()==0)
+            {
+                mBtnBack.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                mBtnBack.setVisibility(View.VISIBLE);
+            }
+
             mTvQuestionTitle.setText(question.getDescription());
         }
     }

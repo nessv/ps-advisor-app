@@ -13,6 +13,7 @@ import java.util.Objects;
 public interface BackgroundQuestionCallback {
     void onQuestionAnswered(BackgroundQuestion q, Object response);
     void onNext(View v);
+    void onBack(View v);
     void onSubmit();
     String getResponseFor(BackgroundQuestion q);
 }

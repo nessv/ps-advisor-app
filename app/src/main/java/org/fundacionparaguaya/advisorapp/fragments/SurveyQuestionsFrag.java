@@ -67,10 +67,10 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
 
         mDsvQuestionList.setAdapter(mQuestionAdapter);
 
-      //  mDsvQuestionList.setSlideOnFling(true);
-      //  mDsvQuestionList.setSlideOnFlingThreshold(1800);
+        mDsvQuestionList.setSlideOnFling(true);
+        mDsvQuestionList.setSlideOnFlingThreshold(2500);
 
-       mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
+        mDsvQuestionList.setItemTransformer(new SurveyQuestionAdapter.QuestionFadeTransformer());
 
         mDsvQuestionList.setRecyclerListener((holder) ->
         {
@@ -130,8 +130,17 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
     public void onNext(View v) {
 
         int currentIndex = mDsvQuestionList.getCurrentItem();
-        currentIndex++;
+        goToQuestion(++currentIndex);
+    }
 
+    @Override
+    public void onBack(View v) {
+        int currentIndex = mDsvQuestionList.getCurrentItem();
+        goToQuestion(--currentIndex);
+    }
+
+    void goToQuestion(int index)
+    {
         View currentFocus;
 
         if(getActivity()!=null && (currentFocus=getActivity().getCurrentFocus())!=null)
@@ -139,16 +148,16 @@ public abstract class SurveyQuestionsFrag extends AbstractSurveyFragment impleme
             currentFocus.clearFocus();
         }
 
-        if(currentIndex< mQuestionAdapter.getItemCount())
+        if(index >= 0 && index< mQuestionAdapter.getItemCount())
         {
-            mDsvQuestionList.smoothScrollToPosition(currentIndex);
+            mDsvQuestionList.smoothScrollToPosition(index);
 
-            if(!mQuestionAdapter.shouldKeepKeyboardFor(currentIndex))
+            if(!mQuestionAdapter.shouldKeepKeyboardFor(index))
             {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
         }
-
     }
+
 }

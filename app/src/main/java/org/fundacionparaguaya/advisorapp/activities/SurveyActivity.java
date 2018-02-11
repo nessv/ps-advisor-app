@@ -172,11 +172,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     nextFragment = SurveyNewFamilyFrag.class;
                     break;
 
-                case NEW_FAMILY_REVIEW:
-                    nextFragment = null;
-                    //TODO: add new family review page
-                    break;
-
                 case INTRO:
                     nextFragment = SurveyIntroFragment.class;
                     break;
@@ -224,11 +219,6 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                             })
                             .show();
                     break;
-                }
-
-                case NEW_FAMILY_REVIEW:
-                {
-                    mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
                 }
 
                 case INDICATORS: {

@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    app:roundedCornerRadius="3dp"
                     fresco:placeholderImage="@color/colorAccent" />
 
                 <LinearLayout
@@ -47,7 +48,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:padding="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="1dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:textAppearance="@style/BigHero.Black"
                         android:textColor="#313131"
                         android:textSize="36sp"
@@ -58,7 +62,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:padding="10dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:text="@string/familydetails_phonenumberdefault"
                         android:textColor="#757478"
                         android:textSize="20sp" />

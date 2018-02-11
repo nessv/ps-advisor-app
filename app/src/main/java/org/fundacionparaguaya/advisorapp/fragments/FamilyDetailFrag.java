@@ -112,7 +112,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
         }
 
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+        Uri uri = Uri.parse("https://image.ibb.co/gf4qt7/Default_Family.jpg");
         mFamilyImage.setImageURI(uri);
     }
 

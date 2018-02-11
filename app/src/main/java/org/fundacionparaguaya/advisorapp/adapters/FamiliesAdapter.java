@@ -57,7 +57,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
         holder.familyName.setText(family.getName());
 
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+        Uri uri = Uri.parse("https://image.ibb.co/gf4qt7/Default_Family.jpg");
 
         holder.imageView.setImageURI(uri);
 

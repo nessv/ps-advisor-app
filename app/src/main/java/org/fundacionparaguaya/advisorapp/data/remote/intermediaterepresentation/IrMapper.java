@@ -6,6 +6,7 @@ import org.fundacionparaguaya.advisorapp.models.FamilyMember;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
+import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.models.Login;
 import org.fundacionparaguaya.advisorapp.models.ResponseType;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
@@ -172,15 +173,31 @@ public class IrMapper {
     //endregion
 
     //region Snapshot
-    public static List<Snapshot> mapSnapshots(List<SnapshotIr> ir, Family family, Survey survey) {
+    public static List<Snapshot> mapSnapshots(List<SnapshotIr> ir,
+                                              List<SnapshotOverviewIr> overviewIrs,
+                                              Family family,
+                                              Survey survey) {
         List<Snapshot> snapshots = new ArrayList<>(ir.size());
         for (SnapshotIr snapshotIr : ir) {
-            snapshots.add(mapSnapshot(snapshotIr, family, survey));
+            SnapshotOverviewIr overviewIr = findOverview(snapshotIr, overviewIrs);
+            snapshots.add(mapSnapshot(snapshotIr, overviewIr.priorities, family, survey));
         }
         return snapshots;
     }
 
-    public static Snapshot mapSnapshot(SnapshotIr ir, Family family, Survey survey) {
+    private static SnapshotOverviewIr findOverview(SnapshotIr snapshotIr,
+                                            List<SnapshotOverviewIr> overviewIrs) {
+        for (SnapshotOverviewIr overviewIr : overviewIrs) {
+            if (overviewIr.snapshotId == snapshotIr.id) {
+                return overviewIr;
+            }
+        }
+        throw new IllegalStateException(
+                "Couldn't find the overview for snapshot " + snapshotIr.id + "!");
+    }
+
+    public static Snapshot mapSnapshot(SnapshotIr ir, List<PriorityIr> priorityIrs,
+                                       Family family, Survey survey) {
         return new Snapshot(
                 0,
                 ir.id,
@@ -189,7 +206,8 @@ public class IrMapper {
                 mapPersonalResponses(ir, survey),
                 mapEconomicResponses(ir, survey),
                 mapIndicatorResponses(ir, survey),
-                mapDate(ir.createdAt));
+                mapPriorities(priorityIrs, survey),
+                mapDateTime(ir.createdAt));
     }
 
     public static SnapshotIr mapSnapshot(Snapshot snapshot, Survey survey) {
@@ -254,7 +272,25 @@ public class IrMapper {
                     getIndicatorOption(indicatorQuestion.getOptions(), mapIndicatorOptionLevel(ir.indicatorResponses.get(question))));
         }
         return responses;
+    }
 
+    private static List<LifeMapPriority> mapPriorities(List<PriorityIr> ir, Survey survey) {
+        List<LifeMapPriority> priorities = new ArrayList<>(ir.size());
+        for (PriorityIr priorityIr : ir) {
+            priorities.add(mapPriority(priorityIr, survey));
+        }
+        return priorities;
+    }
+
+    private static LifeMapPriority mapPriority(PriorityIr ir, Survey survey) {
+        IndicatorQuestion question = getIndicatorQuestion(survey.getIndicatorQuestions(),
+                mapIndicatorName(ir.indicatorTitle));
+        return LifeMapPriority.builder()
+                .indicator(question.getIndicator())
+                .reason(ir.reason)
+                .action(ir.action)
+                .estimatedDate(mapDate(ir.estimatedDate))
+                .build();
     }
 
     private static BackgroundQuestion getBackgroundQuestion(List<BackgroundQuestion> questions, String name) {
@@ -281,9 +317,20 @@ public class IrMapper {
         return null;
     }
 
-    private static Date mapDate(String ir) {
+    private static Date mapDateTime(String ir) {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
+        df.setTimeZone(tz);
+        try {
+            return df.parse(ir);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    private static Date mapDate(String ir) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         df.setTimeZone(tz);
         try {
             return df.parse(ir);
@@ -316,6 +363,27 @@ public class IrMapper {
             default:
                 return "";
         }
+    }
+
+    /**
+     * Maps a "pretty" indicator name to it's referable value.
+     */
+    private static String mapIndicatorName(String title) {
+        String[] words = title.split(" ");
+        if (words.length == 0) {
+            throw new UnsupportedOperationException(
+                    "The given indicator title couldn't be converted! " + title);
+        }
+        // convert from words to camel case
+        StringBuilder result = new StringBuilder();
+        result.append(words[0].toLowerCase());
+        for (int i = 1; i < words.length; i++) {
+            String word = words[i];
+            result.append(word.substring(0, 1).toUpperCase());
+            result.append(word.substring(1).toLowerCase());
+        }
+        return result.toString();
+
     }
     //endregion Snapshot
 }

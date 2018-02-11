@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b58f655081c24442660243035a1f4a37",
+    "identityHash": "e309ee51334a9c6ab2bc182cf016771f",
     "entities": [
       {
         "tableName": "families",
@@ -202,7 +202,7 @@
       },
       {
         "tableName": "snapshots",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER NOT NULL, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `family_id` INTEGER NOT NULL, `survey_id` INTEGER NOT NULL, `personal_responses` TEXT, `economic_responses` TEXT, `indicator_responses` TEXT, `priorities` TEXT, `created_at` INTEGER, FOREIGN KEY(`family_id`) REFERENCES `families`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -243,6 +243,12 @@
           {
             "fieldPath": "indicatorResponses",
             "columnName": "indicator_responses",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "priorities",
+            "columnName": "priorities",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -305,7 +311,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b58f655081c24442660243035a1f4a37\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e309ee51334a9c6ab2bc182cf016771f\")"
     ]
   }
 }

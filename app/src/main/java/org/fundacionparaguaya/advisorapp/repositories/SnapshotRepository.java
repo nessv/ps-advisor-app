@@ -7,11 +7,13 @@ import org.fundacionparaguaya.advisorapp.data.local.SnapshotDao;
 import org.fundacionparaguaya.advisorapp.data.remote.SnapshotService;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotIr;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotOverviewIr;
 import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.models.Snapshot;
 import org.fundacionparaguaya.advisorapp.models.Survey;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -70,7 +72,7 @@ public class SnapshotRepository {
 
                 if (response.isSuccessful() && response.body() != null) {
                     // overwrite the pending snapshot with the snapshot from remote db
-                    Snapshot remoteSnapshot = IrMapper.mapSnapshot(response.body(), family, survey);
+                    Snapshot remoteSnapshot = IrMapper.mapSnapshot(response.body(), new ArrayList<>(), family, survey);
                     remoteSnapshot.setId(snapshot.getId());
                     saveSnapshot(remoteSnapshot);
                 } else {
@@ -97,16 +99,26 @@ public class SnapshotRepository {
 
     private boolean pullSnapshots(Family family, Survey survey) {
         try {
-            Response<List<SnapshotIr>> response = snapshotService
+            Response<List<SnapshotIr>> snapshotsResponse = snapshotService
                     .getSnapshots(survey.getRemoteId(), family.getRemoteId())
                     .execute();
-
-            if (!response.isSuccessful() || response.body() == null) {
-                Log.w(TAG, format("pullSnapshots: Could not pull snapshots for family %d! %s", family.getRemoteId(), response.errorBody().string()));
+            if (!snapshotsResponse.isSuccessful() || snapshotsResponse.body() == null) {
+                Log.w(TAG, format("pullSnapshots: Could not pull snapshots for family %d! %s",
+                        family.getRemoteId(), snapshotsResponse.errorBody().string()));
                 return false;
             }
 
-            List<Snapshot> snapshots = IrMapper.mapSnapshots(response.body(), family, survey);
+            Response<List<SnapshotOverviewIr>> overviewsResponse = snapshotService
+                    .getSnapshotOverviews(family.getRemoteId())
+                    .execute();
+            if (!overviewsResponse.isSuccessful() || overviewsResponse.body() == null) {
+                Log.w(TAG, format("pullSnapshots: Could not pull overviews for family %d! %s",
+                        family.getRemoteId(), overviewsResponse.errorBody().string()));
+                return false;
+            }
+
+            List<Snapshot> snapshots = IrMapper.
+                    mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family, survey);
             for (Snapshot snapshot : snapshots) {
                 Snapshot old = snapshotDao.queryRemoteSnapshotNow(snapshot.getRemoteId());
                 if (old != null) {

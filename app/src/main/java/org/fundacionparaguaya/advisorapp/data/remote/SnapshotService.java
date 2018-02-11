@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.advisorapp.data.remote;
 
 import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotIr;
+import org.fundacionparaguaya.advisorapp.data.remote.intermediaterepresentation.SnapshotOverviewIr;
 
 import java.util.List;
 
@@ -24,4 +25,8 @@ public interface SnapshotService {
     @POST("snapshots")
     Call<SnapshotIr> postSnapshot(
             @Body SnapshotIr snapshotIr);
+
+    @GET("snapshots/family")
+    Call<List<SnapshotOverviewIr>> getSnapshotOverviews(
+            @Query("family_id") long familyId);
 }

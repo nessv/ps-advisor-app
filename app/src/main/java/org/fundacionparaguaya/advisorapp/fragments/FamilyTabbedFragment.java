@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+
 /**
  * Tab for a family
  *
@@ -7,11 +8,11 @@ package org.fundacionparaguaya.advisorapp.fragments;
 
 public class FamilyTabbedFragment extends AbstractTabbedFrag
 {
+
     public FamilyTabbedFragment()
     {
         super();
-
-        setTabTitle("Familias");
+        setTabTitle("Family");
     }
 
     @Override

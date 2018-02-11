@@ -14,6 +14,7 @@ import com.novoda.merlin.Merlin;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.fragments.AbstractTabbedFrag;
@@ -100,7 +101,6 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     @Override
     protected void switchToFrag(Class fragmentClass) {
         super.switchToFrag(fragmentClass);
-
         String title = ((AbstractTabbedFrag)getFragment(fragmentClass)).getTabTitle();
         mTvTabTitle.setText(title);
     }

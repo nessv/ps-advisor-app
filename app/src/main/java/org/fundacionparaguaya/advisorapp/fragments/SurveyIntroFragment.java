@@ -88,7 +88,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment
 
                 /**when snapshot is made**/
                 mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
-                    mSurveyViewModel.setSurveyState(SurveyState.BACKGROUND_QUESTIONS);
+                    mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
                 }));
             }
             else

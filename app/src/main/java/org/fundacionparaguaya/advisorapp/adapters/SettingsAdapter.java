@@ -6,11 +6,4 @@ package org.fundacionparaguaya.advisorapp.adapters;
 
 public class SettingsAdapter {
 
-    public SettingsAdapter(){
-
-    }
-
-
-
-
 }

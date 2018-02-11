@@ -20,7 +20,6 @@ import org.fundacionparaguaya.advisorapp.repositories.FamilyRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SnapshotRepository;
 import org.fundacionparaguaya.advisorapp.repositories.SurveyRepository;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.fundacionparaguaya.advisorapp.viewmodels.SettingsViewModel;
 
 import javax.inject.Singleton;
 

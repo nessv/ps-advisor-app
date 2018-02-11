@@ -27,7 +27,6 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
 
     private Button mLogout;
     private TextView mUsername;
-    private AuthenticationManager mAuthManager;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -44,7 +43,6 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(SettingsViewModel.class);
 
-        mAuthManager = mSettingsViewModel.getAuthManager();
 
     }
 
@@ -56,7 +54,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
         mLogout = (Button) view.findViewById(R.id.button_settingsmain_logout);
         mUsername = (TextView) view.findViewById(R.id.settingsmain_username);
 
-        mUsername.setText(mAuthManager.getUser().getUsername());
+        mUsername.setText(mSettingsViewModel.getAuthManager().getUser().getUsername());
 
         return view;
     }
@@ -68,7 +66,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
         mLogout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mAuthManager.logout();
+                mSettingsViewModel.getAuthManager().logout();
             }
         });
 

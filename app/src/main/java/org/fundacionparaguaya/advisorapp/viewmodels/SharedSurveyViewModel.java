@@ -31,15 +31,13 @@ public class SharedSurveyViewModel extends ViewModel
     private MutableLiveData<SurveyState> mSurveyState;
 
     Set<IndicatorQuestion> mSkippedIndicators;
-
     MutableLiveData<Snapshot> mSnapshot;
-
     LiveData<Family> mFamily;
 
     Survey mSurvey;
-
     IndicatorQuestion focusedQuestion;
 
+    private final MutableLiveData<List<LifeMapPriority>> mPriorities;
     private int mSurveyId;
     private int mFamilyId;
 
@@ -58,6 +56,8 @@ public class SharedSurveyViewModel extends ViewModel
         mSnapshot = new MutableLiveData<Snapshot>();
 
         mSkippedIndicators = new HashSet<>();
+
+        mPriorities = new MutableLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily()
@@ -90,19 +90,21 @@ public class SharedSurveyViewModel extends ViewModel
         mFamilyId = familyId;
         mFamily = mFamilyRepository.getFamily(familyId);
     }
+
     /**
      * Makes a new snapshot based on the family set and the survey provided.
      *
      * Assumes that family live data object .getValue is not null
-     *
      * We should wait for this before proceeding from the start screen to the next screen
      *
      */
     public void makeSnapshot(Survey survey)
     {
         mSurvey = survey;
+        Snapshot s = new Snapshot(mSurvey);
 
-        mSnapshot.setValue(new Snapshot(mFamily.getValue(), mSurvey));
+        mSnapshot.setValue(new Snapshot(mSurvey));
+        mPriorities.setValue(s.getPriorities());
     }
 
     public LiveData<Snapshot> getSnapshot()
@@ -138,6 +140,11 @@ public class SharedSurveyViewModel extends ViewModel
         mSurveyState.setValue(state);
 
         calculateProgress();
+    }
+
+    public LiveData<List<LifeMapPriority>> getPriorities()
+    {
+        return mPriorities;
     }
 
     public void setFocusedQuestion(String name){

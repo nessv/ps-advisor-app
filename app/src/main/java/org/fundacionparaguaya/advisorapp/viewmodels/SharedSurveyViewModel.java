@@ -222,6 +222,9 @@ public class SharedSurveyViewModel extends ViewModel
             int progress = 0;
             String progressString = "";
 
+            int remainingQuestions = 0;
+            int skippedQuestions = 0;
+
             switch (mSurveyState.getValue())
             {
 
@@ -234,7 +237,9 @@ public class SharedSurveyViewModel extends ViewModel
                             mSnapshot.getValue().getEconomicResponses().size();
 
                     progress = (100*completedQuestions)/totalQuestions;
-                    progressString = (totalQuestions-completedQuestions) + " Questions Remaining";
+
+                    remainingQuestions = totalQuestions - completedQuestions;
+                    skippedQuestions = -1;
 
                     break;
 
@@ -244,13 +249,15 @@ public class SharedSurveyViewModel extends ViewModel
                     int skippedIndicators = mSkippedIndicators.size();
                     int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
 
+                    skippedQuestions = skippedIndicators;
+                    remainingQuestions = totalIndicators - (completedIndicators + skippedIndicators);
+
                     progress = (100* (completedIndicators + skippedIndicators))/totalIndicators;
-                    progressString = (totalIndicators-(completedIndicators+skippedIndicators)) + " Indicators Remaining, " +
-                    skippedIndicators + " Skipped" ;
+
 
             }
 
-            mProgress.setValue(new SurveyProgress(progress, progressString));
+            mProgress.setValue(new SurveyProgress(progress, remainingQuestions, skippedQuestions));
         }
     }
 
@@ -277,10 +284,22 @@ public class SharedSurveyViewModel extends ViewModel
         String mProgressDescription;
         int mPercentageComplete;
 
-        SurveyProgress(int percentage, String description)
+        int mQuestionsRemaining;
+        int mQuestionsSkipped;
+
+        SurveyProgress(int percentage, int remaining, int skipped)
         {
             mPercentageComplete = percentage;
-            mProgressDescription =description;
+            mQuestionsSkipped = skipped;
+            mQuestionsRemaining = remaining;
+        }
+
+        public int getSkipped(){
+            return mQuestionsSkipped;
+        }
+
+        public int getRemaining(){
+            return mQuestionsRemaining;
         }
 
         void setDescription(String description)

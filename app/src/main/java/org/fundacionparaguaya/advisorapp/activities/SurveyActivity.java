@@ -160,7 +160,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
             progressAnimator.start();
 
             mProgressBar.setProgress(surveyProgress.getPercentageComplete());
-            mTvQuestionsLeft.setText(surveyProgress.getDescription());
+            mTvQuestionsLeft.setText(setRemaining(surveyProgress.getRemaining(), surveyProgress.getSkipped()));
         });
 
         mSurveyViewModel.getSurveyState().observe(this, surveyState -> {
@@ -266,6 +266,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         }
     }
 
+    private String setRemaining(int remaining, int skipped){
+
+        if (skipped == -1){
+            return remaining + " " + getString(R.string.survey_questionsremaining);
+        }
+        return (remaining + " " + getString(R.string.survey_questionsremaining) + ", "
+            + skipped + " " + getString(R.string.survey_questionsskipped));
+    }
 
     //Returns and intent to open this activity, with an extra for the family's Id.
     public static Intent build(Context c, Family family)

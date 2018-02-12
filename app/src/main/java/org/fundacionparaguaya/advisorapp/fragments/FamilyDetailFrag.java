@@ -100,7 +100,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         }
 
 
-        Uri uri = Uri.parse("https://image.ibb.co/gf4qt7/Default_Family.jpg");
+        Uri uri = Uri.parse(getString(R.string.family_imagePlaceholder));
         mFamilyImage.setImageURI(uri);
     }
 
@@ -117,16 +117,15 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mAddress.setText(family.getAddress());
         mLocation.setText((CharSequence) family.getLocation());
 
-        try{
+        if (family.getMember() != null){
             mAddress.setText(family.getAddress());
-        }catch (NullPointerException e){
+        } else {
             mAddress.setText(getString(R.string.familydetails_locationdefault));
         }
 
-        //Test to see if there is a family member
-        try {
+        if (family.getMember() != null) {
             mPhoneNumber.setText(family.getMember().getPhoneNumber());
-        } catch (NullPointerException e) {
+        } else {
             mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
         }
 

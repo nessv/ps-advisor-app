@@ -91,7 +91,7 @@
     <string name="construction_underconstruction">Under Construction</string>
 
     <!-- Not Translated -->
-    <string name="family_imagePlaceholder" translatable="false">http://ak7.picdn.net/shutterstock/videos/14755297/thumb/1.jpg</string>
+    <string name="family_imagePlaceholder" translatable="false">https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg</string>
     <string name="surveysummary_defaulttitle" translatable="false">Title</string>
 
     <string name="all_okay">Okay</string>

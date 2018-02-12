@@ -34,8 +34,8 @@ public abstract class AbstractTabbedFrag extends Fragment implements NavigationL
     //was back nav required the last time we navigated
     boolean mWasBackNavRequired;
 
-    static String HAS_BEEN_INIT_KEY = "HAS_BEEN_INITIALIZED";
-    static String SHOW_BACK = "SHOW_BACK";
+    protected static String HAS_BEEN_INIT_KEY = "HAS_BEEN_INITIALIZED";
+    protected static String SHOW_BACK = "SHOW_BACK";
     boolean mHasBeenInitialized = false;
 
     private String mTabTitle = "";

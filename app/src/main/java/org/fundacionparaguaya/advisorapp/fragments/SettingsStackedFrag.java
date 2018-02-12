@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SettingsViewModel;
 
@@ -28,7 +27,7 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
     private Button mLogout;
     private TextView mUsername;
 
-    @Inject
+    protected @Inject
     InjectionViewModelFactory mViewModelFactory;
     private SettingsViewModel mSettingsViewModel;
 

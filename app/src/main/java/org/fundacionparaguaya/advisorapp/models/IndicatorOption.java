@@ -16,6 +16,7 @@ public class IndicatorOption {
     private String imageUrl;
     @SerializedName("level")
     private Level level;
+    private transient Indicator indicator;
 
     public IndicatorOption(String description, String imageUrl, Level level) {
         this.description = description;
@@ -33,6 +34,14 @@ public class IndicatorOption {
 
     public Level getLevel() {
         return level;
+    }
+
+    public Indicator getIndicator() {
+        return indicator;
+    }
+
+    public void setIndicator(Indicator indicator) {
+        this.indicator = indicator;
     }
 
     @Override

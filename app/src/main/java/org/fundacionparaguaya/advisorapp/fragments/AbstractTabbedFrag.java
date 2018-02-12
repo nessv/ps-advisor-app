@@ -39,10 +39,7 @@ public abstract class AbstractTabbedFrag extends Fragment implements NavigationL
     boolean mHasBeenInitialized = false;
 
     private String mTabTitle = "";
-
-    public AbstractTabbedFrag() {
-
-    }
+    
 
     public void setTabTitle(String title) {
         mTabTitle = title;

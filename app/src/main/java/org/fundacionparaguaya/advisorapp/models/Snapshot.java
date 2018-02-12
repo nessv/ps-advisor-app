@@ -95,6 +95,11 @@ public class Snapshot implements Comparable<Snapshot>{
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
+        if (indicatorResponses != null) {
+            for (IndicatorQuestion question : indicatorResponses.keySet()) {
+                indicatorResponses.get(question).setIndicator(question.getIndicator());
+            }
+        }
         this.priorities = priorities;
         this.createdAt = createdAt;
     }

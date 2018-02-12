@@ -28,7 +28,7 @@ public class Indicator {
     public Indicator(String name, String dimension, List<IndicatorOption> options) {
         this.name = name;
         this.dimension = dimension;
-        this.options = options;
+        setOptions(options);
     }
 
     public String getName() {
@@ -49,6 +49,13 @@ public class Indicator {
 
     public void setOptions(List<IndicatorOption> options) {
         this.options = options;
+        if (options == null) {
+            return;
+        }
+
+        for (IndicatorOption option : options) { // add references to this indicator
+            option.setIndicator(this);
+        }
     }
 
     @Override

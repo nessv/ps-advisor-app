@@ -30,6 +30,9 @@
     <string name="login_error">Could not log in. Are you offline?</string>
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
+    <string name="login_serverprod">Production Server</string>
+    <string name="login_serverdev">Development Server</string>
+    <string name="login_servertest">Test Server</string>
 
     <!-- Indicator Card -->
     <string name="indicator_selected">Selected</string>

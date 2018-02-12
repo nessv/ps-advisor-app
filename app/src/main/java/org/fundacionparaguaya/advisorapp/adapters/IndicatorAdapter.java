@@ -11,7 +11,6 @@ import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Adapter class for the indicators

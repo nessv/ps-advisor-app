@@ -31,6 +31,9 @@
     <string name="login_error">No pude entrar a la cuenta. ¿Estás fuera de línea?</string>
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
+    <string name="login_serverprod">Servidor de Producción</string>
+    <string name="login_serverdev">Servidor de Desarrollo</string>
+    <string name="login_servertest">Servidor de Prueba</string>
 
     <!-- Indicator Card -->
     <string name="indicator_selected">Seleccionado</string>

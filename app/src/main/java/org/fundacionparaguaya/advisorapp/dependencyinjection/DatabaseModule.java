@@ -184,11 +184,12 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    InjectionViewModelFactory provideInjectionViewModelFactory(
-            AuthenticationManager authManager,
-            FamilyRepository familyRepository,
-            SurveyRepository surveyRepository,
-            SnapshotRepository snapshotRepository) {
-        return new InjectionViewModelFactory(authManager, familyRepository, surveyRepository, snapshotRepository);
+    InjectionViewModelFactory provideInjectionViewModelFactory(ServerManager serverManager,
+                                                               AuthenticationManager authManager,
+                                                               FamilyRepository familyRepository,
+                                                               SurveyRepository surveyRepository,
+                                                               SnapshotRepository snapshotRepository) {
+        return new InjectionViewModelFactory(
+                serverManager, authManager, familyRepository, surveyRepository, snapshotRepository);
     }
 }

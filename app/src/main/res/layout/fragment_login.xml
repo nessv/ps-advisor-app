@@ -56,7 +56,37 @@
                 android:textColor="@color/login_incorrectcredentials"
                 android:textSize="18sp"
                 android:textStyle="normal"
-                android:visibility="invisible"/>
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner_login_serverselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/spinner_background"
+                    android:backgroundTint="#A1A1A1"
+                    android:minHeight="32dp"
+                    android:minWidth="50dp" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/ic_all_downchevron"
+                    android:backgroundTint="#A1A1A1" />
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/login_email"
@@ -101,7 +131,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="12dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/login_loginbutton"
                 android:text="@string/login_action_signin"
@@ -110,17 +140,6 @@
                 android:textColor="@color/login_buttontext"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/login_passwordreset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:text="@string/login_resetpassword"
-                android:textColor="@color/login_passwordreset"
-                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>

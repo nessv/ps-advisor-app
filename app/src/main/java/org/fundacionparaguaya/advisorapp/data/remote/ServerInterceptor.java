@@ -13,8 +13,6 @@ import okhttp3.Response;
  */
 
 public class ServerInterceptor implements Interceptor {
-    private static final String TAG = "ServerInterceptor";
-
     private ServerManager mServerManager;
 
     public ServerInterceptor(ServerManager serverManager) {
@@ -27,7 +25,10 @@ public class ServerInterceptor implements Interceptor {
 
         Request old = chain.request();
         Request request = old.newBuilder()
-                .url(old.url().newBuilder().host(server.getHost()).port(server.getPort()).build())
+                .url(old.url().newBuilder()
+                        .scheme(server.getProtocol())
+                        .host(server.getHost())
+                        .port(server.getPort()).build())
                 .build();
         return chain.proceed(request);
     }

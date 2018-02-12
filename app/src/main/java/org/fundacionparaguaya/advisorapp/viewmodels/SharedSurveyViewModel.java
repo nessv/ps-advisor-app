@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, INTRO, BACKGROUND_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, ADD_FAMILY, COMPLETE}
+    public enum SurveyState {NONE, NEW_FAMILY, INTRO, ECONOMIC_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -222,10 +222,13 @@ public class SharedSurveyViewModel extends ViewModel
             int progress = 0;
             String progressString = "";
 
+            int remainingQuestions = 0;
+            int skippedQuestions = 0;
+
             switch (mSurveyState.getValue())
             {
 
-                case BACKGROUND_QUESTIONS:
+                case ECONOMIC_QUESTIONS:
 
                     int totalQuestions = getSurveyInProgress().getEconomicQuestions().size() +
                             getSurveyInProgress().getPersonalQuestions().size();
@@ -234,7 +237,9 @@ public class SharedSurveyViewModel extends ViewModel
                             mSnapshot.getValue().getEconomicResponses().size();
 
                     progress = (100*completedQuestions)/totalQuestions;
-                    progressString = (totalQuestions-completedQuestions) + " Questions Remaining";
+
+                    remainingQuestions = totalQuestions - completedQuestions;
+                    skippedQuestions = -1;
 
                     break;
 
@@ -244,19 +249,18 @@ public class SharedSurveyViewModel extends ViewModel
                     int skippedIndicators = mSkippedIndicators.size();
                     int completedIndicators = mSnapshot.getValue().getIndicatorResponses().size();
 
+                    skippedQuestions = skippedIndicators;
+                    remainingQuestions = totalIndicators - (completedIndicators + skippedIndicators);
+
                     progress = (100* (completedIndicators + skippedIndicators))/totalIndicators;
-                    progressString = (totalIndicators-(completedIndicators+skippedIndicators)) + " Indicators Remaining, " +
-                    skippedIndicators + " Skipped" ;
+
 
             }
 
-            mProgress.setValue(new SurveyProgress(progress, progressString));
+            mProgress.setValue(new SurveyProgress(progress, remainingQuestions, skippedQuestions));
         }
     }
 
-    public static class IndicatorSurvey{
-
-    }
     /**
      * Essentially "unwraps" the Snapshot live data and retrieves the value. If the value is null, it throws
      * an illegal state exception
@@ -280,10 +284,22 @@ public class SharedSurveyViewModel extends ViewModel
         String mProgressDescription;
         int mPercentageComplete;
 
-        SurveyProgress(int percentage, String description)
+        int mQuestionsRemaining;
+        int mQuestionsSkipped;
+
+        SurveyProgress(int percentage, int remaining, int skipped)
         {
             mPercentageComplete = percentage;
-            mProgressDescription =description;
+            mQuestionsSkipped = skipped;
+            mQuestionsRemaining = remaining;
+        }
+
+        public int getSkipped(){
+            return mQuestionsSkipped;
+        }
+
+        public int getRemaining(){
+            return mQuestionsRemaining;
         }
 
         void setDescription(String description)

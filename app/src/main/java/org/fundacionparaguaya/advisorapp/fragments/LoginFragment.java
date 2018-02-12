@@ -17,14 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.*;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
+import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
@@ -41,25 +38,21 @@ import static org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManage
  */
 
 public class LoginFragment extends Fragment {
-    EditText mEmailView;
-    EditText mPasswordView;
-    Button mSubmitButton;
-    TextView mIncorrectCredentialsView;
-    TextView mPasswordReset;
-    ImageView mHelpButton;
-    private ImageView mFPLogo;
-
-    protected LinearLayout mLoginForm;
-    protected ScrollView mLoginFormScrollView;
-
-    AuthenticationManager mAuthManager;
-
-    @Inject InjectionViewModelFactory mViewModelFactory;
-
-    LoginViewModel mLoginViewModel;
 
     // Threshold for minimal keyboard height.
-    public final int MIN_KEYBOARD_HEIGHT_PX = 150;
+    private static final int MIN_KEYBOARD_HEIGHT_PX = 150;
+
+    protected EditText mEmailView;
+    protected EditText mPasswordView;
+    protected Button mSubmitButton;
+    protected TextView mIncorrectCredentialsView;
+    protected TextView mPasswordReset;
+    protected AuthenticationManager mAuthManager;
+
+    @Inject protected InjectionViewModelFactory mViewModelFactory;
+
+    private ImageView mFPLogo;
+    private MixpanelAPI mMixpanel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,10 +62,19 @@ public class LoginFragment extends Fragment {
                 .getApplicationComponent()
                 .inject(this);
 
-        mLoginViewModel = ViewModelProviders
+        LoginViewModel viewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
-        mAuthManager = mLoginViewModel.getAuthManager();
+
+        mAuthManager = viewModel.getAuthManager();
+
+        mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mMixpanel.flush();
+        super.onDestroyView();
     }
 
     @Nullable
@@ -83,16 +85,13 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         setRetainInstance(true);
 
-        mLoginForm = (LinearLayout) view.findViewById(R.id.email_login_form);
-        mLoginFormScrollView = (ScrollView) view.findViewById(R.id.login_form);
-
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
         mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
 
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
 
-        mHelpButton = (ImageView) view.findViewById(R.id.login_help);
+        ImageView mHelpButton = view.findViewById(R.id.login_help);
         mFPLogo = (ImageView) view.findViewById(R.id.login_fplogo);
 
         mSubmitButton = (Button) view.findViewById(R.id.login_loginbutton);
@@ -183,6 +182,7 @@ public class LoginFragment extends Fragment {
      */
     private void attemptLogin() {
         // Reset errors.
+
         mEmailView.setError(null);
         mPasswordView.setError(null);
 

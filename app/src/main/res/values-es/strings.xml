@@ -44,14 +44,19 @@
     <string name="survey_finish">Terminar</string>
     <string name="survey_skip">Omitir</string>
     <string name="survey_save">Salvar</string>
-    <string name="bkgquestions_title">Información de Fondo</string>
+    <string name="survey_bkgquestions_title">Información de Fondo</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Enviar Instantánea</string>
+    <string name="surveyquestions_economic_title">Preguntas Económicas</string>
+    <string name="survey_questionsremaining"> Restante</string>
+    <string name="survey_questionsskipped"> Salteado</string>
 
     <!-- Survey Summary -->
     <string name="survey_summary_backgroundtitle">Preguntas de Fondo</string>
     <string name="survey_summary_indicatortitle">Indicadores</string>
     <string name="survey_summary_questionsleft">Preguntas sin Respuesta</string>
+    <string name="survey_summary_submit">Enviar</string>
+    <string name="survey_summary_back">Regreso</string>
 
 
     <!-- Family Details -->
@@ -90,6 +95,6 @@
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
 
-    <string name="surveyquestions_economic_title">Economic Questions</string>
+    <string name="surveyreview_noresponse">No Response</string>
 
 </resources>

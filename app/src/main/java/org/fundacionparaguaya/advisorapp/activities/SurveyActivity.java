@@ -189,9 +189,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case REVIEWINDICATORS:
                     nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
+                case LIFEMAP:
+                    nextFragment = LifeMapFragment.class;
+                    break;
 
                 case COMPLETE:
                     this.finish();
+                    break;
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);
@@ -243,8 +247,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
-        mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
-        mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
+
+        if(fragment.getHeaderColor()!=0) {
+            mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
+        }
+
+        if(fragment.getFooterColor()!=0) {
+            mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
+        }
 
         mTvTitle.setText(fragment.getTitle());
 

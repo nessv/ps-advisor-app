@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.models;
 
+import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,8 +8,10 @@ import com.google.gson.annotations.SerializedName;
  *  by the parent indicator
  */
 
-public class IndicatorOption {
-    public enum Level {Red, Yellow, Green, None}
+public class IndicatorOption implements Comparable<IndicatorOption> {
+
+
+    public enum Level {None, Red, Yellow, Green,}
 
     @SerializedName("description")
     private String description;
@@ -64,5 +67,17 @@ public class IndicatorOption {
         result = 31 * result + (getImageUrl() != null ? getImageUrl().hashCode() : 0);
         result = 31 * result + (getLevel() != null ? getLevel().hashCode() : 0);
         return result;
+    }
+
+    /**
+     * Compares two indicator options based on their levels. Green is the "greatest" value and Red is the "lowest" value
+     * (besides None)
+     *
+     * @param option
+     * @return
+     */
+    @Override
+    public int compareTo(@NonNull IndicatorOption option) {
+        return Integer.valueOf(this.getLevel().ordinal()).compareTo(option.getLevel().ordinal());
     }
 }

@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SharedSurveyViewModel extends ViewModel
 {
-    public enum SurveyState {NONE, NEW_FAMILY, INTRO, ECONOMIC_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, COMPLETE}
+    public enum SurveyState {NONE, NEW_FAMILY, INTRO, ECONOMIC_QUESTIONS, INDICATORS, SUMMARY, REVIEWINDICATORS, REVIEWBACKGROUND, LIFEMAP, COMPLETE}
 
     static String NO_SNAPSHOT_EXCEPTION_MESSAGE = "Method call requires an existing snapshot, but no snapshot has been created. (Call" +
             "makeSnapshot before this function";
@@ -38,6 +38,8 @@ public class SharedSurveyViewModel extends ViewModel
     IndicatorQuestion focusedQuestion;
 
     private final MutableLiveData<List<LifeMapPriority>> mPriorities;
+    private final MutableLiveData<Collection<IndicatorOption>> mIndicatorResponses;
+
     private int mSurveyId;
     private int mFamilyId;
 
@@ -58,6 +60,7 @@ public class SharedSurveyViewModel extends ViewModel
         mSkippedIndicators = new HashSet<>();
 
         mPriorities = new MutableLiveData<>();
+        mIndicatorResponses = new MutableLiveData<>();
     }
 
     public LiveData<Family> getCurrentFamily()
@@ -104,7 +107,9 @@ public class SharedSurveyViewModel extends ViewModel
         Snapshot s = new Snapshot(mSurvey);
 
         mSnapshot.setValue(new Snapshot(mSurvey));
+
         mPriorities.setValue(s.getPriorities());
+        mIndicatorResponses.setValue(s.getIndicatorResponses().values());
     }
 
     public LiveData<Snapshot> getSnapshot()
@@ -147,6 +152,10 @@ public class SharedSurveyViewModel extends ViewModel
         return mPriorities;
     }
 
+    public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
+        return mIndicatorResponses;
+    }
+
     public void setFocusedQuestion(String name){
         for (IndicatorQuestion question:mSkippedIndicators){
             if (question.getName().equals(name)){
@@ -171,11 +180,10 @@ public class SharedSurveyViewModel extends ViewModel
 
     public void addSkippedIndicator(IndicatorQuestion question) {
         //clears any responses for the question
-        mSnapshot.getValue().getIndicatorResponses().remove(question);
-
-        //skipped indicators is a hashset, so there will be no duplicate entries.
+        getSnapshotValue().getIndicatorResponses().remove(question);
         mSkippedIndicators.add(question);
-        calculateProgress();
+
+        updateIndicatorLiveData();
     }
 
     public Set<IndicatorQuestion> getSkippedIndicators()
@@ -198,14 +206,13 @@ public class SharedSurveyViewModel extends ViewModel
             }
 
             getSnapshotValue().response(indicator, response);
-
-            calculateProgress();
+            updateIndicatorLiveData();
         }
     }
 
     public void removeIndicatorResponse(IndicatorQuestion question){
-        mSnapshot.getValue().getIndicatorResponses().remove(question);
-        calculateProgress();
+        getSnapshotValue().getIndicatorResponses().remove(question);
+        updateIndicatorLiveData();
     }
 
     public void addBackgroundResponse(BackgroundQuestion question, String response)
@@ -220,6 +227,16 @@ public class SharedSurveyViewModel extends ViewModel
     public @Nullable String getBackgroundResponse(BackgroundQuestion question)
     {
         return getSnapshotValue().getBackgroundResponse(question);
+    }
+
+    /**
+     * Should be called every time an indicator is added, skipped, or removed. It updates the live data
+     * object or indicator responses and calculates progress.
+     */
+    public void updateIndicatorLiveData()
+    {
+        mIndicatorResponses.setValue(getSnapshotValue().getIndicatorResponses().values());
+        calculateProgress();
     }
 
     public void calculateProgress()
@@ -348,7 +365,7 @@ public class SharedSurveyViewModel extends ViewModel
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
+           // viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
         }
     }
 

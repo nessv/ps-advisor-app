@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Adapter class for the indicators
+ * Adapter class for the indicator asked during a survey
  */
 
-public class IndicatorAdapter extends FragmentStatePagerAdapter {
+public class SurveyIndicatorAdapter extends FragmentStatePagerAdapter {
 
     private List<IndicatorQuestion> indicatorQuestionList;
 
@@ -28,7 +28,7 @@ public class IndicatorAdapter extends FragmentStatePagerAdapter {
 
     SurveyIndicatorsFragment mSurveyFragment;
 
-    public IndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
+    public SurveyIndicatorAdapter(FragmentManager fragmentManager, SharedSurveyViewModel surveyViewModel, SurveyIndicatorsFragment parentFrag) {
         super(fragmentManager);
 
         mSurveyViewModel = surveyViewModel;

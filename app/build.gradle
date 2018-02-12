@@ -4,8 +4,9 @@ android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
-    configurations {
-        all*.exclude group: 'com.android.support', module: 'support-v4'
+    configurations.all {
+        exclude group: 'com.android.support', module: 'support-v4'
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
     }
 
     defaultConfig {
@@ -113,5 +114,5 @@ dependencies {
 
     // Jobs
     implementation 'com.evernote:android-job:1.2.2'
-    implementation "com.google.android.gms:play-services-gcm:10.2.1"
+    implementation "com.google.android.gms:play-services-gcm:11.8.0"
 }

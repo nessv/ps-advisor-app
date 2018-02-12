@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ import java.util.*;
  * that when filled out, adds the priority to the view model
  */
 
-public class LifeMapFragment extends AbstractSurveyFragment{
+public class LifeMapFragment extends Fragment{
 
     private static final float INDICATOR_WIDTH = 140;
     private static final float INDICATOR_MARGIN = 56;
@@ -148,8 +149,26 @@ public class LifeMapFragment extends AbstractSurveyFragment{
 
                 mNumber.setVisibility(View.INVISIBLE);
                 itemView.setBackground(null);
+
+                itemView.setOnClickListener((view)->{
+                    if(view.getBackground()==null)
+                    {
+                       setSelectedBackground();
+                    }
+                    else setSelectedBackground();
+                });
             }
 
+            public void setSelectedBackground()
+            {
+                itemView.setBackground(ContextCompat.getDrawable(itemView.getContext(),
+                        R.drawable.lifemapindicator_background));
+            }
+
+            public void setUnselectedBackground()
+            {
+                itemView.setBackground(null);
+            }
             /**
              * Changes the background of this view holder to the selected state
              * and displays the priority order
@@ -172,12 +191,10 @@ public class LifeMapFragment extends AbstractSurveyFragment{
             {
                 isPriority = false;
 
-                if(response.getIndicator()!=null) {
-                    mTitle.setText(response.getIndicator().getName());
-                }
-                else mTitle.setText("No Indicator Set");
-
                 IndicatorUtilities.setViewColorFromResponse(response, mColor);
+
+                String title = response.getIndicator().getTitle();
+                mTitle.setText(title);
             }
         }
 

@@ -190,7 +190,7 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                     nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
                 case LIFEMAP:
-                    nextFragment = LifeMapFragment.class;
+                    nextFragment = SurveyChoosePrioritiesFragment.class;
                     break;
 
                 case COMPLETE:

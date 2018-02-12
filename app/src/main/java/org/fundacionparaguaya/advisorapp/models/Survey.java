@@ -48,6 +48,14 @@ public class Survey {
         this.personalQuestions = personalQuestions;
         this.economicQuestions = economicQuestions;
         this.indicatorQuestions = indicatorQuestions;
+
+        if (indicatorQuestions != null) {
+            for (IndicatorQuestion question : indicatorQuestions) {
+                for (IndicatorOption option : question.getOptions()) {
+                    option.setIndicator(question.getIndicator());
+                }
+            }
+        }
     }
 
     public int getId() {

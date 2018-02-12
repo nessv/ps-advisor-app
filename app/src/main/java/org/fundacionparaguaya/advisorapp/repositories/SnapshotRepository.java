@@ -47,7 +47,7 @@ public class SnapshotRepository {
     }
 
     public LiveData<List<Snapshot>> getSnapshots(Family family) {
-        return snapshotDao.queryAllTEMPFIX();
+        return snapshotDao.querySnapshotsForFamily(family.getId());
     }
 
     /**

@@ -97,7 +97,14 @@ public class IrMapper {
     }
 
     private static Survey mapSurvey(SurveyIr ir) {
-        return new Survey(ir.id, mapPersonal(ir), mapEconomic(ir), mapIndicator(ir));
+        return Survey.builder()
+                .remoteId(ir.id)
+                .title(ir.title)
+                .description(ir.description)
+                .personalQuestions(mapPersonal(ir))
+                .economicQuestions(mapEconomic(ir))
+                .indicatorQuestions(mapIndicator(ir))
+                .build();
     }
 
     private static List<BackgroundQuestion> mapPersonal(SurveyIr ir) {

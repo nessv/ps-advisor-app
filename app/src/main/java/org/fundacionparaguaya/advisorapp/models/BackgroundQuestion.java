@@ -18,17 +18,19 @@ public class BackgroundQuestion extends SurveyQuestion {
 
     public BackgroundQuestion(String name,
                               String description,
+                              boolean required,
                               ResponseType responseType,
                               QuestionType questionType) {
-        this(name, description, responseType, questionType, new HashMap<>());
+        this(name, description, required, responseType, questionType, new HashMap<>());
     }
   
     public BackgroundQuestion(String name,
                               String description,
+                              boolean required,
                               ResponseType responseType,
                               QuestionType questionType,
                               Map<String, String> options) {
-        super(name, description, responseType);
+        super(name, description, required, responseType);
         this.type = questionType;
         this.options = options;
     }

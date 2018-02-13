@@ -97,7 +97,7 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                         viewHolderType = PHOTO_INPUT;
                         break;
                     case LOCATION:
-                        viewHolderType = LOCATION_INPUT;
+                        viewHolderType = STRING_INPUT; // TODO: implement LOCATION_INPUT;
                         break;
                     default:
                         viewHolderType = -1;

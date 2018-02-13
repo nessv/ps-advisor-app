@@ -126,7 +126,8 @@ public class IrMapper {
             questions.add(new BackgroundQuestion(
                     name,
                     questionIr.title.get("es"),
-                    mapResponseType(questionIr),
+                    ir.schema.requiredQuestions.contains(name),
+                    mapResponseType(questionIr, ir.uiSchema.customFields.get(name)),
                     type,
                     mapBackgroundOptions(questionIr.optionNames, questionIr.options)));
         }
@@ -149,7 +150,8 @@ public class IrMapper {
             }
             indicator.setOptions(options);
 
-            questions.add(new IndicatorQuestion(indicator));
+            boolean required = ir.schema.requiredQuestions.contains(name);
+            questions.add(new IndicatorQuestion(indicator, required));
         }
         return questions;
     }
@@ -165,11 +167,15 @@ public class IrMapper {
         return options;
     }
 
-    private static ResponseType mapResponseType(SurveyQuestionIr ir) {
+    private static ResponseType mapResponseType(SurveyQuestionIr ir,
+                                                SurveyCustomFieldIr fieldIr) {
         switch (ir.type) {
             case "string":
                 if (ir.format != null && ir.format.equals("date")) {
                     return ResponseType.DATE;
+                } else if (fieldIr != null
+                        && "gmap".equals(fieldIr.field)) {
+                    return ResponseType.LOCATION;
                 }
                 return ResponseType.STRING;
             case "number":

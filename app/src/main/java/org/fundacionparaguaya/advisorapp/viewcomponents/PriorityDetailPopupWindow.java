@@ -281,7 +281,7 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
             return mOriginalPriority;
         }
 
-        public static PriorityPopupFinishedEvent buildReplaceEvent
+        static PriorityPopupFinishedEvent buildReplaceEvent
                 (LifeMapPriority oldPriority, LifeMapPriority newPriority, IndicatorOption o)
         {
             PriorityPopupFinishedEvent e = new PriorityPopupFinishedEvent(newPriority, o, ResultType.REPLACE);

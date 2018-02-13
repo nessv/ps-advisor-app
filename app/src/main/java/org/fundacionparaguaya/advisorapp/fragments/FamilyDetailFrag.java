@@ -36,6 +36,7 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     private TextView mAddress;
     private TextView mLocation;
     private SimpleDraweeView mFamilyImage;
+    private TextView mPhoneNumber;
 
     int mFamilyId = -1;
 
@@ -83,7 +84,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         super.onViewCreated(view, savedInstanceState);
 
         mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
-        mAddress = (TextView) view.findViewById(R.id.location_content);
+        mPhoneNumber = (TextView) view.findViewById(R.id.familyview_phone);
+        mAddress = (TextView) view.findViewById(R.id.familydetail_location_content);
         mLocation = (TextView) view.findViewById(R.id.description_content);
         mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
 
@@ -97,7 +99,8 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
             Log.e(FamilyDetailFrag.class.getName(), e.getMessage());
         }
 
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+
+        Uri uri = Uri.parse(getString(R.string.family_imagePlaceholder));
         mFamilyImage.setImageURI(uri);
     }
 
@@ -113,6 +116,19 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
         mFamilyName.setText(family.getName());
         mAddress.setText(family.getAddress());
         mLocation.setText((CharSequence) family.getLocation());
+
+        if (family.getMember() != null){
+            mAddress.setText(family.getAddress());
+        } else {
+            mAddress.setText(getString(R.string.familydetails_locationdefault));
+        }
+
+        if (family.getMember() != null) {
+            mPhoneNumber.setText(family.getMember().getPhoneNumber());
+        } else {
+            mPhoneNumber.setText(getText(R.string.familydetails_phonenumberdefault));
+        }
+
     }
 
     public static FamilyDetailFrag build(int familyId)

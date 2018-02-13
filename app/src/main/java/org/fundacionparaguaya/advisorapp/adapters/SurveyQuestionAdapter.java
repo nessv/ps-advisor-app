@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,22 +13,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
+
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.BackgroundQuestionCallback;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
 
+import java.util.Calendar;
 import java.util.List;
+
+import static java.lang.String.format;
 
 public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
     private final static int STRING_INPUT = 1;
     private final static int LOCATION_INPUT = 2;
     private final static int PHOTO_INPUT = 3;
-    private final static int DROPDOWN_INPUT =4; //TODO: implement dropdowns
-    private final static int REVIEW_PAGE = 5;
+    private final static int DROPDOWN_INPUT = 4;
+    private final static int DATE_INPUT = 5;
+    private final static int REVIEW_PAGE = 6;
 
     private List<BackgroundQuestion> mQuestionsList;
     private BackgroundQuestionCallback mBackgroundQuestionCallback;
@@ -78,15 +92,18 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                     case INTEGER:
                         viewHolderType = STRING_INPUT;
                         break;
-
+                    case DATE:
+                        viewHolderType = DATE_INPUT;
+                        break;
                     case PHOTO:
                         viewHolderType = PHOTO_INPUT;
-
+                        break;
                     case LOCATION:
-                        viewHolderType = LOCATION_INPUT;
-
+                        viewHolderType = STRING_INPUT; // TODO: implement LOCATION_INPUT;
+                        break;
                     default:
                         viewHolderType = -1;
+                        break;
                 }
 
                 return viewHolderType;
@@ -116,6 +133,11 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
             case PHOTO_INPUT:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questionphoto, parent, false);
                 vh = new PictureViewHolder(mBackgroundQuestionCallback, itemView);
+                break;
+
+            case DATE_INPUT:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questiondate, parent, false);
+                vh = new DateViewHolder(mBackgroundQuestionCallback, itemView);
                 break;
 
             case DROPDOWN_INPUT:
@@ -229,7 +251,8 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                     String selectedOption = mSpinnerAdapter.getDataAt(i);
                     mSpinnerAdapter.setSelected(i);
 
-                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, selectedOption);
+                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion,
+                            mQuestion.getOptions().get(selectedOption));
                 }
 
                 @Override
@@ -247,11 +270,11 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 mSpinnerAdapter =
                         new SurveyQuestionSpinnerAdapter(itemView.getContext(), R.layout.item_tv_spinner);
 
-                mSpinnerAdapter.setValues(question.getOptions().toArray(
+                mSpinnerAdapter.setValues(question.getOptions().keySet().toArray(
                         new String[question.getOptions().size()]));
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
 
-                mSpinnerAdapter.showEmptyPlaceholder();
+                mSpinnerAdapter.showEmptyPlaceholder(itemView.getContext().getResources().getString(R.string.spinner_placeholder));
 
             } else {
                 throw new IllegalArgumentException("This question has no options");
@@ -273,6 +296,26 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
         public String onResponse()
         {
             return familyInfoEntry.getText().toString();
+        }
+    }
+
+    public static class DateViewHolder extends QuestionViewHolder{
+
+        DatePicker mDatePicker;
+
+        public DateViewHolder(BackgroundQuestionCallback callback, View itemView) {
+            super(callback, itemView);
+
+            mDatePicker = itemView.findViewById(R.id.dp_questiondate_answer);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            mDatePicker.init(calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    (view, year, monthOfYear, dayOfMonth) ->
+                mBackgroundQuestionCallback.onQuestionAnswered(mQuestion,
+                        format("%04d-%02d-%02d", year, monthOfYear, dayOfMonth))
+            );
         }
     }
 

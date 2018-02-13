@@ -7,6 +7,9 @@
 
     <color name="black">#313131</color>
     <color name="white">#FDFDFD</color>
+    <color name="offwhite">#F7F7F7</color>
+
+    <color name="LightGray">#A1A1A1</color>
 
     <!--DashboardTab Colors-->
     <color name="dashboardtab_tabselected">@color/fp_green</color>
@@ -49,5 +52,10 @@
     <!--Survey Summary Colors-->
     <color name="surveysummary_textcolor">#313131</color>
     <color name="surveysummary_background">#F2F2F2</color>
+
+    <!-- Settings Colors -->
+    <color name="settings_background">@color/white</color>
+    <color name="settings_logout_button">@color/fp_green</color>
+    <color name="settings_logout_buttonText">@color/settings_background</color>
 
 </resources>

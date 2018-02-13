@@ -133,14 +133,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value
         int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
 
-        if(familyId == -1)
-        {
-            mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
-        }
-        else
-        {
-            mSurveyViewModel.setFamily(familyId);
-        }
+        mSurveyViewModel.setFamily(familyId);
+
 
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
@@ -189,9 +183,13 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 case REVIEWINDICATORS:
                     nextFragment = SurveySummaryIndicatorsFragment.class;
                     break;
+                case LIFEMAP:
+                    nextFragment = SurveyChoosePrioritiesFragment.class;
+                    break;
 
                 case COMPLETE:
                     this.finish();
+                    break;
             }
 
             if(nextFragment!=null) switchToSurveyFrag(nextFragment);
@@ -243,8 +241,14 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         super.switchToFrag(fragmentClass);
 
         AbstractSurveyFragment fragment = (AbstractSurveyFragment)getFragment(fragmentClass);
-        mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
-        mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
+
+        if(fragment.getHeaderColor()!=0) {
+            mHeader.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getHeaderColor()));
+        }
+
+        if(fragment.getFooterColor()!=0) {
+            mFooter.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), fragment.getFooterColor()));
+        }
 
         mTvTitle.setText(fragment.getTitle());
 

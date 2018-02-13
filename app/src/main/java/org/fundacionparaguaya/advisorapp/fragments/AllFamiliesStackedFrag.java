@@ -21,6 +21,7 @@ import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
 import org.fundacionparaguaya.advisorapp.models.Family;
+import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
@@ -32,9 +33,12 @@ import javax.inject.Inject;
  *  on the family cards.
  */
 
-public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.OnClickListener {
+public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
     private FamiliesAdapter mFamiliesAdapter;
+
+    private final static float FAMILY_CARD_WIDTH = 228f;
+    private final static float FAMILY_CARD_MARGIN = 24f;
 
     @Inject
     InjectionViewModelFactory mViewModelFactory;
@@ -115,7 +119,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.
         //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
         recyclerView.setFocusable(false);
 
-        int mNoOfColumns = Utility.calculateNoOfColumns(getContext());
+        int mNoOfColumns = ScreenCalculations.calculateNoOfColumns(FAMILY_CARD_WIDTH, FAMILY_CARD_MARGIN, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
 
 
@@ -124,20 +128,6 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag implements View.
         recyclerView.setAdapter(mFamiliesAdapter);
 
         return view;
-    }
-
-    @Override
-    public void onClick(View view) {
-
-    }
-
-    static class Utility {
-        public static int calculateNoOfColumns(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-            int noOfColumns = (int) (dpWidth / 280);
-             return noOfColumns;
-          }
     }
 }
 

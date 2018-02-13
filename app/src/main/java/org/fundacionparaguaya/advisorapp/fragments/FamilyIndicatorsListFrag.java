@@ -290,7 +290,7 @@ public class FamilyIndicatorsListFrag extends Fragment {
 
                 mTitle = itemView.findViewById(R.id.tv_familydetail_indicatoritem_title);
                 mLevelDescription = itemView.findViewById(R.id.tv_familydetail_indicatoritem_description);
-                mLevelIndicator = itemView.findViewById(R.id.view_familydetail_indicatoritem_color);
+                mLevelIndicator = itemView.findViewById(R.id.iv_indicatoritem_color);
             }
 
             public void setIndicatorResponse(Map.Entry<IndicatorQuestion, IndicatorOption> indicatorResponse)

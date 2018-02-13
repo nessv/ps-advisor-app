@@ -29,6 +29,7 @@
             tools:text="Garcia Family" />
 
         <ImageView
+            android:id="@+id/surveyintro_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

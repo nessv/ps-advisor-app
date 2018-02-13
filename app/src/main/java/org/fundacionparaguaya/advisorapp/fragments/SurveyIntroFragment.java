@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -18,6 +19,7 @@ import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyListAdapter;
 import org.fundacionparaguaya.advisorapp.models.Survey;
+import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
@@ -44,6 +46,8 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
     private ArrayList<Survey> mSurveyList;
 
     private SurveyListAdapter mAdapter;
+
+    private ImageView mImage;
 
     private Survey selectedSurvey = null;
 
@@ -84,6 +88,7 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSubmitButton = view.findViewById(R.id.btn_surveyintro_submit);
 
         mSubmitButton.setOnClickListener((event) -> onSubmit());
+        mImage = (ImageView) view.findViewById(R.id.surveyintro_image);
 
         mSurveyOptionList = (RecyclerView) view.findViewById(R.id.surveyintro_surveyoptionlist);
         mSurveyOptionList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -95,6 +100,9 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSurveyOptionList.setAdapter(mAdapter);
         mAdapter.setClickListener(this::onItemClick);
 
+        if (ScreenCalculations.is7InchTablet(getContext()) && mImage != null){
+            mImage.setVisibility(View.GONE);
+        }
 
         return view;
     }

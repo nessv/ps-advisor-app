@@ -4,11 +4,11 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    android:layout_width="227dp"
-    android:layout_height="249dp"
+    android:layout_width="240dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginBottom="16dp"
-    android:layout_marginEnd="44dp"
+    android:layout_marginEnd="24dp"
     android:layout_marginTop="24dp"
     android:background="#FDFDFD"
     card_view:cardCornerRadius="10dp">
@@ -16,19 +16,20 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/family_image"
         android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_height="144dp"
         fresco:placeholderImage="@color/fp_green" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="152dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/family_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
             android:textAppearance="@style/CardHeading"
             tools:text="Elokda" />
 
@@ -37,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignStart="@+id/family_name"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="24dp"
             android:paddingRight="5dp"
             android:text="Next Visit:"
             android:textAppearance="@style/Label"

@@ -178,6 +178,10 @@ public class SharedSurveyViewModel extends ViewModel
         }
     }
 
+    public boolean hasFamily()
+    {
+        return mFamilyId != -1;
+    }
     public void setFocusedQuestion(IndicatorQuestion question){
         focusedQuestion = question;
     }

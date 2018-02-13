@@ -1,6 +1,8 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -272,7 +274,7 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                         new String[question.getOptions().size()]));
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
 
-                mSpinnerAdapter.showEmptyPlaceholder();
+                mSpinnerAdapter.showEmptyPlaceholder(itemView.getContext().getResources().getString(R.string.spinner_placeholder));
 
             } else {
                 throw new IllegalArgumentException("This question has no options");

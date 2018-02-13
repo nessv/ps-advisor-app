@@ -133,14 +133,8 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value
         int familyId = getIntent().getIntExtra(FAMILY_ID_KEY, -1);
 
-        if(familyId == -1)
-        {
-            mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
-        }
-        else
-        {
-            mSurveyViewModel.setFamily(familyId);
-        }
+        mSurveyViewModel.setFamily(familyId);
+
 
         //observe changes for family, when it has a value then show intro.
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->

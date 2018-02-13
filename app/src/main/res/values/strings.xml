@@ -20,7 +20,7 @@
     <string name="topbar_lastsync_prefix">Last Sync:\u0020</string>
     <string name="topbar_lastsync_never">Not synced yet</string>
 
-    <!-- Login Activity -->
+    <LoginEventogin Activity -->
     <string name="login_success">Logged in successfully.</string>
     <string name="activity_login">Sign in</string>
     <string name="login_emailprompt">Username</string>

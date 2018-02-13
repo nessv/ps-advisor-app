@@ -35,11 +35,11 @@ import static org.fundacionparaguaya.advisorapp.models.IndicatorOption.Level.Yel
 
 public class IrMapper {
 
-    //region Login
+    //region LoginEvent
     public static Login mapLogin(LoginIr ir) {
         return new Login(ir.accessToken, ir.tokenType, ir.expiresIn, ir.refreshToken);
     }
-    //endregion Login
+    //endregion LoginEvent
 
     //region Family
     public static List<Family> mapFamilies(List<FamilyIr> ir) {

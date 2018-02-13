@@ -24,7 +24,7 @@
     <!--Dashboard TopBar Colors-->
     <color name="topbar_background">@color/dashboardtab_background</color>
   
-    <!--Login Page Colors-->
+    LoginEventogin Page Colors-->
     <color name="login_background">#F7F7F7</color>
     <color name="login_textfield">#FDFDFD</color>
     <color name="login_incorrectcredentials">#EB5757</color>

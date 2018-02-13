@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".activities.LoginActivity">
 
-    <!-- Login progress -->
+    <LoginEventogin progress -->
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"

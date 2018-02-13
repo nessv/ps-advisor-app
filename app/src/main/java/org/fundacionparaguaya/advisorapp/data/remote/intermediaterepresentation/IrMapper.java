@@ -126,7 +126,7 @@ public class IrMapper {
             questions.add(new BackgroundQuestion(
                     name,
                     questionIr.title.get("es"),
-                    mapResponseType(questionIr.type),
+                    mapResponseType(questionIr),
                     type,
                     questionIr.options));
         }
@@ -154,9 +154,12 @@ public class IrMapper {
         return questions;
     }
 
-    private static ResponseType mapResponseType(String ir) {
-        switch (ir) {
+    private static ResponseType mapResponseType(SurveyQuestionIr ir) {
+        switch (ir.type) {
             case "string":
+                if (ir.format != null && ir.format.equals("date")) {
+                    return ResponseType.DATE;
+                }
                 return ResponseType.STRING;
             case "number":
                 return ResponseType.INTEGER;

@@ -2,8 +2,6 @@ package org.fundacionparaguaya.advisorapp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 
-import java.util.function.Predicate;
-
 /**
  * A question which can be presented to a family and responded to from a survey.
  */

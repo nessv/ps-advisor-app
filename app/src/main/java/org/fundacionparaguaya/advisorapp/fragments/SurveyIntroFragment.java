@@ -82,6 +82,17 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surveyintro, container, false);
 
+        TextView title = view.findViewById(R.id.tv_surveyintro_title);
+
+        if(mSurveyViewModel.hasFamily())
+        {
+            title.setText(R.string.surveyintro_newsnapshot);
+        }
+        else
+        {
+            title.setText(R.string.addfamily_new_family_title);
+        }
+
         TextView familyNameTv = view.findViewById(R.id.tv_surveyintro_familyname);
         mSubmitButton = view.findViewById(R.id.btn_surveyintro_submit);
 
@@ -91,7 +102,9 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSurveyOptionList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mSurveyViewModel.getCurrentFamily().observe(this, (family ->
-                familyNameTv.setText(family.getName() + " Family")));
+        {
+            if(family!=null) familyNameTv.setText(family.getName() + " Family");
+        }));
 
         mAdapter = new SurveyListAdapter(getContext(), mSurveyList);
         mSurveyOptionList.setAdapter(mAdapter);
@@ -137,7 +150,13 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
             /**when snapshot is made**/
             mSurveyViewModel.getSnapshot().observe(this, (snapshot -> {
-                mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
+                if(mSurveyViewModel.hasFamily()) {
+                    mSurveyViewModel.setSurveyState(SurveyState.ECONOMIC_QUESTIONS);
+                }
+                else
+                {
+                    mSurveyViewModel.setSurveyState(SurveyState.NEW_FAMILY);
+                }
             }));
         } else {
 //            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)

@@ -12,13 +12,15 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:text="@string/surveyintro_newsnapshot"
-            android:textAppearance="@style/BigHero.Black" />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="32dp"
+              android:id="@+id/tv_surveyintro_title"
+              android:textAppearance="@style/BigHero.Black"
+              android:text="@string/surveyintro_newsnapshot"
+              android:gravity="center"/>
+
+
 
         <TextView
             android:id="@+id/tv_surveyintro_familyname"

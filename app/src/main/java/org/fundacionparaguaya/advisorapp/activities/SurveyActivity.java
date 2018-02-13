@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.instabug.library.InstabugTrackingDelegate;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
@@ -128,6 +130,12 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
                 .setCancelClickListener(SweetAlertDialog::cancel);
     }
 
+    //Enables user step capturing from instabug
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InstabugTrackingDelegate.notifyActivityGotTouchEvent(ev, this);
+        return super.dispatchTouchEvent(ev);
+    }
     public void initViewModel()
     {
         //familyId can never equal -1 if retrieved from the database, so it is used as the default value

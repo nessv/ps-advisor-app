@@ -3,6 +3,7 @@ package org.fundacionparaguaya.advisorapp.activities;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.curioustechizen.ago.RelativeTimeTextView;
+import com.instabug.library.InstabugTrackingDelegate;
 import com.novoda.merlin.Merlin;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -88,6 +90,13 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     {
         switchToFrag(getClassForType(event.getSelectedTab()));
     };
+
+    //Enables user step capturing from instabug
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InstabugTrackingDelegate.notifyActivityGotTouchEvent(ev, this);
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

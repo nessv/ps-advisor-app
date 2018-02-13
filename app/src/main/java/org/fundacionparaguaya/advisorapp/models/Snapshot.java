@@ -76,7 +76,10 @@ public class Snapshot implements Comparable<Snapshot>{
     @Ignore
     public Snapshot(Family family, Survey survey) {
         this(0, null, family == null ? null : family.getId(), survey.getId(),
-                new HashMap<>(), new HashMap<>(), new HashMap<>(), new LinkedList<>(), null);
+                new HashMap<>(), new HashMap<>(), new HashMap<>(), new LinkedList<>(), new Date());
+        if (family != null) {
+            fillPersonalResponses(family, survey);
+        }
     }
 
     public Snapshot(int id,
@@ -141,6 +144,30 @@ public class Snapshot implements Comparable<Snapshot>{
 
     public Map<BackgroundQuestion, String> getPersonalResponses() {
         return personalResponses;
+    }
+
+    private void fillPersonalResponses(Family family, Survey survey) {
+        if (family.getMember() != null) {
+            FamilyMember member = family.getMember();
+            personalResponseByName(survey, "identificationType", member.getIdentificationType());
+            personalResponseByName(survey, "identificationNumber", member.getIdentificationNumber());
+            personalResponseByName(survey, "firstName", member.getFirstName());
+            personalResponseByName(survey, "lastName", member.getLastName());
+            personalResponseByName(survey, "birthdate", member.getBirthdate());
+            personalResponseByName(survey, "countryOfBirth", member.getCountryOfBirth());
+            personalResponseByName(survey, "gender", member.getGender());
+            personalResponseByName(survey, "phoneNumber", member.getPhoneNumber());
+        }
+    }
+
+    private void personalResponseByName(Survey survey, String name, String value) {
+        for (BackgroundQuestion question : survey.getPersonalQuestions()) {
+            if (question.getName().equals(name)) {
+                response(question, value);
+                return;
+            }
+        }
+
     }
 
     public Map<BackgroundQuestion, String> getEconomicResponses() {

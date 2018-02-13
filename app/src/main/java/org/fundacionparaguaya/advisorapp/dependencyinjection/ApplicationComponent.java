@@ -41,4 +41,10 @@ public interface ApplicationComponent {
     void inject(SurveySummaryIndicatorsFragment surveySummaryIndicatorsFragment);
 
     void inject(JobCreator jobCreator);
+
+    void inject(LifeMapFragment lifeMapFragment);
+
+    void inject(PriorityListFrag lifeMapFragment);
+
+    void inject(SettingsStackedFrag settingsFragment);
 }

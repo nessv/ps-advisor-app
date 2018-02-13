@@ -26,6 +26,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
     private List<? extends Family> mFamilyList;
     private ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
 
+
     public FamiliesAdapter(){
         mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
     }
@@ -57,7 +58,7 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
         holder.familyName.setText(family.getName());
 
-        Uri uri = Uri.parse("https://bongmendoza.files.wordpress.com/2012/08/urban-poor-family.jpg");
+        Uri uri = Uri.parse("https://s3.us-east-2.amazonaws.com/fp-psp-images/44-3.jpg");
 
         holder.imageView.setImageURI(uri);
 

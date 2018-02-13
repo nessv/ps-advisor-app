@@ -45,6 +45,21 @@ public class LifeMapPriority {
         return new Builder();
     }
 
+    public void setReason(String s)
+    {
+        this.reason = s;
+    }
+
+    public void setStrategy(String s)
+    {
+        this.action = s;
+    }
+
+    public void setWhen(Date when)
+    {
+        this.estimatedDate = when;
+    }
+
     public static class Builder {
         private Indicator indicator;
         private String reason;

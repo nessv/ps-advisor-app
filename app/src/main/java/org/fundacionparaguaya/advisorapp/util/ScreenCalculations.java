@@ -29,4 +29,34 @@ public class ScreenCalculations {
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
+
+    /**
+     * Calculates the number of columns that we can fit on the screen. Assumes the grid view
+     * takes up the entire width of the device. (If this isn't the case, use function that specifies
+     * container width
+     *
+     * @param itemWidth Width of the item
+     * @param margin Margin on each side of the item
+     * @param context
+     * @return Max number of columns that can fit
+     */
+    public static int calculateNoOfColumns(float itemWidth, float margin, Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return calculateNoOfColumns(displayMetrics.widthPixels, itemWidth, margin, context );
+    }
+
+    /**
+     * Calculates the max number of columns that can fit in a container of a given size.
+     *
+     * @param containerWidthPx The width of the container that the columns are in (Pixels)
+     * @param itemWidth Width of the item
+     * @param margin Margin on each side of the item
+     * @return Max number of columns that can fit
+     */
+    public static int calculateNoOfColumns(float containerWidthPx, float itemWidth, float margin, Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth =containerWidthPx / displayMetrics.density;
+
+        return (int) (dpWidth/ (itemWidth + 2*margin));
+    }
 }

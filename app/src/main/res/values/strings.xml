@@ -117,6 +117,7 @@
     <string name="choosepriorities_title">Life Map</string>
     <string name="all_save">Save</string>
     <string name="available_surveys">Available Surveys</string>
+    <string name="spinner_placeholder">Select an option&#8230;</string>
 
 
 </resources>

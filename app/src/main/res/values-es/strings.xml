@@ -115,4 +115,6 @@
     <string name="all_save">Guardar</string>
     <string name="available_surveys">Available Surveys</string>
 
+    <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
+
 </resources>

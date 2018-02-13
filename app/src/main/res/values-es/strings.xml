@@ -100,6 +100,14 @@
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
 
+    <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
+    <string name="prioritypopup_add">Add to Priorities</string>
+
     <string name="surveyreview_noresponse">No Response</string>
+    <string name="prioritypopup_when">When will you have it by?</string>
+    <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
+
+    <string name="prioritieslist_header_remaining">Your Priorities: %1$d Remaining</string>
+    <string name="prioritieslist_header_complete">Your Priorities: Complete</string>
 
 </resources>

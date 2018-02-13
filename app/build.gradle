@@ -13,9 +13,13 @@ android {
         applicationId "org.fundacionparaguaya.advisorapp"
         minSdkVersion 19
         targetSdkVersion 27
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        renderscriptTargetApi 27
+        renderscriptSupportModeEnabled true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -48,6 +52,12 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    //horizontal calendar used for choosing priority date
+    implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
+
+    //used for (at least) the popup window when choosing priorities from the life map
+    implementation 'com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.8'
 
     implementation "com.mixpanel.android:mixpanel-android:5.+"
     implementation "com.google.android.gms:play-services-gcm:11.8.0"

@@ -152,6 +152,19 @@ public class SharedSurveyViewModel extends ViewModel
         return mPriorities;
     }
 
+    public void addPriority(LifeMapPriority p)
+    {
+        getSnapshotValue().getPriorities().add(p);
+        mPriorities.setValue(getSnapshotValue().getPriorities());
+    }
+
+    public void removePriority(LifeMapPriority p)
+    {
+        getSnapshotValue().getPriorities().remove(p);
+        mPriorities.setValue(getSnapshotValue().getPriorities());
+    }
+
+
     public LiveData<Collection<IndicatorOption>> getIndicatorResponses() {
         return mIndicatorResponses;
     }

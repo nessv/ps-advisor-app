@@ -7,6 +7,9 @@
 
     <color name="black">#313131</color>
     <color name="white">#FDFDFD</color>
+    <color name="offwhite">#F7F7F7</color>
+
+    <color name="LightGray">#A1A1A1</color>
 
     <!--DashboardTab Colors-->
     <color name="dashboardtab_tabselected">@color/fp_green</color>

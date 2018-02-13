@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,17 +10,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
+import org.fundacionparaguaya.advisorapp.viewcomponents.PriorityDetailPopupWindow;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -31,7 +34,8 @@ import java.util.*;
  * that when filled out, adds the priority to the view model
  */
 
-public class LifeMapFragment extends Fragment{
+public class LifeMapFragment extends Fragment implements PriorityDetailPopupWindow.PriorityPopupResponseCallback
+{
 
     private static final float INDICATOR_WIDTH = 140;
     private static final float INDICATOR_MARGIN = 56;
@@ -41,6 +45,8 @@ public class LifeMapFragment extends Fragment{
     protected SharedSurveyViewModel mSharedSurveyViewModel;
     protected RecyclerView mRvIndicators;
     protected LifeMapIndicatorAdapter mIndicatorAdapter;
+
+    private PriorityDetailPopupWindow mPopup;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class LifeMapFragment extends Fragment{
                 .get(SharedSurveyViewModel.class);
 
         mIndicatorAdapter = new LifeMapIndicatorAdapter();
+        mIndicatorAdapter.setPopupCallback(this);
 
         mSharedSurveyViewModel.getPriorities().observe(this, mIndicatorAdapter::setPriorities);
         mSharedSurveyViewModel.getIndicatorResponses().observe(this, mIndicatorAdapter::setIndicators);
@@ -73,10 +80,32 @@ public class LifeMapFragment extends Fragment{
         return v;
     }
 
+    @Override
+    public void onPriorityPopupFinished(PriorityDetailPopupWindow window, PriorityDetailPopupWindow.PriorityPopupFinishedEvent e) {
+        window.dismiss();
+
+        switch (e.getResultType())
+        {
+            case ADD:
+            {
+                mSharedSurveyViewModel.addPriority(e.getNewPriority());
+                Toast.makeText(getContext(), "Added New Priority", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case REPLACE:
+            {
+                mSharedSurveyViewModel.removePriority(e.getOriginalPriority());
+                mSharedSurveyViewModel.addPriority(e.getNewPriority());
+                break;
+            }
+        }
+    }
+
     static class LifeMapIndicatorAdapter extends RecyclerView.Adapter
     {
         private List<IndicatorOption> mResponses = null;
         private List<LifeMapPriority> mPriorities = null;
+        private PriorityDetailPopupWindow.PriorityPopupResponseCallback mCallback;
 
         public void setIndicators(Collection<IndicatorOption> responses)
         {
@@ -86,6 +115,11 @@ public class LifeMapFragment extends Fragment{
             }
 
             notifyDataSetChanged();
+        }
+
+        public void setPopupCallback(PriorityDetailPopupWindow.PriorityPopupResponseCallback callback)
+        {
+            mCallback = callback;
         }
 
         public void setPriorities(List<LifeMapPriority> priorities)
@@ -99,7 +133,9 @@ public class LifeMapFragment extends Fragment{
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lifemapindicator, parent, false);
-            return new LifeMapIndicatorViewHolder(view);
+            LifeMapIndicatorViewHolder holder =  new LifeMapIndicatorViewHolder(view);
+            holder.setCallback(mCallback);
+            return holder;
         }
 
         @Override
@@ -138,7 +174,13 @@ public class LifeMapFragment extends Fragment{
             private TextView mNumber;
             private boolean isPriority;
 
+            private IndicatorOption mResponse;
             private LifeMapPriority mLifeMapPriority = null;
+
+            PriorityDetailPopupWindow mPopupWindow;
+
+
+            PriorityDetailPopupWindow.PriorityPopupResponseCallback mCallback;
 
             public LifeMapIndicatorViewHolder(View itemView) {
                 super(itemView);
@@ -150,13 +192,11 @@ public class LifeMapFragment extends Fragment{
                 mNumber.setVisibility(View.INVISIBLE);
                 itemView.setBackground(null);
 
-                itemView.setOnClickListener((view)->{
-                    if(view.getBackground()==null)
-                    {
-                       setSelectedBackground();
-                    }
-                    else setSelectedBackground();
-                });
+            }
+
+            public void setCallback(PriorityDetailPopupWindow.PriorityPopupResponseCallback c)
+            {
+                mCallback = c;
             }
 
             public void setSelectedBackground()
@@ -183,6 +223,7 @@ public class LifeMapFragment extends Fragment{
                         R.drawable.lifemapindicator_background));
 
                 mLifeMapPriority = priority;
+                mPopupWindow.setPriority(priority);
 
                 isPriority = true;
             }
@@ -191,10 +232,26 @@ public class LifeMapFragment extends Fragment{
             {
                 isPriority = false;
 
+                mResponse = response;
+
                 IndicatorUtilities.setViewColorFromResponse(response, mColor);
 
                 String title = response.getIndicator().getTitle();
                 mTitle.setText(title);
+
+                mPopupWindow = new PriorityDetailPopupWindow.Builder(itemView.getContext()).
+                        setIndicatorOption(response).setResponseCallback(mCallback).build();
+
+                itemView.setOnClickListener((view)->{
+                    if(mResponse.getLevel()== IndicatorOption.Level.Green)
+                    {
+                        Toast.makeText(view.getContext(), "Choose a Red or Yellow Indicator", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        mPopupWindow.show();
+                    }
+                });
             }
         }
 

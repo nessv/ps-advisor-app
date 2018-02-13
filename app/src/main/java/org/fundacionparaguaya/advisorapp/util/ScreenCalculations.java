@@ -42,19 +42,21 @@ public class ScreenCalculations {
      */
     public static int calculateNoOfColumns(float itemWidth, float margin, Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        return calculateNoOfColumns(dpWidth, itemWidth, margin);
+        return calculateNoOfColumns(displayMetrics.widthPixels, itemWidth, margin, context );
     }
 
     /**
      * Calculates the max number of columns that can fit in a container of a given size.
      *
-     * @param containerWidth The width of the container that the columns are in
+     * @param containerWidthPx The width of the container that the columns are in (Pixels)
      * @param itemWidth Width of the item
      * @param margin Margin on each side of the item
      * @return Max number of columns that can fit
      */
-    public static int calculateNoOfColumns(float containerWidth, float itemWidth, float margin) {
-        return (int) (containerWidth / (itemWidth + 2*margin));
+    public static int calculateNoOfColumns(float containerWidthPx, float itemWidth, float margin, Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth =containerWidthPx / displayMetrics.density;
+
+        return (int) (dpWidth/ (itemWidth + 2*margin));
     }
 }

@@ -36,17 +36,11 @@ public class PriorityListFrag extends Fragment  {
     //TODO: this isn't enforced
     private static final int MAX_PRIORITIES = 5;
 
-    private static final float INDICATOR_WIDTH = 140;
-    private static final float INDICATOR_MARGIN = 56;
-
     private TextView mHeader;
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
     protected SharedSurveyViewModel mSharedSurveyViewModel;
-    protected RecyclerView mRvIndicators;
-
-    private PriorityDetailPopupWindow mPopup;
 
     PriorityListAdapter mPriorityAdapter;
 

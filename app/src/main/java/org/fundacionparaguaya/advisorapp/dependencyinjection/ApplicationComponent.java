@@ -47,6 +47,4 @@ public interface ApplicationComponent {
     void inject(PriorityListFrag lifeMapFragment);
 
     void inject(SettingsStackedFrag settingsFragment);
-
-(??)
 }

@@ -42,7 +42,6 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
 
     private AppCompatImageView mImageWhy;
     private AppCompatImageView mImageStrategy;
-    private AppCompatImageView mImageWhen;
 
     /**The priority that was inputted when init. null if new priority
      */
@@ -100,7 +99,7 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
     private void updateWhen(Date d)
     {
         mResponseWhen = d;
-        mNewPriority.setWhen(d);
+        mNewPriority.setWhen(mResponseWhen);
         //mResponseWhen = s;
     }
 

@@ -1,6 +1,5 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
@@ -45,8 +43,6 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
     protected SharedSurveyViewModel mSharedSurveyViewModel;
     protected RecyclerView mRvIndicators;
     protected LifeMapIndicatorAdapter mIndicatorAdapter;
-
-    private PriorityDetailPopupWindow mPopup;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -172,12 +168,11 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
             private AppCompatImageView mColor;
             private TextView mTitle;
             private TextView mNumber;
-            private boolean isPriority;
 
             private IndicatorOption mResponse;
             private LifeMapPriority mLifeMapPriority = null;
 
-            PriorityDetailPopupWindow mPopupWindow;
+            private PriorityDetailPopupWindow mPopupWindow;
 
 
             PriorityDetailPopupWindow.PriorityPopupResponseCallback mCallback;
@@ -224,13 +219,16 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
 
                 mLifeMapPriority = priority;
                 mPopupWindow.setPriority(priority);
-
-                isPriority = true;
             }
 
+            /**
+             * Sets the IndicatorOption associated with the priority. Note that this function must be called BEFORE
+             * settings the Priority.
+             * @param response family response for the indicator associated with priority
+             */
             public void setResponse(IndicatorOption response)
             {
-                isPriority = false;
+                LifeMapPriority mLifeMapPriority = null;
 
                 mResponse = response;
 

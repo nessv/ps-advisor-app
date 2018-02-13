@@ -102,7 +102,7 @@ public class SharedSurveyViewModel extends ViewModel
     {
         mSurvey = survey;
 
-        mSnapshot.setValue(new Snapshot(mSurvey));
+        mSnapshot.setValue(new Snapshot(mFamily.getValue(), mSurvey));
     }
 
     public LiveData<Snapshot> getSnapshot()

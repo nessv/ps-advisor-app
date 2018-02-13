@@ -97,7 +97,7 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
 
         if(adjustedPosition == -1)
         {
-            return "Select an option...";
+            return "";
         }
         else {
             return values[adjustedPosition].toString();

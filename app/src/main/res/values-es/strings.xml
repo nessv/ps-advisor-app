@@ -32,6 +32,10 @@
     <string name="login_fieldrequired">Esto es requerido</string>
     <string name="login_resetpassword"><u>¿Olvidaste tu clave?</u></string>
 
+    <string name="login_serverprod">FP: Servidor de Producción</string>
+    <string name="login_servertest">FP: Servidor de Prueba</string>
+    <string name="login_serverdev">WPI: Servidor de Desarrollo</string>
+
     <!-- Indicator Card -->
     <string name="indicator_selected">Seleccionado</string>
 
@@ -97,6 +101,20 @@
     <string name="surveyactivity_discard_snapshot">Descartar Instantánea</string>
     <string name="your_response">Tu Respuesta</string>
 
-    <string name="surveyreview_noresponse">No Response</string>
+    <string name="prioritypopup_strategyquestion">¿Qué voy a hacer para tenerlo?</string>
+    <string name="prioritypopup_add">Add to Priorities</string>
+
+    <string name="surveyreview_noresponse">Ninguna respuesta</string>
+    <string name="prioritypopup_when">¿Cuando lo lograré?</string>
+    <string name="prioritypopup_whyquesiton">¿Por qué no lo tengo?</string>
+
+    <string name="prioritieslist_header_remaining">Tus prioridades: %1$d Restante</string>
+    <string name="prioritieslist_header_complete">Tus prioridades: Completa</string>
+    <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
+    <string name="choosepriorities_title">Mapa de Vida</string>
+    <string name="all_save">Guardar</string>
+    <string name="available_surveys">Available Surveys</string>
+
+    <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
 
 </resources>

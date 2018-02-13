@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
@@ -28,7 +28,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     SurveyIndicatorsFragment parentFragment;
 
-    IndicatorAdapter adapter;
+    SurveyIndicatorAdapter adapter;
 
     private static int clickDelay = 500;
     private static int clickDelayInterval = 100;
@@ -44,7 +44,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         }
     };
 
-    public ChooseIndicatorFragment newInstance(IndicatorAdapter adapter, IndicatorQuestion question) {
+    public ChooseIndicatorFragment newInstance(SurveyIndicatorAdapter adapter, IndicatorQuestion question) {
 
         ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
         this.adapter = adapter;

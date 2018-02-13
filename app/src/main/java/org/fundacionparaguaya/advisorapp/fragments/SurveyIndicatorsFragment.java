@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
-import org.fundacionparaguaya.advisorapp.adapters.IndicatorAdapter;
+import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.IndicatorQuestion;
 import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener {
 
-    IndicatorAdapter mAdapter;
+    SurveyIndicatorAdapter mAdapter;
     NonSwipeableViewPager mPager;
 
     LinearLayout backButton;
@@ -73,7 +73,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
-        mAdapter = new IndicatorAdapter(getChildFragmentManager(), mSurveyViewModel, this);
+        mAdapter = new SurveyIndicatorAdapter(getChildFragmentManager(), mSurveyViewModel, this);
         mPager = (NonSwipeableViewPager) view.findViewById(R.id.indicatorsurvey_viewpager);
 
         mPager.setAdapter(mAdapter);

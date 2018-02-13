@@ -20,12 +20,15 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
     //the currently selected item. -1 -> no selection
     private int mSelectedArrayIndex = -1;
 
+    private String mPlaceholderString;
+
     public SelectedFirstSpinnerAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }
 
-    public void showEmptyPlaceholder()
+    public void showEmptyPlaceholder(String placeholder)
     {
+        mPlaceholderString = placeholder;
         mHasEmptyPlaceholder = true;
         mSelectedArrayIndex = -1;
     }
@@ -97,7 +100,7 @@ public class SelectedFirstSpinnerAdapter<T> extends ArrayAdapter<String> {
 
         if(adjustedPosition == -1)
         {
-            return "";
+            return mPlaceholderString;
         }
         else {
             return values[adjustedPosition].toString();

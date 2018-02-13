@@ -31,6 +31,10 @@
     <string name="login_fieldrequired">This field is required</string>
     <string name="login_resetpassword"><u>Forgot your password?</u></string>
 
+    <string name="login_serverprod">FP: Production Server</string>
+    <string name="login_servertest">FP Test Server</string>
+    <string name="login_serverdev">WPI: Development Server</string>
+
     <!-- Indicator Card -->
     <string name="indicator_selected">Selected</string>
 
@@ -103,6 +107,17 @@
 
     <string name="surveyquestions_economic_title">Economic Questions</string>
     <string name="surveyreview_noresponse">No Response</string>
+    <string name="prioritypopup_when">When will you have it by?</string>
+    <string name="prioritypopup_strategyquestion">What will you do to get it?</string>
+    <string name="prioritypopup_whyquesiton">Why don\'t you have it?</string>
+    <string name="prioritypopup_add">Add to Priorities</string>
+    <string name="prioritieslist_header_remaining">Your Priorities: %1$d Remaining</string>
+    <string name="prioritieslist_header_complete">Your Priorities: Complete</string>
+    <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
+    <string name="choosepriorities_title">Life Map</string>
+    <string name="all_save">Save</string>
+    <string name="available_surveys">Available Surveys</string>
+    <string name="spinner_placeholder">Select an option&#8230;</string>
 
 
 </resources>

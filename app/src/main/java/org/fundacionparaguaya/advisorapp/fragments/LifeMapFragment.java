@@ -245,7 +245,7 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
                 itemView.setOnClickListener((view)->{
                     if(mResponse.getLevel()== IndicatorOption.Level.Green)
                     {
-                        Toast.makeText(view.getContext(), "Choose a Red or Yellow Indicator", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), R.string.prioritychooser_greenselected, Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

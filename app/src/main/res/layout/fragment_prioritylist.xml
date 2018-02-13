@@ -38,7 +38,7 @@
 
             android:textAppearance="@style/CardHeading.Light"
             android:background="@drawable/all_button_large"
-            android:text="Save"
+            android:text="@string/all_save"
             android:minWidth="120dp"
 
     />

@@ -112,7 +112,9 @@
     <string name="prioritypopup_add">Add to Priorities</string>
     <string name="prioritieslist_header_remaining">Your Priorities: %1$d Remaining</string>
     <string name="prioritieslist_header_complete">Your Priorities: Complete</string>
-
+    <string name="prioritychooser_greenselected">Choose a Red or Yellow Indicator</string>
+    <string name="choosepriorities_title">Life Map</string>
+    <string name="all_save">Save</string>
 
 
 </resources>

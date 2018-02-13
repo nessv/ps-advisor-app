@@ -18,7 +18,7 @@ public class SurveyChoosePrioritiesFragment extends AbstractSurveyFragment {
         super.onCreate(savedInstanceState);
 
         setShowFooter(false);
-        setTitle("Life Map");
+        setTitle(getString(R.string.choosepriorities_title));
     }
 
     @Nullable

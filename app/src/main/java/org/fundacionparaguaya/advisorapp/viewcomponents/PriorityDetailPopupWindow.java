@@ -7,17 +7,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.*;
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
+import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.joda.time.DateTime;
 
 import java.util.Date;
@@ -63,7 +62,7 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
     private String mResponseStrategy;
     private Date mResponseWhen;
 
-    private PriorityPopupResponseCallback mCallback;
+    private PriorityChangeCallback mCallback;
 
 
     public PriorityDetailPopupWindow(@NonNull Context context) {
@@ -178,13 +177,16 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
     {
         mGivenPriority = p;
 
-        //this is so we aren't actually editing the object reference we are given
-        mNewPriority.setReason(p.getReason());
-        mNewPriority.setStrategy(p.getAction());
-        mNewPriority.setWhen(p.getEstimatedDate());
+        updateWhy(p.getReason());
+        updateStrategy(p.getAction());
+        updateWhen(p.getEstimatedDate());
+
+        mEtWhy.setText(mResponseWhy);
+        mEtStrategy.setText(mResponseStrategy);
+        mHorizontalCal.setDate(new DateTime(mResponseWhen));
     }
 
-    public void setResponseCallback(PriorityPopupResponseCallback c)
+    public void setResponseCallback(PriorityChangeCallback c)
     {
         mCallback = c;
     }
@@ -216,12 +218,7 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
             //TODO update for editing existing
         }
 
-        mCallback.onPriorityPopupFinished(this, e);
-    }
-
-    public interface PriorityPopupResponseCallback
-    {
-        void onPriorityPopupFinished(PriorityDetailPopupWindow window, PriorityPopupFinishedEvent e);
+        mCallback.onPriorityChanged(this, e);
     }
 
     public static class PriorityPopupFinishedEvent
@@ -294,7 +291,7 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
 
         LifeMapPriority mPriority = null;
         IndicatorOption mIndicatorOption = null;
-        PriorityPopupResponseCallback mCallback;
+        PriorityChangeCallback mCallback;
 
         public Builder(Context context) {
             super(context);
@@ -312,7 +309,7 @@ public class PriorityDetailPopupWindow extends BlurPopupWindow implements DatePi
             return this;
         }
 
-        public Builder setResponseCallback(PriorityPopupResponseCallback c)
+        public Builder setResponseCallback(PriorityChangeCallback c)
         {
             mCallback = c;
             return this;

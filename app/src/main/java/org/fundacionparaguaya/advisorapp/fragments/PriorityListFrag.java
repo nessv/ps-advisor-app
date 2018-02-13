@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.models.Indicator;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
@@ -57,6 +59,7 @@ public class PriorityListFrag extends Fragment  {
                 .get(SharedSurveyViewModel.class);
 
         mPriorityAdapter = new PriorityListAdapter();
+        mPriorityAdapter.setCallback(new PriorityChangeCallback(mSharedSurveyViewModel));
 
         mSharedSurveyViewModel.getPriorities().observe(this, (value) ->
         {
@@ -107,8 +110,9 @@ public class PriorityListFrag extends Fragment  {
         private List<IndicatorOption> mResponses = null;
         private List<LifeMapPriority> mPriorities = null;
         private Map<Indicator, IndicatorOption> mIndicatorOptionMap;
+        PriorityChangeCallback mCallback;
 
-    //    private PriorityDetailPopupWindow.PriorityPopupResponseCallback mCallback;
+    //    private PriorityChangeCallback mCallback;
 
         public void setIndicators(Collection<IndicatorOption> responses)
         {
@@ -133,11 +137,19 @@ public class PriorityListFrag extends Fragment  {
             notifyDataSetChanged();
         }
 
+        public void setCallback(PriorityChangeCallback callback)
+        {
+            mCallback = callback;
+        }
+
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prioritylist, parent, false);
 
-            return new PriorityViewHolder(view);
+            PriorityViewHolder holder = new PriorityViewHolder(view);
+            holder.setCallback(mCallback);
+
+            return holder;
         }
 
         @Override
@@ -164,6 +176,11 @@ public class PriorityListFrag extends Fragment  {
             private TextView mWhen;
             private AppCompatImageView mIndicatorColor;
 
+            private IndicatorOption mResponse;
+            private LifeMapPriority mPriority;
+
+            private PriorityChangeCallback mCallback;
+
             PriorityViewHolder(View itemView) {
                 super(itemView);
 
@@ -172,22 +189,45 @@ public class PriorityListFrag extends Fragment  {
                 mStrategy = itemView.findViewById(R.id.tv_priorityitem_strategy);
                 mWhen = itemView.findViewById(R.id.tv_priorityitem_when);
                 mIndicatorColor = itemView.findViewById(R.id.iv_priorityitem_color);
+
+                itemView.setOnClickListener((v)->
+                {
+                    if(mResponse.getLevel()== IndicatorOption.Level.Green)
+                    {
+                        Toast.makeText(v.getContext(), R.string.prioritychooser_greenselected, Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        new PriorityDetailPopupWindow.Builder(itemView.getContext()).
+                                setIndicatorOption(mResponse).setResponseCallback(mCallback).build().show();
+
+                    }
+                });
+            }
+
+            void setCallback(PriorityChangeCallback callback)
+            {
+                mCallback = callback;
             }
 
             void setPriority(IndicatorOption option, LifeMapPriority p) {
-                IndicatorUtilities.setViewColorFromResponse(option, mIndicatorColor);
-                mTitle.setText(getAdapterPosition()+1 + ". " + p.getIndicator().getTitle());
 
-                if(p.getReason()!=null) {
-                    mProblem.setText(p.getReason());
+                mResponse = option;
+                mPriority= p;
+
+                IndicatorUtilities.setViewColorFromResponse(mResponse, mIndicatorColor);
+                mTitle.setText(getAdapterPosition()+1 + ". " + mPriority.getIndicator().getTitle());
+
+                if(mPriority.getReason()!=null) {
+                    mProblem.setText(mPriority.getReason());
                 }
 
-                if(p.getAction()!=null) {
-                    mStrategy.setText(p.getAction());
+                if(mPriority.getAction()!=null) {
+                    mStrategy.setText(mPriority.getAction());
                 }
 
-                if(p.getEstimatedDate()!=null) {
-                    String when = SimpleDateFormat.getDateInstance().format(p.getEstimatedDate());
+                if(mPriority.getEstimatedDate()!=null) {
+                    String when = SimpleDateFormat.getDateInstance().format(mPriority.getEstimatedDate());
                     mWhen.setText(when);
                 }
             }

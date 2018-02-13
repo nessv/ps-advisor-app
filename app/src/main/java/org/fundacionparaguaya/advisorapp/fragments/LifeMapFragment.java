@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
+import org.fundacionparaguaya.advisorapp.fragments.callbacks.PriorityChangeCallback;
 import org.fundacionparaguaya.advisorapp.models.IndicatorOption;
 import org.fundacionparaguaya.advisorapp.models.LifeMapPriority;
 import org.fundacionparaguaya.advisorapp.util.IndicatorUtilities;
@@ -32,7 +33,7 @@ import java.util.*;
  * that when filled out, adds the priority to the view model
  */
 
-public class LifeMapFragment extends Fragment implements PriorityDetailPopupWindow.PriorityPopupResponseCallback
+public class LifeMapFragment extends Fragment
 {
 
     private static final float INDICATOR_WIDTH = 140;
@@ -57,7 +58,7 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
                 .get(SharedSurveyViewModel.class);
 
         mIndicatorAdapter = new LifeMapIndicatorAdapter();
-        mIndicatorAdapter.setPopupCallback(this);
+        mIndicatorAdapter.setPopupCallback(new PriorityChangeCallback(mSharedSurveyViewModel));
 
         mSharedSurveyViewModel.getPriorities().observe(this, mIndicatorAdapter::setPriorities);
         mSharedSurveyViewModel.getIndicatorResponses().observe(this, mIndicatorAdapter::setIndicators);
@@ -76,32 +77,11 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
         return v;
     }
 
-    @Override
-    public void onPriorityPopupFinished(PriorityDetailPopupWindow window, PriorityDetailPopupWindow.PriorityPopupFinishedEvent e) {
-        window.dismiss();
-
-        switch (e.getResultType())
-        {
-            case ADD:
-            {
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                Toast.makeText(getContext(), "Added New Priority", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case REPLACE:
-            {
-                mSharedSurveyViewModel.removePriority(e.getOriginalPriority());
-                mSharedSurveyViewModel.addPriority(e.getNewPriority());
-                break;
-            }
-        }
-    }
-
     static class LifeMapIndicatorAdapter extends RecyclerView.Adapter
     {
         private List<IndicatorOption> mResponses = null;
         private List<LifeMapPriority> mPriorities = null;
-        private PriorityDetailPopupWindow.PriorityPopupResponseCallback mCallback;
+        private PriorityChangeCallback mCallback;
 
         public void setIndicators(Collection<IndicatorOption> responses)
         {
@@ -113,7 +93,7 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
             notifyDataSetChanged();
         }
 
-        public void setPopupCallback(PriorityDetailPopupWindow.PriorityPopupResponseCallback callback)
+        public void setPopupCallback(PriorityChangeCallback callback)
         {
             mCallback = callback;
         }
@@ -175,7 +155,7 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
             private PriorityDetailPopupWindow mPopupWindow;
 
 
-            PriorityDetailPopupWindow.PriorityPopupResponseCallback mCallback;
+            PriorityChangeCallback mCallback;
 
             public LifeMapIndicatorViewHolder(View itemView) {
                 super(itemView);
@@ -189,7 +169,7 @@ public class LifeMapFragment extends Fragment implements PriorityDetailPopupWind
 
             }
 
-            public void setCallback(PriorityDetailPopupWindow.PriorityPopupResponseCallback c)
+            public void setCallback(PriorityChangeCallback c)
             {
                 mCallback = c;
             }

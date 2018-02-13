@@ -31,17 +31,17 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/surveyintro_mainvisual_all" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/surveyintro_surveyoptionlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginEnd="150dp"
-            android:layout_marginStart="150dp" />
+            android:layout_marginEnd="200dp"
+            android:layout_marginStart="200dp" />
 
     </LinearLayout>
 

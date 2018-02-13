@@ -378,7 +378,7 @@ public class SharedSurveyViewModel extends ViewModel
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-           // viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
+            viewModelReference.get().setSurveyState(SurveyState.COMPLETE);
         }
     }
 

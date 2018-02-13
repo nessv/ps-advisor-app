@@ -105,7 +105,7 @@ public class PriorityListFrag extends Fragment  {
 
     public void onSave()
     {
-        mSharedSurveyViewModel.setSurveyState(SharedSurveyViewModel.SurveyState.COMPLETE);
+        mSharedSurveyViewModel.saveSnapshotAsync();
     }
 
     static class PriorityListAdapter extends RecyclerView.Adapter

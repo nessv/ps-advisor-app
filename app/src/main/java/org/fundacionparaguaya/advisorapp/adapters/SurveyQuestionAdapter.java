@@ -249,7 +249,8 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                     String selectedOption = mSpinnerAdapter.getDataAt(i);
                     mSpinnerAdapter.setSelected(i);
 
-                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion, selectedOption);
+                    mBackgroundQuestionCallback.onQuestionAnswered(mQuestion,
+                            mQuestion.getOptions().get(selectedOption));
                 }
 
                 @Override
@@ -267,7 +268,7 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
                 mSpinnerAdapter =
                         new SurveyQuestionSpinnerAdapter(itemView.getContext(), R.layout.item_tv_spinner);
 
-                mSpinnerAdapter.setValues(question.getOptions().toArray(
+                mSpinnerAdapter.setValues(question.getOptions().keySet().toArray(
                         new String[question.getOptions().size()]));
                 mSpinnerOptions.setAdapter(mSpinnerAdapter);
 

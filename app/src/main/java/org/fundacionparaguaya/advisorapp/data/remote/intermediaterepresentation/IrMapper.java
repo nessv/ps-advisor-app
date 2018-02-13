@@ -128,7 +128,7 @@ public class IrMapper {
                     questionIr.title.get("es"),
                     mapResponseType(questionIr),
                     type,
-                    questionIr.options));
+                    mapBackgroundOptions(questionIr.optionNames, questionIr.options)));
         }
         return questions;
     }
@@ -152,6 +152,17 @@ public class IrMapper {
             questions.add(new IndicatorQuestion(indicator));
         }
         return questions;
+    }
+
+    private static Map<String, String> mapBackgroundOptions(List<String> names, List<String> values) {
+        if (names == null || values == null) {
+            return null;
+        }
+        HashMap<String, String> options = new HashMap<>(values.size());
+        for (int i = 0; i < values.size(); i++) {
+            options.put(names.get(i), values.get(i));
+        }
+        return options;
     }
 
     private static ResponseType mapResponseType(SurveyQuestionIr ir) {

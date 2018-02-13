@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,14 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.DashActivity;
+import org.fundacionparaguaya.advisorapp.adapters.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.advisorapp.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.advisorapp.data.remote.Server;
 import org.fundacionparaguaya.advisorapp.models.User;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.LoginViewModel;
@@ -46,10 +54,10 @@ public class LoginFragment extends Fragment {
     protected EditText mPasswordView;
     protected Button mSubmitButton;
     protected TextView mIncorrectCredentialsView;
-    protected TextView mPasswordReset;
-    protected AuthenticationManager mAuthManager;
+    protected AppCompatSpinner mServerSpinner;
 
     @Inject protected InjectionViewModelFactory mViewModelFactory;
+    private LoginViewModel mViewModel;
 
     private ImageView mFPLogo;
     private MixpanelAPI mMixpanel;
@@ -62,11 +70,9 @@ public class LoginFragment extends Fragment {
                 .getApplicationComponent()
                 .inject(this);
 
-        LoginViewModel viewModel = ViewModelProviders
+        mViewModel = ViewModelProviders
                 .of((FragmentActivity) getActivity(), mViewModelFactory)
                 .get(LoginViewModel.class);
-
-        mAuthManager = viewModel.getAuthManager();
 
         mMixpanel = MixpanelAPI.getInstance(getContext(), BuildConfig.MIXPANEL_API_KEY_STRING);
     }
@@ -86,7 +92,8 @@ public class LoginFragment extends Fragment {
         setRetainInstance(true);
 
         mIncorrectCredentialsView = (TextView) view.findViewById(R.id.login_incorrect_credentials);
-        mPasswordReset = (TextView) view.findViewById(R.id.login_passwordreset);
+
+        mServerSpinner = view.findViewById(R.id.spinner_login_serverselect);
 
         mEmailView = (EditText) view.findViewById(R.id.login_email);
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
@@ -148,15 +155,7 @@ public class LoginFragment extends Fragment {
         mPasswordView.setOnClickListener(hideIncorrectCredentials);
 
         //Hide for later implementation
-        mPasswordReset.setVisibility(View.GONE);
         mHelpButton.setVisibility(View.GONE);
-
-        mPasswordReset.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //TODO: Implement password reset (set visible above when ready to implement)
-            }
-        });
 
         mHelpButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -167,12 +166,38 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        mAuthManager.getStatus().observe(this, (value) -> {
+        mViewModel.getAuthStatus().observe(this, (value) -> {
             if (value == AUTHENTICATED) {
                 launchMainActivity(getActivity());
             }
         });
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        SelectedFirstSpinnerAdapter<Server> spinAdapter = new SelectedFirstSpinnerAdapter<>(
+                this.getContext(), R.layout.item_tv_spinner);
+
+        spinAdapter.setValues(mViewModel.getServers());
+        mViewModel.getSelectedServer().observe(this, spinAdapter::setSelected);
+
+        mServerSpinner.setAdapter(spinAdapter);
+        mServerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Server server = spinAdapter.getDataAt(i);
+                mViewModel.setSelectedServer(server);
+                spinAdapter.setSelected(server);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //mSpinnerAdapter.setSelected(-1);
+            }
+        });
     }
 
     /**
@@ -212,7 +237,7 @@ public class LoginFragment extends Fragment {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            new LoginTask(this).execute(new User(email, password, true));
+            new LoginTask(this, mViewModel.getAuthManager()).execute(new User(email, password, true));
         }
     }
 
@@ -229,15 +254,16 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
     LoginFragment mLoginFragment;
     AuthenticationManager mAuthManager;
 
-    LoginTask(LoginFragment loginFragment) {
+    LoginTask(LoginFragment loginFragment, AuthenticationManager authManager) {
         this.mLoginFragment = loginFragment;
-        this.mAuthManager = mLoginFragment.mAuthManager;
+        this.mAuthManager = authManager;
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
+        mLoginFragment.mServerSpinner.setEnabled(false);
         mLoginFragment.mEmailView.setEnabled(false);
         mLoginFragment.mPasswordView.setEnabled(false);
         mLoginFragment.mSubmitButton.setEnabled(false);
@@ -259,6 +285,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
                 mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_incorrectcredentials);
                 mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
                 mLoginFragment.mPasswordView.setText("");
+                mLoginFragment.mServerSpinner.setEnabled(true);
                 mLoginFragment.mEmailView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
                 mLoginFragment.mSubmitButton.setEnabled(true);
@@ -266,6 +293,7 @@ class LoginTask extends AsyncTask<User, Void, AuthenticationManager.Authenticati
             case UNKNOWN:
                 mLoginFragment.mIncorrectCredentialsView.setText(R.string.login_error);
                 mLoginFragment.mIncorrectCredentialsView.setVisibility(View.VISIBLE);
+                mLoginFragment.mServerSpinner.setEnabled(true);
                 mLoginFragment.mEmailView.setEnabled(true);
                 mLoginFragment.mPasswordView.setEnabled(true);
                 mLoginFragment.mSubmitButton.setEnabled(true);

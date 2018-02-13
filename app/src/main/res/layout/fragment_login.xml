@@ -60,23 +60,26 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:layout_width="250dp"
+                android:layout_width="wrap_content"
+                android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp">
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/spinner_login_serverselect"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="0dp"
                     android:background="@drawable/spinner_background"
                     app:backgroundTint="#A1A1A1"
                     android:minHeight="32dp"
-                    android:minWidth="50dp" />
+                    android:minWidth="150dp" />
 
 
                 <android.support.v7.widget.AppCompatImageView

@@ -47,8 +47,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
 
     private SurveyListAdapter mAdapter;
 
-    private ImageView mImage;
-
     private Survey selectedSurvey = null;
 
     //need the family name
@@ -88,7 +86,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mSubmitButton = view.findViewById(R.id.btn_surveyintro_submit);
 
         mSubmitButton.setOnClickListener((event) -> onSubmit());
-        mImage = (ImageView) view.findViewById(R.id.surveyintro_image);
 
         mSurveyOptionList = (RecyclerView) view.findViewById(R.id.surveyintro_surveyoptionlist);
         mSurveyOptionList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -99,10 +96,6 @@ public class SurveyIntroFragment extends AbstractSurveyFragment {
         mAdapter = new SurveyListAdapter(getContext(), mSurveyList);
         mSurveyOptionList.setAdapter(mAdapter);
         mAdapter.setClickListener(this::onItemClick);
-
-        if (ScreenCalculations.is7InchTablet(getContext()) && mImage != null){
-            mImage.setVisibility(View.GONE);
-        }
 
         return view;
     }

@@ -113,5 +113,6 @@
     <string name="prioritychooser_greenselected">Elija un indicador rojo o amarillo</string>
     <string name="choosepriorities_title">Mapa de Vida</string>
     <string name="all_save">Guardar</string>
+    <string name="available_surveys">Available Surveys</string>
 
 </resources>

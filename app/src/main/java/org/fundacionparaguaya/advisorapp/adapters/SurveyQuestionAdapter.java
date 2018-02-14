@@ -1,8 +1,6 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -261,6 +259,7 @@ public class SurveyQuestionAdapter extends RecyclerView.Adapter {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    /* Default */
                 }
             });
         }

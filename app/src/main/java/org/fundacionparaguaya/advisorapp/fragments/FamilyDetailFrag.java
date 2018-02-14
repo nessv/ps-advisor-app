@@ -11,18 +11,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.util.MonthDisplayHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.fragments.callbacks.SubTabFragmentCallback;
@@ -30,7 +27,6 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.FamilyInformationViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -93,11 +89,11 @@ public class FamilyDetailFrag extends AbstractStackedFrag implements Observer<Fa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mFamilyName = (TextView) view.findViewById(R.id.family_view_name);
-        mPhoneNumber = (TextView) view.findViewById(R.id.familyview_phone);
-        mAddress = (TextView) view.findViewById(R.id.familydetail_location_content);
-        mLocation = (TextView) view.findViewById(R.id.description_content);
-        mFamilyImage = (SimpleDraweeView) view.findViewById(R.id.family_image_2);
+        mFamilyName = view.findViewById(R.id.family_view_name);
+        mPhoneNumber = view.findViewById(R.id.familyview_phone);
+        mAddress = view.findViewById(R.id.familydetail_location_content);
+        mLocation = view.findViewById(R.id.description_content);
+        mFamilyImage = view.findViewById(R.id.family_image_2);
 
         try{
             //observer is added onViewCreated so the LiveData will renotify the observers when the view is

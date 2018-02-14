@@ -7,11 +7,6 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
 public class MixpanelHelper {
     private static String API_KEY = BuildConfig.MIXPANEL_API_KEY_STRING;
 

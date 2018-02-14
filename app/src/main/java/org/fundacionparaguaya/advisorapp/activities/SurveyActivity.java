@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.fragments.*;
 import org.fundacionparaguaya.advisorapp.models.Family;
@@ -27,7 +26,6 @@ import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
-import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -40,28 +38,24 @@ public class SurveyActivity extends AbstractFragSwitcherActivity
 {
     static String FAMILY_ID_KEY = "FAMILY_ID";
 
-    TextView mTvTitle;
-    TextView mTvQuestionsLeft;
-    TextView mTvNextUp;
+    private TextView mTvTitle;
+    private TextView mTvQuestionsLeft;
+    private TextView mTvNextUp;
 
-    ImageButton mExitButton;
+    private ImageButton mExitButton;
 
-    ProgressBar mProgressBar;
+    private ProgressBar mProgressBar;
 
-    SurveyIndicatorsFragment surveyIndicatorsFragment;
-
-    LinearLayout mHeader;
-    RelativeLayout mFooter;
-
-    private MixpanelAPI mMixpanel;
+    private LinearLayout mHeader;
+    private RelativeLayout mFooter;
 
     //whether or not the current tablet is 7 inches
     private boolean mIs7Inch = false;
 
     @Inject
-    InjectionViewModelFactory mViewModelFactory;
+    protected InjectionViewModelFactory mViewModelFactory;
 
-    SharedSurveyViewModel mSurveyViewModel;
+    private SharedSurveyViewModel mSurveyViewModel;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

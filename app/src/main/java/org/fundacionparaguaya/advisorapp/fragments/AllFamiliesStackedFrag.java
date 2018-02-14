@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,20 +9,15 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
 import org.fundacionparaguaya.advisorapp.adapters.FamiliesAdapter;
-import org.fundacionparaguaya.advisorapp.models.Family;
 
 import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
 
@@ -31,7 +25,6 @@ import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 
 import org.fundacionparaguaya.advisorapp.viewmodels.AllFamiliesViewModel;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
-import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -49,8 +42,8 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
     private final static float FAMILY_CARD_MARGIN = 24f;
 
     @Inject
-    InjectionViewModelFactory mViewModelFactory;
-    AllFamiliesViewModel mAllFamiliesViewModel;
+    protected InjectionViewModelFactory mViewModelFactory;
+    private AllFamiliesViewModel mAllFamiliesViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

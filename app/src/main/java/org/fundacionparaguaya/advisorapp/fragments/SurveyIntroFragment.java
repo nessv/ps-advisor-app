@@ -10,32 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
-import org.fundacionparaguaya.advisorapp.BuildConfig;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyListAdapter;
 import org.fundacionparaguaya.advisorapp.models.Survey;
-
-import org.fundacionparaguaya.advisorapp.util.ScreenCalculations;
-import org.fundacionparaguaya.advisorapp.util.MixpanelHelper;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
-
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.SurveyState;
-
 import java.util.ArrayList;
-
-import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel.*;
-import org.json.JSONObject;
-
 import javax.inject.Inject;
 
 /**

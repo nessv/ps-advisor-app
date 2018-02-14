@@ -48,8 +48,9 @@
     <string name="survey_finish">Terminar</string>
     <string name="survey_skip">Omitir</string>
     <string name="survey_save">Salvar</string>
+    <string name="survey_required">Required Question</string>
     <string name="survey_bkgquestions_title">Información de Fondo</string>
-    <string name="survey_indicators_title"></string>
+    <string name="survey_indicators_title">Pregunta Requerida</string>
     <string name="survey_summary_title">Enviar Instantánea</string>
     <string name="surveyquestions_economic_title">Preguntas Económicas</string>
     <string name="survey_questionsremaining"> Restante</string>

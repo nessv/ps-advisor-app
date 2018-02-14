@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,13 +33,16 @@ import javax.inject.Inject;
 
 public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements ViewPager.OnPageChangeListener {
 
-    SurveyIndicatorAdapter mAdapter;
-    NonSwipeableViewPager mPager;
+    private SurveyIndicatorAdapter mAdapter;
+    private NonSwipeableViewPager mPager;
 
-    LinearLayout backButton;
-    TextView backButtonText;
-    LinearLayout skipButton;
-    TextView skipButtonText;
+    protected LinearLayout mBackButton;
+    protected TextView mBackButtonText;
+    protected ImageView mBackButtonImage;
+
+    protected LinearLayout mSkipButton;
+    protected TextView mSkipButtonText;
+    protected ImageView mSkippButtonImage;
 
     private boolean isPageChanged = true;
 
@@ -79,25 +83,35 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mPager.setAdapter(mAdapter);
         mPager.addOnPageChangeListener(this);
 
-        backButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
-        backButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
-        skipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
-        skipButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_skipbuttontext);
+        mBackButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
+        mBackButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
+        mBackButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_backbuttonimage);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        mSkipButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_skipbutton);
+        mSkipButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_skipbuttontext);
+        mSkippButtonImage = (ImageView) view.findViewById(R.id.indicatorsurvey_skipbuttonimage);
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 previousQuestion();
             }
         });
 
-        skipButton.setOnClickListener(new View.OnClickListener() {
+        mSkipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
-                    addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
+                      if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
+                          nextQuestion();
+                      }
+                } else {
+                    if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()){
+                        nextQuestion();
+                    } else {
+                        addSkippedIndicator(mAdapter.getQuestion(mPager.getCurrentItem()));
+                    }
                 }
-                nextQuestion();
             }
         });
         checkConditions();
@@ -150,13 +164,19 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     public void removeIndicatorResponse(IndicatorQuestion question) {
         mSurveyViewModel.removeIndicatorResponse(question);
+        checkConditions();
     }
 
-    private void checkConditions() {
+    public void checkConditions() {
         if (mAdapter.getIndicatorFragment(mPager.getCurrentItem()).isCardSelected()) {
-            skipButtonText.setText(R.string.survey_next);
+            mSkipButtonText.setText(R.string.survey_next);
+            mSkippButtonImage.setVisibility(View.VISIBLE);
+        } else if (mAdapter.getQuestion(mPager.getCurrentItem()).isRequired()) {
+            mSkipButtonText.setText(R.string.survey_required);
+            mSkippButtonImage.setVisibility(View.GONE);
         } else {
-            skipButtonText.setText(R.string.survey_skip);
+            mSkipButtonText.setText(R.string.survey_skip);
+            mSkippButtonImage.setVisibility(View.VISIBLE);
         }
     }
 

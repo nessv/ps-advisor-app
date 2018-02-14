@@ -35,6 +35,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
+                android:id="@+id/indicatorsurvey_backbuttonimage"
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
                 android:scaleX="-1"
@@ -70,6 +71,7 @@
                 android:textSize="36sp" />
 
             <ImageView
+                android:id="@+id/indicatorsurvey_skipbuttonimage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_survey_arrow_grey" />

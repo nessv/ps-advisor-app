@@ -20,15 +20,15 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.IndicatorCard;
 
 public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
-    IndicatorCard mGreenCard;
-    IndicatorCard mYellowCard;
-    IndicatorCard mRedCard;
+    protected IndicatorCard mGreenCard;
+    protected IndicatorCard mYellowCard;
+    protected IndicatorCard mRedCard;
 
-    IndicatorQuestion question;
+    protected IndicatorQuestion mQuestion;
 
-    SurveyIndicatorsFragment parentFragment;
+    protected SurveyIndicatorsFragment parentFragment;
 
-    SurveyIndicatorAdapter adapter;
+    protected SurveyIndicatorAdapter adapter;
 
     private static int clickDelay = 500;
     private static int clickDelayInterval = 100;
@@ -39,16 +39,14 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
     private IndicatorCard.IndicatorSelectedHandler handler = (card) ->
     {
-        if (parentFragment.isPageChanged()) {
-            onCardSelected(card);
-        }
+        onCardSelected(card);
     };
 
     public ChooseIndicatorFragment newInstance(SurveyIndicatorAdapter adapter, IndicatorQuestion question) {
 
         ChooseIndicatorFragment fragment = new ChooseIndicatorFragment();
         this.adapter = adapter;
-        this.question = question;
+        this.mQuestion = question;
 
         parentFragment = (SurveyIndicatorsFragment) adapter.returnParent();
 
@@ -63,7 +61,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
         mYellowCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_yellow);
         mRedCard = (IndicatorCard) rootView.findViewById(R.id.indicatorcard_red);
 
-        for (IndicatorOption option : question.getOptions()) {
+        for (IndicatorOption option : mQuestion.getOptions()) {
             switch (option.getLevel()) {
                 case Green:
                     mGreenCard.setOption(option);
@@ -77,7 +75,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
             }
         }
 
-        IndicatorOption existingResponse = parentFragment.getResponses(question);
+        IndicatorOption existingResponse = parentFragment.getResponses(mQuestion);
 
         if (existingResponse != null) {
             switch (existingResponse.getLevel()) {
@@ -112,16 +110,15 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
 
         if (indicatorCard.equals(selectedIndicatorCard)) {
             indicatorCard.setSelected(false);
-            parentFragment.removeIndicatorResponse(question);
+            parentFragment.removeIndicatorResponse(mQuestion);
             selectedIndicatorCard = null;
+            updateParent();
         } else {
             mRedCard.setSelected(mRedCard.equals(indicatorCard));
             mYellowCard.setSelected(mYellowCard.equals(indicatorCard));
             mGreenCard.setSelected(mGreenCard.equals(indicatorCard));
-
-            parentFragment.addIndicatorResponse(question, indicatorCard.getOption());
+            parentFragment.addIndicatorResponse(mQuestion, indicatorCard.getOption());
             updateParent();
-
             selectedIndicatorCard = indicatorCard;
         }
 
@@ -135,9 +132,10 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
     }
 
     private void updateParent() {
-        if (nextPageTimer !=null){
+        if (nextPageTimer != null ) {
             nextPageTimer.cancel();
             nextPageTimer = null;
+            parentFragment.checkConditions();
         } else {
             nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
                 @Override
@@ -150,7 +148,7 @@ public class ChooseIndicatorFragment extends AbstractSurveyFragment {
                     if (selectedIndicatorCard != null) {
                         parentFragment.nextQuestion();
                     } else {
-                        parentFragment.removeIndicatorResponse(question);
+                        parentFragment.removeIndicatorResponse(mQuestion);
                     }
                 }
             }.start();

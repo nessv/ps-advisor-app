@@ -45,6 +45,7 @@
     <string name="survey_finish">Finish</string>
     <string name="survey_skip">Skip</string>
     <string name="survey_save">Save</string>
+    <string name="survey_required">Required Question</string>
     <string name="survey_bkgquestions_title">Background Information</string>
     <string name="survey_indicators_title"></string>
     <string name="survey_summary_title">Submit Snapshot</string>

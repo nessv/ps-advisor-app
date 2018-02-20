@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.models.BackgroundQuestion;
-import org.fundacionparaguaya.advisorapp.models.Survey;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
@@ -38,14 +37,7 @@ public class SurveyNewFamilyFrag extends SurveyQuestionsFrag {
     protected void initQuestionList() {
         mSharedSurveyViewModel.getSurveys().observe(this, (surveys) ->
         {
-            if (surveys != null && surveys.size() > 0) {
-                Survey survey = surveys.get(0);
-
-                mSharedSurveyViewModel.makeSnapshot(survey); //assumes family livedata object has value
-
-                mQuestions = mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
-            }
-
+            mQuestions = mSharedSurveyViewModel.getSurveyInProgress().getPersonalQuestions();
             mSharedSurveyViewModel.getPersonalResponses().observe(this, mSurveyReviewAdapter::setResponses);
 
             super.initQuestionList();

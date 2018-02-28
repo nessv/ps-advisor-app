@@ -14,8 +14,7 @@
             android:textAppearance="@style/Label.Light"
             android:background="@color/app_grey"
             tools:text="@string/prioritieslist_header_remaining"
-            android:paddingStart="8dp"
-    />
+            android:paddingStart="8dp"/>
 
     <android.support.v7.widget.RecyclerView
             app:layout_constraintTop_toBottomOf="@id/tv_prioriitylist_header"
@@ -26,7 +25,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             tools:listitem="@layout/item_prioritylist">
-
     </android.support.v7.widget.RecyclerView>
 
     <android.support.v7.widget.AppCompatButton android:layout_width="wrap_content" android:layout_height="40dp"
@@ -38,7 +36,6 @@
             android:textAppearance="@style/CardHeading.Light"
             android:background="@drawable/all_button_large"
             android:text="@string/all_save"
-            android:minWidth="120dp"
-    />
+            android:minWidth="120dp"/>
 
 </android.support.constraint.ConstraintLayout>

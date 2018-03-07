@@ -85,6 +85,22 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    public void filter(String text){
+        ArrayList<Family> mFilteredFamilyList = new ArrayList<>();
+        for (Family family: mFamilyList){
+
+            if(family.getName().toLowerCase().contains(text.toLowerCase())){
+                mFilteredFamilyList.add(family);
+            }
+        }
+
+        filterFamilyList(mFilteredFamilyList);
+    }
+
+    public void filterFamilyList(ArrayList<Family> mFilteredFamilyList) {
+        mFamilyList = mFilteredFamilyList;
+    }
+
 
     public void setFamilyList(final List<? extends Family> families) {
         if (mFamilyList == null || mFamilyList.size() == 0) {

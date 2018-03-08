@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/app_offwhite">
 
     <LinearLayout
@@ -45,14 +46,10 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_surveyintro_submit"
-        android:background="@drawable/all_button_large"
-        android:textAppearance="@style/CardHeading.Light"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:theme="@style/ButtonTheme"
+        style="@style/PrimaryActionButton"
         android:layout_marginBottom="40dp"
         android:layout_marginTop="120dp"
         android:text="@string/all_continue"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 </RelativeLayout>

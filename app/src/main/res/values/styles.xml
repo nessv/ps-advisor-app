@@ -62,11 +62,11 @@
     </style>
 
     <style name="SecondaryDestructiveButton" parent="Base.Widget.AppCompat.Button">
-        <item name="strokeColor">@color/app_red</item>
+        <item name="stro">@color/app_red</item>
     </style>
 
     <style name="SecondaryDisabledButton" parent="Base.Widget.AppCompat.Button">
-        <item name="strokecolor">@color/app_btn_disabled</item>
+        <item name="app:strokeColor">@color/app_btn_disabled</item>
     </style>
 
     <style name="SecondaryActionButton">

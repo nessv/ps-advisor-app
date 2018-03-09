@@ -46,10 +46,9 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_surveyintro_submit"
-        android:theme="@style/ButtonTheme"
-        style="@style/PrimaryActionButton"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="120dp"
+        style="@style/Button.Primary"
+        android:layout_marginBottom="48dp"
+        android:layout_alignParentBottom="true"
         android:text="@string/all_continue"
         android:visibility="visible"/>
 </RelativeLayout>

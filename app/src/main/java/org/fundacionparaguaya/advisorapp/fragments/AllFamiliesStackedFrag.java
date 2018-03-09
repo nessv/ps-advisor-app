@@ -27,6 +27,7 @@ import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -127,7 +128,8 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
         searchFamilies.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                String f = searchFamilies.getText().toString().toLowerCase(Locale.getDefault());
+                mFamiliesAdapter.filter(f);
             }
 
             @Override
@@ -137,7 +139,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mFamiliesAdapter.filter(s.toString());
+
             }
         });
 

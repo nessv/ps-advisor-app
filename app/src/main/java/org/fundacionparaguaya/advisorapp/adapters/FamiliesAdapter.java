@@ -16,6 +16,7 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -87,18 +88,20 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
 
     public void filter(String text){
         ArrayList<Family> mFilteredFamilyList = new ArrayList<>();
-        for (Family family: mFamilyList){
+        mFamilyList.clear();
+        text = text.toLowerCase(Locale.getDefault());
 
-            if(family.getName().toLowerCase().contains(text.toLowerCase())){
-                mFilteredFamilyList.add(family);
+        if(text.length() == 0){
+            mFilteredFamilyList.addAll(mFamilyList);
+        } else {
+            for (Family family : mFamilyList) {
+
+                if (family.getName().toLowerCase().contains(text.toLowerCase())) {
+                    mFilteredFamilyList.add(family);
+                }
             }
         }
-
-        filterFamilyList(mFilteredFamilyList);
-    }
-
-    public void filterFamilyList(ArrayList<Family> mFilteredFamilyList) {
-        mFamilyList = mFilteredFamilyList;
+        notifyDataSetChanged();
     }
 
 

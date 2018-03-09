@@ -52,23 +52,7 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
     </style>
-
-    <style name="SecondaryButton" parent="Base.Widget.AppCompat.Button">
-        <item name="strokeColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="SecondaryWarningButton" parent="Base.Widget.AppCompat.Button">
-        <item name="strokeColor">@color/app_orange</item>
-    </style>
-
-    <style name="SecondaryDestructiveButton" parent="Base.Widget.AppCompat.Button">
-        <item name="stro">@color/app_red</item>
-    </style>
-
-    <style name="SecondaryDisabledButton" parent="Base.Widget.AppCompat.Button">
-        <item name="app:strokeColor">@color/app_btn_disabled</item>
-    </style>
-
+    
     <style name="SecondaryActionButton">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>

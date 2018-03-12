@@ -1,5 +1,6 @@
 package org.fundacionparaguaya.advisorapp.fragments;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -128,8 +129,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
         searchFamilies.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                String f = searchFamilies.getText().toString().toLowerCase(Locale.getDefault());
-                mFamiliesAdapter.filter(f);
+
             }
 
             @Override
@@ -139,7 +139,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                mFamiliesAdapter.filter(s.toString());
             }
         });
 

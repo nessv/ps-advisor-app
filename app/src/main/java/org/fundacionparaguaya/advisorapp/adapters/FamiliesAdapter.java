@@ -86,24 +86,27 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void filter(String text){
-        ArrayList<Family> mFilteredFamilyList = new ArrayList<>();
-        mFamilyList.clear();
-        text = text.toLowerCase(Locale.getDefault());
+    public void filter(String text) {
+        //new array list that will hold the filtered data
+        ArrayList<Family> filteredFamilyList = new ArrayList<>();
 
-        if(text.length() == 0){
-            mFilteredFamilyList.addAll(mFamilyList);
-        } else {
-            for (Family family : mFamilyList) {
-
-                if (family.getName().toLowerCase().contains(text.toLowerCase())) {
-                    mFilteredFamilyList.add(family);
-                }
+        //looping through existing elements
+        for (Family familyToFilter : mFamilyList) {
+            //if the existing elements contains the search input
+            if (familyToFilter.getName().toLowerCase().contains(text.toLowerCase())) {
+                //adding the element to filtered list
+                filteredFamilyList.add(familyToFilter);
             }
         }
-        notifyDataSetChanged();
+
+        //calling a method of the adapter class and passing the filtered list
+        filterList(filteredFamilyList);
     }
 
+    public void filterList(ArrayList<Family> filteredFamilyList) {
+        this.mFamilyList = filteredFamilyList;
+        notifyDataSetChanged();
+    }
 
     public void setFamilyList(final List<? extends Family> families) {
         if (mFamilyList == null || mFamilyList.size() == 0) {

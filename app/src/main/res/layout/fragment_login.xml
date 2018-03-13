@@ -79,19 +79,11 @@
 
             <EditText
                 android:id="@+id/login_email"
-                android:drawableStart="@drawable/login_username_icon"
-                android:hint="@string/login_username"
-                android:inputType="textEmailAddress"
-                style="@style/TextWithIcon" />
+                style="@style/TextWithIcon.Username" />
 
             <EditText
                 android:id="@+id/login_password"
-                android:drawableStart="@drawable/login_passwordicon"
-                android:hint="@string/login_passwordprompt"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/login_action_signin"
-                android:inputType="textPassword"
-                style="@style/TextWithIcon"/>
+                style="@style/TextWithIcon.Password"/>
 
         </LinearLayout>
             <!-- font not working.. -->

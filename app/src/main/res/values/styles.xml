@@ -83,7 +83,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:minHeight">84dp</item>
         <item name="android:background">@drawable/surveyquestions_reviewlistbackground</item>
-        <item name="app:backgroundTint">@color/app_black</item>
+        <item name="backgroundTint">@color/app_black</item>
     </style>
 
     <style name="TextWithIcon">
@@ -98,6 +98,20 @@
         <item name="android:paddingStart">20dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">18sp</item>
+    </style>
+    
+    <style name="TextWithIcon.Username">
+        <item name="android:drawableStart">@drawable/login_username_icon</item>
+        <item name="android:hint">@string/login_username</item>
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="TextWithIcon.Password">
+        <item name="android:drawableStart">@drawable/login_passwordicon</item>
+        <item name="android:hint">@string/login_passwordprompt</item>
+        <item name="android:imeActionId">6</item>
+        <item name="android:imeActionLabel">@string/login_action_signin</item>
+        <item name="android:inputType">textPassword</item>
     </style>
 
     <!--========= Spinner Styles =========-->

@@ -6,9 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-
         <item name="android:buttonStyle">@style/Button.Primary</item>
-
         <item name="colorButtonNormal">@color/colorPrimary</item>
 
         <!-- For the resting Spinner style -->
@@ -57,12 +55,11 @@
         <item name="android:background">@drawable/all_button_large</item>
         <item name="android:textAppearance">@style/CardHeading.Light</item>
     </style>
-
+  
     <style name="Button.Secondary">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
     </style>
-
 
     <!--========= Text Input Styles =========-->
     <style name="ShortTextInput">

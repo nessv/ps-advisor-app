@@ -6,7 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:buttonStyle">@style/PrimaryActionButton</item>
+
+        <item name="android:buttonStyle">@style/Button.Primary</item>
+
         <item name="colorButtonNormal">@color/colorPrimary</item>
 
         <!-- For the resting Spinner style -->
@@ -39,33 +41,28 @@
         <item name="colorButtonNormal">@color/app_btn_disabled</item>
     </style>
 
-    <style name="PrimaryActionButton">
+    <style name="Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingStart">48dp</item>
+        <item name="android:paddingEnd">48dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name ="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="Button.Primary">
         <item name="android:background">@drawable/all_button_large</item>
         <item name="android:textAppearance">@style/CardHeading.Light</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:paddingStart">30dp</item>
-        <item name="android:paddingEnd">30dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
     </style>
-    
-    <style name="SecondaryActionButton">
+
+    <style name="Button.Secondary">
         <item name="android:background">@drawable/all_button_large_outline</item>
         <item name="android:textAppearance">@style/CardHeading</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:paddingStart">30dp</item>
-        <item name="android:paddingEnd">30dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
     </style>
+
 
     <!--========= Text Input Styles =========-->
     <style name="ShortTextInput">
@@ -102,7 +99,6 @@
         <item name="android:singleLine">true</item>
         <item name="android:textSize">18sp</item>
     </style>
-
 
     <!--========= Spinner Styles =========-->
 

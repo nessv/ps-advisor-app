@@ -73,20 +73,33 @@ public abstract class QuestionFragment extends Fragment {
             throw new IllegalArgumentException("QuestionFragment must have a question index set");
         }
 
-        mQuestion = ((QuestionCallback)getParentFragment()).getQuestion(questionIndex);
+        mQuestion = getCallback().getQuestion(questionIndex);
 
     }
 
     public void notifyResponseCallback(BackgroundQuestion q, String s)
     {
-        ((QuestionCallback)getParentFragment()).onResponse(q, s);
+        getCallback().onResponse(q, s);
     }
 
     /** Returns the response for this question that is currently saved by the callback **/
     public String getSavedResponse()
     {
-        return ((QuestionCallback)getParentFragment()).getResponse(mQuestion);
+        return getCallback().getResponse(mQuestion);
     }
+
+    private QuestionCallback<BackgroundQuestion, String> getCallback() {
+        try {
+            @SuppressWarnings("unchecked")
+            QuestionCallback<BackgroundQuestion, String> callback = (QuestionCallback<BackgroundQuestion, String>) getParentFragment();
+            return callback;
+        }
+        catch (ClassCastException e) {
+            throw new ClassCastException("Parent fragment of QuestionFragment must implement interface " +
+                    "QuestionCallback<BackgroundQuestion, String");
+        }
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -231,22 +244,16 @@ public abstract class QuestionFragment extends Fragment {
                     try {
                         intent = builder.build(getActivity());
                         startActivityForResult(intent, PLACE_PICKER_REQUEST);
-                    } catch (GooglePlayServicesRepairableException e) {
-                        GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getActivity(), "Google Play Services is not available.",
-                                Toast.LENGTH_LONG)
-                                .show();
+                } catch (GooglePlayServicesNotAvailableException|GooglePlayServicesRepairableException e) {
+                        Instabug.reportException(e);
                     }
-                }
-            });
-
+                }});
             return v;
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, getContext());
+                Place place = PlacePicker.getPlace(getContext(), data);
                 Double latitude = place.getLatLng().latitude;
                 Double longitude = place.getLatLng().longitude;
                 String location = String.valueOf(latitude)+String.valueOf(longitude);

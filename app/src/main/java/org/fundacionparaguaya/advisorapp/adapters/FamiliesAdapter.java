@@ -1,13 +1,10 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
-import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.UiThread;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

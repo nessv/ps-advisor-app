@@ -1,9 +1,13 @@
 package org.fundacionparaguaya.advisorapp.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.UiThread;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +20,16 @@ import org.fundacionparaguaya.advisorapp.models.Family;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
  * Adapter for displaying a grid of family cards, with their picture, name, next visit and last visit.
  */
 
-public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.FamilyViewHolder> {
+public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.FamilyViewHolder>{
 
-    private List<? extends Family> mFamilyList;
+    public List<Family> mFamilyList;
     private ArrayList<FamilySelectedHandler> mFamilySelectedHandlers;
-
 
     public FamiliesAdapter() {
         mFamilySelectedHandlers = new ArrayList<FamilySelectedHandler>();
@@ -86,65 +88,51 @@ public class FamiliesAdapter extends RecyclerView.Adapter<FamiliesAdapter.Family
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void filter(String text) {
-        //new array list that will hold the filtered data
-        ArrayList<Family> filteredFamilyList = new ArrayList<>();
 
-        //looping through existing elements
-        for (Family familyToFilter : mFamilyList) {
-            //if the existing elements contains the search input
-            if (familyToFilter.getName().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                filteredFamilyList.add(familyToFilter);
-            }
-        }
-
-        //calling a method of the adapter class and passing the filtered list
-        filterList(filteredFamilyList);
-    }
-
-    public void filterList(ArrayList<Family> filteredFamilyList) {
-        this.mFamilyList = filteredFamilyList;
-        notifyDataSetChanged();
-    }
-
-    public void setFamilyList(final List<? extends Family> families) {
+    public void setFamilyList(final List<Family> families) {
         if (mFamilyList == null || mFamilyList.size() == 0) {
             mFamilyList = families;
             notifyDataSetChanged();
         } else {
-            /*DiffUtil class updates the list with the least number of update operations by comparing the old list
+            update(families);
+           //set family list
+            //then call filter from here, with the text you need to filter by
+        }
+    }
+
+    @UiThread
+    public void update(final List<Family> newFamilyList) {
+        /*DiffUtil class updates the list with the least number of update operations by comparing the old list
             * and the new list and calculating the differences between them and hence calculate the updates
             * needed in the RecyclerView*/
-            final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return mFamilyList.size();
-                }
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return mFamilyList.size();
+            }
 
-                @Override
-                public int getNewListSize() {
-                    return families.size();
-                }
+            @Override
+            public int getNewListSize() {
+                return newFamilyList.size();
+            }
 
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return mFamilyList.get(oldItemPosition)
-                            .equals(families.get(newItemPosition));
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return mFamilyList.get(oldItemPosition)
+                        .equals(newFamilyList.get(newItemPosition));
+            }
 
-                }
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                Family newFamily = newFamilyList.get(newItemPosition);
+                Family oldFamily = mFamilyList.get(oldItemPosition);
+                return newFamily == oldFamily
+                        && Objects.equals(newFamily.getName(), oldFamily.getName());
+            }
+        });
 
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Family newFamily = families.get(newItemPosition);
-                    Family oldFamily = mFamilyList.get(oldItemPosition);
-                    return newFamily == oldFamily
-                            && Objects.equals(newFamily.getName(), oldFamily.getName());
-                }
-            });
-            mFamilyList = families;
-            result.dispatchUpdatesTo(this);
-        }
+        mFamilyList = newFamilyList;
+        result.dispatchUpdatesTo(this);
     }
 
 

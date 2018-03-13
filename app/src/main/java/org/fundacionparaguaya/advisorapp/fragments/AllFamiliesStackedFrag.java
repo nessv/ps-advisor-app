@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
+
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
@@ -47,7 +49,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
     @Inject
     protected InjectionViewModelFactory mViewModelFactory;
-    private AllFamiliesViewModel mAllFamiliesViewModel;
+    public AllFamiliesViewModel mAllFamiliesViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +82,9 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
                 navigateTo(f);
             }
         });
+    }
+
+    private void getList() {
     }
 
     /**
@@ -122,26 +127,28 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
         View view = inflater.inflate(R.layout.fragment_allfamilies, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.all_families_view);
+        android.support.v7.widget.SearchView mSearchFamilies = view.findViewById(R.id.all_families_search);
 
-        EditText searchFamilies = view.findViewById(R.id.all_families_search);
-
-        searchFamilies.addTextChangedListener(new TextWatcher() {
+        mSearchFamilies.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mFamiliesAdapter.filter(s.toString());
+            public void onClick(View v) {
+                mSearchFamilies.setIconified(false);
             }
         });
+        mSearchFamilies.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAllFamiliesViewModel.filter(newText);
+                return true;
+            }
+        });
+
+        RecyclerView recyclerView = view.findViewById(R.id.all_families_view);
 
         //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
         recyclerView.setFocusable(false);

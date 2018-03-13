@@ -103,7 +103,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    
+
     <!--========= Spinner Styles =========-->
 
     <style name="spinnerItemStyle" parent="Label">

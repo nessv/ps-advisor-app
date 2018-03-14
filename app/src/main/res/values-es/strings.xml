@@ -84,8 +84,6 @@
     <string name="survey_summary_confirmation_details">¡Gracias por tomar nuestra encuesta!</string>
     <string name="survey_summary_confirmation_submit">@string/survey_summary_submit</string>
 
-
-
     <!-- Family Details -->
     <string name="familydetails_phonenumberdefault">No Número de Teléfono</string>
     <string name="familydetails_hometitle">Casa</string>
@@ -110,6 +108,12 @@
     <string name="settings_releasenumber">Número de versión</string>
     <string name="settings_releasenumber_error">Error al Recuperar el Número de Versión</string>
 
+    <!-- Priorities Page -->
+    <string name="priorities_defaulttitle">Sin Prioridades</string>
+    <string name="priorities_problemtitle">Problema</string>
+    <string name="priorities_solutiontitle">Solución</string>
+    <string name="priorities_completiondatetitle">Fecha Estimada</string>
+    <string name="priorities_listcounttitle">Current Priorities</string>
 
     <!-- Other -->
 

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.activities.SurveyActivity;
@@ -122,6 +121,7 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
                 mSearchFamilies.setIconified(false);
             }
         });
+
         mSearchFamilies.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -139,6 +139,13 @@ public class AllFamiliesStackedFrag extends AbstractStackedFrag {
 
         //see: https://stackoverflow.com/questions/16886077/android-scrollview-doesnt-start-at-top-but-at-the-beginning-of-the-gridview
         recyclerView.setFocusable(false);
+        recyclerView.setOnTouchListener((v, event) -> {
+// disallow the onTouch for your scrollable parent view
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            return false;
+        });
+
+        recyclerView.setNestedScrollingEnabled(true);
 
         int mNoOfColumns = ScreenCalculations.calculateNoOfColumns(FAMILY_CARD_WIDTH, FAMILY_CARD_MARGIN, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);

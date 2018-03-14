@@ -54,6 +54,14 @@
                 android:textSize="36sp" />
         </LinearLayout>
 
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/indicatorsurvey_questiontext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="24dp"
+            android:textColor="@color/surveyindicators_questiontext"
+            android:gravity="center"/>
+
         <LinearLayout
             android:id="@+id/indicatorsurvey_skipbutton"
             android:layout_width="wrap_content"

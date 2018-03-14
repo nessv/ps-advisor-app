@@ -62,6 +62,7 @@
     <color name="survey_grey">#E6E6E6</color>
     <color name="survey_navbuttons">#4F4F4F</color>
     <color name="surveyindicators_background">@color/survey_whitebackground</color>
+    <color name="surveyindicators_questiontext">@color/app_black</color>
 
     <!--Indicator Survey Colors-->
     <color name="indicator_card_red">@color/indicator_red</color>

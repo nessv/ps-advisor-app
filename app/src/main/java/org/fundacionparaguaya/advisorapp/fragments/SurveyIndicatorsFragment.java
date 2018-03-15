@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
     protected LinearLayout mSkipButton;
     protected TextView mSkipButtonText;
     protected ImageView mSkippButtonImage;
+
+    private AppCompatTextView mQuestionText;
 
     private boolean isPageChanged = true;
 
@@ -86,6 +89,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(1);
         mPager.addOnPageChangeListener(this);
+
+        mQuestionText = view.findViewById(R.id.indicatorsurvey_questiontext);
 
         mBackButton = (LinearLayout) view.findViewById(R.id.indicatorsurvey_backbutton);
         mBackButtonText = (TextView) view.findViewById(R.id.indicatorsurvey_backbuttontext);
@@ -181,6 +186,11 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
             mSkipButtonText.setText(R.string.survey_skip);
             mSkippButtonImage.setVisibility(View.VISIBLE);
         }
+
+        String question =   (mPager.getCurrentItem() + 1) + ". " +
+                        mAdapter.getQuestion(mPager.getCurrentItem()).getDescription();
+
+        mQuestionText.setText(question);
     }
 
     @Override
@@ -231,11 +241,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
         mSurveyViewModel.setIndicatorResponse(question, s);
         checkConditions();
 
-        if (nextPageTimer != null ) {
+        if (nextPageTimer != null) {
             nextPageTimer.cancel();
             nextPageTimer = null;
-        }
-        else {
+        } else {
             nextPageTimer = new CountDownTimer(clickDelay, clickDelayInterval) {
                 @Override
                 public void onTick(long millisUntilFinished) {

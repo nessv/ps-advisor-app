@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import org.fundacionparaguaya.advisorapp.AdvisorApplication;
 import org.fundacionparaguaya.advisorapp.R;
 import org.fundacionparaguaya.advisorapp.adapters.SurveyIndicatorAdapter;
@@ -25,9 +24,8 @@ import org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager;
 import org.fundacionparaguaya.advisorapp.viewmodels.InjectionViewModelFactory;
 import org.fundacionparaguaya.advisorapp.viewmodels.SharedSurveyViewModel;
 
-import java.util.Set;
-
 import javax.inject.Inject;
+import java.util.Set;
 
 
 /**
@@ -72,11 +70,10 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
                 .of(getActivity(), mViewModelFactory)
                 .get(SharedSurveyViewModel.class);
 
-        setFooterColor(R.color.survey_grey);
-        setHeaderColor(R.color.survey_grey);
         setTitle(getString(R.string.survey_indicators_title));
 
         setShowHeader(false);
+        setShowFooter(false);
     }
 
     @Nullable

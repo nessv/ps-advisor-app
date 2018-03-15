@@ -59,7 +59,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/Body.Large"
-            android:gravity="center"/>
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/indicatorsurvey_backbutton"
+            app:layout_constraintEnd_toStartOf="@id/indicatorsurvey_skipbutton"/>
 
         <LinearLayout
             android:id="@+id/indicatorsurvey_skipbutton"

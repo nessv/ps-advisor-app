@@ -58,8 +58,7 @@
             android:id="@+id/indicatorsurvey_questiontext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="24dp"
-            android:textColor="@color/surveyindicators_questiontext"
+            style="@style/Body.Large"
             android:gravity="center"/>
 
         <LinearLayout

@@ -28,7 +28,7 @@ import static java.lang.String.format;
  * The utility for the storage of snapshots.
  */
 
-public class SnapshotRepository {
+public class SnapshotRepository extends BaseRepository{
     private static final String TAG = "SnapshotRepository";
 
     private final SnapshotDao snapshotDao;
@@ -230,6 +230,9 @@ public class SnapshotRepository {
 
         for (Family family : families) {
             for (Survey survey : surveyRepository.getSurveysNow()) {
+
+                if(shouldAbortSync()) return false;
+
                 success &= pullSnapshots(family, survey);
             }
         }
@@ -238,6 +241,7 @@ public class SnapshotRepository {
 
     private boolean pullSnapshots(Family family, Survey survey) {
         try {
+            if(shouldAbortSync()) return false;
             // get the snapshots
             Response<List<SnapshotIr>> snapshotsResponse = snapshotService
                     .getSnapshots(survey.getRemoteId(), family.getRemoteId())
@@ -248,6 +252,8 @@ public class SnapshotRepository {
                         family.getRemoteId(), snapshotsResponse.errorBody().string()));
                 return false;
             }
+
+            if(shouldAbortSync()) return false;
 
             // get the snapshot overviews (which have the priorities)
             Response<List<SnapshotOverviewIr>> overviewsResponse = snapshotService
@@ -260,9 +266,13 @@ public class SnapshotRepository {
                 return false;
             }
 
+            if(shouldAbortSync()) return false;
+
             List<Snapshot> snapshots = IrMapper.
                     mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family, survey);
             for (Snapshot snapshot : snapshots) {
+                if(shouldAbortSync()) return false;
+
                 Snapshot old = snapshotDao.queryRemoteSnapshotNow(snapshot.getRemoteId());
                 if (old != null) {
                     snapshot.setId(old.getId());

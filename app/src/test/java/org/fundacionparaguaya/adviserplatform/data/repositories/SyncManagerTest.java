@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.SharedPreferences;
 import android.test.suitebuilder.annotation.SmallTest;
-
 import org.fundacionparaguaya.adviserplatform.data.remote.ConnectivityWatcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,24 +15,17 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.LAST_SYNC_ERROR_MARGIN;
-import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.ERROR_NO_INTERNET;
-import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.ERROR_OTHER;
-import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.NEVER;
-import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.SYNCED;
-import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.SYNCING;
+import static org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager.SyncState.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * A test for the SyncManager.
@@ -61,6 +53,8 @@ public class SyncManagerTest {
 
     private MutableLiveData<Boolean> isOnline;
 
+    private AtomicBoolean isAlive;
+
     @Rule
     public InstantTaskExecutorRule instantTask = new InstantTaskExecutorRule();
 
@@ -68,90 +62,92 @@ public class SyncManagerTest {
     public void setUp() {
         isOnline = new MutableLiveData<>();
         isOnline.setValue(true);
-        when(connectivityWatcher.status()).thenReturn(isOnline);
+        isAlive = new AtomicBoolean(true);
 
+
+        when(connectivityWatcher.status()).thenReturn(isOnline);
         when(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor);
     }
 
     @Test
     public void sync_ShouldSyncEachRepository() {
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
-        verify(familyRepository, times(1)).sync(any());
-        verify(surveyRepository, times(1)).sync(any());
-        verify(snapshotRepository, times(1)).sync(any());
-        verify(mImageRepository, times(1)).sync();
+        verify(familyRepository, times(1)).sync(any(), any());
+        verify(surveyRepository, times(1)).sync(any(), any());
+        verify(snapshotRepository, times(1)).sync(any(), any());
+        verify(mImageRepository, times(1)).sync(any(), any());
     }
 
     @Test
     public void sync_ShouldSyncEachRepository_error() {
-        when(familyRepository.sync(any())).thenThrow(new RuntimeException());
+        when(familyRepository.sync(any(), any())).thenThrow(new RuntimeException());
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
-        verify(familyRepository, times(1)).sync(any());
-        verify(surveyRepository, times(1)).sync(any());
-        verify(snapshotRepository, times(1)).sync(any());
-        verify(mImageRepository, times(1)).sync();
+        verify(familyRepository, times(1)).sync(any(), any());
+        verify(surveyRepository, times(1)).sync(any(), any());
+        verify(snapshotRepository, times(1)).sync(any(), any());
+        verify(mImageRepository, times(1)).sync(any(), any());
     }
 
     @Test
     public void sync_ShouldDeliverSyncResult_success() {
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(true);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(true);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
-        assertThat(syncManager.sync(), is(true));
+        assertThat(syncManager.sync(isAlive), is(true));
     }
 
     @Test
     public void sync_ShouldDeliverSyncResult_failure() {
-        when(familyRepository.sync(any())).thenReturn(false);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(true);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(false);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(true);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
-        assertThat(syncManager.sync(), is(false));
+        assertThat(syncManager.sync(isAlive), is(false));
     }
 
     @Test
     public void sync_ShouldDeliverSyncResult_error() {
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenThrow(new RuntimeException());
-        when(snapshotRepository.sync(any())).thenReturn(true);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenThrow(new RuntimeException());
+        when(snapshotRepository.sync(any(), any())).thenReturn(true);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
-        assertThat(syncManager.sync(), is(false));
+        assertThat(syncManager.sync(isAlive), is(false));
     }
 
     @Test
     public void sync_ShouldUpdateProgress_success() {
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(true);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(true);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         assertThat(syncManager.getProgress().getValue().getSyncState(), is(SYNCED));
     }
 
     @Test
     public void sync_ShouldUpdateProgress_failure() {
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(false);
-        when(snapshotRepository.sync(any())).thenReturn(true);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(false);
+        when(snapshotRepository.sync(any(), any())).thenReturn(true);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         assertThat(syncManager.getProgress().getValue().getSyncState(), is(ERROR_OTHER));
     }
@@ -160,7 +156,7 @@ public class SyncManagerTest {
     public void sync_ShouldUpdateProgress_pending() {
         SyncManager syncManager = syncManager();
         syncManager.getProgress().observeForever(observer);
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         ArgumentCaptor<SyncManager.SyncProgress> syncProgressCaptor =
                 ArgumentCaptor.forClass(SyncManager.SyncProgress.class);
@@ -172,32 +168,32 @@ public class SyncManagerTest {
     public void sync_ShouldUseLastSyncTime() {
         long lastSyncedTime = 10000L;
         setLastSynced(lastSyncedTime);
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(false);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(false);
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         Date date = new Date(lastSyncedTime - LAST_SYNC_ERROR_MARGIN);
-        verify(familyRepository, times(1)).sync(date);
-        verify(surveyRepository, times(1)).sync(date);
-        verify(snapshotRepository, times(1)).sync(date);
+        verify(familyRepository, times(1)).sync(isAlive, date);
+        verify(surveyRepository, times(1)).sync(isAlive, date);
+        verify(snapshotRepository, times(1)).sync(isAlive, date);
     }
 
     @Test
     public void sync_ShouldUseLastSyncTime_first() {
         setNeverSynced();
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(false);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(false);
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
-        verify(familyRepository, times(1)).sync(null);
-        verify(surveyRepository, times(1)).sync(null);
-        verify(snapshotRepository, times(1)).sync(null);
+        verify(familyRepository, times(1)).sync(isAlive, null);
+        verify(surveyRepository, times(1)).sync(isAlive,null);
+        verify(snapshotRepository, times(1)).sync(isAlive,null);
     }
 
     @Test
@@ -223,7 +219,7 @@ public class SyncManagerTest {
         setOffline();
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         assertThat(syncManager.getProgress().getValue().getSyncState(), is(ERROR_NO_INTERNET));
     }
@@ -251,14 +247,14 @@ public class SyncManagerTest {
 
     @Test
     public void progress_ShouldUpdateLastSyncTime_save() {
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(true);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(true);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
         long lastSyncedTime = syncManager.getProgress().getValue().getLastSyncedTime();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         long newSyncedTime = syncManager.getProgress().getValue().getLastSyncedTime();
         assertThat(newSyncedTime > lastSyncedTime, is(true));
@@ -271,13 +267,13 @@ public class SyncManagerTest {
         long lastSyncedTime = 10000L;
         setLastSynced(lastSyncedTime);
 
-        when(familyRepository.sync(any())).thenReturn(true);
-        when(surveyRepository.sync(any())).thenReturn(true);
-        when(snapshotRepository.sync(any())).thenReturn(false);
-        when(mImageRepository.sync()).thenReturn(true);
+        when(familyRepository.sync(any(), any())).thenReturn(true);
+        when(surveyRepository.sync(any(), any())).thenReturn(true);
+        when(snapshotRepository.sync(any(), any())).thenReturn(false);
+        when(mImageRepository.sync(any(), any())).thenReturn(true);
 
         SyncManager syncManager = syncManager();
-        syncManager.sync();
+        syncManager.sync(isAlive);
 
         verify(sharedPreferencesEditor, never()).putLong(
                 eq(SyncManager.KEY_LAST_SYNC_TIME), anyLong());
@@ -320,6 +316,19 @@ public class SyncManagerTest {
         verify(surveyRepository).clean();
         verify(snapshotRepository).clean();
         verify(mImageRepository).clean();
+    }
+
+    @Test
+    public void abort_ShouldAbortEarly() {
+        AtomicBoolean isAliveFalse = new AtomicBoolean(false);
+
+        SyncManager syncManager = syncManager();
+        syncManager.sync(isAliveFalse);
+
+        verify(familyRepository, times(0)).sync(any(), any());
+        verify(surveyRepository, times(0)).sync(any(), any());
+        verify(snapshotRepository, times(0)).sync(any(), any());
+        verify(mImageRepository, times(0)).sync(any(), any());
     }
 
     @Test

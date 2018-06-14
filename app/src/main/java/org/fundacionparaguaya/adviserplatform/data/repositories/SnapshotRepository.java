@@ -3,6 +3,8 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -13,6 +15,8 @@ import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
 import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.*;
+import org.perf4j.StopWatch;
+
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -105,6 +109,8 @@ public class SnapshotRepository extends BaseRepository{
         List<Snapshot> pending = snapshotDao.queryPendingFinishedSnapshots();
         boolean success = true;
 
+        //TODO Sodep: error handling on RES API calls should be refactored
+        //TODO Sodep: not a good idea to just "continue" on loop when an error is detected
         // attempt to push each of the pending snapshots
         for (Snapshot snapshot : pending) {
             try {
@@ -121,6 +127,8 @@ public class SnapshotRepository extends BaseRepository{
                 }
                 //endregion Temporary upload image for demo
 
+                //TODO Sodep: does this POST bring another information besides "id" from server,
+                //TODO Sodep: other than snapshots already has on device?
                 // push the snapshot
                 Response<SnapshotIr> snapshotResponse = snapshotService
                         .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
@@ -132,6 +140,7 @@ public class SnapshotRepository extends BaseRepository{
                     success = false;
                     continue;
                 }
+                //TODO Sodep: set remoteId from REST API response
                 snapshot.setRemoteId(snapshotResponse.body().getId());
 
                 // push the priorities; don't need to save these responses
@@ -162,6 +171,7 @@ public class SnapshotRepository extends BaseRepository{
                 // overwrite the pending snapshot with the snapshot from remote db
                 Snapshot remoteSnapshot = IrMapper.mapSnapshot(
                         snapshotResponse.body(), prioritiesResponse.body(), family, survey);
+                //TODO Sodep: why the remote snapshot needs the local database "id" ?
                 remoteSnapshot.setId(snapshot.getId());
                 saveSnapshot(remoteSnapshot);
 
@@ -193,6 +203,8 @@ public class SnapshotRepository extends BaseRepository{
                 success = false;
             }
         }
+        //TODO Sodep: this is a loop, with several modifications to _success_
+        //TODO Sodep: returning only last state is not accurate
         return success;
     }
 
@@ -221,6 +233,7 @@ public class SnapshotRepository extends BaseRepository{
 
     private boolean pullSnapshots(@Nullable Date lastSync) {
         boolean success = true;
+        StopWatch stopWatch = new StopWatch("pullSnapshots");
         List<Family> families; // the families to sync snapshots for
         if (lastSync != null) {
             families = familyRepository.getFamiliesModifiedSinceDateNow(lastSync);
@@ -233,9 +246,13 @@ public class SnapshotRepository extends BaseRepository{
 
                 if(shouldAbortSync()) return false;
 
+                //TODO Sodep: time complexity n^2
+                Log.d(TAG, stopWatch.lap(String.format("Family: %s, Survey: %s", family.getName(),
+                        survey.getDescription())));
                 success &= pullSnapshots(family, survey);
             }
         }
+        Log.d(TAG, stopWatch.stop("Finished pulling snapshots"));
         return success;
     }
 

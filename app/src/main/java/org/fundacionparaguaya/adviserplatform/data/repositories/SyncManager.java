@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.remote.ConnectivityWatcher;
 import org.fundacionparaguaya.adviserplatform.jobs.SyncJob;
+import org.perf4j.StopWatch;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -83,6 +85,8 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
      * @return Whether the sync was successful.
      */
     public boolean sync(AtomicBoolean isAlive) {
+        StopWatch watch = new StopWatch("SyncManager:sync");
+        watch.start();
         if (!isOnline) return false;
 
         Log.d(TAG, "sync: Synchronizing the database...");
@@ -101,16 +105,21 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
 
         for(BaseRepository repo: repositoriesToSync)
         {
+            int i = 0;
             if(!isAlive.get()) return false;
 
             try {
+                //TODO Sodep: bring data from server: data -> BD, images -> cache (fresco)
                 result &= repo.sync(isAlive, lastSync);
+                Log.d(TAG, watch.lap(String.format(" Synced: %s",
+                        repo.getClass().getSimpleName())));
             } catch (Exception e) {
                 Log.e(TAG, "sync: Error while syncing!", e);
                 result = false;
+                Log.d(TAG,watch.lap(String.format("Error syncing: %s", e.getMessage())));
             }
         }
-
+        Log.d(TAG,watch.stop("Sync completed"));
         if (result) {
             updateProgress(SYNCED, new Date().getTime());
         }

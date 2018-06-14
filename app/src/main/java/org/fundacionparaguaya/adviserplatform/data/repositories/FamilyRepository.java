@@ -90,6 +90,7 @@ public class FamilyRepository extends BaseRepository {
 
     private boolean pullFamilies(@Nullable Date lastSync) {
         try {
+            //TODO Sodep: why ask here and again inside family loop?
             if(shouldAbortSync()) return false;
 
             Response<List<FamilyIr>> response;
@@ -110,6 +111,7 @@ public class FamilyRepository extends BaseRepository {
             List<Family> families = IrMapper.mapFamilies(response.body());
             for (Family family : families) {
 
+                //TODO Sodep: second check for sync abort
                 if(shouldAbortSync()) return false;
 
                 Family old = familyDao.queryRemoteFamilyNow(family.getRemoteId());

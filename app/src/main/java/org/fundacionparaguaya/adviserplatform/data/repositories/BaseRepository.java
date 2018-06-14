@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public abstract class BaseRepository {
+
+    //TODO Sodep: not clear what this flag does to manage sync status
     private AtomicBoolean mIsAlive = null;
 
     public boolean sync(AtomicBoolean isAlive, @Nullable Date lastSync)

@@ -42,7 +42,7 @@ public class ImageRepository extends BaseRepository {
      * @return Whether the sync was successful.
      */
     public boolean sync(@Nullable Date lastSync) {
-
+        //TODO Sodep: How many times does images really change to make this sync as frequent as others?
         boolean result = true;
 
         List<Uri> imagesDownloaded = new ArrayList<>();
@@ -54,6 +54,7 @@ public class ImageRepository extends BaseRepository {
             {
                 for(IndicatorOption option: indicatorQuestion.getOptions())
                 {
+                    //TODO Sodep: Time complexity: n^3
                     if(shouldAbortSync()) return false;
 
                     if(!option.getImageUrl().contains(NO_IMAGE)) {

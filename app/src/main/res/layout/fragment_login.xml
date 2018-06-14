@@ -1,129 +1,91 @@
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    tools:context=".activities.LoginActivity">
-
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        custom:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:focusable="true"
+                                             android:focusableInTouchMode="true"
+                                             android:gravity="center_horizontal"
+                                             android:orientation="vertical"
+                                             tools:context=".ui.login.LoginActivity">
     <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        custom:layout_constraintTop_toBottomOf="@id/login_progress"
-        custom:layout_constraintBottom_toTopOf="@id/login_help"
-        custom:layout_constraintEnd_toEndOf="parent"
-        custom:layout_constraintStart_toStartOf="parent">
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="68dp"
+        android:layout_marginStart="68dp">
 
+        <RelativeLayout android:layout_width="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/login_fplogo"
                 android:layout_width="102dp"
                 android:layout_height="102dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
                 android:src="@drawable/dashtabview_fplogo" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/login_incorrect_credentials"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="53dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
                 android:text="@string/login_incorrectcredentials"
-                android:textColor="@color/login_incorrectcredentials"
+                android:textColor="@color/app_red"
                 android:textSize="18sp"
                 android:textStyle="normal"
-                android:visibility="invisible" />
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/login_email"
-                android:layout_width="256dp"
-                android:layout_height="44dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/login_rounded_edittext"
-                android:drawableLeft="@drawable/login_username_icon"
-                android:drawablePadding="27dp"
-                android:hint="@string/login_emailprompt"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:paddingLeft="20dp"
-                android:singleLine="true"
-                android:textSize="18sp"/>
+                style="@style/TextWithIcon.Username" />
 
             <EditText
                 android:id="@+id/login_password"
-                android:layout_width="256dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/login_rounded_edittext"
-                android:drawableLeft="@drawable/login_passwordicon"
-                android:drawablePadding="27dp"
-                android:hint="@string/login_passwordprompt"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/login_action_signin"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:paddingLeft="20dp"
-                android:singleLine="true"
-                android:textSize="18sp"/>
-
-            <Button
-                android:id="@+id/login_loginbutton"
-                style="?android:textAppearanceSmall"
-                android:layout_width="170dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="75dp"
-                android:layout_marginTop="70dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/login_loginbutton"
-                android:text="@string/login_action_signin"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/login_buttontext"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/login_passwordreset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_resetpassword"
-                android:textColor="@color/login_passwordreset"
-                android:textSize="16sp" />
+                style="@style/TextWithIcon.Password"/>
 
         </LinearLayout>
-
+            <!-- font not working.. -->
+            <io.rmiri.buttonloading.ButtonLoading
+                    android:id="@+id/login_loginbutton"
+                    android:layout_marginTop="28dp"
+                    app:BL_backgroundColor="#90fdfdfd"
+                    app:BL_circleColor="@color/colorPrimary"
+                    app:BL_circleColorSecond="@color/lightPrimary"
+                    app:BL_enable="true"
+                    app:BL_stateShow="normal"
+                    app:BL_text="@string/login_action_signin"
+                    app:BL_textColor="@color/app_white"
+                    app:BL_textSize="20sp"
+                    android:layout_width="248dp"
+                    android:layout_height="44dp"
+                    android:layout_below="@id/email_login_form"
+                    android:layout_centerHorizontal="true"
+                    tools:layout_editor_absoluteX="20dp"/>
+        </RelativeLayout>
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/login_help"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_gravity="end"
-        android:src="@drawable/app_helpicon"
-        android:tint="@color/login_helpbutton"
-        custom:layout_constraintBottom_toBottomOf="parent"
-        custom:layout_constraintEnd_toEndOf="parent"/>
+    <org.fundacionparaguaya.adviserplatform.ui.common.widget.EvenBetterSpinner
+            android:id="@+id/spinner_login_serverselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/Label"
+            android:minHeight="32dp"
+            android:minWidth="100dp" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

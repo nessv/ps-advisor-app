@@ -1,0 +1,119 @@
+package org.fundacionparaguaya.adviserplatform.jobs;
+
+import android.support.annotation.NonNull;
+
+import android.util.Log;
+import com.evernote.android.job.Job;
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
+
+import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
+import timber.log.Timber;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/**
+ * A job to sync the database.
+ */
+
+public class SyncJob extends Job {
+    public static final String TAG = "SyncJob";
+    private static final long SYNC_INTERVAL_MS = 900000; //15 mins
+    private SyncManager mSyncManager;
+    private AuthenticationManager mAuthManager;
+    private AtomicBoolean mIsAlive = new AtomicBoolean();
+
+    public SyncJob(SyncManager syncManager, AuthenticationManager authManager) {
+        super();
+        this.mSyncManager = syncManager;
+        this.mAuthManager = authManager;
+        mIsAlive.set(true);
+    }
+
+    @Override
+    protected void onCancel() {
+      //  mIsAlive.set(false);
+        Timber.d("Cancel requested... (We'll do our best)");
+    }
+
+    @Override
+    @NonNull
+    protected Result onRunJob(@NonNull Params params) {
+        MixpanelHelper.SyncEvents.syncStarted(getContext());
+
+        if(mAuthManager.getStatus() != AuthenticationManager.AuthenticationStatus.AUTHENTICATED)
+        {
+            return Result.RESCHEDULE;
+        }
+
+        if(params.isExact()) //cancel any scheduled jobs cause we running RIGHT HERE, RIGHT NOW BOI
+        {
+            stopPeriodic();
+        }
+
+        Result syncResult;
+
+        if (mSyncManager.sync(mIsAlive)) {
+            syncResult = Result.SUCCESS;
+        }
+        else
+            syncResult = Result.FAILURE;
+
+        if(params.isExact()) {
+            schedulePeriodic(); //enough fun, let's get those regularly scheduled jobs back in
+        }
+
+        MixpanelHelper.SyncEvents.syncEnded(getContext(), syncResult == Result.SUCCESS);
+
+        Log.d(TAG, "Sync is over");
+
+        return syncResult;
+    }
+
+    public static void sync() {
+        new JobRequest.Builder(TAG)
+                .startNow()
+                .build()
+                .schedule();
+    }
+
+    public static void schedulePeriodic() {
+        new JobRequest.Builder(TAG)
+                .setPeriodic(SYNC_INTERVAL_MS, 600000)
+                .setRequiresDeviceIdle(false)
+                .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
+                .setRequirementsEnforced(true)
+                .build()
+                .schedule();
+    }
+
+    /**
+     * Looks for any existing jobs that have been created (even if they haven't been ran)
+     * @return if there are job(s) that have been created for syncing
+     */
+    public static boolean isSyncAboutToStart()
+    {
+        boolean inProgress=false;
+
+        for(JobRequest jobRequest: JobManager.instance().getAllJobRequestsForTag(TAG))
+        {
+            inProgress|=(jobRequest.isExact() && jobRequest.getStartMs()<500);
+        }
+
+        return inProgress;
+    }
+
+    private static void stopPeriodic()
+    {
+        for(JobRequest job: JobManager.instance().getAllJobRequestsForTag(TAG))
+        {
+            if(job.isPeriodic()) JobManager.instance().cancel(job.getJobId());
+        }
+    }
+
+    public static void cancelAll() {
+        JobManager.instance().cancelAllForTag(TAG);
+    }
+}

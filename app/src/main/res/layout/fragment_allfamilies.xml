@@ -6,8 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="16dp"
     android:fillViewport="true">
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/all_families_search"
+        android:layout_width="256dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="40dp"
+        android:background="@drawable/login_rounded_edittext"
+        android:textSize="18sp" />
 
     <android.support.v7.widget.RecyclerView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
         tools:listitem="@layout/item_allfamilies"/>
 
     <ImageButton
@@ -27,6 +37,6 @@
             android:scaleType="fitXY"
             android:layout_marginBottom="24dp"
             android:id="@+id/add_families_button"
-            android:src="@mipmap/plusbutton"
+            android:src="@drawable/ic_plus_fab"
             android:background="@null"/>
 </FrameLayout>

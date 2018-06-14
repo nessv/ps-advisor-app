@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/indicatorsurvey"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/surveyindicators_background">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:paddingTop="16dp"
+                                             android:background="@color/app_white">
 
-    <org.fundacionparaguaya.advisorapp.viewcomponents.NonSwipeableViewPager
+    <org.fundacionparaguaya.adviserplatform.ui.common.widget.NonSwipeableViewPager
         android:id="@+id/indicatorsurvey_viewpager"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/indicatorsurvey_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:background="@android:color/transparent"/>
 
     <android.support.constraint.ConstraintLayout
@@ -19,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="2dp"
-        android:paddingBottom="2dp"
+        android:paddingBottom="12dp"
         android:paddingStart="20dp"
         android:paddingEnd = "20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,22 +36,33 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/indicatorsurvey_backbuttonimage"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:scaleX="-1"
-                android:src="@drawable/ic_survey_arrow_grey" />
+                android:src="@drawable/surveyquestions_arrow" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/indicatorsurvey_backbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/survey_back"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/navigate_back"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:textColor="@color/survey_navbuttons"
-                android:textSize="36sp" />
+                android:textAppearance="@style/CardHeading" />
         </LinearLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/indicatorsurvey_questiontext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/Heading"
+            tools:text="Test indicator text"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/indicatorsurvey_backbutton"
+            app:layout_constraintEnd_toStartOf="@id/indicatorsurvey_skipbutton"/>
 
         <LinearLayout
             android:id="@+id/indicatorsurvey_skipbutton"
@@ -58,20 +72,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/indicatorsurvey_skipbuttontext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:text="@string/survey_skip"
-                android:textColor="@color/survey_navbuttons"
-                android:textSize="36sp" />
+                android:textColor="@color/colorPrimary"
+                android:text="@string/navigate_skip"
+                android:textAppearance="@style/CardHeading" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_survey_arrow_grey" />
+            <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/indicatorsurvey_skipbuttonimage"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/surveyquestions_arrow" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

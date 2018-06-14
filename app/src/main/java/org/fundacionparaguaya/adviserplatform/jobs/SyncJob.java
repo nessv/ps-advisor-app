@@ -1,8 +1,8 @@
 package org.fundacionparaguaya.adviserplatform.jobs;
 
 import android.support.annotation.NonNull;
-
 import android.util.Log;
+
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
@@ -10,9 +10,10 @@ import com.evernote.android.job.JobRequest;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
-import timber.log.Timber;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import timber.log.Timber;
 
 /**
  * A job to sync the database.
@@ -32,7 +33,7 @@ public class SyncJob extends Job {
         mIsAlive.set(true);
     }
 
-    @Override
+//    @Override
     protected void onCancel() {
       //  mIsAlive.set(false);
         Timber.d("Cancel requested... (We'll do our best)");

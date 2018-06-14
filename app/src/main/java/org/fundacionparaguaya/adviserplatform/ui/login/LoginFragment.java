@@ -38,6 +38,8 @@ import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
+import static org.fundacionparaguaya.adviserplatform.util.AppConstants.FIRST_TIME_USER_KEY;
+
 /**
  * The fragment for the login page.
  */
@@ -61,8 +63,6 @@ public class LoginFragment extends Fragment implements TextWatcher {
 
     private ImageView mFPLogo;
     private MixpanelAPI mMixpanel;
-
-    private String FIRST_TIME_USER_KEY = "FIRST_TIME_USER_KEY";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

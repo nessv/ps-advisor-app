@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.fundacionparaguaya.adviserplatform.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
@@ -14,6 +15,7 @@ import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresenta
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.LoginIr;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.inject.Singleton;
 
@@ -32,6 +34,7 @@ public class AuthenticationManager {
     static final String KEY_REFRESH_TOKEN = "refreshToken";
     static final String KEY_USERNAME = "username";
     private static final String AUTH_KEY = "Basic " + BuildConfig.POVERTY_STOPLIGHT_API_KEY_STRING;
+    private static final String KEY_TOKEN_EXPIRATION = "KEY_TOKEN_EXPIRATION";
 
     public enum AuthenticationStatus {
         UNKNOWN,
@@ -55,7 +58,8 @@ public class AuthenticationManager {
         mConnectivityWatcher = connectivityWatcher;
 
         mStatus = new MutableLiveData<>();
-        mStatus.setValue(UNKNOWN);
+        mStatus.setValue(AuthenticationManager.isTokenExpired(mPreferences)
+                ? UNAUTHENTICATED : AUTHENTICATED);
 
         mConnectivityWatcher.status().observeForever(this::handleNetworkStatusChange);
     }
@@ -86,10 +90,19 @@ public class AuthenticationManager {
     public AuthenticationStatus login() {
         String refreshToken = mPreferences.getString(KEY_REFRESH_TOKEN, null);
         String username = mPreferences.getString(KEY_USERNAME, null);
-        if (refreshToken != null && username != null)
+        if (!AuthenticationManager.isTokenExpired(mPreferences)
+                || refreshToken != null && username != null)
             return refreshLogin(refreshToken, username);
         else
             return updateStatus(UNAUTHENTICATED);
+    }
+
+    public static boolean isTokenExpired(SharedPreferences mPreferences) {
+        Date now = new Date();
+        final long yesterday = DateUtils.addDays(new Date(), -1).getTime();
+        Long expirationTimeStamp = mPreferences.getLong(KEY_TOKEN_EXPIRATION,
+                yesterday);
+        return now.after(new Date(expirationTimeStamp));
     }
 
     /**
@@ -167,8 +180,12 @@ public class AuthenticationManager {
 
     private void saveLogin() {
         SharedPreferences.Editor editor = mPreferences.edit();
+        final int expiresInSeconds = mUser.getLogin().getExpiresIn();
+        final Date expirationDate = DateUtils.addSeconds(new Date(), expiresInSeconds);
+
         editor.putString(KEY_REFRESH_TOKEN, mUser.getLogin().getRefreshToken());
         editor.putString(KEY_USERNAME, mUser.getUsername());
+        editor.putLong(KEY_TOKEN_EXPIRATION, expirationDate.getTime());
         editor.apply();
     }
 
@@ -176,6 +193,7 @@ public class AuthenticationManager {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.remove(KEY_REFRESH_TOKEN);
         editor.remove(KEY_USERNAME);
+        editor.remove(KEY_TOKEN_EXPIRATION);
         editor.apply();
     }
 

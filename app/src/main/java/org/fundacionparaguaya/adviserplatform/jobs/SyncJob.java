@@ -21,7 +21,7 @@ import timber.log.Timber;
 
 public class SyncJob extends Job {
     public static final String TAG = "SyncJob";
-    private static final long SYNC_INTERVAL_MS = 900000; //15 mins
+    public static final long SYNC_INTERVAL_MS = 1800000; //30 mins
     private SyncManager mSyncManager;
     private AuthenticationManager mAuthManager;
     private AtomicBoolean mIsAlive = new AtomicBoolean();
@@ -44,8 +44,12 @@ public class SyncJob extends Job {
     protected Result onRunJob(@NonNull Params params) {
         MixpanelHelper.SyncEvents.syncStarted(getContext());
 
-        if(mAuthManager.getStatus() != AuthenticationManager.AuthenticationStatus.AUTHENTICATED)
-        {
+        final AuthenticationManager.AuthenticationStatus status = mAuthManager.getStatus();
+        Log.d(TAG, String.format("Authentication Status: %s", status));
+        if(status != AuthenticationManager.AuthenticationStatus.AUTHENTICATED) {
+            mAuthManager.refreshToken();
+        }
+        if(status != AuthenticationManager.AuthenticationStatus.AUTHENTICATED) {
             return Result.RESCHEDULE;
         }
 

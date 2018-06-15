@@ -7,18 +7,22 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.fundacionparaguaya.adviserplatform.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.LoginIr;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
+import org.fundacionparaguaya.adviserplatform.util.SecurityUtils;
 
 import java.io.IOException;
 import java.util.Date;
 
 import javax.inject.Singleton;
 
+import static android.accounts.AccountManager.KEY_PASSWORD;
 import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.AUTHENTICATED;
 import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.PENDING;
 import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager.AuthenticationStatus.UNAUTHENTICATED;
@@ -90,7 +94,7 @@ public class AuthenticationManager {
     public AuthenticationStatus login() {
         String refreshToken = mPreferences.getString(KEY_REFRESH_TOKEN, null);
         String username = mPreferences.getString(KEY_USERNAME, null);
-        if (!AuthenticationManager.isTokenExpired(mPreferences)
+        if (AuthenticationManager.isTokenExpired(mPreferences)
                 || refreshToken != null && username != null)
             return refreshLogin(refreshToken, username);
         else
@@ -102,7 +106,9 @@ public class AuthenticationManager {
         final long yesterday = DateUtils.addDays(new Date(), -1).getTime();
         Long expirationTimeStamp = mPreferences.getLong(KEY_TOKEN_EXPIRATION,
                 yesterday);
-        return now.after(new Date(expirationTimeStamp));
+        final Date expirationDate = new Date(expirationTimeStamp);
+        Log.d(TAG, String.format("Token is valid until: %s", expirationDate));
+        return now.after(expirationDate);
     }
 
     /**
@@ -144,14 +150,29 @@ public class AuthenticationManager {
     }
 
     private AuthenticationStatus getToken(User user) {
+        if (user == null) {
+            return updateStatus(UNAUTHENTICATED);
+        }
         try {
             updateStatus(PENDING);
+            String password = user.getPassword();
+            if (StringUtils.isBlank(password)) {
+                String encrypted = mPreferences.getString(KEY_PASSWORD, null);
+                password = SecurityUtils.decrypt(encrypted);
+            }
+            if (StringUtils.isBlank(password)) {
+                return updateStatus(UNAUTHENTICATED);
+            } else {
+                user.setPassword(password);
+            }
             retrofit2.Response<LoginIr> response = mAuthService
                     .loginWithPassword(
                             AUTH_KEY,
                             user.getUsername(),
-                            user.getPassword()).execute();
-
+                            password).execute();
+            if (AppConstants.HTTP_SC_BAD_REQUEST == response.code()) {
+                return updateStatus(UNKNOWN);
+            }
             return updateLogin(user, response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not retrieve a new token!", e);
@@ -164,15 +185,13 @@ public class AuthenticationManager {
             Login newLogin = IrMapper.mapLogin(response.body());
             if (user == null) {
                 mUser = User.builder().login(newLogin).build();
-            }
-            else {
+            } else {
                 mUser = user;
                 mUser.setLogin(newLogin);
             }
             saveLogin();
             return updateStatus(AUTHENTICATED);
-        }
-        else {
+        } else {
             mUser = null;
             return updateStatus(UNAUTHENTICATED);
         }
@@ -186,6 +205,12 @@ public class AuthenticationManager {
         editor.putString(KEY_REFRESH_TOKEN, mUser.getLogin().getRefreshToken());
         editor.putString(KEY_USERNAME, mUser.getUsername());
         editor.putLong(KEY_TOKEN_EXPIRATION, expirationDate.getTime());
+        if (StringUtils.isNotBlank(mUser.getPassword())) {
+            editor.putString(KEY_PASSWORD, SecurityUtils.encrypt(mUser.getPassword()));
+        } else {
+            editor.remove(KEY_PASSWORD);
+        }
+
         editor.apply();
     }
 
@@ -193,12 +218,12 @@ public class AuthenticationManager {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.remove(KEY_REFRESH_TOKEN);
         editor.remove(KEY_USERNAME);
+        editor.remove(KEY_PASSWORD);
         editor.remove(KEY_TOKEN_EXPIRATION);
         editor.apply();
     }
 
-    public void setAuthStateChangeHandler(AuthStateChangeHandler handler)
-    {
+    public void setAuthStateChangeHandler(AuthStateChangeHandler handler) {
         this.mHandler = handler;
     }
 
@@ -208,7 +233,7 @@ public class AuthenticationManager {
 
         mStatus.postValue(newStatus);
 
-        if(mHandler!=null) mHandler.onAuthStateChange(newStatus);
+        if (mHandler != null) mHandler.onAuthStateChange(newStatus);
 
         return newStatus;
     }
@@ -232,10 +257,17 @@ public class AuthenticationManager {
             return null;
         }
     }
+
     /**
      * Auth state change handler
      */
     public interface AuthStateChangeHandler {
         void onAuthStateChange(AuthenticationManager.AuthenticationStatus status);
     }
+
+    public AuthenticationStatus refreshToken() {
+        return login(mUser);
+    }
+
+
 }

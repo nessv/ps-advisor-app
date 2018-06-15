@@ -10,6 +10,10 @@ import android.view.WindowManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.util.Date;
+
 
 public class Utilities {
 
@@ -38,4 +42,12 @@ public class Utilities {
         return size;
     }
 
+    public static boolean hasBeenXSeconds(Date lastSync, long syncIntervalMs) {
+        boolean deadLine = true;
+        if(lastSync != null) {
+            final Date nextSync = DateUtils.addMilliseconds(lastSync, (int) syncIntervalMs);
+            deadLine = nextSync.before(new Date());
+        }
+        return deadLine;
+    }
 }

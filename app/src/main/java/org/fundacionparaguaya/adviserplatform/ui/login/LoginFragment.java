@@ -197,7 +197,8 @@ public class LoginFragment extends Fragment implements TextWatcher {
                         MixpanelHelper.updateLastLogin(getContext(), DateTime.now());
                         MixpanelHelper.LoginEvent.success(getContext(), mViewModel.getUsername(),
                                 mViewModel.getSelectedServerHost());
-
+                        //TODO Sodep: If app restarts and there were already a valid session,
+                        //TODO Sodep: this starts a second dash activities
                         continueToDash(getActivity());
                         break;
 

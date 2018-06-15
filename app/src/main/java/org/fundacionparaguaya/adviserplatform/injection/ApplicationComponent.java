@@ -83,5 +83,6 @@ public interface ApplicationComponent {
 
     void inject(FamilyPrioritiesFrag familyPrioritiesFrag);
 
-    void inject(SplashActivity dashActivity);
+    void inject(SplashActivity splashActivity);
+
 }

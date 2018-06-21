@@ -12,6 +12,7 @@ public class User {
     private String username;
     private String password;
     private Login login;
+    private Organization organization;
 
     public User(String username, String password, Login login) {
         this.username = username;
@@ -35,6 +36,46 @@ public class User {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        User rhs = (User) obj;
+        return new EqualsBuilder()
+                .append(this.username, rhs.username)
+                .append(this.password, rhs.password)
+                .append(this.login, rhs.login)
+                .append(this.organization, rhs.organization)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(username)
+                .append(password)
+                .append(login)
+                .append(organization)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("username", username)
+                .append("password", password)
+                .append("login", login)
+                .append("organization", organization)
+                .toString();
     }
 
     public static class Builder {
@@ -62,32 +103,6 @@ public class User {
         }
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User that = (User) o;
-
-        return new EqualsBuilder()
-                .append(username, that.username)
-                .append(login, that.login)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(31, 13)
-                .append(username)
-                .append(login)
-                .toHashCode();
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -95,4 +110,14 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+
 }

@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.String.format;
 
@@ -82,19 +83,22 @@ public class FamilyRepository extends BaseRepository {
      * Synchronizes the local families with the remote database.
      * @return Whether the sync was successful.
      */
-    public boolean sync(@Nullable Date lastSync) {
-        boolean result = pullFamilies(lastSync);
+    @Override
+    public boolean sync() {
+        boolean result = pullFamilies();
         clearSyncStatus();
 
         return result;
     }
 
     public void clean() {
+        setmIsAlive(new AtomicBoolean(false));
         familyDao.deleteAll();
         setRecordsCount(0);
     }
 
-    private boolean pullFamilies(@Nullable Date lastSync) {
+    private boolean pullFamilies() {
+        Date lastSync = getLastSyncDate() > 0 ? new Date(getLastSyncDate()) : null;
         long loopCount = 0;
         try {
             //TODO Sodep: why ask here and again inside family loop?

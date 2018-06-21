@@ -47,7 +47,7 @@ public class IrMapper {
 
     //region Login
     public static Login mapLogin(LoginIr ir) {
-        return new Login(ir.accessToken, ir.tokenType, ir.expiresIn, ir.refreshToken);
+        return new Login(ir.accessToken, ir.tokenType, ir.expiresIn, ir.refreshToken, ir.user);
     }
     //endregion Login
 
@@ -378,7 +378,7 @@ public class IrMapper {
         return responses;
     }
 
-    private static List<LifeMapPriority> mapPriorities(List<PriorityIr> ir, Survey survey) {
+    public static List<LifeMapPriority> mapPriorities(List<PriorityIr> ir, Survey survey) {
         if (ir == null) return Collections.emptyList();
 
         List<LifeMapPriority> priorities = new ArrayList<>(ir.size());

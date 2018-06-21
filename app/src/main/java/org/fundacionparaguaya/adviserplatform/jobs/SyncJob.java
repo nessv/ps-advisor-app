@@ -24,7 +24,7 @@ public class SyncJob extends Job {
     public static final long SYNC_INTERVAL_MS = 1800000; //30 mins
     private SyncManager mSyncManager;
     private AuthenticationManager mAuthManager;
-    private AtomicBoolean mIsAlive = new AtomicBoolean();
+    private static AtomicBoolean mIsAlive = new AtomicBoolean();
 
     public SyncJob(SyncManager syncManager, AuthenticationManager authManager) {
         super();
@@ -42,36 +42,34 @@ public class SyncJob extends Job {
     @Override
     @NonNull
     protected Result onRunJob(@NonNull Params params) {
+        Result syncResult;
+
         MixpanelHelper.SyncEvents.syncStarted(getContext());
 
         final AuthenticationManager.AuthenticationStatus status = mAuthManager.getStatus();
         Log.d(TAG, String.format("Authentication Status: %s", status));
         if(status != AuthenticationManager.AuthenticationStatus.AUTHENTICATED) {
-            mAuthManager.refreshToken();
+            mAuthManager.refreshLogin();
         }
         if(status != AuthenticationManager.AuthenticationStatus.AUTHENTICATED) {
-            return Result.RESCHEDULE;
+            syncResult = Result.RESCHEDULE;
+        } else {
+            if (params.isExact()) //cancel any scheduled jobs cause we running RIGHT HERE, RIGHT NOW BOI
+            {
+                stopPeriodic();
+            }
+
+            if (mSyncManager.sync(mIsAlive)) {
+                syncResult = Result.SUCCESS;
+            } else
+                syncResult = Result.FAILURE;
+
+            if (params.isExact()) {
+                schedulePeriodic(); //enough fun, let's get those regularly scheduled jobs back in
+            }
+
+            MixpanelHelper.SyncEvents.syncEnded(getContext(), syncResult == Result.SUCCESS);
         }
-
-        if(params.isExact()) //cancel any scheduled jobs cause we running RIGHT HERE, RIGHT NOW BOI
-        {
-            stopPeriodic();
-        }
-
-        Result syncResult;
-
-        if (mSyncManager.sync(mIsAlive)) {
-            syncResult = Result.SUCCESS;
-        }
-        else
-            syncResult = Result.FAILURE;
-
-        if(params.isExact()) {
-            schedulePeriodic(); //enough fun, let's get those regularly scheduled jobs back in
-        }
-
-        MixpanelHelper.SyncEvents.syncEnded(getContext(), syncResult == Result.SUCCESS);
-
         Log.d(TAG, "Sync is over");
 
         return syncResult;
@@ -120,5 +118,10 @@ public class SyncJob extends Job {
 
     public static void cancelAll() {
         JobManager.instance().cancelAllForTag(TAG);
+        setIsAlive(false);
+    }
+
+    private static void setIsAlive(boolean b) {
+        mIsAlive.set(b);
     }
 }

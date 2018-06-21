@@ -98,4 +98,5 @@ public class AdviserApplication extends MultiDexApplication {
 
         mMerlin.unbind();
     }
+
 }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.fundacionparaguaya.adviserplatform.data.local.Converters;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -61,6 +62,9 @@ public class Snapshot implements Comparable<Snapshot>{
 
     @Ignore
     boolean mIsLatest;
+
+    @Ignore
+    private Long organizationId;
 
     @Ignore
     public Snapshot(Survey survey) {
@@ -234,6 +238,8 @@ public class Snapshot implements Comparable<Snapshot>{
 
     @Override
     public String toString() {
+        //TODO Sodep: This should be a different method for ListModels. Pretty time is not a string
+        //TODO Sodep: representation of this object
         String dateString;
 
         if(DateUtils.isToday(createdAt.getTime()))
@@ -259,30 +265,52 @@ public class Snapshot implements Comparable<Snapshot>{
         mIsLatest = isLatest;
     }
 
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public int compareTo(@NonNull Snapshot snapshot) {
+        return this.getCreatedAt().compareTo(snapshot.getCreatedAt());
+    }
 
-        Snapshot that = (Snapshot) o;
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
 
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Snapshot rhs = (Snapshot) obj;
         return new EqualsBuilder()
-                .append(id, that.id)
-                .append(remoteId, that.remoteId)
-                .append(familyId, that.familyId)
-                .append(surveyId, that.surveyId)
-                .append(inProgress, that.inProgress)
-                .append(personalResponses, that.personalResponses)
-                .append(economicResponses, that.economicResponses)
-                .append(indicatorResponses, that.indicatorResponses)
-                .append(priorities, that.priorities)
-                .append(createdAt, that.createdAt)
+                .append(this.id, rhs.id)
+                .append(this.remoteId, rhs.remoteId)
+                .append(this.familyId, rhs.familyId)
+                .append(this.surveyId, rhs.surveyId)
+                .append(this.inProgress, rhs.inProgress)
+                .append(this.personalResponses, rhs.personalResponses)
+                .append(this.economicResponses, rhs.economicResponses)
+                .append(this.indicatorResponses, rhs.indicatorResponses)
+                .append(this.priorities, rhs.priorities)
+                .append(this.createdAt, rhs.createdAt)
+                .append(this.mIsLatest, rhs.mIsLatest)
+                .append(this.organizationId, rhs.organizationId)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(41, 59)
+        return new HashCodeBuilder()
                 .append(id)
                 .append(remoteId)
                 .append(familyId)
@@ -293,11 +321,12 @@ public class Snapshot implements Comparable<Snapshot>{
                 .append(indicatorResponses)
                 .append(priorities)
                 .append(createdAt)
+                .append(mIsLatest)
+                .append(organizationId)
                 .toHashCode();
     }
 
-    @Override
-    public int compareTo(@NonNull Snapshot snapshot) {
-        return this.getCreatedAt().compareTo(snapshot.getCreatedAt());
+    public void setPriorities(List<LifeMapPriority> priorities) {
+        this.priorities = priorities;
     }
 }

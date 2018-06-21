@@ -35,10 +35,6 @@ import static org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationM
 @Singleton
 public class AuthenticationManager {
     public static final String TAG = "AuthManager";
-    static final String KEY_REFRESH_TOKEN = "refreshToken";
-    static final String KEY_USERNAME = "username";
-    private static final String AUTH_KEY = "Basic " + BuildConfig.POVERTY_STOPLIGHT_API_KEY_STRING;
-    private static final String KEY_TOKEN_EXPIRATION = "KEY_TOKEN_EXPIRATION";
 
     public enum AuthenticationStatus {
         UNKNOWN,
@@ -92,19 +88,24 @@ public class AuthenticationManager {
      * Attempts to login with the stored credentials, if any exist. This will update the status.
      */
     public AuthenticationStatus login() {
-        String refreshToken = mPreferences.getString(KEY_REFRESH_TOKEN, null);
-        String username = mPreferences.getString(KEY_USERNAME, null);
-        if (AuthenticationManager.isTokenExpired(mPreferences)
-                || refreshToken != null && username != null)
-            return refreshLogin(refreshToken, username);
-        else
-            return updateStatus(UNAUTHENTICATED);
+        AuthenticationStatus authenticationStatus = UNAUTHENTICATED;
+        //TODO Sodep: Re-auth with refresh token is not working, throws a BAD_REQUEST response
+        String refreshToken = mPreferences.getString(AppConstants.KEY_REFRESH_TOKEN, null);
+        String username = mPreferences.getString(AppConstants.KEY_USERNAME, null);
+        if (refreshToken != null && username != null &&
+                !AuthenticationManager.isTokenExpired(mPreferences)) {
+            authenticationStatus = refreshLogin(refreshToken, username);
+        }
+        if(UNAUTHENTICATED.equals(authenticationStatus)) {
+            authenticationStatus = refreshLogin();
+        }
+        return authenticationStatus;
     }
 
     public static boolean isTokenExpired(SharedPreferences mPreferences) {
         Date now = new Date();
         final long yesterday = DateUtils.addDays(new Date(), -1).getTime();
-        Long expirationTimeStamp = mPreferences.getLong(KEY_TOKEN_EXPIRATION,
+        Long expirationTimeStamp = mPreferences.getLong(AppConstants.KEY_TOKEN_EXPIRATION,
                 yesterday);
         final Date expirationDate = new Date(expirationTimeStamp);
         Log.d(TAG, String.format("Token is valid until: %s", expirationDate));
@@ -128,9 +129,15 @@ public class AuthenticationManager {
      * Attempts to refresh the login using a saved refresh token.
      */
     private AuthenticationStatus refreshLogin(String refreshToken, String username) {
+        String encryptedPassword = mPreferences.getString(KEY_PASSWORD, null);
+        String password = null;
+        if(StringUtils.isNotBlank(encryptedPassword)) {
+            password = SecurityUtils.decrypt(encryptedPassword);
+        }
         if (mConnectivityWatcher.isOffline()) {
             mUser = User.builder()
                     .username(username)
+                    .password(password)
                     .login(new Login(refreshToken))
                     .build();
             return updateStatus(AUTHENTICATED);//assume authenticated because there is refresh token
@@ -139,17 +146,19 @@ public class AuthenticationManager {
             updateStatus(PENDING);
             retrofit2.Response<LoginIr> response = mAuthService
                     .loginWithRefreshToken(
-                            AUTH_KEY,
+                            AppConstants.AUTH_KEY,
                             refreshToken).execute();
 
-            return updateLogin(User.builder().username(username).build(), response);
+            return updateLogin(User.builder()
+                    .username(username)
+                    .password(password).build(), response);
         } catch (IOException e) {
             Log.e(TAG, "refreshToken: Could not refresh the token!", e);
             return updateStatus(UNAUTHENTICATED);
         }
     }
 
-    private AuthenticationStatus getToken(User user) {
+    public AuthenticationStatus getToken(User user) {
         if (user == null) {
             return updateStatus(UNAUTHENTICATED);
         }
@@ -167,7 +176,7 @@ public class AuthenticationManager {
             updateStatus(PENDING);
             retrofit2.Response<LoginIr> response = mAuthService
                     .loginWithPassword(
-                            AUTH_KEY,
+                            AppConstants.AUTH_KEY,
                             user.getUsername(),
                             password).execute();
             if (AppConstants.HTTP_SC_BAD_REQUEST == response.code()) {
@@ -189,6 +198,7 @@ public class AuthenticationManager {
                 mUser = user;
                 mUser.setLogin(newLogin);
             }
+            mUser.setOrganization(newLogin.getUser().getOrganization());
             saveLogin();
             return updateStatus(AUTHENTICATED);
         } else {
@@ -202,9 +212,10 @@ public class AuthenticationManager {
         final int expiresInSeconds = mUser.getLogin().getExpiresIn();
         final Date expirationDate = DateUtils.addSeconds(new Date(), expiresInSeconds);
 
-        editor.putString(KEY_REFRESH_TOKEN, mUser.getLogin().getRefreshToken());
-        editor.putString(KEY_USERNAME, mUser.getUsername());
-        editor.putLong(KEY_TOKEN_EXPIRATION, expirationDate.getTime());
+        editor.putString(AppConstants.KEY_REFRESH_TOKEN, mUser.getLogin().getRefreshToken());
+        editor.putString(AppConstants.KEY_USERNAME, mUser.getUsername());
+        editor.putLong(AppConstants.KEY_TOKEN_EXPIRATION, expirationDate.getTime());
+        editor.putLong(AppConstants.ORGANIZATION_ID, mUser.getOrganization().getId());
         if (StringUtils.isNotBlank(mUser.getPassword())) {
             editor.putString(KEY_PASSWORD, SecurityUtils.encrypt(mUser.getPassword()));
         } else {
@@ -216,10 +227,12 @@ public class AuthenticationManager {
 
     private void clearLogin() {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.remove(KEY_REFRESH_TOKEN);
-        editor.remove(KEY_USERNAME);
+        editor.remove(AppConstants.KEY_REFRESH_TOKEN);
+        //We don't delete username yet, if same user comes back; data should still be available
+        //editor.remove(AppConstants.KEY_USERNAME);
         editor.remove(KEY_PASSWORD);
-        editor.remove(KEY_TOKEN_EXPIRATION);
+        editor.remove(AppConstants.KEY_TOKEN_EXPIRATION);
+        editor.remove(AppConstants.ORGANIZATION_ID);
         editor.apply();
     }
 
@@ -265,9 +278,16 @@ public class AuthenticationManager {
         void onAuthStateChange(AuthenticationManager.AuthenticationStatus status);
     }
 
-    public AuthenticationStatus refreshToken() {
+    public AuthenticationStatus refreshLogin() {
+        String userName = mPreferences.getString(AppConstants.KEY_USERNAME, null);
+        String encrypted = mPreferences.getString(KEY_PASSWORD, null);
+        String password = SecurityUtils.decrypt(encrypted);
+        if(mUser == null) {
+            mUser = User.builder().username(userName).password(password).build();
+        }
+        mUser.setUsername(userName);
+        mUser.setPassword(password);
         return login(mUser);
     }
-
 
 }

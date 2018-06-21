@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.String.format;
 
@@ -70,7 +71,8 @@ public class SurveyRepository extends BaseRepository{
         }
     }
 
-    private boolean pullSurveys(@Nullable Date lastSync) {
+    private boolean pullSurveys() {
+        Date lastSync = getLastSyncDate() > 0 ? new Date(getLastSyncDate()) : null;
         long loopCount = 0;
 
         try {
@@ -120,11 +122,13 @@ public class SurveyRepository extends BaseRepository{
      * Synchronizes the local surveys with the remote database.
      * @return Whether the sync was successful.
      */
-    boolean sync(@Nullable Date lastSync) {
-        return pullSurveys(lastSync);
+    @Override
+    public boolean sync() {
+        return pullSurveys();
     }
 
     public void clean() {
+        setmIsAlive(new AtomicBoolean(false));
         surveyDao.deleteAll();
     }
 }

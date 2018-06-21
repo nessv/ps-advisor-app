@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The utility for the storage of snapshots.
@@ -46,7 +47,8 @@ public class ImageRepository extends BaseRepository {
      * Synchronizes the local snapshots with the remote database.
      * @return Whether the sync was successful.
      */
-    public boolean sync(@Nullable Date lastSync) {
+    @Override
+    public boolean sync() {
         long loopCount = 0;
         //TODO Sodep: How many times does images really change to make this sync as frequent as others?
         boolean result = true;
@@ -70,8 +72,10 @@ public class ImageRepository extends BaseRepository {
                         Uri uri = Uri.parse(option.getImageUrl());
                         imagesDownloaded.add(uri);
                         result &= downloadImage(uri);
-                        getDashActivity().setSyncLabel(R.string.syncing_images, ++loopCount,
-                                getRecordsCount());
+                        if(getDashActivity() != null) {
+                            getDashActivity().setSyncLabel(R.string.syncing_images, ++loopCount,
+                                    getRecordsCount());
+                        }
 
                     }
                 }
@@ -144,6 +148,7 @@ public class ImageRepository extends BaseRepository {
     }
 
     public void clean() {
+        setmIsAlive(new AtomicBoolean(false));
         Fresco.getImagePipeline().clearCaches();
         Fresco.getImagePipeline().clearDiskCaches();
         setRecordsCount(0);

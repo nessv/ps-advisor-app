@@ -2,6 +2,7 @@ package org.fundacionparaguaya.adviserplatform.ui.survey;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import org.fundacionparaguaya.adviserplatform.R;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel.SurveyState;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.KeyboardUtils;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
@@ -143,6 +145,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
             getActivity().setResult(Activity.RESULT_OK, result);
 
             mSurveyViewModel.submitSnapshotAsync();
+            mSurveyViewModel.mSnapshotRespository.forceNextSync();
             getActivity().finish();
         });
 

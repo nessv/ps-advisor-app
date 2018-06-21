@@ -5,12 +5,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.Dash;
-
+import org.apache.commons.lang3.StringUtils;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.remote.ConnectivityWatcher;
 import org.fundacionparaguaya.adviserplatform.jobs.SyncJob;
@@ -43,6 +41,7 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
     static final long LAST_SYNC_ERROR_MARGIN // a margin which will always be resynced to
             = TimeUnit.DAYS.toMillis(1); // avoid problems where models are never synced
     private final AuthenticationManager mAuthenticationManager;
+    private final String unknownError = "Unknown error syncing data";
 
     private FamilyRepository mFamilyRepository;
     private SurveyRepository mSurveyRepository;
@@ -77,6 +76,9 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
         mProgress.setValue(new SyncProgress(lastSyncTime != -1 ? SYNCED : NEVER, lastSyncTime));
 
         connectivityWatcher.status().observeForever(this::setIsOnline);
+        for(BaseRepository repo: getBaseRepositories()) {
+            repo.setSharedPreferences(preferences);
+        }
     }
 
     public LiveData<SyncProgress> getProgress() {
@@ -109,16 +111,6 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
         updateProgress(SYNCING);
         boolean result = true;
 
-        @Nullable Date lastSync;
-        SyncProgress progress = mProgress.getValue();
-        if (progress != null && progress.getLastSyncedTime() != -1) {
-            long lastSyncTimeStamp = mPreferences.getLong(KEY_LAST_SYNC_TIME,
-                    -1);
-            lastSync = new Date(lastSyncTimeStamp);
-        } else {
-            lastSync = null;
-        }
-
         //TODO Sodep: We need to save sync status for each repository individually
         //TODO Sodep: _result_ as a single boolean is not enough
         BaseRepository[] repositoriesToSync = getBaseRepositories();
@@ -135,34 +127,40 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
                 //Ensure a valid session is active
                 if(mAuthenticationManager.isTokenExpired(mPreferences)) {
                     AuthenticationManager.AuthenticationStatus status =
-                            mAuthenticationManager.refreshToken();
+                            mAuthenticationManager.refreshLogin();
                     if(!AuthenticationManager.AuthenticationStatus.AUTHENTICATED.equals(status)){
                         fallBackToLogin();
                     }
                 }
-                if(repo.needsSync(mPreferences)) {
-                    result = resyncWithOneAuthentication(isAlive, result, lastSync, repo);
+                if(repo.needsSync()) {
+                    result = resyncWithOneAuthentication(isAlive, result, repo);
                     Log.d(TAG, watch.lap(String.format(" Synced: %s",
                             repo.getClass().getSimpleName())));
                     if(result) {
                         updateProgress(SYNCED, new Date().getTime());
-                        repo.updateSyncDate(mPreferences);
-                        lastSyncDate = repo.getLastSyncDate(mPreferences);
+                        repo.updateSyncDate();
+                        lastSyncDate = repo.getLastSyncDate();
                     } else {
                         Log.d(TAG, String.format("Problem syncing repo %s",
                                 repo.getClass().getName()));
-                        repo.clearSyncDate(mPreferences);
+                        repo.clearSyncDate();
                         lastSyncDate = -1;
                     }
                 } else {
-                    lastSyncDate = repo.getLastSyncDate(mPreferences);
+                    lastSyncDate = repo.getLastSyncDate();
                     updateProgress(SYNCED, lastSyncDate);
                     setLastSyncDate(lastSyncDate);
                     result = true;
                     Log.d(TAG, String.format("Not syncing. Waiting for %s seconds passed %s",
-                            SyncJob.SYNC_INTERVAL_MS, lastSync));
+                            SyncJob.SYNC_INTERVAL_MS, new Date(repo.getLastSyncDate())));
                 }
-            } catch (Exception e) {
+            } catch (HttpException e) {
+                if(!result) {
+                    Timber.e(TAG, unknownError, e);
+                    stopSyncProcess();
+                }
+            }
+            catch (Exception e) {
                 Log.e(TAG, "sync: Error while syncing!", e);
                 result = false;
                 Log.d(TAG,watch.lap(String.format("Error syncing: %s", e.getMessage())));
@@ -182,19 +180,25 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
         return result;
     }
 
-    private boolean resyncWithOneAuthentication(AtomicBoolean isAlive, boolean result, Date lastSync, BaseRepository repo) {
+    //TODO Sodep: This should be tied to a Interceptor, that handles re-authentication transparently
+    private boolean resyncWithOneAuthentication(AtomicBoolean isAlive, boolean result,
+                                                BaseRepository repo) {
         try {
             updateProgress(SYNCING);
-            result &= repo.sync(isAlive, lastSync);
+            repo.setDashActivity(getDashActivity());
+            result &= repo.sync(isAlive);
         } catch (HttpException httpException) {
             if(AppConstants.HTTP_SC_UNAUTHORIZED == httpException.code()) {
                 Timber.d(TAG, String.format("HTTP UNAUTHORIZED %s. " +
                         "Trying to refresh token one time", httpException));
-                mAuthenticationManager.refreshToken();
+                mAuthenticationManager.refreshLogin();
                 updateProgress(SYNCING);
-                result &= repo.sync(isAlive, lastSync);
+                result &= repo.sync(isAlive);
+            } else if(AppConstants.HTTP_SC_BAD_REQUEST == httpException.code()) {
+                updateProgress(ERROR_OTHER);
+                Timber.e(TAG, String.format("BAD_REQUEST HTTP error %s", httpException));
             } else {
-                Toast.makeText(getDashActivity(), "Unknown error syncing data",
+                Toast.makeText(getDashActivity(), unknownError,
                         Toast.LENGTH_LONG);
                 Timber.d(TAG, String.format("HTTP error %s", httpException));
                 fallBackToLogin();
@@ -204,13 +208,15 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
     }
 
     private void setLastSyncDate(long lastSyncDate) {
-        getDashActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mProgress.setValue(new SyncProgress(lastSyncDate != -1
-                        ? SYNCED : NEVER, lastSyncDate));
-            }
-        });
+        if(getDashActivity() != null) {
+            getDashActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgress.setValue(new SyncProgress(lastSyncDate != -1
+                            ? SYNCED : NEVER, lastSyncDate));
+                }
+            });
+        }
     }
 
     @NonNull
@@ -245,7 +251,7 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
     }
 
     private void clearSyncDates(BaseRepository repo) {
-        repo.clearSyncDate(mPreferences);
+        repo.clearSyncDate();
         mPreferences.edit().remove(KEY_LAST_SYNC_TIME);
         mPreferences.edit().commit();
     }
@@ -282,7 +288,12 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
         switch (status)
         {
             case UNAUTHENTICATED:
-                makeCleanTask().execute();
+
+                //TODO Sodep: Cleaning always is too agressive. To review - 2018-06-15
+                if(StringUtils.isBlank(mPreferences.getString(AppConstants.KEY_USERNAME,
+                        null))) {
+                    makeCleanTask().execute();
+                }
                 SyncJob.cancelAll();
                 break;
 
@@ -357,5 +368,14 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
 
     public void setDashActivity(DashActivity mDashActivity) {
         this.mDashActivity = mDashActivity;
+    }
+
+    public void stopSyncProcess() {
+        Log.d(TAG, "Stopping ongoing sync process...");
+        BaseRepository[] repositoriesToSync = getBaseRepositories();
+        updateProgress(NEVER, -1);
+        for(BaseRepository repo: repositoriesToSync) {
+            repo.setmIsAlive(new AtomicBoolean(false));
+        }
     }
 }

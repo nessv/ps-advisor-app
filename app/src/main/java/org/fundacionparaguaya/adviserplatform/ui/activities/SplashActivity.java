@@ -85,6 +85,7 @@ public class SplashActivity extends BaseCompatActivity {
                     .apply();
         } else {
             nextActivity = new Intent(context, DashActivity.class);
+            nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
 
         context.startActivity(nextActivity);

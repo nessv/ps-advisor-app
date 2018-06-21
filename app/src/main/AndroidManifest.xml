@@ -32,7 +32,8 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTop">
         </activity>
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity"
             android:windowSoftInputMode="adjustResize">

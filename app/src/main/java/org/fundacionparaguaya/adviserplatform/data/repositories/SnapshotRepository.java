@@ -15,8 +15,10 @@ import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationService;
 import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.*;
+import org.fundacionparaguaya.adviserplatform.exceptions.DataRequiredException;
 import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.perf4j.StopWatch;
 
@@ -28,6 +30,7 @@ import timber.log.Timber;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -128,6 +131,8 @@ public class SnapshotRepository extends BaseRepository{
                 Survey survey = surveyRepository.getSurveyNow(snapshot.getSurveyId());
                 if(organizationId > 0) {
                     snapshot.setOrganizationId(organizationId);
+                } else {
+                    throw new DataRequiredException("Organization ID is required for snapshot");
                 }
 
                 //region Temporary upload image for demo
@@ -342,6 +347,8 @@ public class SnapshotRepository extends BaseRepository{
                     }
                     snapshot.setPriorities(
                             IrMapper.mapPriorities(prioritiesResponse.body(), survey));
+                } else {
+                    snapshot.setPriorities(Collections.emptyList());
                 }
                 Snapshot old = snapshotDao.queryRemoteSnapshotNow(snapshot.getRemoteId());
                 if (old != null) {

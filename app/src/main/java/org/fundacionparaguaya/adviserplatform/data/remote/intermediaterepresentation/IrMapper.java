@@ -285,6 +285,7 @@ public class IrMapper {
         ir.economicResponses = mapBackgroundResponses(snapshot.getEconomicResponses());
         ir.indicatorResponses = mapIndicatorResponses(snapshot.getIndicatorResponses());
         ir.createdAt = mapDateTime(snapshot.getCreatedAt());
+        ir.organizationId = snapshot.getOrganizationId();
 
         return ir;
     }

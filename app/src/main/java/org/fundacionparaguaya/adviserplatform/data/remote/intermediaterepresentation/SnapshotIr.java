@@ -30,34 +30,43 @@ public class SnapshotIr {
     long termCondId;
     @SerializedName("priv_pool_id")
     long privPoolId;
+    @SerializedName("organization_id")
+    long organizationId;
 
     public long getId() {
         return id;
     }
 
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SnapshotIr that = (SnapshotIr) o;
-
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        SnapshotIr rhs = (SnapshotIr) obj;
         return new EqualsBuilder()
-                .append(id, that.id)
-                .append(surveyId, that.surveyId)
-                .append(personalResponses, that.personalResponses)
-                .append(economicResponses, that.economicResponses)
-                .append(indicatorResponses, that.indicatorResponses)
-                .append(createdAt, that.createdAt)
-                .append(userId, that.userId)
-                .append(termCondId, that.termCondId)
-                .append(privPoolId, that.privPoolId)
+                .append(this.id, rhs.id)
+                .append(this.surveyId, rhs.surveyId)
+                .append(this.personalResponses, rhs.personalResponses)
+                .append(this.economicResponses, rhs.economicResponses)
+                .append(this.indicatorResponses, rhs.indicatorResponses)
+                .append(this.createdAt, rhs.createdAt)
+                .append(this.userId, rhs.userId)
+                .append(this.termCondId, rhs.termCondId)
+                .append(this.privPoolId, rhs.privPoolId)
+                .append(this.organizationId, rhs.organizationId)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(31, 97)
+        return new HashCodeBuilder()
                 .append(id)
                 .append(surveyId)
                 .append(personalResponses)
@@ -67,6 +76,7 @@ public class SnapshotIr {
                 .append(userId)
                 .append(termCondId)
                 .append(privPoolId)
+                .append(organizationId)
                 .toHashCode();
     }
 }

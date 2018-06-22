@@ -163,7 +163,6 @@ public class AuthenticationManager {
             return updateStatus(UNAUTHENTICATED);
         }
         try {
-            //updateStatus(PENDING);
             String password = user.getPassword();
             if (StringUtils.isBlank(password)) {
                 String encrypted = mPreferences.getString(KEY_PASSWORD, null);
@@ -174,6 +173,7 @@ public class AuthenticationManager {
             } else {
                 user.setPassword(password);
             }
+            updateStatus(PENDING);
             retrofit2.Response<LoginIr> response = mAuthService
                     .loginWithPassword(
                             AppConstants.AUTH_KEY,

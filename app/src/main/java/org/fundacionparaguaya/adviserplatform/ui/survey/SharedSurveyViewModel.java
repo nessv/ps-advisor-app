@@ -119,10 +119,6 @@ public class SharedSurveyViewModel extends ViewModel {
             lastState = SurveyState.ECONOMIC_QUESTIONS;
         }
 
-        //TODO Sodep: survey can be null from ResumeSnapshotPopupWindow
-        if(survey == null) {
-            survey = mSurveyRepository.getSurveyNow(snapshot.getId());
-        }
         if(survey.getEconomicQuestions().size() == 0 || snapshot.getIndicatorResponses().size()!=0)
         {
             lastState = SurveyState.INDICATORS;

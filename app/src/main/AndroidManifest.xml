@@ -26,7 +26,8 @@
         android:supportsRtl="true"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB8sk4XwygsRgAs9bIf-ELnWIrp-Uh3vH8"/>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/com.google.android.geo.API_KEY"/>
 
         <activity android:name="org.fundacionparaguaya.adviserplatform.ui.login.IntroActivity"
             android:windowSoftInputMode="adjustResize"

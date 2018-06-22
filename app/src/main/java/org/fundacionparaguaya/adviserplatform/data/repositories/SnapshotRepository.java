@@ -334,19 +334,21 @@ public class SnapshotRepository extends BaseRepository{
                             survey);
             for (Snapshot snapshot : snapshots) {
                 if(shouldAbortSync()) return false;
-                if(snapshot.getPriorities() != null && snapshot.getPriorities().isEmpty()) {
-                    Response<List<PriorityIr>> prioritiesResponse = snapshotService
-                            .getPriorities(snapshot.getRemoteId())
-                            .execute();
-                    checkFor4xxCode(prioritiesResponse);
-                    if (!prioritiesResponse.isSuccessful() || prioritiesResponse.body() == null) {
-                        Timber.e(format(
-                                "pullSnapshots: Could not pull priorities for snaptshot %d! %s",
-                                snapshot.getRemoteId(), prioritiesResponse.errorBody().string()));
-                        throw new HttpException(prioritiesResponse);
+                if (snapshot.getPriorities() != null) {
+                    if (snapshot.getPriorities().isEmpty()) {
+                        Response<List<PriorityIr>> prioritiesResponse = snapshotService
+                                .getPriorities(snapshot.getRemoteId())
+                                .execute();
+                        checkFor4xxCode(prioritiesResponse);
+                        if (!prioritiesResponse.isSuccessful() || prioritiesResponse.body() == null) {
+                            Timber.e(format(
+                                    "pullSnapshots: Could not pull priorities for snaptshot %d! %s",
+                                    snapshot.getRemoteId(), prioritiesResponse.errorBody().string()));
+                            throw new HttpException(prioritiesResponse);
+                        }
+                        snapshot.setPriorities(
+                                IrMapper.mapPriorities(prioritiesResponse.body(), survey));
                     }
-                    snapshot.setPriorities(
-                            IrMapper.mapPriorities(prioritiesResponse.body(), survey));
                 } else {
                     snapshot.setPriorities(Collections.emptyList());
                 }

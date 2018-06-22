@@ -14,6 +14,11 @@ Poverty Stoplight Mobile Platform is an Android tablet app for tracking and unde
  - [FAQs](https://github.com/wpi-poverty-stoplight/ps-advisor-app/wiki/FAQ)
  - [Poverty Stoplight](https://www.povertystoplight.org/)
 
+## API KEYS and other credentials needed
+
+File `app/src/main/res/values/keys.xml` is excluded from versioning. It contains API KEYES (Google Maps and others) needed for some libraries.
+You should contact organization's maintainers or create your own for your development environment.
+
 ## License
 The MIT License (MIT)
 

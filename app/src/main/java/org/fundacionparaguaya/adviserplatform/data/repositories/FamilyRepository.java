@@ -110,7 +110,7 @@ public class FamilyRepository extends BaseRepository {
                         .format(lastSync);
                 response = familyService.getFamiliesModifiedSince(lastSyncString).execute();
             } else {
-                response = familyService.getFamilies().execute();
+                response = familyService.getFamilies("").execute();
             }
 
             if (!response.isSuccessful() || response.body() == null) {

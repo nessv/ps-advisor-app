@@ -278,32 +278,23 @@ public class SnapshotRepository extends BaseRepository{
             families = familyRepository.getFamiliesNow();
         }
         setRecordsCount(families.size() * surveysNow.size());
-        for (Family family : families) {
-            for (Survey survey : surveysNow) {
 
-                if(shouldAbortSync()) return false;
-
-                //TODO Sodep: time complexity n^2
-                Log.d(TAG, stopWatch.lap(String.format("Family: %s, Survey: %s", family.getName(),
-                        survey.getDescription())));
-                success &= pullSnapshots(family, survey);
-                if(success && getDashActivity() != null) {
-                    getDashActivity().setSyncLabel(R.string.syncing_snapshots, ++loopCount,
-                                    getRecordsCount());
-                }
-            }
+        for(Family family : families) {
+            if(shouldAbortSync()) return false;
+            Log.d(TAG, stopWatch.lap(String.format("Family: %s", family.getName())));
+            success &= pullSnapshots(family, surveysNow);
         }
         Log.d(TAG, stopWatch.stop("Finished pulling snapshots"));
         return success;
     }
 
-    private boolean pullSnapshots(Family family, Survey survey)
+    private boolean pullSnapshots(Family family, List<Survey> surveyList)
             throws HttpException{
         try {
             if(shouldAbortSync()) return false;
             // get the snapshots
             Response<List<SnapshotIr>> snapshotsResponse = snapshotService
-                    .getSnapshots(survey.getRemoteId(), family.getRemoteId())
+                    .getAllSnapshotsByFamily(family.getRemoteId())
                     .execute();
             checkFor4xxCode(snapshotsResponse);
             if (!snapshotsResponse.isSuccessful() || snapshotsResponse.body() == null) {
@@ -331,7 +322,7 @@ public class SnapshotRepository extends BaseRepository{
 
             List<Snapshot> snapshots = IrMapper.
                     mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family,
-                            survey);
+                            surveyList);
             for (Snapshot snapshot : snapshots) {
                 if(shouldAbortSync()) return false;
                 if (snapshot.getPriorities() != null) {
@@ -347,7 +338,7 @@ public class SnapshotRepository extends BaseRepository{
                             throw new HttpException(prioritiesResponse);
                         }
                         snapshot.setPriorities(
-                                IrMapper.mapPriorities(prioritiesResponse.body(), survey));
+                                IrMapper.mapPriorities(prioritiesResponse.body(), surveyList.get(snapshot.getSurveyId() - 1)));
                     }
                 } else {
                     snapshot.setPriorities(Collections.emptyList());
@@ -366,6 +357,7 @@ public class SnapshotRepository extends BaseRepository{
         }
         return true;
     }
+
 
     /**
      * Synchronizes the local snapshots with the remote database.

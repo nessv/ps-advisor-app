@@ -277,12 +277,17 @@ public class SnapshotRepository extends BaseRepository{
         } else {
             families = familyRepository.getFamiliesNow();
         }
-        setRecordsCount(families.size() * surveysNow.size());
+
+        setRecordsCount(families.size());
 
         for(Family family : families) {
             if(shouldAbortSync()) return false;
             Log.d(TAG, stopWatch.lap(String.format("Family: %s", family.getName())));
             success &= pullSnapshots(family, surveysNow);
+            if(success && getDashActivity() != null) {
+                getDashActivity().setSyncLabel(R.string.syncing_family_snapshots, ++loopCount,
+                        getRecordsCount());
+            }
         }
         Log.d(TAG, stopWatch.stop("Finished pulling snapshots"));
         return success;

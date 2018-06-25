@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface FamilyService {
 
     @GET("families/user")
-    Call<List<FamilyIr>> getFamilies(@Query("name") String name);
+    Call<List<FamilyIr>> getFamiliesByUserAndNameOrCode(@Query("name") String nameOrCode);
 
     @GET("families")
     Call<List<FamilyIr>> getFamiliesModifiedSince(@Query("last_modified_gt") String lastModified);

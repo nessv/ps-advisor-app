@@ -139,5 +139,6 @@
     <string name="syncing_surveys">Syncing %d of %d surveys</string>
     <string name="syncing_snapshots">Syncing %d of %d snapshots</string>
     <string name="syncing_images">Syncing %d of %d images</string>
+    <string name="syncing_family_snapshots">Syncing %d of %d family snapshots</string>
     <string name="login_error">Wrong credentials</string>
 </resources>

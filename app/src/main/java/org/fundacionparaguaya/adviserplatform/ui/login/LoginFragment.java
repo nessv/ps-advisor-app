@@ -99,6 +99,12 @@ public class LoginFragment extends Fragment implements TextWatcher {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        initUI(view);
+
+        return view;
+    }
+
+    private void initUI(View view) {
         mIncorrectCredentialsView = view.findViewById(R.id.login_incorrect_credentials);
 
         mServerSpinner = view.findViewById(R.id.spinner_login_serverselect);
@@ -109,8 +115,6 @@ public class LoginFragment extends Fragment implements TextWatcher {
         mSubmitButton = view.findViewById(R.id.login_loginbutton);
 
         mFPLogo = view.findViewById(R.id.login_fplogo);
-
-        return view;
     }
 
     /**
@@ -121,6 +125,8 @@ public class LoginFragment extends Fragment implements TextWatcher {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initUI(view);
 
         ArrayAdapter<Server> spinAdapter = new ArrayAdapter<Server>(
                 this.getContext(), R.layout.item_tv_spinner);
@@ -210,12 +216,18 @@ public class LoginFragment extends Fragment implements TextWatcher {
                         break;
 
                     case PENDING:
-                        //context: https://github.com/rasoulmiri/ButtonLoading/issues/1 (see comment by @bhylak)
-                        mSubmitButton.post(()-> mSubmitButton.setProgress(true));
+                        if(mSubmitButton != null) {
+                            //From onViewCreated this could be null
+                            //context: https://github.com/rasoulmiri/ButtonLoading/issues/1 (see comment by @bhylak)
+                            mSubmitButton.post(() -> mSubmitButton.setProgress(true));
+                        }
                         break;
 
                     default:
-                        mSubmitButton.setProgress(false);
+                        if(mSubmitButton != null) {
+                            //From onViewCreated this could be null
+                            mSubmitButton.setProgress(false);
+                        }
                         break;
                 }
             }

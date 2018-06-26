@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -342,8 +343,12 @@ public class SnapshotRepository extends BaseRepository{
                                     snapshot.getRemoteId(), prioritiesResponse.errorBody().string()));
                             throw new HttpException(prioritiesResponse);
                         }
-                        snapshot.setPriorities(
-                                IrMapper.mapPriorities(prioritiesResponse.body(), surveyList.get(snapshot.getSurveyId() - 1)));
+
+                        Survey currentSurvey = getCurrentSnapshotSurvey(surveyList, snapshot.getSurveyId());
+                        if(currentSurvey != null) {
+                            snapshot.setPriorities(
+                                    IrMapper.mapPriorities(prioritiesResponse.body(), currentSurvey));
+                        }
                     }
                 } else {
                     snapshot.setPriorities(Collections.emptyList());
@@ -363,6 +368,14 @@ public class SnapshotRepository extends BaseRepository{
         return true;
     }
 
+    private Survey getCurrentSnapshotSurvey(List<Survey> surveyList, long survey_id) {
+        for(Survey survey: surveyList) {
+            if(survey.getId() == survey_id) {
+                return survey;
+            }
+        }
+        return null;
+    }
 
     /**
      * Synchronizes the local snapshots with the remote database.

@@ -50,5 +50,7 @@ public interface SnapshotService {
     //region Temporary upload image for demo
     @PUT("families/{id}/image")
     Call<String> putFamilyPicture(@Part MultipartBody.Part file);
-    //endregion Temporary upload image for demo
+
+    @GET("snapshots/all/family")
+    Call <List<SnapshotIr>> getAllSnapshotsByFamily(@Query("family_id") long familyId);
 }

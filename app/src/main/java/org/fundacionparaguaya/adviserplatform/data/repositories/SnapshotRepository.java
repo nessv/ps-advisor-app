@@ -1,6 +1,7 @@
 package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -277,33 +278,29 @@ public class SnapshotRepository extends BaseRepository{
         } else {
             families = familyRepository.getFamiliesNow();
         }
-        setRecordsCount(families.size() * surveysNow.size());
-        for (Family family : families) {
-            for (Survey survey : surveysNow) {
 
-                if(shouldAbortSync()) return false;
+        setRecordsCount(families.size());
 
-                //TODO Sodep: time complexity n^2
-                Log.d(TAG, stopWatch.lap(String.format("Family: %s, Survey: %s", family.getName(),
-                        survey.getDescription())));
-                success &= pullSnapshots(family, survey);
-                if(success && getDashActivity() != null) {
-                    getDashActivity().setSyncLabel(R.string.syncing_snapshots, ++loopCount,
-                                    getRecordsCount());
-                }
+        for(Family family : families) {
+            if(shouldAbortSync()) return false;
+            Log.d(TAG, stopWatch.lap(String.format("Family: %s", family.getName())));
+            success &= pullSnapshots(family, surveysNow);
+            if(success && getDashActivity() != null) {
+                getDashActivity().setSyncLabel(R.string.syncing_family_snapshots, ++loopCount,
+                        getRecordsCount());
             }
         }
         Log.d(TAG, stopWatch.stop("Finished pulling snapshots"));
         return success;
     }
 
-    private boolean pullSnapshots(Family family, Survey survey)
+    private boolean pullSnapshots(Family family, List<Survey> surveyList)
             throws HttpException{
         try {
             if(shouldAbortSync()) return false;
             // get the snapshots
             Response<List<SnapshotIr>> snapshotsResponse = snapshotService
-                    .getSnapshots(survey.getRemoteId(), family.getRemoteId())
+                    .getAllSnapshotsByFamily(family.getRemoteId())
                     .execute();
             checkFor4xxCode(snapshotsResponse);
             if (!snapshotsResponse.isSuccessful() || snapshotsResponse.body() == null) {
@@ -331,7 +328,7 @@ public class SnapshotRepository extends BaseRepository{
 
             List<Snapshot> snapshots = IrMapper.
                     mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family,
-                            survey);
+                            surveyList);
             for (Snapshot snapshot : snapshots) {
                 if(shouldAbortSync()) return false;
                 if (snapshot.getPriorities() != null) {
@@ -346,8 +343,12 @@ public class SnapshotRepository extends BaseRepository{
                                     snapshot.getRemoteId(), prioritiesResponse.errorBody().string()));
                             throw new HttpException(prioritiesResponse);
                         }
-                        snapshot.setPriorities(
-                                IrMapper.mapPriorities(prioritiesResponse.body(), survey));
+
+                        Survey currentSurvey = getCurrentSnapshotSurvey(surveyList, snapshot.getSurveyId());
+                        if(currentSurvey != null) {
+                            snapshot.setPriorities(
+                                    IrMapper.mapPriorities(prioritiesResponse.body(), currentSurvey));
+                        }
                     }
                 } else {
                     snapshot.setPriorities(Collections.emptyList());
@@ -365,6 +366,15 @@ public class SnapshotRepository extends BaseRepository{
             return false;
         }
         return true;
+    }
+
+    private Survey getCurrentSnapshotSurvey(List<Survey> surveyList, long survey_id) {
+        for(Survey survey: surveyList) {
+            if(survey.getId() == survey_id) {
+                return survey;
+            }
+        }
+        return null;
     }
 
     /**

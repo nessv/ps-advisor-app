@@ -238,16 +238,30 @@ public class IrMapper {
     public static List<Snapshot> mapSnapshots(List<SnapshotIr> ir,
                                               List<SnapshotOverviewIr> overviewIrs,
                                               Family family,
-                                              Survey survey) {
+                                              List<Survey> surveyList) {
         if (ir == null || overviewIrs == null) return Collections.emptyList();
 
         List<Snapshot> snapshots = new ArrayList<>(ir.size());
         for (SnapshotIr snapshotIr : ir) {
             SnapshotOverviewIr overviewIr = findOverview(snapshotIr, overviewIrs);
+
+            Survey survey = getCurrentSurvey(surveyList, snapshotIr);
+
             snapshots.add(mapSnapshot(snapshotIr, overviewIr != null ? overviewIr.priorities : null,
                     family, survey));
         }
         return snapshots;
+    }
+
+    private static Survey getCurrentSurvey(List<Survey> surveyList, SnapshotIr snapshot) {
+        Survey currentSurvey = null;
+        for(Survey survey : surveyList) {
+            if(survey.getRemoteId() == snapshot.surveyId) {
+                currentSurvey = survey;
+                return currentSurvey;
+            }
+        }
+        return currentSurvey;
     }
 
     private static SnapshotOverviewIr findOverview(SnapshotIr snapshotIr,

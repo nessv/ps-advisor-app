@@ -1,5 +1,7 @@
 package org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation;
 
+import android.util.Log;
+
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.model.FamilyMember;
@@ -247,8 +249,14 @@ public class IrMapper {
 
             Survey survey = getCurrentSurvey(surveyList, snapshotIr);
 
-            snapshots.add(mapSnapshot(snapshotIr, overviewIr != null ? overviewIr.priorities : null,
-                    family, survey));
+            if(survey != null) {
+                snapshots.add(mapSnapshot(snapshotIr, overviewIr != null ? overviewIr.priorities : null,
+                        family, survey));
+            } else {
+                Log.d("Snapshots",
+                        String.format("Snapshot with id %s and survey id %s could not be added.",
+                                snapshotIr.id, snapshotIr.surveyId));
+            }
         }
         return snapshots;
     }

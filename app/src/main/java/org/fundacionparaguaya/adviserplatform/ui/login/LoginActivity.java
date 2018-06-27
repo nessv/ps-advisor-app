@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import com.instabug.library.InstabugTrackingDelegate;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.util.Utilities;
 
 /**

@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.adviserplatform;
+package org.fundacionparaguaya.adviserassistant;
 
 import android.support.multidex.MultiDexApplication;
 import com.evernote.android.job.JobManager;
@@ -11,6 +11,8 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugInternalBuilder;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.novoda.merlin.Merlin;
+
+import org.fundacionparaguaya.adviserassistant.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.remote.ConnectivityWatcher;
 import org.fundacionparaguaya.adviserplatform.injection.ApplicationComponent;
 import org.fundacionparaguaya.adviserplatform.injection.ApplicationModule;
@@ -27,7 +29,7 @@ import javax.inject.Inject;
  * The advisor application.
  */
 
-public class AdviserApplication extends MultiDexApplication {
+public class AdviserAssistantApplication extends MultiDexApplication {
 
     private static final long INDICATOR_CACHE_SIZE = 500 * ByteConstants.MB;
     private static final long MIN_INDICATOR_CACHE_SIZE = 70 * ByteConstants.MB;

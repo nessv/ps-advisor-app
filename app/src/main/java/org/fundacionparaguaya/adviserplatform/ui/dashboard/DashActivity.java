@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.ui.base.DisplayBackNavListener;
 import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
 import org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity;
@@ -104,7 +104,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) this.getApplication())
+        ((AdviserAssistantApplication) this.getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

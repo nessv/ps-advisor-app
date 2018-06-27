@@ -7,7 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.data.model.Indicator;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorOption;
 import org.fundacionparaguaya.adviserplatform.data.model.IndicatorQuestion;

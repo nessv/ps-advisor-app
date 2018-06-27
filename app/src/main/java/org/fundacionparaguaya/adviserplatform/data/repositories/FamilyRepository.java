@@ -3,7 +3,7 @@ package org.fundacionparaguaya.adviserplatform.data.repositories;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.data.local.FamilyDao;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.remote.FamilyService;

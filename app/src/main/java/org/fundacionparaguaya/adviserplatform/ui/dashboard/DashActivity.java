@@ -117,7 +117,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
         mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
         mSyncArea = findViewById(R.id.linearLayout_topbar_syncbutton);
-        mSyncArea.setOnClickListener(this::onSyncButtonPress);
+        //Manual synchronization temporally disabled
+        //mSyncArea.setOnClickListener(this::onSyncButtonPress);
         mSyncButtonIcon = findViewById(R.id.iv_topbar_syncimage);
         mBackButton = findViewById(R.id.linearlayout_dashactivity_back);
         mBackButton.setVisibility(View.GONE);

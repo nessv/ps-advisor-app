@@ -129,4 +129,10 @@
     <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>
     <string name="familydetail_nullmember_content">No se preocupe, somos conscientes del problema y lo solucionaremos pronto.
         (Problema: # 257)</string>
+    <string name="syncing_families">Sincronizando %d de %d familias</string>
+    <string name="syncing_surveys">Sincronizando %d de %d encuestas</string>
+    <string name="syncing_snapshots">Sincronizando %d de %d snapshots</string>
+    <string name="syncing_images">Sincronizando %d de %d imágenes</string>
+    <string name="syncing_family_snapshots">Sincronizando %d of %d snaphots de familias</string>
+    <string name="login_error">Credenciales incorrectas</string>
 </resources>

@@ -19,8 +19,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stepstone.stepper.VerificationError;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.QuestionCallback;
 import org.fundacionparaguaya.adviserplatform.ui.survey.ReviewCallback;
@@ -70,7 +70,7 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
     @Override
     public void onCreate(@Nullable Bundle savedInsanceState) {
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

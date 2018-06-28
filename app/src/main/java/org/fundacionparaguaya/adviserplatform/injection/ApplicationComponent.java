@@ -2,7 +2,7 @@ package org.fundacionparaguaya.adviserplatform.injection;
 
 import android.app.Application;
 import dagger.Component;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.jobs.JobCreator;
 import org.fundacionparaguaya.adviserplatform.ui.activities.SplashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragment;
@@ -36,7 +36,7 @@ public interface ApplicationComponent {
 
     Application application();
 
-    void inject(AdviserApplication application);
+    void inject(AdviserAssistantApplication application);
     void inject(LoginFragment loginFragment);
 
     void inject(DashActivity dashActivity);

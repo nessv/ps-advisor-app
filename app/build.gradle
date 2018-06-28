@@ -11,11 +11,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.fundacionparaguaya.adviserplatform"
+        applicationId "org.fundacionparaguaya.adviserassistant"
         minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 25
+        versionCode 3
         versionName versioning.info.display
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -45,7 +45,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("release.keystore")
+            storeFile file("assistant.keystore.jks")
             storePassword System.getenv('KEYSTORE_PASSWORD')
             keyAlias System.getenv('KEYSTORE_KEY_ALIAS')
             keyPassword System.getenv('KEYSTORE_KEY_PASSWORD')

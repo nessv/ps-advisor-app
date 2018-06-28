@@ -9,7 +9,7 @@ import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.fundacionparaguaya.adviserplatform.BuildConfig;
+import org.fundacionparaguaya.adviserassistant.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;

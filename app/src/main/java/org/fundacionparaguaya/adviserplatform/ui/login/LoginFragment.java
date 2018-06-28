@@ -25,9 +25,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import io.rmiri.buttonloading.ButtonLoading;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.BuildConfig;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.adviserassistant.BuildConfig;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.remote.Server;
@@ -75,7 +75,7 @@ public class LoginFragment extends Fragment implements TextWatcher {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) getActivity().getApplication())
+        ((AdviserAssistantApplication) getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

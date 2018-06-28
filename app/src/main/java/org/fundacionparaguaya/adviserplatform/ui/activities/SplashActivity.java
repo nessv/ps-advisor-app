@@ -2,23 +2,13 @@ package org.fundacionparaguaya.adviserplatform.ui.activities;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
 
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.login.IntroActivity;
@@ -26,10 +16,7 @@ import org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity;
 import org.fundacionparaguaya.adviserplatform.ui.login.LoginViewModel;
 import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
-import org.fundacionparaguaya.adviserplatform.util.Utilities;
 import org.joda.time.DateTime;
-
-import javax.inject.Inject;
 
 public class SplashActivity extends BaseCompatActivity {
 
@@ -40,7 +27,7 @@ public class SplashActivity extends BaseCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) this.getApplication())
+        ((AdviserAssistantApplication) this.getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.R;
 
 import java.util.ArrayList;
 

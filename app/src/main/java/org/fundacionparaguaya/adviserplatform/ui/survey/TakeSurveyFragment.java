@@ -2,7 +2,6 @@ package org.fundacionparaguaya.adviserplatform.ui.survey;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,12 +13,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
-import org.fundacionparaguaya.adviserplatform.R;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.adviserassistant.R;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel.SurveyState;
-import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.KeyboardUtils;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
@@ -50,7 +48,7 @@ public class TakeSurveyFragment extends Fragment implements  StepperLayout.Stepp
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AdviserApplication) this.getActivity().getApplication())
+        ((AdviserAssistantApplication) this.getActivity().getApplication())
                 .getApplicationComponent()
                 .inject(this);
 

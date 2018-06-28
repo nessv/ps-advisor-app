@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import dagger.Module;
 import dagger.Provides;
-import org.fundacionparaguaya.adviserplatform.AdviserApplication;
+import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
@@ -22,7 +22,7 @@ public class ApplicationModule {
 
     private final Application application;
 
-    public ApplicationModule(AdviserApplication application) {
+    public ApplicationModule(AdviserAssistantApplication application) {
         this.application = application;
     }
 

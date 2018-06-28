@@ -2,7 +2,7 @@ package org.fundacionparaguaya.adviserplatform.util;
 
 import android.support.v7.app.AppCompatActivity;
 
-import org.fundacionparaguaya.adviserplatform.BuildConfig;
+import org.fundacionparaguaya.adviserassistant.BuildConfig;
 
 public class AppConstants {
     public static final String FIRST_TIME_USER_KEY = "FIRST_TIME_USER_KEY";

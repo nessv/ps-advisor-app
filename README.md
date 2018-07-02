@@ -1,12 +1,7 @@
 # Poverty Stoplight Mobile Platform
 Poverty Stoplight Mobile Platform is an Android tablet app for tracking and understanding multidimensional poverty. 
 
-[![Google Play Store](https://user-images.githubusercontent.com/1918630/38772624-99fcf4aa-4009-11e8-8db6-4dec120be0b1.png)](https://play.google.com/store/apps/details?id=org.fundacionparaguaya.adviserplatform)
-
-[![CircleCI](https://img.shields.io/circleci/project/github/wpi-poverty-stoplight/ps-advisor-app.svg)](https://circleci.com/gh/wpi-poverty-stoplight/ps-advisor-app)
-[![Codacy branch grade](https://img.shields.io/codacy/grade/04bd5dd684eb42c1a8e6e3a50f2efd54/master.svg)](https://www.codacy.com/app/krconv/ps-advisor-app)
-[![GitHub release](https://img.shields.io/github/release/wpi-poverty-stoplight/ps-advisor-app.svg)](https://github.com/wpi-poverty-stoplight/ps-advisor-app/releases/latest)
-[![Github commits (since latest release)](https://img.shields.io/github/commits-since/wpi-poverty-stoplight/ps-advisor-app/latest.svg)](https://github.com/wpi-poverty-stoplight/ps-advisor-app/commits/master)
+[![Google Play Store](https://user-images.githubusercontent.com/1918630/38772624-99fcf4aa-4009-11e8-8db6-4dec120be0b1.png)](https://play.google.com/store/apps/details?id=org.fundacionparaguaya.assistantadvisor)
 
 ## Useful Links
  - [Vision](./VISION.md)

@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 
-import org.fundacionparaguaya.adviserassistant.BuildConfig;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.local.FamilyDao;
 import org.fundacionparaguaya.adviserplatform.data.local.LocalDatabase;
 import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;

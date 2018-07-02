@@ -1,9 +1,8 @@
 package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.Nullable;
 
-import org.fundacionparaguaya.adviserassistant.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.local.SurveyDao;
 import org.fundacionparaguaya.adviserplatform.data.remote.SurveyService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;

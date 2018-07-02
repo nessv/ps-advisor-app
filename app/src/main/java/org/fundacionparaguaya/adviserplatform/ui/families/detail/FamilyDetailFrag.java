@@ -25,8 +25,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.instabug.library.Instabug;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
-import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
-import org.fundacionparaguaya.adviserassistant.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragmentCallback;

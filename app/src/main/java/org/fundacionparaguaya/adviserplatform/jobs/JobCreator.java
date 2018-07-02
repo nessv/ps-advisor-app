@@ -3,7 +3,7 @@ package org.fundacionparaguaya.adviserplatform.jobs;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
-import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
 import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
 

@@ -2,7 +2,7 @@ package org.fundacionparaguaya.adviserplatform.util;
 
 import android.util.Log;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 
 import timber.log.Timber;
 

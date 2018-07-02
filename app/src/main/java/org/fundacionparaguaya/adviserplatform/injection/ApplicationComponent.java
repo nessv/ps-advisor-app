@@ -2,7 +2,7 @@ package org.fundacionparaguaya.adviserplatform.injection;
 
 import android.app.Application;
 import dagger.Component;
-import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.adviserplatform.jobs.JobCreator;
 import org.fundacionparaguaya.adviserplatform.ui.activities.SplashActivity;
 import org.fundacionparaguaya.adviserplatform.ui.common.LifeMapFragment;

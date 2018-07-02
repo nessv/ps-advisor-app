@@ -1,7 +1,6 @@
 package org.fundacionparaguaya.adviserplatform.data.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,20 +9,18 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-import org.fundacionparaguaya.adviserassistant.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.data.model.Family;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
-import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationService;
 import org.fundacionparaguaya.adviserplatform.data.remote.SnapshotService;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.*;
 import org.fundacionparaguaya.adviserplatform.exceptions.DataRequiredException;
 import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.perf4j.StopWatch;
 
-import retrofit2.Call;
 import retrofit2.HttpException;
 import retrofit2.Response;
 import timber.log.Timber;

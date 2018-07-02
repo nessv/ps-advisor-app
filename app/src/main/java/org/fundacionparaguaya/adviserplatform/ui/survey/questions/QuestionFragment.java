@@ -25,7 +25,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.instabug.library.Instabug;
-import org.fundacionparaguaya.adviserassistant.R;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.data.model.BackgroundQuestion;
 import org.fundacionparaguaya.adviserplatform.ui.common.SelectedFirstSpinnerAdapter;
 import org.fundacionparaguaya.adviserplatform.ui.survey.QuestionCallback;

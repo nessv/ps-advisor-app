@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.fundacionparaguaya.adviserassistant.AdviserAssistantApplication;
-import org.fundacionparaguaya.adviserassistant.R;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractStackedFrag;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;

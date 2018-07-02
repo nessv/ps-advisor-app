@@ -1,4 +1,4 @@
-package org.fundacionparaguaya.adviserassistant;
+package org.fundacionparaguaya.assistantadvisor;
 
 import android.support.multidex.MultiDexApplication;
 import com.evernote.android.job.JobManager;
@@ -8,11 +8,10 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
-import com.instabug.library.InstabugInternalBuilder;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.novoda.merlin.Merlin;
 
-import org.fundacionparaguaya.adviserassistant.BuildConfig;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.remote.ConnectivityWatcher;
 import org.fundacionparaguaya.adviserplatform.injection.ApplicationComponent;
 import org.fundacionparaguaya.adviserplatform.injection.ApplicationModule;

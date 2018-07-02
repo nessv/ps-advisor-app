@@ -16,6 +16,8 @@ public class AppConstants {
     public static final String AUTH_KEY = "Basic " + BuildConfig.POVERTY_STOPLIGHT_API_KEY_STRING;
     public static final String KEY_TOKEN_EXPIRATION = "KEY_TOKEN_EXPIRATION";
     public static final String ORGANIZATION_ID = "ORGANIZATION_ID";
+    public static final int HD_RESOLUTION_HEIGHT = 1280;
+    public static final float INDICATOR_TABLET_TEXT_SIZE = 20f;
 
 
     private AppConstants() {

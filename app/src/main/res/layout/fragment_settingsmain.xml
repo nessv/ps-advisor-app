@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textAppearance="@style/BigHero.Black"
+                android:textSize="24sp"
                 tools:text="hi" />
 
             <android.support.v7.widget.AppCompatButton
@@ -39,6 +40,7 @@
                 android:paddingTop="10dp"
                 android:text="@string/logout"
                 android:textAppearance="@style/CardHeading.Light"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
         </android.support.v7.widget.LinearLayoutCompat>

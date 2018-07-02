@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import org.fundacionparaguaya.adviserplatform.ui.common.widget.NonSwipeableViewP
 import org.fundacionparaguaya.adviserplatform.ui.survey.AbstractSurveyFragment;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SharedSurveyViewModel;
+import org.fundacionparaguaya.adviserplatform.util.Utilities;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -211,6 +213,8 @@ public class SurveyIndicatorsFragment extends AbstractSurveyFragment implements 
 
             mQuestionText.setText(question);
             mSurveyViewModel.setFocusedIndicator(mPager.getCurrentItem());
+            //For marquee effect
+            mQuestionText.setSelected(true);
         }
         else //is review page
         {

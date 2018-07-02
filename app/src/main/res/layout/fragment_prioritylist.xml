@@ -20,10 +20,11 @@
                 android:id="@+id/btn_prioritylist_save"
                 android:layout_width="150sp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="24dp"
-                android:textAlignment="center"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/all_save" />
+                android:layout_marginBottom="10sp"
+                android:layout_marginTop="10sp"
+                android:text="@string/all_save"
+                android:textAlignment="center" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tv_prioriitylist_header"

@@ -8,7 +8,7 @@
     <string name="settingstab_title">Ajustes</string>
 
     <!--Top Bar Strings-->
-    <string name="topbar_synclabel">Sincronizar</string>
+    <string name="topbar_synclabel">Estado sincronización</string>
     <string name="topbar_synclabel_offline">Desconectado</string>
     <string name="topbar_synclabel_syncing">Sincronizando…</string>
     <string name="topbar_lastsync_prefix">Última sincronización:\u0020</string>
@@ -35,10 +35,6 @@
     <string name="login_passwordprompt">Clave</string>
     <string name="login_action_signin">Iniciar la Sesión</string>
     <string name="login_incorrectcredentials">Usuario y/o clave incorrectos.</string>
-    <string name="login_serverprod">Producción</string>
-    <string name="login_serverdemo">FP: Serv. Demostración</string>
-    <string name="login_servertest">FP: Serv. Pruebas</string>
-    <string name="login_serverdev">WPI: Servidor de Desarrollo</string>
 
     <!-- App intro -->
     <string name="intro_welcome_title">Bienvenido!</string>
@@ -133,6 +129,7 @@
     <string name="syncing_surveys">Sincronizando %d de %d encuestas</string>
     <string name="syncing_snapshots">Sincronizando %d de %d snapshots</string>
     <string name="syncing_images">Sincronizando %d de %d imágenes</string>
-    <string name="syncing_family_snapshots">Sincronizando %d of %d snaphots de familias</string>
+    <string name="syncing_family_snapshots">Sincronizando %d of %d snaphots</string>
     <string name="login_error">Credenciales incorrectas</string>
+    <string name="add_snapthot">Agregar snapshot</string>
 </resources>

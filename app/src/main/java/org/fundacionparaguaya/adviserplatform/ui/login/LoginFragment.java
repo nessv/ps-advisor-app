@@ -338,6 +338,15 @@ public class LoginFragment extends Fragment implements TextWatcher {
             return null;
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(BuildConfig.DEBUG) {
+            mUsernameView.setText(getString(R.string.test_user));
+            mPasswordView.setText(getString(R.string.test_password));
+        }
+    }
 }
 
 class LoginTask extends AsyncTask<User, Void, AuthenticationManager.AuthenticationStatus> {

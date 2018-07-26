@@ -45,7 +45,7 @@
                 android:textAppearance="@style/Heading"
                 android:textCursorDrawable="@drawable/dark_cursor"
                 android:datePickerMode="spinner"
-                android:calendarViewShown="false"/>
+                android:calendarViewShown="true"/>
 
             <View
                 android:layout_width="match_parent"

@@ -15,7 +15,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 10
+        versionCode 12
         versionName versioning.info.display
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -57,6 +57,12 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                def newApkName = applicationId + "-" + variant.versionName + "-v" + variant.versionCode + ".apk";
+                outputFileName = new File(newApkName);
+            }
         }
     }
     compileOptions {

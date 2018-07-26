@@ -67,7 +67,8 @@ public class ImageRepository extends BaseRepository {
                     if(shouldAbortSync()) return false;
 
                     if (!option.getImageUrl().contains(NO_IMAGE)) {
-                        Uri uri = Uri.parse(option.getImageUrl());
+                        String newUri = generateUri(option.getImageUrl());
+                        Uri uri = Uri.parse(newUri);
                         imagesDownloaded.add(uri);
                         result &= downloadImage(uri);
                         if(getDashActivity() != null) {
@@ -85,6 +86,17 @@ public class ImageRepository extends BaseRepository {
         result &= verifyCacheResults(imagesDownloaded);
 
         return result;
+    }
+
+    private String generateUri(String imageUri) {
+        String params[] = imageUri.split("images/");
+        String uri;
+        if ( params[0].equals(AppConstants.BUCKET_FPPSP) ) {
+            uri = AppConstants.BUCKET_ENDPOINT_1;
+        } else {
+            uri = AppConstants.BUCKET_ENDPOINT_2;
+        }
+        return uri + AppConstants.RESIZE_IMAGE_SIZE + "/" + params[1];
     }
 
     private void addRecordsCount(int i) {
@@ -121,6 +133,8 @@ public class ImageRepository extends BaseRepository {
     private boolean downloadImage(Uri imageUri)
     {
         boolean result = true;
+
+        //Formato es -> https://algo/bucket/path-to-image
 
         if(!Fresco.getImagePipeline().isInDiskCacheSync(imageUri)) {
             ImageRequest imageRequest = ImageRequestBuilder

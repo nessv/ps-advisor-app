@@ -4,6 +4,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A user which can use the application.
  */
@@ -13,6 +16,7 @@ public class User {
     private String password;
     private Login login;
     private Organization organization;
+    private List<UserRole> authorities;
 
     public User(String username, String password, Login login) {
         this.username = username;
@@ -55,6 +59,7 @@ public class User {
                 .append(this.password, rhs.password)
                 .append(this.login, rhs.login)
                 .append(this.organization, rhs.organization)
+                .append(this.authorities, rhs.authorities)
                 .isEquals();
     }
 
@@ -65,6 +70,7 @@ public class User {
                 .append(password)
                 .append(login)
                 .append(organization)
+                .append(authorities)
                 .toHashCode();
     }
 
@@ -75,6 +81,7 @@ public class User {
                 .append("password", password)
                 .append("login", login)
                 .append("organization", organization)
+                .append("authorities", authorities)
                 .toString();
     }
 
@@ -119,5 +126,11 @@ public class User {
         this.organization = organization;
     }
 
+    public List<UserRole> getAuthorities() {
+        return authorities;
+    }
 
+    public void setAuthorities(List<UserRole> authorities) {
+        this.authorities = authorities;
+    }
 }

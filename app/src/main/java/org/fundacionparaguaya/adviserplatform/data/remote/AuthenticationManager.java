@@ -9,6 +9,7 @@ import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.fundacionparaguaya.adviserplatform.data.model.UserRole;
 import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
@@ -19,6 +20,8 @@ import org.fundacionparaguaya.adviserplatform.util.SecurityUtils;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.function.IntUnaryOperator;
 
 import javax.inject.Singleton;
 
@@ -191,7 +194,17 @@ public class AuthenticationManager {
 
     private AuthenticationStatus updateLogin(@Nullable User user, retrofit2.Response<LoginIr> response) {
         if (response.isSuccessful()) {
+            /**
+             First it's necessary to validate if the user attempting to login has the
+             role of 'SURVEY_USER', since this is the only role to which the app
+             is targeting at the moment.
+             */
             Login newLogin = IrMapper.mapLogin(response.body());
+
+            if (!validateUserRole(newLogin.getUser().getAuthorities()) ) {
+                return updateStatus(UNAUTHENTICATED);
+            }
+
             if (user == null) {
                 mUser = User.builder().login(newLogin).build();
             } else {
@@ -205,6 +218,19 @@ public class AuthenticationManager {
             mUser = null;
             return updateStatus(UNAUTHENTICATED);
         }
+    }
+
+    private boolean validateUserRole(List<UserRole> roles) {
+        /**
+         * A user may (or may not?) have more than one role
+         * That's why we should iterate over all the values that
+         * @getAuthority() retrieves*/
+        for (UserRole role: roles) {
+            if (AppConstants.USER_ROLE.equals(role.getAuthority())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void saveLogin() {

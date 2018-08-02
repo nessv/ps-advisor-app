@@ -157,7 +157,7 @@ public class SnapshotRepository extends BaseRepository{
                     success = false;
                 } else {
                     //TODO Sodep: set remoteId from REST API response
-                    snapshot.setRemoteId(snapshotResponse.body().getId());
+                    snapshot.setRemoteId(snapshotResponse.body().getSnapshotIndicatorId());
 
                     // push the priorities; don't need to save these responses
                     for (PriorityIr priorityIr : IrMapper.mapPriorities(snapshot)) {

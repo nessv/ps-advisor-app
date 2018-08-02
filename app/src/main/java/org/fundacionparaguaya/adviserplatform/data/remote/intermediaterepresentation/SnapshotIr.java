@@ -32,11 +32,16 @@ public class SnapshotIr {
     long privPoolId;
     @SerializedName("organization_id")
     long organizationId;
+    @SerializedName("snapshot_indicator_id")
+    long snapshotIndicatorId;
 
     public long getId() {
         return id;
     }
 
+    public long getSnapshotIndicatorId() {
+        return snapshotIndicatorId;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -61,6 +66,7 @@ public class SnapshotIr {
                 .append(this.termCondId, rhs.termCondId)
                 .append(this.privPoolId, rhs.privPoolId)
                 .append(this.organizationId, rhs.organizationId)
+                .append(this.snapshotIndicatorId, rhs.snapshotIndicatorId)
                 .isEquals();
     }
 
@@ -77,6 +83,7 @@ public class SnapshotIr {
                 .append(termCondId)
                 .append(privPoolId)
                 .append(organizationId)
+                .append(snapshotIndicatorId)
                 .toHashCode();
     }
 }

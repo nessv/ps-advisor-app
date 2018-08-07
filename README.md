@@ -1,6 +1,8 @@
 # Poverty Stoplight Mobile Platform
 Poverty Stoplight Mobile Platform is an Android tablet app for tracking and understanding multidimensional poverty. 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/455dd8e7934547d1acd295b61847c482)](https://www.codacy.com/app/FundacionParaguaya/ps-advisor-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alefq/ps-advisor-app&amp;utm_campaign=Badge_Grade)
+
 [![Google Play Store](https://user-images.githubusercontent.com/1918630/38772624-99fcf4aa-4009-11e8-8db6-4dec120be0b1.png)](https://play.google.com/store/apps/details?id=org.fundacionparaguaya.assistantadvisor)
 
 ## Useful Links

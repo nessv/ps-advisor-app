@@ -324,12 +324,13 @@ public class IrMapper {
 
     private static PriorityIr mapPriority(LifeMapPriority priority, Snapshot snapshot) {
         PriorityIr ir = new PriorityIr();
-        ir.indicatorTitle = mapIndicatorName(priority.getIndicator());
+        ir.indicatorTitle = priority.getIndicator().getDimension();
         ir.snapshotId = snapshot.getRemoteId();
         ir.reason = defaultIfEmpty(priority.getReason(), "");
         ir.action = defaultIfEmpty(priority.getAction(), "");
         ir.estimatedDate = mapDate(priority.getEstimatedDate());
         ir.isAchievement = priority.isAchievement();
+        ir.jsonKey = priority.getIndicator().getName();
         return ir;
     }
 
@@ -414,8 +415,15 @@ public class IrMapper {
     private static LifeMapPriority mapPriority(PriorityIr ir, Survey survey) {
         if (ir == null) return null;
 
+
+        //TODO SODEP: The current way of mapping a question is not suitable for surveys that are in spanish
+        /**
+         * If jsonKey is null, then search for the question the old way
+         * if is not null, then use the jsonKey to find the question*/
+        String keyToMatch = ir.jsonKey == null ? mapIndicatorName(ir.indicatorTitle) : ir.jsonKey;
         IndicatorQuestion question = getIndicatorQuestion(survey.getIndicatorQuestions(),
-                mapIndicatorName(ir.indicatorTitle));
+                keyToMatch);
+
         if (question == null) return null;
 
         return LifeMapPriority.builder()

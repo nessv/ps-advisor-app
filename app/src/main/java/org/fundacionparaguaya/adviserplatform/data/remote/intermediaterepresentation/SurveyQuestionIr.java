@@ -22,5 +22,6 @@ public class SurveyQuestionIr {
     String format;
     @SerializedName("enumNames")
     List<String> optionNames;
-
+    @SerializedName("description")
+    Map<String, String> description;
 }

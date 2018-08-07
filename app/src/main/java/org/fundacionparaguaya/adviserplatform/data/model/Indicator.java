@@ -93,6 +93,7 @@ public class Indicator {
     /**
      * A temporary utility for resolving indicator names.
      */
+    // TODO Sodep: Why is this here if the appropriate description comes with the response?
     private static class IndicatorNameResolver {
         private static final String TAG = "IndicatorNameResolver";
 

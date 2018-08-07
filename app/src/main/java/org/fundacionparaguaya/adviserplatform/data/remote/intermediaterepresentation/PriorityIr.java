@@ -24,6 +24,8 @@ public class PriorityIr {
     String estimatedDate;
     @SerializedName("is_attainment")
     boolean isAchievement;
+    @SerializedName("json_key")
+    String jsonKey;
 
     @Override
     public boolean equals(Object o) {
@@ -40,6 +42,7 @@ public class PriorityIr {
                 .append(action, that.action)
                 .append(estimatedDate, that.estimatedDate)
                 .append(isAchievement, that.isAchievement)
+                .append(jsonKey, that.jsonKey)
                 .isEquals();
     }
 
@@ -53,6 +56,7 @@ public class PriorityIr {
                 .append(action)
                 .append(estimatedDate)
                 .append(isAchievement)
+                .append(jsonKey)
                 .toHashCode();
     }
 }

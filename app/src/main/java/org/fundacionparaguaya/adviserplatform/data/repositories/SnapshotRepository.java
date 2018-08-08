@@ -374,6 +374,10 @@ public class SnapshotRepository extends BaseRepository{
         return null;
     }
 
+    public List<Snapshot> getQueueSnapshots() {
+        return snapshotDao.queryPendingFinishedSnapshots();
+    }
+
     /**
      * Synchronizes the local snapshots with the remote database.
      * @return Whether the sync was successful.

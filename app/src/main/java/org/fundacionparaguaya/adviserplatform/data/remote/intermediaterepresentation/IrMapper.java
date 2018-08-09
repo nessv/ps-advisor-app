@@ -168,7 +168,8 @@ public class IrMapper {
         for (String name : ir.uiSchema.indicatorQuestions) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
 
-            Indicator indicator = new Indicator(name, questionIr.title.get("es"));
+            Indicator indicator = new Indicator(name, questionIr.description.get("es"),
+                    questionIr.title.get("es"));
             List<IndicatorOption> options = new ArrayList<>();
             for (IndicatorOptionIr optionIr : questionIr.indicatorOptions.values) {
                 options.add(new IndicatorOption(
@@ -324,7 +325,7 @@ public class IrMapper {
 
     private static PriorityIr mapPriority(LifeMapPriority priority, Snapshot snapshot) {
         PriorityIr ir = new PriorityIr();
-        ir.indicatorTitle = priority.getIndicator().getDimension();
+        ir.indicatorTitle = priority.getIndicator().getDescription();
         ir.snapshotId = snapshot.getRemoteId();
         ir.reason = defaultIfEmpty(priority.getReason(), "");
         ir.action = defaultIfEmpty(priority.getAction(), "");

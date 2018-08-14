@@ -13,30 +13,115 @@ import java.util.Map;
 
 public class SnapshotIr {
     @SerializedName("snapshot_economic_id")
-    long id;
+    private long id;
     @SerializedName("survey_id")
-    long surveyId;
+    private long surveyId;
     @SerializedName("personal_survey_data")
-    Map<String, Object> personalResponses;
+    private Map<String, Object> personalResponses;
     @SerializedName("economic_survey_data")
-    Map<String, Object> economicResponses;
+    private Map<String, Object> economicResponses;
     @SerializedName("indicator_survey_data")
-    Map<String, String> indicatorResponses;
+    private Map<String, String> indicatorResponses;
     @SerializedName("created_at")
-    String createdAt;
+    private String createdAt;
     @SerializedName("user_id")
-    long userId;
+    private long userId;
     @SerializedName("term_cond_id")
-    long termCondId;
+    private long termCondId;
     @SerializedName("priv_pool_id")
-    long privPoolId;
+    private long privPoolId;
     @SerializedName("organization_id")
-    long organizationId;
+    private long organizationId;
+    @SerializedName("snapshot_indicator_id")
+    private long snapshotIndicatorId;
 
     public long getId() {
         return id;
     }
 
+    public long getSnapshotIndicatorId() {
+        return snapshotIndicatorId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getSurveyId() {
+        return surveyId;
+    }
+
+    public void setSurveyId(long surveyId) {
+        this.surveyId = surveyId;
+    }
+
+    public Map<String, Object> getPersonalResponses() {
+        return personalResponses;
+    }
+
+    public void setPersonalResponses(Map<String, Object> personalResponses) {
+        this.personalResponses = personalResponses;
+    }
+
+    public Map<String, Object> getEconomicResponses() {
+        return economicResponses;
+    }
+
+    public void setEconomicResponses(Map<String, Object> economicResponses) {
+        this.economicResponses = economicResponses;
+    }
+
+    public Map<String, String> getIndicatorResponses() {
+        return indicatorResponses;
+    }
+
+    public void setIndicatorResponses(Map<String, String> indicatorResponses) {
+        this.indicatorResponses = indicatorResponses;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getTermCondId() {
+        return termCondId;
+    }
+
+    public void setTermCondId(long termCondId) {
+        this.termCondId = termCondId;
+    }
+
+    public long getPrivPoolId() {
+        return privPoolId;
+    }
+
+    public void setPrivPoolId(long privPoolId) {
+        this.privPoolId = privPoolId;
+    }
+
+    public long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(long organizationId) {
+        this.organizationId = organizationId;
+    }
+
+    public void setSnapshotIndicatorId(long snapshotIndicatorId) {
+        this.snapshotIndicatorId = snapshotIndicatorId;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -51,32 +136,34 @@ public class SnapshotIr {
         }
         SnapshotIr rhs = (SnapshotIr) obj;
         return new EqualsBuilder()
-                .append(this.id, rhs.id)
-                .append(this.surveyId, rhs.surveyId)
-                .append(this.personalResponses, rhs.personalResponses)
-                .append(this.economicResponses, rhs.economicResponses)
-                .append(this.indicatorResponses, rhs.indicatorResponses)
-                .append(this.createdAt, rhs.createdAt)
-                .append(this.userId, rhs.userId)
-                .append(this.termCondId, rhs.termCondId)
-                .append(this.privPoolId, rhs.privPoolId)
-                .append(this.organizationId, rhs.organizationId)
+                .append(this.getId(), rhs.getId())
+                .append(this.getSurveyId(), rhs.getSurveyId())
+                .append(this.getPersonalResponses(), rhs.getPersonalResponses())
+                .append(this.getEconomicResponses(), rhs.getEconomicResponses())
+                .append(this.getIndicatorResponses(), rhs.getIndicatorResponses())
+                .append(this.getCreatedAt(), rhs.getCreatedAt())
+                .append(this.getUserId(), rhs.getUserId())
+                .append(this.getTermCondId(), rhs.getTermCondId())
+                .append(this.getPrivPoolId(), rhs.getPrivPoolId())
+                .append(this.getOrganizationId(), rhs.getOrganizationId())
+                .append(this.getSnapshotIndicatorId(), rhs.getSnapshotIndicatorId())
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(id)
-                .append(surveyId)
-                .append(personalResponses)
-                .append(economicResponses)
-                .append(indicatorResponses)
-                .append(createdAt)
-                .append(userId)
-                .append(termCondId)
-                .append(privPoolId)
-                .append(organizationId)
+                .append(getId())
+                .append(getSurveyId())
+                .append(getPersonalResponses())
+                .append(getEconomicResponses())
+                .append(getIndicatorResponses())
+                .append(getCreatedAt())
+                .append(getUserId())
+                .append(getTermCondId())
+                .append(getPrivPoolId())
+                .append(getOrganizationId())
+                .append(getSnapshotIndicatorId())
                 .toHashCode();
     }
 }

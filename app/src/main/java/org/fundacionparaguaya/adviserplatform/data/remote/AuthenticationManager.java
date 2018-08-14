@@ -9,10 +9,9 @@ import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.fundacionparaguaya.adviserplatform.data.model.UserRole;
-import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.User;
+import org.fundacionparaguaya.adviserplatform.data.model.UserRole;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.IrMapper;
 import org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresentation.LoginIr;
 import org.fundacionparaguaya.adviserplatform.util.AppConstants;
@@ -21,7 +20,6 @@ import org.fundacionparaguaya.adviserplatform.util.SecurityUtils;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.function.IntUnaryOperator;
 
 import javax.inject.Singleton;
 

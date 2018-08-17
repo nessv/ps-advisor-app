@@ -5,7 +5,7 @@ public class Organization {
     private String name;
     private String code;
     private String description;
-    private String country;
+    private Country country;
     private String information;
 
     public Long getId() {
@@ -40,11 +40,11 @@ public class Organization {
         this.description = description;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 

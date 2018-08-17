@@ -2,6 +2,8 @@ package org.fundacionparaguaya.adviserplatform.data.remote.intermediaterepresent
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.List;
 import java.util.Map;
 
@@ -79,5 +81,19 @@ public class SurveyQuestionIr {
 
     public void setDescription(Map<String, String> description) {
         this.description = description;
+    }
+
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("type", type)
+                .append("title", title)
+                .append("indicatorOptions", indicatorOptions)
+                .append("options", options)
+                .append("format", format)
+                .append("optionNames", optionNames)
+                .append("description", description)
+                .toString();
     }
 }

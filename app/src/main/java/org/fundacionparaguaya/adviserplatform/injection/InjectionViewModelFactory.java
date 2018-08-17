@@ -55,7 +55,7 @@ public class InjectionViewModelFactory implements ViewModelProvider.Factory {
             return (T) new SharedSurveyViewModel(snapshotRepository, surveyRepository, familyRepository);
         }
         else if (modelClass.isAssignableFrom(SettingsViewModel.class)) {
-            return (T) new SettingsViewModel(authManager);
+            return (T) new SettingsViewModel(authManager, snapshotRepository);
         } else if (modelClass.isAssignableFrom(PendingSnapshotViewModel.class)) {
             return (T) new PendingSnapshotViewModel(surveyRepository, familyRepository);
         } else if(modelClass.isAssignableFrom(EditPriorityViewModel.class)){

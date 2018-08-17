@@ -168,8 +168,11 @@ public class IrMapper {
         for (String name : ir.uiSchema.indicatorQuestions) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
 
-            Indicator indicator = new Indicator(name, questionIr.getDescription().get("es"),
-                    questionIr.getTitle().get("es"));
+            final Map<String, String> description = questionIr.getDescription();
+            final Map<String, String> title = questionIr.getTitle();
+            Indicator indicator = new Indicator(name,
+                    getLabel(questionIr, description, title,"es", "description:%s"),
+                    getLabel(questionIr, title, description,"es", "title:%s"));
             List<IndicatorOption> options = new ArrayList<>();
             for (IndicatorOptionIr optionIr : questionIr.getIndicatorOptions().values) {
                 options.add(new IndicatorOption(
@@ -184,6 +187,17 @@ public class IrMapper {
             questions.add(new IndicatorQuestion(indicator, required));
         }
         return questions;
+    }
+
+    private static String getLabel(SurveyQuestionIr questionIr, Map<String, String> option1,
+                                   Map<String, String> option2, String lang, String defaultString) {
+        String val1 = String.format(defaultString, questionIr);
+        if (option1 != null) {
+            val1 = option1.get(lang);
+        } else if (option2 != null) {
+            val1 = option2.get(lang);
+        }
+        return val1;
     }
 
     private static Map<String, String> mapBackgroundOptions(List<String> names, List<String> values) {
@@ -283,21 +297,22 @@ public class IrMapper {
         return null;
     }
 
-    public static Snapshot mapSnapshot(SnapshotIr ir, List<PriorityIr> priorityIrs,
+    public static Snapshot mapSnapshot(SnapshotIr snapshotIr, List<PriorityIr> priorityIrs,
                                        Family family, Survey survey) {
-        if (ir == null) return null;
+        if (snapshotIr == null) return null;
 
         return new Snapshot(
                 0,
-                ir.getId(),
+                snapshotIr.getId(),
                 family.getId(),
                 survey.getId(),
                 false,
-                mapPersonalResponses(ir, survey),
-                mapEconomicResponses(ir, survey),
-                mapIndicatorResponses(ir, survey),
+                snapshotIr.getSnapshotIndicatorId(),
+                mapPersonalResponses(snapshotIr, survey),
+                mapEconomicResponses(snapshotIr, survey),
+                mapIndicatorResponses(snapshotIr, survey),
                 mapPriorities(priorityIrs, survey),
-                mapDateTime(ir.getCreatedAt()));
+                mapDateTime(snapshotIr.getCreatedAt()));
     }
 
     public static SnapshotIr mapSnapshot(Snapshot snapshot, Survey survey) {
@@ -326,7 +341,7 @@ public class IrMapper {
     private static PriorityIr mapPriority(LifeMapPriority priority, Snapshot snapshot) {
         PriorityIr ir = new PriorityIr();
         ir.setIndicatorTitle(priority.getIndicator().getDescription());
-        ir.setSnapshotId(snapshot.getRemoteId());
+        ir.setSnapshotIndicatorId(snapshot.getSnapshotIndicatorId());
         ir.setReason(defaultIfEmpty(priority.getReason(), ""));
         ir.setAction(defaultIfEmpty(priority.getAction(), ""));
         ir.setEstimatedDate(mapDate(priority.getEstimatedDate()));

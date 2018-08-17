@@ -13,7 +13,7 @@ public class PriorityIr {
     @SerializedName("snapshot_indicator_priority_id")
     private long id;
     @SerializedName("snapshot_indicator_id")
-    private long snapshotId;
+    private long snapshotIndicatorId;
     @SerializedName("indicator")
     private String indicatorTitle;
     @SerializedName("reason")
@@ -36,7 +36,7 @@ public class PriorityIr {
 
         return new EqualsBuilder()
                 .append(getId(), that.getId())
-                .append(getSnapshotId(), that.getSnapshotId())
+                .append(getSnapshotIndicatorId(), that.getSnapshotIndicatorId())
                 .append(getIndicatorTitle(), that.getIndicatorTitle())
                 .append(getReason(), that.getReason())
                 .append(getAction(), that.getAction())
@@ -50,7 +50,7 @@ public class PriorityIr {
     public int hashCode() {
         return new HashCodeBuilder(53, 19)
                 .append(getId())
-                .append(getSnapshotId())
+                .append(getSnapshotIndicatorId())
                 .append(getIndicatorTitle())
                 .append(getReason())
                 .append(getAction())
@@ -68,12 +68,12 @@ public class PriorityIr {
         this.id = id;
     }
 
-    public long getSnapshotId() {
-        return snapshotId;
+    public long getSnapshotIndicatorId() {
+        return snapshotIndicatorId;
     }
 
-    public void setSnapshotId(long snapshotId) {
-        this.snapshotId = snapshotId;
+    public void setSnapshotIndicatorId(long snapshotIndicatorId) {
+        this.snapshotIndicatorId = snapshotIndicatorId;
     }
 
     public String getIndicatorTitle() {

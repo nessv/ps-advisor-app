@@ -59,9 +59,13 @@ public class Snapshot implements Comparable<Snapshot>{
     private List<LifeMapPriority> priorities;
     @ColumnInfo(name = "created_at")
     private Date createdAt;
+    @ColumnInfo(name = "snapshot_indicator_id")
+    private Long snapshotIndicatorId;
+    @ColumnInfo(name = "priorities_synced")
+    private boolean prioritiesSynced;
 
     @Ignore
-    boolean mIsLatest;
+    private boolean mIsLatest;
 
     @Ignore
     private Long organizationId;
@@ -73,7 +77,7 @@ public class Snapshot implements Comparable<Snapshot>{
 
     @Ignore
     public Snapshot(Family family, Survey survey) {
-        this(0, null, family == null ? null : family.getId(), survey.getId(), true,
+        this(0, null, family == null ? null : family.getId(), survey.getId(), true, null,
                 new HashMap<>(), new HashMap<>(), new LinkedHashMap<>(), new LinkedList<>(), new Date());
         if (family != null) {
             fillPersonalResponses(family, survey);
@@ -85,6 +89,7 @@ public class Snapshot implements Comparable<Snapshot>{
                     Integer familyId,
                     int surveyId,
                     boolean inProgress,
+                    Long snapshotIndicatorId,
                     Map<BackgroundQuestion, String> personalResponses,
                     Map<BackgroundQuestion, String> economicResponses,
                     Map<IndicatorQuestion, IndicatorOption> indicatorResponses,
@@ -95,6 +100,7 @@ public class Snapshot implements Comparable<Snapshot>{
         this.familyId = familyId;
         this.surveyId = surveyId;
         this.inProgress = inProgress;
+        this.snapshotIndicatorId = snapshotIndicatorId;
         this.personalResponses = personalResponses;
         this.economicResponses = economicResponses;
         this.indicatorResponses = indicatorResponses;
@@ -262,7 +268,7 @@ public class Snapshot implements Comparable<Snapshot>{
      */
     public void setIsLatest(boolean isLatest)
     {
-        mIsLatest = isLatest;
+        setmIsLatest(isLatest);
     }
 
 
@@ -277,6 +283,36 @@ public class Snapshot implements Comparable<Snapshot>{
 
     public Long getOrganizationId() {
         return organizationId;
+    }
+
+
+    public Long getSnapshotIndicatorId() {
+        return snapshotIndicatorId;
+    }
+
+    public void setSnapshotIndicatorId(Long snapshotIndicatorId) {
+        this.snapshotIndicatorId = snapshotIndicatorId;
+    }
+
+    public void setPriorities(List<LifeMapPriority> priorities) {
+        this.priorities = priorities;
+    }
+
+
+    public boolean ismIsLatest() {
+        return mIsLatest;
+    }
+
+    public void setmIsLatest(boolean mIsLatest) {
+        this.mIsLatest = mIsLatest;
+    }
+
+    public boolean isPrioritiesSynced() {
+        return prioritiesSynced;
+    }
+
+    public void setPrioritiesSynced(boolean prioritiesSynced) {
+        this.prioritiesSynced = prioritiesSynced;
     }
 
 
@@ -303,6 +339,8 @@ public class Snapshot implements Comparable<Snapshot>{
                 .append(this.indicatorResponses, rhs.indicatorResponses)
                 .append(this.priorities, rhs.priorities)
                 .append(this.createdAt, rhs.createdAt)
+                .append(this.snapshotIndicatorId, rhs.snapshotIndicatorId)
+                .append(this.prioritiesSynced, rhs.prioritiesSynced)
                 .append(this.mIsLatest, rhs.mIsLatest)
                 .append(this.organizationId, rhs.organizationId)
                 .isEquals();
@@ -321,12 +359,30 @@ public class Snapshot implements Comparable<Snapshot>{
                 .append(indicatorResponses)
                 .append(priorities)
                 .append(createdAt)
+                .append(snapshotIndicatorId)
+                .append(prioritiesSynced)
                 .append(mIsLatest)
                 .append(organizationId)
                 .toHashCode();
     }
 
-    public void setPriorities(List<LifeMapPriority> priorities) {
-        this.priorities = priorities;
+
+    public String toDebugString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("remoteId", remoteId)
+                .append("familyId", familyId)
+                .append("surveyId", surveyId)
+                .append("inProgress", inProgress)
+                .append("personalResponses", personalResponses)
+                .append("economicResponses", economicResponses)
+                .append("indicatorResponses", indicatorResponses)
+                .append("priorities", priorities)
+                .append("createdAt", createdAt)
+                .append("snapshotIndicatorId", snapshotIndicatorId)
+                .append("prioritiesSynced", prioritiesSynced)
+                .append("mIsLatest", mIsLatest)
+                .append("organizationId", organizationId)
+                .toString();
     }
 }

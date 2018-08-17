@@ -45,10 +45,10 @@ public class ServerManager {
         if (BuildConfig.DEBUG) {
             servers.add(0,new Server("http", context.getString(R.string.local_dev_host),
                     Integer.parseInt(context.getString(R.string.local_dev_port)),
-                    "Local Development"));
+                    "Local Dev"));
             servers.add(0,new Server("http", context.getString(R.string.sodep_dev_host),
                     Integer.parseInt(context.getString(R.string.sodep_dev_port)),
-                    "Local Development"));
+                    "Sodep Dev"));
         }
         mServers = servers.toArray(new Server[0]);
 

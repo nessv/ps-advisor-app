@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "301268853d4880e327cce3ed004344e4",
+    "identityHash": "968d2527ca474410a5feb183e0d47f47",
     "entities": [
       {
         "tableName": "families",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `name` TEXT, `code` TEXT, `address` TEXT, `is_active` INTEGER NOT NULL, `last_modified` INTEGER, `image_url` TEXT, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `country_id` INTEGER, `country_name` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_birthdate` TEXT, `family_member_phone_number` TEXT, `family_member_identification_type` TEXT, `family_member_identification_number` TEXT, `family_member_gender` TEXT, `family_member_country_of_birth` TEXT, `family_member_profile_url` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `name` TEXT, `code` TEXT, `address` TEXT, `is_active` INTEGER NOT NULL, `last_modified` INTEGER, `image_url` TEXT, `longitude` REAL, `latitude` REAL, `city_id` INTEGER, `city_name` TEXT, `city_city` TEXT, `country_id` INTEGER, `country_name` TEXT, `country_country` TEXT, `country_numericCode` TEXT, `country_alfa2Code` TEXT, `country_alfa3code` TEXT, `family_member_first_name` TEXT, `family_member_last_name` TEXT, `family_member_birthdate` TEXT, `family_member_phone_number` TEXT, `family_member_identification_type` TEXT, `family_member_identification_number` TEXT, `family_member_gender` TEXT, `family_member_country_of_birth` TEXT, `family_member_profile_url` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -81,6 +81,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "location.city.city",
+            "columnName": "city_city",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "location.country.id",
             "columnName": "country_id",
             "affinity": "INTEGER",
@@ -89,6 +95,30 @@
           {
             "fieldPath": "location.country.name",
             "columnName": "country_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.country.country",
+            "columnName": "country_country",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.country.numericCode",
+            "columnName": "country_numericCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.country.alfa2Code",
+            "columnName": "country_alfa2Code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.country.alfa3code",
+            "columnName": "country_alfa3code",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -359,7 +389,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"301268853d4880e327cce3ed004344e4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"968d2527ca474410a5feb183e0d47f47\")"
     ]
   }
 }

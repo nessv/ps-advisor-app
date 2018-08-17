@@ -172,7 +172,7 @@ public class IrUtils {
         List<PriorityIr> irs = new ArrayList<>();
         PriorityIr ir = new PriorityIr();
         ir.setId(1);
-        ir.setSnapshotId(1);
+        ir.setSnapshotIndicatorId(1);
         ir.setIndicatorTitle("Income");
         ir.setReason("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
         ir.setAction("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");

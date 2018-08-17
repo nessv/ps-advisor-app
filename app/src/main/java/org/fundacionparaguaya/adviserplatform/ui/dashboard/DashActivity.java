@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.base.DisplayBackNavListener;
 import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
@@ -117,8 +118,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         mTvTabTitle = findViewById(R.id.tv_topbar_tabtitle);
         mTvBackLabel = findViewById(R.id.tv_topbar_backlabel);
         mSyncArea = findViewById(R.id.linearLayout_topbar_syncbutton);
-        //Manual synchronization temporally disabled
-        //mSyncArea.setOnClickListener(this::onSyncButtonPress);
+        if(BuildConfig.DEBUG) {
+            //Manual synchronization temporally disabled except for DEBUG mode
+            mSyncArea.setOnClickListener(this::onSyncButtonPress);
+        }
         mSyncButtonIcon = findViewById(R.id.iv_topbar_syncimage);
         mBackButton = findViewById(R.id.linearlayout_dashactivity_back);
         mBackButton.setVisibility(View.GONE);

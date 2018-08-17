@@ -84,8 +84,6 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
         }
         mReleaseNum.setText(version);
 
-        noSnapshotsRemainingToSync();
-
         return view;
     }
 
@@ -122,5 +120,11 @@ public class SettingsStackedFrag extends AbstractStackedFrag {
                 .setConfirmText(getString(R.string.all_okay))
                 .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
         return dialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        noSnapshotsRemainingToSync();
     }
 }

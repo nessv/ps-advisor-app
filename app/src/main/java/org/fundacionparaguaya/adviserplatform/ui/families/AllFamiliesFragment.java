@@ -3,6 +3,7 @@ package org.fundacionparaguaya.adviserplatform.ui.families;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import org.fundacionparaguaya.adviserplatform.data.testing.SnapshotGenerator;
 import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
 import org.fundacionparaguaya.adviserplatform.ui.families.detail.FamilyDetailFrag;
@@ -94,13 +98,22 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent surveyIntent = new Intent(getContext(), SurveyActivity.class);
-                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
+                if (BuildConfig.DEBUG) {
+                    AsyncTask.execute(() -> {
+                        SnapshotGenerator snapshotGenerator = new SnapshotGenerator();
+                        snapshotGenerator.generateSnapshot(mAllFamiliesViewModel);
+                    });
 
-                MixpanelHelper.SurveyEvents.newFamily(getContext());
+                } else {
+                    Intent surveyIntent = new Intent(getContext(), SurveyActivity.class);
+                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                            android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                    startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
+
+                    MixpanelHelper.SurveyEvents.newFamily(getContext());
+                }
             }
         });
     }

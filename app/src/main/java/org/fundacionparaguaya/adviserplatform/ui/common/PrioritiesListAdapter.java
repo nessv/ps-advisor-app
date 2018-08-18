@@ -135,7 +135,7 @@ public class PrioritiesListAdapter extends RecyclerView.Adapter<PrioritiesListAd
         private void setIndicator(IndicatorOption indicator, int index){
             mIndicator = indicator;
 
-            String title = index + ". " + mIndicator.getIndicator().getTitle();
+            String title = index + ". " + mIndicator.getIndicator().getDescription();
             mIndicatorTitle.setText(title);
 
             IndicatorUtilities.setViewColorFromResponse(mIndicator, mIndicatorColor);

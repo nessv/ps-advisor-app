@@ -14,6 +14,13 @@ public class AppConstants {
     public static final String AUTH_KEY = "Basic " + BuildConfig.POVERTY_STOPLIGHT_API_KEY_STRING;
     public static final String KEY_TOKEN_EXPIRATION = "KEY_TOKEN_EXPIRATION";
     public static final String ORGANIZATION_ID = "ORGANIZATION_ID";
+    public static final int HD_RESOLUTION_HEIGHT = 1280;
+    public static final float INDICATOR_TABLET_TEXT_SIZE = 20f;
+    public static final String BUCKET_FPPSP = "https://s3.us-east-2.amazonaws.com/fp-psp-";
+    public static final String BUCKET_ENDPOINT_1 = "http://fp-psp-images.s3-website.us-east-2.amazonaws.com/";
+    public static final String BUCKET_ENDPOINT_2 = "http://py.org.fundacionparaguaya.psp.images.s3-website.eu-west-2.amazonaws.com/";
+    public static final String RESIZE_IMAGE_SIZE = "200x200";
+    public static final String USER_ROLE = "ROLE_SURVEY_USER";
 
 
     private AppConstants() {

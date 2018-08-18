@@ -118,7 +118,7 @@ public class FamilyPriorityDetailFragment extends AbstractStackedFrag {
             mDueDateView.setVisibility(View.INVISIBLE);
             mPriorityIndicatorCard.setVisibility(View.INVISIBLE);
         } else {
-            mTitle.setText(priority.getIndicator().getTitle());
+            mTitle.setText(priority.getIndicator().getDescription());
             mProblemView.setVisibility(View.VISIBLE);
             mSolutionView.setVisibility(View.VISIBLE);
             mDueDateView.setVisibility(View.VISIBLE);

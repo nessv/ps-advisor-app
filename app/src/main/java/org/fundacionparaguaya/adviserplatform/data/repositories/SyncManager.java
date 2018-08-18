@@ -203,6 +203,8 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
                 Timber.d(TAG, String.format("HTTP error %s", httpException));
                 fallBackToLogin();
             }
+        } catch (NullPointerException nullPE) {
+            Log.e(TAG, String.format("Exception syncing: %s", repo), nullPE);
         }
         return result;
     }
@@ -272,11 +274,16 @@ public class SyncManager implements AuthenticationManager.AuthStateChangeHandler
     }
 
     private void updateProgress(SyncState state, long lastSyncTime) {
-        mProgress.postValue(new SyncProgress(state, lastSyncTime));
-
         SharedPreferences.Editor editor = mPreferences.edit();
+        long lastStoredSyncTime = mPreferences.getLong(KEY_LAST_SYNC_TIME, -1);
+        long lastTimestampForLabel = lastSyncTime;
+        if(lastStoredSyncTime > lastSyncTime) {
+            lastTimestampForLabel = lastStoredSyncTime;
+        }
+        mProgress.postValue(new SyncProgress(state, lastTimestampForLabel));
+
         if (lastSyncTime > -1L) {
-            editor.putLong(KEY_LAST_SYNC_TIME, lastSyncTime);
+            editor.putLong(KEY_LAST_SYNC_TIME, lastTimestampForLabel);
         } else {
             editor.remove(KEY_LAST_SYNC_TIME);
         }

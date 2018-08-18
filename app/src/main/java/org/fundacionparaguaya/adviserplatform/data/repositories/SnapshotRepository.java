@@ -26,6 +26,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -39,7 +40,7 @@ import static java.lang.String.format;
  * The utility for the storage of snapshots.
  */
 
-public class SnapshotRepository extends BaseRepository{
+public class SnapshotRepository extends BaseRepository {
     private static final String TAG = "SnapshotRepository";
 
     private final SnapshotDao snapshotDao;
@@ -76,7 +77,8 @@ public class SnapshotRepository extends BaseRepository{
         }
     }
 
-    public @Nullable Snapshot getPendingSnapshotNow(@Nullable Integer familyId) {
+    public @Nullable
+    Snapshot getPendingSnapshotNow(@Nullable Integer familyId) {
         if (familyId != null) {
             return snapshotDao.queryInProgressSnapshotForFamilyNow(familyId);
         } else {
@@ -110,8 +112,10 @@ public class SnapshotRepository extends BaseRepository{
         if (rows == 0) { // no row was updated
             int id = (int) snapshotDao.insertSnapshot(snapshot);
             snapshot.setId(id);
+            Log.d(TAG, String.format("Snapshot INSERTED: %s", snapshot.toDebugString()));
+        } else {
+            Log.d(TAG, String.format("Snapshot UPDATED %s", snapshot.toDebugString()));
         }
-        Timber.d(format("%s, Snapshot saved: %s", TAG, snapshot));
     }
 
     private boolean pushSnapshots() {
@@ -127,7 +131,8 @@ public class SnapshotRepository extends BaseRepository{
             try {
                 Family family = familyRepository.getFamilyNow(snapshot.getFamilyId());
                 Survey survey = surveyRepository.getSurveyNow(snapshot.getSurveyId());
-                if(organizationId > 0) {
+                Response<SnapshotIr> snapshotResponse = null;
+                if (organizationId > 0) {
                     snapshot.setOrganizationId(organizationId);
                 } else {
                     throw new DataRequiredException("Organization ID is required for snapshot");
@@ -142,69 +147,80 @@ public class SnapshotRepository extends BaseRepository{
                     }
                 }
                 //endregion Temporary upload image for demo
+                Log.d(TAG, String.format("Snapshot SQLite: %s", snapshot.toDebugString()));
+                if (snapshot.getRemoteId() == null) {
+                    //TODO Sodep: does this POST bring another information besides "id" from server,
+                    //TODO Sodep: other than snapshots already has on device?
+                    // push the snapshot
+                    snapshotResponse = snapshotService
+                            .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
+                            .execute();
+                    checkFor4xxCode(snapshotResponse);
+                    if (!snapshotResponse.isSuccessful() || snapshotResponse.body() == null) {
+                        Timber.tag(TAG);
+                        Timber.e(format("pushSnapshots: Could not push snapshot with id %d! %s",
+                                snapshot.getId(), snapshotResponse.errorBody().string()));
+                        success = false;
+                    } else {
+                        //TODO Sodep: set remoteId from REST API response
+                        snapshot.setRemoteId(snapshotResponse.body().getId());
+                        snapshot.setSnapshotIndicatorId(snapshotResponse.body().getSnapshotIndicatorId());
+                        saveSnapshot(snapshot);
 
-                //TODO Sodep: does this POST bring another information besides "id" from server,
-                //TODO Sodep: other than snapshots already has on device?
-                // push the snapshot
-                Response<SnapshotIr> snapshotResponse = snapshotService
-                        .postSnapshot(IrMapper.mapSnapshot(snapshot, survey))
-                        .execute();
-                checkFor4xxCode(snapshotResponse);
-                if (!snapshotResponse.isSuccessful() || snapshotResponse.body() == null) {
-                    Timber.tag(TAG);
-                    Timber.e(format("pushSnapshots: Could not push snapshot with id %d! %s",
-                            snapshot.getId(), snapshotResponse.errorBody().string()));
-                    success = false;
-                } else {
-                    //TODO Sodep: set remoteId from REST API response
-                    snapshot.setRemoteId(snapshotResponse.body().getId());
-
-                    // push the priorities; don't need to save these responses
-                    for (PriorityIr priorityIr : IrMapper.mapPriorities(snapshot)) {
-                        Response<PriorityIr> priorityResponse = snapshotService
-                                .postPriority(priorityIr)
-                                .execute();
-                        checkFor4xxCode(priorityResponse);
-                        if (!priorityResponse.isSuccessful() || priorityResponse.body() == null) {
-                            //TODO Sodep: How this information is  recovered when there's an error?
-                            Timber.tag(TAG);
-                            Timber.e(format("pushSnapshots: Could not push priority! %s",
-                                    priorityResponse.errorBody().string()));
-                            success = false;
-                        }
                     }
-                    if(success) {
-                        Response<List<PriorityIr>> prioritiesResponse = snapshotService
-                                .getPriorities(snapshot.getRemoteId())
+                } else {
+                    //Snapshot was already pushed
+                    snapshotResponse = snapshotService.getSnapshotById(snapshot.getRemoteId()).execute();
+                }
+                // push the priorities; don't need to save these responses
+                for (PriorityIr priorityIr : IrMapper.mapPriorities(snapshot)) {
+                    Response<PriorityIr> priorityResponse = snapshotService
+                            .postPriority(priorityIr)
+                            .execute();
+                    checkFor4xxCode(priorityResponse);
+                    if (!priorityResponse.isSuccessful() || priorityResponse.body() == null) {
+                        //TODO Sodep: How this information is  recovered when there's an error?
+                        Timber.tag(TAG);
+                        Timber.e(format("pushSnapshots: Could not push priority! %s",
+                                priorityResponse.errorBody().string()));
+                        success = false;
+                    }
+                }
+                if (success) {
+                    Response<List<PriorityIr>> prioritiesResponse = snapshotService
+                            .getPriorities(snapshot.getRemoteId())
+                            .execute();
+                    checkFor4xxCode(prioritiesResponse);
+                    if (!prioritiesResponse.isSuccessful() || prioritiesResponse.body() == null) {
+                        Timber.tag(TAG);
+                        Timber.e(format("pullSnapshots: Could not pull priorities for family %d! %s",
+                                family.getRemoteId(), prioritiesResponse.errorBody().string()));
+                        success = false;
+                    } else {
+                        snapshot.setPrioritiesSynced(true);
+                        // overwrite the pending snapshot with the snapshot from remote db
+                        Snapshot remoteSnapshot = IrMapper.mapSnapshot(
+                                snapshotResponse.body(), prioritiesResponse.body(), family, survey);
+                        //TODO Sodep: why the remote snapshot needs the local database "id" ?
+                        remoteSnapshot.setId(snapshot.getId());
+                        saveSnapshot(remoteSnapshot);
+
+                        // overwrite the pending family with the family that the remote db created
+                        Response<SnapshotDetailsIr> detailsResponse = snapshotService
+                                .getSnapshotDetails(snapshot.getRemoteId())
                                 .execute();
-                        checkFor4xxCode(prioritiesResponse);
-                        if (!prioritiesResponse.isSuccessful() || prioritiesResponse.body() == null) {
+                        checkFor4xxCode(detailsResponse);
+                        if (!detailsResponse.isSuccessful() || detailsResponse.body() == null) {
                             Timber.tag(TAG);
-                            Timber.e(format("pullSnapshots: Could not pull priorities for family %d! %s",
-                                    family.getRemoteId(), prioritiesResponse.errorBody().string()));
+                            Timber.e(format("pullSnapshots: Could not pull snapshot details for snapshot %d! %s",
+                                    remoteSnapshot.getRemoteId(), detailsResponse.errorBody().string()));
                             success = false;
                         }
-                        if(success) {
-                            // overwrite the pending snapshot with the snapshot from remote db
-                            Snapshot remoteSnapshot = IrMapper.mapSnapshot(
-                                    snapshotResponse.body(), prioritiesResponse.body(), family, survey);
-                            //TODO Sodep: why the remote snapshot needs the local database "id" ?
-                            remoteSnapshot.setId(snapshot.getId());
-                            saveSnapshot(remoteSnapshot);
-
-                            // overwrite the pending family with the family that the remote db created
-                            Response<SnapshotDetailsIr> detailsResponse = snapshotService
-                                    .getSnapshotDetails(snapshot.getRemoteId())
-                                    .execute();
-                            checkFor4xxCode(detailsResponse);
-                            if (!detailsResponse.isSuccessful() || detailsResponse.body() == null) {
-                                Timber.tag(TAG);
-                                Timber.e(format("pullSnapshots: Could not pull snapshot details for snapshot %d! %s",
-                                        remoteSnapshot.getRemoteId(), detailsResponse.errorBody().string()));
-                                success = false;
-                            }
-                            if(success) {
-                                Family remoteFamily = IrMapper.mapFamily(detailsResponse.body().getFamily());
+                        if (success) {
+                            Family remoteFamily = IrMapper.mapFamily(detailsResponse.body().getFamily());
+                            if (remoteFamily != null) {
+                                //TODO Sodep: This should not be null, but sometimes server
+                                // returns no data
                                 remoteFamily.setId(family.getId());
                                 familyRepository.saveFamily(remoteFamily);
 
@@ -222,8 +238,11 @@ public class SnapshotRepository extends BaseRepository{
                         snapshot.getId()), e);
                 success = false;
             }
-            if(success) {
-                snapshotDao.deleteInProgressSnapshot(snapshot.getId());
+            if (success) {
+                Log.d(TAG, String.format("Deleted from SQLite: %s", snapshot.toDebugString()));
+                snapshotDao.deleteSyncedSnapshot(snapshot.getId());
+                //snapshotDao.deleteInProgressSnapshot(snapshot.getId());
+
             }
         }
         //TODO Sodep: this is a loop, with several modifications to _success_
@@ -232,7 +251,7 @@ public class SnapshotRepository extends BaseRepository{
     }
 
     private void checkFor4xxCode(Response<?> snapshotResponse) {
-        if(AppConstants.HTTP_SC_UNAUTHORIZED == snapshotResponse.code() ||
+        if (AppConstants.HTTP_SC_UNAUTHORIZED == snapshotResponse.code() ||
                 AppConstants.HTTP_SC_BAD_REQUEST == snapshotResponse.code()) {
             throw new HttpException(snapshotResponse);
         }
@@ -250,20 +269,20 @@ public class SnapshotRepository extends BaseRepository{
             checkFor4xxCode(response);
 
             if (!response.isSuccessful() || response.body() == null) {
-                Timber.w( format("uploadFamilyPicture: Could not upload! %s", response.errorBody().string()));
+                Timber.w(format("uploadFamilyPicture: Could not upload! %s", response.errorBody().string()));
                 return;
             }
 
             family.setImageUrl(response.body());
             familyRepository.saveFamily(family);
         } catch (IOException e) {
-            Timber.w( "uploadFamilyPicture: Could not upload!", e);
+            Timber.w("uploadFamilyPicture: Could not upload!", e);
         }
     }
     //endregion Temporary upload image for demo
 
     private boolean pullSnapshots() {
-        Date lastSync = getLastSyncDate() > 0 ? new Date(getLastSyncDate()): null;
+        Date lastSync = getLastSyncDate() > 0 ? new Date(getLastSyncDate()) : null;
         boolean success = true;
         long loopCount = 0;
         final List<Survey> surveysNow = surveyRepository.getSurveysNow();
@@ -278,11 +297,11 @@ public class SnapshotRepository extends BaseRepository{
 
         setRecordsCount(families.size());
 
-        for(Family family : families) {
-            if(shouldAbortSync()) return false;
+        for (Family family : families) {
+            if (shouldAbortSync()) return false;
             Log.d(TAG, stopWatch.lap(String.format("Family: %s", family.getName())));
             success &= pullSnapshots(family, surveysNow);
-            if(success && getDashActivity() != null) {
+            if (success && getDashActivity() != null) {
                 getDashActivity().setSyncLabel(R.string.syncing_family_snapshots, ++loopCount,
                         getRecordsCount());
             }
@@ -292,9 +311,9 @@ public class SnapshotRepository extends BaseRepository{
     }
 
     private boolean pullSnapshots(Family family, List<Survey> surveyList)
-            throws HttpException{
+            throws HttpException {
         try {
-            if(shouldAbortSync()) return false;
+            if (shouldAbortSync()) return false;
             // get the snapshots
             Response<List<SnapshotIr>> snapshotsResponse = snapshotService
                     .getAllSnapshotsByFamily(family.getRemoteId())
@@ -307,7 +326,7 @@ public class SnapshotRepository extends BaseRepository{
                 return false;
             }
 
-            if(shouldAbortSync()) return false;
+            if (shouldAbortSync()) return false;
 
             // get the snapshot overviews (which have the priorities)
             Response<List<SnapshotOverviewIr>> overviewsResponse = snapshotService
@@ -321,17 +340,17 @@ public class SnapshotRepository extends BaseRepository{
                 return false;
             }
 
-            if(shouldAbortSync()) return false;
+            if (shouldAbortSync()) return false;
 
             List<Snapshot> snapshots = IrMapper.
                     mapSnapshots(snapshotsResponse.body(), overviewsResponse.body(), family,
                             surveyList);
             for (Snapshot snapshot : snapshots) {
-                if(shouldAbortSync()) return false;
+                if (shouldAbortSync()) return false;
                 if (snapshot.getPriorities() != null) {
                     if (snapshot.getPriorities().isEmpty()) {
                         Response<List<PriorityIr>> prioritiesResponse = snapshotService
-                                .getPriorities(snapshot.getRemoteId())
+                                .getPriorities(snapshot.getSnapshotIndicatorId())
                                 .execute();
                         checkFor4xxCode(prioritiesResponse);
                         if (!prioritiesResponse.isSuccessful() || prioritiesResponse.body() == null) {
@@ -342,7 +361,7 @@ public class SnapshotRepository extends BaseRepository{
                         }
 
                         Survey currentSurvey = getCurrentSnapshotSurvey(surveyList, snapshot.getSurveyId());
-                        if(currentSurvey != null) {
+                        if (currentSurvey != null) {
                             snapshot.setPriorities(
                                     IrMapper.mapPriorities(prioritiesResponse.body(), currentSurvey));
                         }
@@ -366,16 +385,21 @@ public class SnapshotRepository extends BaseRepository{
     }
 
     private Survey getCurrentSnapshotSurvey(List<Survey> surveyList, long survey_id) {
-        for(Survey survey: surveyList) {
-            if(survey.getId() == survey_id) {
+        for (Survey survey : surveyList) {
+            if (survey.getId() == survey_id) {
                 return survey;
             }
         }
         return null;
     }
 
+    public List<Snapshot> getQueueSnapshots() {
+        return snapshotDao.queryPendingFinishedSnapshots();
+    }
+
     /**
      * Synchronizes the local snapshots with the remote database.
+     *
      * @return Whether the sync was successful.
      */
     @Override
@@ -392,10 +416,16 @@ public class SnapshotRepository extends BaseRepository{
     public void clean() {
         List<Snapshot> pending = snapshotDao.queryPendingFinishedSnapshots();
         setmIsAlive(new AtomicBoolean(false));
-        if(pending.isEmpty()) {
+        if (pending.isEmpty()) {
             snapshotDao.deleteAll();
         } else {
             Log.d(TAG, "There are still pending snapshots to sync");
         }
+    }
+
+    @Override
+    public boolean needsSync() {
+        List<Snapshot> pending = snapshotDao.queryPendingFinishedSnapshots();
+        return super.needsSync() || (pending != null && !pending.isEmpty());
     }
 }

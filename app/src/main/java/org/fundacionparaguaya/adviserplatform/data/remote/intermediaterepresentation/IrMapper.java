@@ -150,11 +150,11 @@ public class IrMapper {
             }
             mappedQuestions.add(new BackgroundQuestion(
                     questionName,
-                    questionIr.title.get("es"),
+                    questionIr.getTitle().get("es"),
                     ir.schema.requiredQuestions.contains(questionName),
                     mapResponseType(questionIr, ir.uiSchema.customFields.get(questionName)),
                     type,
-                    mapBackgroundOptions(questionIr.optionNames, questionIr.options)));
+                    mapBackgroundOptions(questionIr.getOptionNames(), questionIr.getOptions())));
         }
         return mappedQuestions;
     }
@@ -168,9 +168,13 @@ public class IrMapper {
         for (String name : ir.uiSchema.indicatorQuestions) {
             SurveyQuestionIr questionIr = ir.schema.questions.get(name);
 
-            Indicator indicator = new Indicator(name, questionIr.title.get("es"));
+            final Map<String, String> description = questionIr.getDescription();
+            final Map<String, String> title = questionIr.getTitle();
+            Indicator indicator = new Indicator(name,
+                    getLabel(questionIr, description, title,"es", "description:%s"),
+                    getLabel(questionIr, title, description,"es", "title:%s"));
             List<IndicatorOption> options = new ArrayList<>();
-            for (IndicatorOptionIr optionIr : questionIr.indicatorOptions.values) {
+            for (IndicatorOptionIr optionIr : questionIr.getIndicatorOptions().values) {
                 options.add(new IndicatorOption(
                         optionIr.description,
                         optionIr.url,
@@ -183,6 +187,17 @@ public class IrMapper {
             questions.add(new IndicatorQuestion(indicator, required));
         }
         return questions;
+    }
+
+    private static String getLabel(SurveyQuestionIr questionIr, Map<String, String> option1,
+                                   Map<String, String> option2, String lang, String defaultString) {
+        String val1 = String.format(defaultString, questionIr);
+        if (option1 != null) {
+            val1 = option1.get(lang);
+        } else if (option2 != null) {
+            val1 = option2.get(lang);
+        }
+        return val1;
     }
 
     private static Map<String, String> mapBackgroundOptions(List<String> names, List<String> values) {
@@ -200,9 +215,9 @@ public class IrMapper {
 
     private static ResponseType mapResponseType(SurveyQuestionIr ir,
                                                 SurveyCustomFieldIr fieldIr) {
-        switch (ir.type) {
+        switch (ir.getType()) {
             case "string":
-                if (ir.format != null && ir.format.equals("date")) {
+                if (ir.getFormat() != null && ir.getFormat().equals("date")) {
                     return ResponseType.DATE;
                 } else if (fieldIr != null
                         && "gmap".equals(fieldIr.field)) {
@@ -255,7 +270,7 @@ public class IrMapper {
             } else {
                 Log.d("Snapshots",
                         String.format("Snapshot with id %s and survey id %s could not be added.",
-                                snapshotIr.id, snapshotIr.surveyId));
+                                snapshotIr.getId(), snapshotIr.getSurveyId()));
             }
         }
         return snapshots;
@@ -264,7 +279,7 @@ public class IrMapper {
     private static Survey getCurrentSurvey(List<Survey> surveyList, SnapshotIr snapshot) {
         Survey currentSurvey = null;
         for(Survey survey : surveyList) {
-            if(survey.getRemoteId() == snapshot.surveyId) {
+            if(survey.getRemoteId() == snapshot.getSurveyId()) {
                 currentSurvey = survey;
                 return currentSurvey;
             }
@@ -275,39 +290,40 @@ public class IrMapper {
     private static SnapshotOverviewIr findOverview(SnapshotIr snapshotIr,
                                                    List<SnapshotOverviewIr> overviewIrs) {
         for (SnapshotOverviewIr overviewIr : overviewIrs) {
-            if (overviewIr.snapshotId == snapshotIr.id) {
+            if (overviewIr.snapshotId == snapshotIr.getId()) {
                 return overviewIr;
             }
         }
         return null;
     }
 
-    public static Snapshot mapSnapshot(SnapshotIr ir, List<PriorityIr> priorityIrs,
+    public static Snapshot mapSnapshot(SnapshotIr snapshotIr, List<PriorityIr> priorityIrs,
                                        Family family, Survey survey) {
-        if (ir == null) return null;
+        if (snapshotIr == null) return null;
 
         return new Snapshot(
                 0,
-                ir.id,
+                snapshotIr.getId(),
                 family.getId(),
                 survey.getId(),
                 false,
-                mapPersonalResponses(ir, survey),
-                mapEconomicResponses(ir, survey),
-                mapIndicatorResponses(ir, survey),
+                snapshotIr.getSnapshotIndicatorId(),
+                mapPersonalResponses(snapshotIr, survey),
+                mapEconomicResponses(snapshotIr, survey),
+                mapIndicatorResponses(snapshotIr, survey),
                 mapPriorities(priorityIrs, survey),
-                mapDateTime(ir.createdAt));
+                mapDateTime(snapshotIr.getCreatedAt()));
     }
 
     public static SnapshotIr mapSnapshot(Snapshot snapshot, Survey survey) {
         SnapshotIr ir = new SnapshotIr();
-        ir.id = snapshot.getRemoteId() != null ? snapshot.getRemoteId() : -1;
-        ir.surveyId = survey.getRemoteId();
-        ir.personalResponses = mapBackgroundResponses(snapshot.getPersonalResponses());
-        ir.economicResponses = mapBackgroundResponses(snapshot.getEconomicResponses());
-        ir.indicatorResponses = mapIndicatorResponses(snapshot.getIndicatorResponses());
-        ir.createdAt = mapDateTime(snapshot.getCreatedAt());
-        ir.organizationId = snapshot.getOrganizationId();
+        ir.setId(snapshot.getRemoteId() != null ? snapshot.getRemoteId() : -1);
+        ir.setSurveyId(survey.getRemoteId());
+        ir.setPersonalResponses(mapBackgroundResponses(snapshot.getPersonalResponses()));
+        ir.setEconomicResponses(mapBackgroundResponses(snapshot.getEconomicResponses()));
+        ir.setIndicatorResponses(mapIndicatorResponses(snapshot.getIndicatorResponses()));
+        ir.setCreatedAt(mapDateTime(snapshot.getCreatedAt()));
+        ir.setOrganizationId(snapshot.getOrganizationId());
 
         return ir;
     }
@@ -324,12 +340,13 @@ public class IrMapper {
 
     private static PriorityIr mapPriority(LifeMapPriority priority, Snapshot snapshot) {
         PriorityIr ir = new PriorityIr();
-        ir.indicatorTitle = mapIndicatorName(priority.getIndicator());
-        ir.snapshotId = snapshot.getRemoteId();
-        ir.reason = defaultIfEmpty(priority.getReason(), "");
-        ir.action = defaultIfEmpty(priority.getAction(), "");
-        ir.estimatedDate = mapDate(priority.getEstimatedDate());
-        ir.isAchievement = priority.isAchievement();
+        ir.setIndicatorTitle(priority.getIndicator().getDescription());
+        ir.setSnapshotIndicatorId(snapshot.getSnapshotIndicatorId());
+        ir.setReason(defaultIfEmpty(priority.getReason(), ""));
+        ir.setAction(defaultIfEmpty(priority.getAction(), ""));
+        ir.setEstimatedDate(mapDate(priority.getEstimatedDate()));
+        ir.setAchievement(priority.isAchievement());
+        ir.setJsonKey(priority.getIndicator().getName());
         return ir;
     }
 
@@ -358,23 +375,23 @@ public class IrMapper {
     }
 
     private static Map<BackgroundQuestion, String> mapPersonalResponses(SnapshotIr ir, Survey survey) {
-        if (ir.personalResponses == null) return Collections.emptyMap();
+        if (ir.getPersonalResponses() == null) return Collections.emptyMap();
 
         Map<BackgroundQuestion, String> responses = new HashMap<>();
-        for (String question : ir.personalResponses.keySet()) {
+        for (String question : ir.getPersonalResponses().keySet()) {
             responses.put(getBackgroundQuestion(survey.getPersonalQuestions(), question),
-                    mapBackgroundResponseValue(ir.personalResponses.get(question)));
+                    mapBackgroundResponseValue(ir.getPersonalResponses().get(question)));
         }
         return responses;
     }
 
     private static Map<BackgroundQuestion, String> mapEconomicResponses(SnapshotIr ir, Survey survey) {
-        if (ir.economicResponses == null) return Collections.emptyMap();
+        if (ir.getEconomicResponses() == null) return Collections.emptyMap();
 
         Map<BackgroundQuestion, String> responses = new HashMap<>();
-        for (String question : ir.economicResponses.keySet()) {
+        for (String question : ir.getEconomicResponses().keySet()) {
             responses.put(getBackgroundQuestion(survey.getEconomicQuestions(), question),
-                    mapBackgroundResponseValue(ir.economicResponses.get(question)));
+                    mapBackgroundResponseValue(ir.getEconomicResponses().get(question)));
         }
         return responses;
 
@@ -386,16 +403,16 @@ public class IrMapper {
     }
 
     private static Map<IndicatorQuestion, IndicatorOption> mapIndicatorResponses(SnapshotIr ir, Survey survey) {
-        if (ir.indicatorResponses == null) return Collections.emptyMap();
+        if (ir.getIndicatorResponses() == null) return Collections.emptyMap();
 
         Map<IndicatorQuestion, IndicatorOption> responses = new HashMap<>();
-        for (String question : ir.indicatorResponses.keySet()) {
+        for (String question : ir.getIndicatorResponses().keySet()) {
             IndicatorQuestion indicatorQuestion =
                     getIndicatorQuestion(survey.getIndicatorQuestions(), question);
             if (indicatorQuestion != null) {
                 responses.put(indicatorQuestion,
                         getIndicatorOption(indicatorQuestion.getOptions(),
-                                mapIndicatorOptionLevel(ir.indicatorResponses.get(question))));
+                                mapIndicatorOptionLevel(ir.getIndicatorResponses().get(question))));
             }
         }
         return responses;
@@ -414,16 +431,23 @@ public class IrMapper {
     private static LifeMapPriority mapPriority(PriorityIr ir, Survey survey) {
         if (ir == null) return null;
 
+
+        //TODO SODEP: The current way of mapping a question is not suitable for surveys that are in spanish
+        /**
+         * If jsonKey is null, then search for the question the old way
+         * if is not null, then use the jsonKey to find the question*/
+        String keyToMatch = ir.getJsonKey() == null ? mapIndicatorName(ir.getIndicatorTitle()) : ir.getJsonKey();
         IndicatorQuestion question = getIndicatorQuestion(survey.getIndicatorQuestions(),
-                mapIndicatorName(ir.indicatorTitle));
+                keyToMatch);
+
         if (question == null) return null;
 
         return LifeMapPriority.builder()
                 .indicator(question.getIndicator())
-                .reason(ir.reason)
-                .action(ir.action)
-                .estimatedDate(mapDate(ir.estimatedDate))
-                .isAchievement(ir.isAchievement)
+                .reason(ir.getReason())
+                .action(ir.getAction())
+                .estimatedDate(mapDate(ir.getEstimatedDate()))
+                .isAchievement(ir.isAchievement())
                 .build();
     }
 

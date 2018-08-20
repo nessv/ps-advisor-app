@@ -21,6 +21,7 @@ public class AppConstants {
     public static final String BUCKET_ENDPOINT_2 = "http://py.org.fundacionparaguaya.psp.images.s3-website.eu-west-2.amazonaws.com/";
     public static final String RESIZE_IMAGE_SIZE = "200x200";
     public static final String USER_ROLE = "ROLE_SURVEY_USER";
+    public static final String EMPTY_URL = "NONE";
 
 
     private AppConstants() {

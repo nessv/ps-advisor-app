@@ -13,6 +13,7 @@ import org.fundacionparaguaya.adviserplatform.data.model.Login;
 import org.fundacionparaguaya.adviserplatform.data.model.ResponseType;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
 import org.fundacionparaguaya.adviserplatform.data.model.Survey;
+import org.fundacionparaguaya.adviserplatform.util.IndicatorUtilities;
 
 import java.text.CharacterIterator;
 import java.text.DateFormat;
@@ -177,7 +178,7 @@ public class IrMapper {
             for (IndicatorOptionIr optionIr : questionIr.getIndicatorOptions().values) {
                 options.add(new IndicatorOption(
                         optionIr.description,
-                        optionIr.url,
+                        IndicatorUtilities.generateUri(optionIr.url),
                         mapOptionLevel(optionIr.value)
                 ));
             }

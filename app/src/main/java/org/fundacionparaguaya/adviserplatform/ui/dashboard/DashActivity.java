@@ -1,16 +1,29 @@
 package org.fundacionparaguaya.adviserplatform.ui.dashboard;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.github.curioustechizen.ago.RelativeTimeTextView;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
+import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;
+import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
+import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.assistantadvisor.R;
@@ -27,6 +40,8 @@ import org.fundacionparaguaya.adviserplatform.ui.settings.SettingsTabFrag;
 import org.fundacionparaguaya.adviserplatform.ui.map.MapTabFrag;
 import org.fundacionparaguaya.adviserplatform.ui.social.SocialTabFrag;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,12 +67,20 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     SyncManager mSyncManager;
     @Inject
     AuthenticationManager mAuthManager;
+    protected @Inject
+    InjectionViewModelFactory mViewModelFactory;
+    private DashActivityViewModel mDashActivityModel;
 
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
+    static int queueSnapshots = 0;
 
     @Override
     public void onBackPressed() {
         ((AbstractTabbedFrag) getFragment(getClassForType(tabBarView.getSelected()))).onNavigateBack();
+    }
+
+    public static int getSnapshotQueue() {
+        return queueSnapshots;
     }
 
     private Class getClassForType(DashboardTab.TabType type) {
@@ -109,6 +132,10 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 .getApplicationComponent()
                 .inject(this);
 
+        mDashActivityModel = ViewModelProviders
+                .of(this, mViewModelFactory)
+                .get(DashActivityViewModel.class);
+
         setContentView(R.layout.activity_main);
         setFragmentContainer(R.id.dash_content);
 
@@ -133,6 +160,8 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
         rootView.setScrollingEnabled(true);
         ViewCompat.setNestedScrollingEnabled(rootView, false);
         mSyncManager.setDashActivity(this);
+
+        snapshotsRemainingToSync();
 
         //update last sync label when the sync manager updates
         mSyncManager.getProgress().observe(this, (value) -> {
@@ -175,6 +204,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                     setSyncStatus(true, R.drawable.ic_dashtopbar_sync,
                             R.drawable.dashtopbar_synccircle);
                     mSyncLabel.setText(R.string.topbar_synclabel);
+                    queueSnapshots = 0;
                 }
             }
         });
@@ -245,6 +275,57 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
                 mSyncLabel.setText(getString(id, value, total));
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        snapshotsRemainingToSync();
+    }
+
+    private void snapshotsRemainingToSync() {
+        AsyncTask.execute(() -> {
+            List<Snapshot> snapshots = mDashActivityModel.getSnapshotRepository().getQueueSnapshots();
+            queueSnapshots = snapshots.size();
+
+            runOnUiThread(() -> {
+                validateStorageCapacity();
+            });
+        });
+    }
+
+    private void validateStorageCapacity() {
+        /**
+         * Depending on the amount of snapshots that haven't already been sync,
+         * a message will be display letting the user know how much have he reach
+         * this could be a toast or a popup*/
+        String message;
+        if(queueSnapshots >= AppConstants.MEDIUM_CAPACITY && queueSnapshots < AppConstants.HIGH_CAPACITY) {
+            message = getString(R.string.snapshots_limit_medium, (queueSnapshots*100)/AppConstants.MAXIMUM_CAPACITY);
+            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+            toast.show();
+
+        } else if (queueSnapshots > AppConstants.HIGH_CAPACITY && queueSnapshots < AppConstants.MAXIMUM_CAPACITY) {
+            message = getString(R.string.snapshots_limit_high,(queueSnapshots*100)/AppConstants.MAXIMUM_CAPACITY);
+            makeLimitDialog(message).show();
+
+        } else if (queueSnapshots >= AppConstants.MAXIMUM_CAPACITY) {
+            message = getString(R.string.snapshot_limit_reach);
+            makeLimitDialog(message).show();
+
+            mSyncLabel.setText(getString(R.string.sync_require));
+            setSyncStatus(true, R.drawable.ic_warning, 0);
+        }
+
+    }
+
+    private SweetAlertDialog makeLimitDialog(String message) {
+        SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.attention_title))
+                .setContentText(message)
+                .setConfirmText(getString(R.string.all_okay))
+                .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation);
+        return dialog;
     }
 }
 

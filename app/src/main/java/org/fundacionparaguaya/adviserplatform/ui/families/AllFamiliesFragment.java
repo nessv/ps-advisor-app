@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.test.espresso.remote.EspressoRemoteMessage;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.assistantadvisor.R;
 import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
@@ -94,13 +99,19 @@ public class AllFamiliesFragment extends AbstractStackedFrag {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent surveyIntent = new Intent(getContext(), SurveyActivity.class);
-                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
-                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                if(DashActivity.getSnapshotQueue() >= AppConstants.MAXIMUM_CAPACITY) {
+                    Toast toast = Toast.makeText(getContext(), getString(R.string.survey_disable), Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    Intent surveyIntent = new Intent(getContext(), SurveyActivity.class);
+                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getContext(),
+                            android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
+                    startActivityForResult(surveyIntent, NEW_FAMILY_REQUEST, bundle);
 
-                MixpanelHelper.SurveyEvents.newFamily(getContext());
+                    MixpanelHelper.SurveyEvents.newFamily(getContext());
+                }
+
             }
         });
     }

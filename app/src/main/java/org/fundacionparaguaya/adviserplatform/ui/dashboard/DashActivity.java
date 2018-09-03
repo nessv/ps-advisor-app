@@ -4,11 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -20,26 +17,25 @@ import android.widget.Toast;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
-import org.fundacionparaguaya.adviserplatform.data.local.SnapshotDao;
 import org.fundacionparaguaya.adviserplatform.data.model.Snapshot;
+import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
+import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
 import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.adviserplatform.jobs.SyncJob;
+import org.fundacionparaguaya.adviserplatform.ui.base.AbstractTabbedFrag;
+import org.fundacionparaguaya.adviserplatform.ui.base.DisplayBackNavListener;
+import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
+import org.fundacionparaguaya.adviserplatform.ui.common.widget.NonScrollView;
+import org.fundacionparaguaya.adviserplatform.ui.families.FamilyTabbedFragment;
+import org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity;
+import org.fundacionparaguaya.adviserplatform.ui.map.MapTabFrag;
+import org.fundacionparaguaya.adviserplatform.ui.settings.SettingsTabFrag;
+import org.fundacionparaguaya.adviserplatform.ui.social.SocialTabFrag;
 import org.fundacionparaguaya.adviserplatform.util.AppConstants;
+import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
 import org.fundacionparaguaya.assistantadvisor.BuildConfig;
 import org.fundacionparaguaya.assistantadvisor.R;
-import org.fundacionparaguaya.adviserplatform.ui.base.DisplayBackNavListener;
-import org.fundacionparaguaya.adviserplatform.ui.common.AbstractFragSwitcherActivity;
-import org.fundacionparaguaya.adviserplatform.ui.login.LoginActivity;
-import org.fundacionparaguaya.adviserplatform.data.remote.AuthenticationManager;
-import org.fundacionparaguaya.adviserplatform.jobs.SyncJob;
-import org.fundacionparaguaya.adviserplatform.data.repositories.SyncManager;
-import org.fundacionparaguaya.adviserplatform.ui.base.AbstractTabbedFrag;
-import org.fundacionparaguaya.adviserplatform.ui.common.widget.NonScrollView;
-import org.fundacionparaguaya.adviserplatform.ui.families.FamilyTabbedFragment;
-import org.fundacionparaguaya.adviserplatform.ui.settings.SettingsTabFrag;
-import org.fundacionparaguaya.adviserplatform.ui.map.MapTabFrag;
-import org.fundacionparaguaya.adviserplatform.ui.social.SocialTabFrag;
-import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 
 import java.util.List;
 
@@ -72,7 +68,7 @@ public class DashActivity extends AbstractFragSwitcherActivity implements Displa
     private DashActivityViewModel mDashActivityModel;
 
     static String SELECTED_TAB_KEY = "SELECTED_TAB";
-    static int queueSnapshots = 0;
+    private static int queueSnapshots = 0;
 
     @Override
     public void onBackPressed() {

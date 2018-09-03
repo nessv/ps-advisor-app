@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.test.espresso.remote.EspressoRemoteMessage;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,16 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
-import org.fundacionparaguaya.adviserplatform.util.AppConstants;
-import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
-import org.fundacionparaguaya.assistantadvisor.R;
-import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
-import org.fundacionparaguaya.adviserplatform.ui.families.detail.FamilyDetailFrag;
+import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
 import org.fundacionparaguaya.adviserplatform.ui.base.AbstractStackedFrag;
+import org.fundacionparaguaya.adviserplatform.ui.dashboard.DashActivity;
+import org.fundacionparaguaya.adviserplatform.ui.families.detail.FamilyDetailFrag;
+import org.fundacionparaguaya.adviserplatform.ui.survey.SurveyActivity;
+import org.fundacionparaguaya.adviserplatform.util.AppConstants;
 import org.fundacionparaguaya.adviserplatform.util.MixpanelHelper;
 import org.fundacionparaguaya.adviserplatform.util.ScreenUtils;
-import org.fundacionparaguaya.adviserplatform.injection.InjectionViewModelFactory;
+import org.fundacionparaguaya.assistantadvisor.AdviserAssistantApplication;
+import org.fundacionparaguaya.assistantadvisor.R;
 
 import javax.inject.Inject;
 

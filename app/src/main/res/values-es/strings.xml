@@ -123,6 +123,14 @@
     <string name="cd_numberstepper_plus">Incrementar Valor</string>
     <string name="cd_numberstepper_minus">Decrementar Valor</string>
 
+    <!--App Limits-->
+    <string name="snapshots_limit_medium">Has alcanzado %d\%% de la capacidad para información de familias</string>
+    <string name="snapshots_limit_high">Has alcanzado %d\%% de la capacidad para información de familias. Busca una conexión de Internet estable para comenzar la sincronización</string>
+    <string name="snapshot_limit_reach">Has alcanzado el máximo de capacidad para información de familias. Busca una conexión de Internet estable para comenzar la sincronización</string>
+    <string name="survey_disable">La toma de encuestas está deshabilitada</string>
+    <string name="sync_require">Sincronización requerida</string>
+    <string name="attention_title">Atención</string>
+
     <!-- Other -->
     <string name="spinner_placeholder">Seleccione una opcion&#8230;</string>
     <string name="familydetail_nullmember_title">Esta familia no puede ser encuestada</string>

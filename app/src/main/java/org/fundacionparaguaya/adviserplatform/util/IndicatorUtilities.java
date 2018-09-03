@@ -156,4 +156,19 @@ public class IndicatorUtilities {
     public static void setViewColorFromResponse(IndicatorOption option, View v) {
        setColorFromLevel(option.getLevel(), v);
     }
+
+    public static String generateUri(String imageUri) {
+        if (AppConstants.EMPTY_URL.equals(imageUri)) {
+            return AppConstants.EMPTY_URL;
+        }
+
+        String params[] = imageUri.split("images/");
+        String uri;
+        if ( params[0].equals(AppConstants.BUCKET_FPPSP) ) {
+            uri = AppConstants.BUCKET_ENDPOINT_1;
+        } else {
+            uri = AppConstants.BUCKET_ENDPOINT_2;
+        }
+        return uri + AppConstants.RESIZE_IMAGE_SIZE + "/" + params[1];
+    }
 }

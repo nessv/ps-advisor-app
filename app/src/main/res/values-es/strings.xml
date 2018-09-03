@@ -128,6 +128,7 @@
     <string name="snapshots_limit_high">Has alcanzado %d\%% de la capacidad para información de familias. Busca una conexión de Internet estable para comenzar la sincronización</string>
     <string name="snapshot_limit_reach">Has alcanzado el máximo de capacidad para información de familias. Busca una conexión de Internet estable para comenzar la sincronización</string>
     <string name="survey_disable">La toma de encuestas está deshabilitada</string>
+    <string name="sync_require">Sincronización requerida</string>
     <string name="attention_title">Atención</string>
 
     <!-- Other -->

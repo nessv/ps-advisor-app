@@ -22,7 +22,9 @@ public class AppConstants {
     public static final String RESIZE_IMAGE_SIZE = "200x200";
     public static final String USER_ROLE = "ROLE_SURVEY_USER";
     public static final String EMPTY_URL = "NONE";
-
+    public static final int MAXIMUM_CAPACITY = 1000;
+    public static final int MEDIUM_CAPACITY = (int) (MAXIMUM_CAPACITY * 0.5);
+    public static final int HIGH_CAPACITY = (int) (MAXIMUM_CAPACITY * 0.8);
 
     private AppConstants() {
         //Utilities classes don't have public constructors
